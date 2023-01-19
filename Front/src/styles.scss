@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+@use "sass:map";
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+
+@font-face {
+    font-family: titulos;
+    src: url('./assets/tipografias/BebasNeue-Regular.ttf') format("woff2");
+}
+
+@font-face {
+    font-family: texto;
+    src: url('./assets/tipografias/Montserrat-VariableFont_wght.ttf') format("woff2");
+    font-weight: light;
+}
+
+
+
+
