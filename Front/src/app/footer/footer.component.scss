@@ -1,0 +1,50 @@
+footer {
+  background-color: red;
+  color: white;
+  height: fit-content;
+
+  a,
+  i {
+    color: white;
+
+    &:hover {
+      color: rgb(18, 18, 180);
+    }
+  }
+
+  .datos {
+    background-color: rgb(118, 12, 12);
+    font-size: .85rem;
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+
+      div:not(:first-child) {
+        margin-top: 1.5rem;
+      }
+    }
+
+    h5 {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      padding-bottom: .3rem;
+      border-bottom: 2px solid white;
+    }
+
+    p {
+      margin-bottom: .4rem;
+    }
+
+    i {
+      margin-right: .6rem;
+    }
+
+    .redes i {
+      font-size: 1.5rem;
+    }
+  }
+
+  .copyright {
+    font-size: .8rem;
+  }
+}
