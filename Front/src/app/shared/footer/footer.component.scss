@@ -41,35 +41,34 @@ footer {
         border-bottom: 2px solid var(--bs-white);
       }
 
-      i {
+      .contacto i {
+        width: 1rem;
         margin-right: .6rem;
+
+        &:hover {
+          color: unset;
+        }
       }
 
-      .newsletter-redes {
-        i {
-          font-size: 1.5rem;
-        }
+      .newsletter-redes .newsletter {
+        height: 35px;
 
-        .newsletter {
-          height: 35px;
+        input {
+          font-size: var(--letra-pequena);
 
-          input {
-            font-size: var(--letra-pequena);
+          &[type=email] {
+            padding: 0 .5rem;
+            border-radius: 2px 0px 0 2px;
+            width: 100%;
+          }
 
-            &[type=email] {
-              padding: 0 .5rem;
-              border-radius: 2px 0px 0 2px;
-              width: 100%;
-            }
+          &[type=button] {
+            background-color: var(--color-granate);
+            color: var(--bs-white);
+            border-radius: 0 2px 2px 0;
 
-            &[type=button] {
-              background-color: var(--color-secundario);
-              color: var(--bs-white);
-              border-radius: 0 2px 2px 0;
-
-              &:hover {
-                background-color: var(--color-oscuro);
-              }
+            &:hover {
+              background-color: var(--color-granate-oscuro);
             }
           }
         }
@@ -78,46 +77,6 @@ footer {
 
     &.copyright {
       font-size: var(--letra-pequena);
-    }
-
-    &.copyright,
-    .contacto,
-    .informacion {
-      i {
-        width: 1rem;
-
-        &:hover {
-          color: unset;
-        }
-      }
-
-      a {
-        padding-bottom: .2rem;
-        text-decoration: none;
-        position: relative;
-
-        &::before {
-          content: "";
-          position: absolute;
-          display: block;
-          width: 100%;
-          height: 1.5px;
-          bottom: 0;
-          left: 0;
-          background-color: var(--bs-white);
-          transform: scaleX(0);
-          transform-origin: top left;
-          transition: transform 0.3s ease;
-        }
-
-        &:hover {
-          color: var(--bs-white);
-
-          &::before {
-            transform: scaleX(1);
-          }
-        }
-      }
     }
   }
 }
