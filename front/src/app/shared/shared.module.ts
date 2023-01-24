@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
-
+import { DirectivasModule } from './directivas/directivas.module';
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { MenuComponent } from './menu/menu.component';
     MenuComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DirectivasModule
   ],
   exports: [
     MenuComponent
