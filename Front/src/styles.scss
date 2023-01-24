@@ -54,6 +54,12 @@ body {
     }
   }
 
+  .fijo {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
   .enlace {
     padding-bottom: .2rem;
     text-decoration: none;
