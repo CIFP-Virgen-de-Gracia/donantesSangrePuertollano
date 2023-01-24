@@ -1,0 +1,115 @@
+header {
+  .banner {
+    height: 150px;
+    width: 100%;
+  }
+
+  nav {
+    background-color: var(--color-primario);
+    z-index: 100;
+
+    img {
+      width: 45px;
+    }
+
+    .navbar-brand {
+      padding-left: 4rem;
+    }
+
+    .navbar-toggler {
+      border: none;
+      padding: 0 5rem 0 0;
+
+      &:focus {
+        box-shadow: none;
+        color: var(--color-granate);
+      }
+    }
+
+    .nav-link {
+      color: var(--bs-white);
+      padding: 0;
+    }
+
+    /* .dropdown:hover .dropdown-menu {
+      display: block;
+    } */
+
+    .dropdown-menu {
+      border-radius: 0;
+      box-shadow: 0 3px 4px rgba(0,0,0,.2);
+      margin-top: -2px;
+      border: none;
+
+      .dropdown-item {
+        padding: .5rem 1.5rem;
+        margin: 0;
+
+        &:hover {
+          background-color: var(--color-contraste-oscuro);
+        }
+      }
+    }
+
+    .usuario-contenedor {
+      position: absolute;
+      right: 4rem;
+      top: 1.5rem;
+    }
+
+    @media (max-width: 992px) {
+      .navbar-brand {
+        padding-left: 2rem;
+      }
+
+      .navbar-collapse {
+        margin-top: .5rem;
+        border-top: 1px solid var(--bs-white);
+
+        .enlace {
+          &::before {
+            width: 10px;
+            height: 100%;
+            top: 0;
+            background-color: var(--bs-white);
+            transform: scaleY(0);
+          }
+
+          &:hover {
+            background-color: var(--color-granate);
+
+            &::before {
+              transform: scaleY(1);
+            }
+          }
+        }
+
+        .dropdown-menu {
+          background-color: var(--color-secundario);
+          margin-top: -2px;
+          padding: 0;
+          box-shadow: unset;
+
+          .dropdown-item {
+            color: var(--bs-white);
+            text-align: center;
+            padding: .7rem 0;
+
+            &:hover,&:hover {
+              background-color: var(--color-granate);
+              color: var(--bs-white);
+            }
+          }
+        }
+
+        .nav-link {
+          padding: .5rem 0;
+        }
+      }
+
+      .usuario-contenedor {
+        right: 2rem;
+      }
+    }
+  }
+}
