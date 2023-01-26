@@ -1,10 +1,11 @@
-div.horario {
-  background-color: var(--color-contraste);
+.container {
+  margin: 0;
+  max-width: 100%;
 }
 
-div.cita {
+/* div.cita {
   padding: 5rem 0;
-}
+} */
 
 p {
   font-size: var(--letra-media);
