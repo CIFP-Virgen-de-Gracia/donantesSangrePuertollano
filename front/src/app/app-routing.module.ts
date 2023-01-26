@@ -1,7 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { InicioComponent } from './paginas/inicio/inicio.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }/* ,
+  {
+    path: 'paginas',
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+  } *//* ,
+  {
+    path: '404',
+    component: ErrorPageComponent
+  }*/
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
