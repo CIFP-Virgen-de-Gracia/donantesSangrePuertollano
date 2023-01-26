@@ -46,7 +46,7 @@ header {
         margin: 0;
 
         &:hover {
-          background-color: var(--color-contraste-oscuro);
+          background-color: var(--color-granate);
         }
       }
     }
@@ -94,11 +94,6 @@ header {
             color: var(--bs-white);
             text-align: center;
             padding: .7rem 0;
-
-            &:hover,&:hover {
-              background-color: var(--color-granate);
-              color: var(--bs-white);
-            }
           }
         }
 

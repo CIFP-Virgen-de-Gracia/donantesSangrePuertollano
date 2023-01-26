@@ -32,11 +32,9 @@ footer {
         margin-bottom: .4rem;
       }
 
-      h5 {
-        font-family: var(--tipo-titulos);
+      .titulo {
         margin-bottom: 1rem;
-        font-size: 1.25rem;
-        letter-spacing: 2px;
+        font-size: var(--letra-grande);
         padding-bottom: .2rem;
         border-bottom: 2px solid var(--bs-white);
       }
