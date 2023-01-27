@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-require('dotenv');
+require('dotenv').config();
 
 class Conexion {
 
@@ -11,6 +11,13 @@ class Conexion {
             database: process.env.DB_DATABASE,
             connectionLimit: process.env.DB_MAXCONNECTIONS, //Por defecto son 10.
             port: process.env.DB_PORT
+
+            // host: '192.168.100.7',
+            // user: 'user',
+            // password: 'test',
+            // database: 'donantes_puertollano',
+            // connectionLimit: 10,
+            // port: 3306
         };
 
         this.pool = mysql.createPool(this.config);
