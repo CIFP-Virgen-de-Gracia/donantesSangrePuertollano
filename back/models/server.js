@@ -8,7 +8,7 @@ class Server {
     constructor() {
         this.app = express();
         this.path = '/api/';
-
+        
         //Middlewares
         this.middlewares();
 
@@ -16,7 +16,6 @@ class Server {
         
     }
     
-
     middlewares() {
         this.app.use(cors());
         this.app.use(express.json());
