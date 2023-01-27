@@ -1,0 +1,72 @@
+.newsletter {
+  z-index: 110;
+  width: 400px;
+  background-color: var(--color-contraste);
+  border-radius: 2px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  margin: .5rem;
+  position: fixed;
+  bottom: 0px;
+  right: 0;
+
+  * {
+    font-size: var(--letra-pequena);
+  }
+
+  p,
+  .titulo {
+    padding: 0;
+  }
+
+  .titulo {
+    font-size: var(--letra-media);
+  }
+
+  .avion-peq {
+    display: none;
+  }
+
+  .avion-grande {
+    background-color: var(--color-granate);
+    height: 150px;
+
+    i {
+      color: var(--bs-white);
+      font-size: 40px;
+    }
+  }
+
+  .mensaje {
+    padding: 1rem 1.5rem;
+
+    i {
+      font-size: var(--letra-media);
+      color: var(--color-primario);
+
+      &:hover {
+        color: var(--color-granate-oscuro);
+      }
+    }
+  }
+
+  input [type=email] {
+    background-color: var(--bs-white);
+  }
+}
+
+@media (max-width: 576px) {
+  .newsletter {
+    width: 300px;
+
+    .avion-peq {
+      display: block;
+      padding: 0;
+      font-size: var(--letra-media);
+    }
+
+    .avion-grande {
+      display: none !important;
+    }
+  }
+}
+

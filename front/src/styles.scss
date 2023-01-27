@@ -20,7 +20,7 @@
   --color-granate: rgb(101, 4, 35);
   --color-granate-oscuro: rgb(41, 11, 37);
   --color-contraste: rgb(241, 238, 245);
-  --color-contraste-oscuro: rgb(185, 177, 195);
+  --color-contraste-oscuro: rgb(201, 197, 207);
   --tipo-textos: texto;
   --tipo-titulos: titulos;
   --letra-pequena: .85rem;
@@ -40,7 +40,8 @@ body {
     margin: 0;
   }
 
-  footer, header {
+  footer,
+  header {
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
   }
 
@@ -96,5 +97,27 @@ body {
   .titulo {
     font-family: var(--tipo-titulos);
     letter-spacing: 2px;
+  }
+
+  .newsletter {
+    input {
+      height: 35px;
+      font-size: var(--letra-pequena);
+
+      &[type=email] {
+        padding: 0 .5rem;
+        border-radius: 2px 0px 0 2px;
+      }
+
+      &[type=button] {
+        background-color: var(--color-granate);
+        color: var(--bs-white);
+        border-radius: 0 2px 2px 0;
+
+        &:hover {
+          background-color: var(--color-granate-oscuro);
+        }
+      }
+    }
   }
 }
