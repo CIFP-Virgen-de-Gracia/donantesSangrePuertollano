@@ -1,14 +1,14 @@
+require('dotenv').config();
 const mysql = require('mysql2');
 const {Sequelize} = require('sequelize'); 
-require('dotenv');
 
 
 class CnxnSequelize {
     
     constructor() {
-        this.db = new Sequelize('donantes', 'mario', 'Chubaca2022', {
-            host: 'localhost',
-            dialect:'mysql',
+        this.db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+            host: process.env.DB_HOST,
+            dialect: 'mysql',
             pool: {
                 max: 10,
                 min: 0,
@@ -16,7 +16,6 @@ class CnxnSequelize {
                 idle: 10000
             },
         });
-
     }
 
     conectar = () => {
@@ -41,5 +40,7 @@ class CnxnSequelize {
 }
 
 const sequelize = new CnxnSequelize();
+sequelize.conectar();
+
 
 module.exports = sequelize;
