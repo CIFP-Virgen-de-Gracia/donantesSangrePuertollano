@@ -4,15 +4,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AptoSangreModule } from './apto-sangre/apto-sangre.module';
+import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AptoSangreComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    AptoSangreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
