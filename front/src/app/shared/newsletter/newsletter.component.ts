@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-newsletter',
@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class NewsletterComponent {
 
+  @ViewChild('newsletter') newsletter!: ElementRef<HTMLDivElement>;
+
+  cerrar() {
+    this.newsletter.nativeElement.remove();
+  }
 }
