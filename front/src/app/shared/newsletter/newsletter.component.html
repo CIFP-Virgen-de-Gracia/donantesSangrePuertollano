@@ -1,4 +1,4 @@
-<div class="newsletter container">
+<div #newsletter class="newsletter container">
 
   <div class="row">
 
@@ -13,11 +13,11 @@
           <p class="titulo col-8 col-sm-10">
             ¡No te pierdas nada!
           </p>
-          <i class="text-end fa-solid fa-xmark col-2"></i>
+          <i class="text-end fa-solid fa-xmark col-2" (click)="cerrar()"></i>
         </div>
 
         <div class="row pb-1">
-          <p class="col-12">
+          <p class="col-12 mb-1">
             Suscríbete a nuestra newsletter para estar al tanto de noticias y eventos.
           </p>
         </div>
