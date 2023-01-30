@@ -74,14 +74,22 @@ export class AptoSangreComponent implements AfterViewInit {
   }
 
   evaluarRespuesta(): void{
-    if(this.respuestas[this.respuestas.length - 1] == this.preguntas[this.contador].respuesta){
-      this.contador++;
-      this.hayHueco = true;
-      console.log("superado");
+    if(this.contador < this.preguntas.length - 1){
+      if(this.respuestas[this.respuestas.length - 1] == this.preguntas[this.contador].respuesta){
+        this.contador++;
+        this.hayHueco = true;
+        console.log("superado");
+        const boton = this.boton_siguiente.nativeElement;
+        this.renderer2.setStyle(boton, 'display','none');
+      }
+      else{
+        console.log(this.preguntas[this.contador].solucion_problema);
+      }
     }
     else{
-      console.log(this.preguntas[this.contador].solucion_problema);
+      console.log("Ha superado la maxima cantidad de preguntas");
     }
+
   }
 
 }
