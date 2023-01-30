@@ -1,0 +1,80 @@
+footer {
+  background-color: var(--color-primario);
+  color: var(--bs-white);
+  height: fit-content;
+  padding: 2rem 4rem;
+
+  @media (max-width: 992px) {
+    padding: 2rem;
+  }
+
+  .datos,
+  .copyright {
+    gap: 6%;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+
+      &.datos>div:not(:first-child) {
+        margin-top: 1.5rem;
+      }
+
+      &.copyright .enlaces {
+        margin-top: .5rem;
+      }
+    }
+
+    &.datos {
+      border-bottom: 1px solid var(--bs-white);
+
+      p {
+        font-size: var(--letra-pequena);
+        margin-bottom: .4rem;
+      }
+
+      .titulo {
+        margin-bottom: 1rem;
+        font-size: var(--letra-grande);
+        padding-bottom: .2rem;
+        border-bottom: 2px solid var(--bs-white);
+      }
+
+      .contacto i {
+        width: 1rem;
+        margin-right: .6rem;
+
+        &:hover {
+          color: unset;
+        }
+      }
+
+      .newsletter-redes .newsletter {
+        height: 35px;
+
+        input {
+          font-size: var(--letra-pequena);
+
+          &[type=email] {
+            padding: 0 .5rem;
+            border-radius: 2px 0px 0 2px;
+            width: 100%;
+          }
+
+          &[type=button] {
+            background-color: var(--color-granate);
+            color: var(--bs-white);
+            border-radius: 0 2px 2px 0;
+
+            &:hover {
+              background-color: var(--color-granate-oscuro);
+            }
+          }
+        }
+      }
+    }
+
+    &.copyright {
+      font-size: var(--letra-pequena);
+    }
+  }
+}
