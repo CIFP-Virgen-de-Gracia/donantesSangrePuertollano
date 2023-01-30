@@ -4,28 +4,26 @@ const enDeCrypt = require('../helpers/crypto');
 const generarJWT = require('../helpers/generarJWT');
 const mandarCorreo = require('../helpers/mail');
 
-const getRoles = (user) => {
-    let roles = [];
-
-    for (const rolKey in user.dataValues.RolUser) {
-        if (Object.hasOwnProperty.call(user.dataValues.RolUser, rolKey)) {
-            const rol = user.dataValues.RolUser[rolKey];
-            
-            roles.push(rol.dataValues.idRol);
-        }
-    }
-
-    return roles;
-}
-
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
-    queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get habilities
+    
+    queriesUsers.getUserLogin(req.body.email).then(user => { // get habilities
 
-        const resp = {
-            success: true,
-            token: generarJWT(user.id, user.nombre, user.iv),
-            msg: 'logeado con éxito'
+        console.log(user);
+        let resp = null;
+
+        if (req.body.passwd == user.passwd) {
+            resp = {
+                success: true,
+                token: generarJWT(user.id, user.nombre),
+                msg: 'logeado con éxito'
+            }
+        }
+        else {
+            resp = {
+                success: false,
+                msg: 'fallo en la autenticación'
+            }
         }
 
         res.status(200).json(resp);
@@ -36,35 +34,28 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
             msg: 'se ha producido un error',
         }
 
-        res.status(401).json(resp);
+        res.status(200).json(resp);
     });
 }
 
-const register = (req, res = response) => { // Preguntar a Fernando (encriptación?)
-    queriesUsers.insertUser(req.body.nombre, req.body.email, encrypt(req.body.passwd)).then(resp => {
+const register = (req, res = response) => {
+    queriesUsers.insertUser(req.body.nombre, req.body.email, req.body.passwd).then(resp => {
         
-        mandarCorreo(resp.dataValues.id, req.body.email);
-
-        res.status(201).json({success: true, resp: resp});
+        mandarCorreo(resp.id, req.body.email);
+        res.status(201).json({success: true, msg: 'Registrado con éxito'});
     }).catch(err => {
 
-        res.status(200).json({success: false, error: err});
+        res.status(200).json({success: false, msg: 'Se ha producido un error'});
     });
 }
 
 const activarUsuario = (req, res = response) => {
-    
-    queriesUsers.insertVerificacionEmail(req.params.id).then(resp => {
+    queriesUsers.updateVerificacionEmail(req.params.id).then(resp => {
         
-        console.log('1111111111111111111111');
-        console.log(resp);
         res.status(201).json({success: true, resp: resp});
     }).catch(err => {
 
-        console.log('22222222222222222222222');
-        console.log(err); 
-        
-        res.status(200).json({success: false, error: 'se ha producido un error'});
+        res.status(200).json({success: false, error: 'Se ha producido un error'});
     });
 }
 
