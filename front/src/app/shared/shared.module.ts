@@ -19,4 +19,5 @@ import { DirectivasModule } from './directivas/directivas.module';
     FooterComponent
   ]
 })
-export class SharedModule { }
+
+export class SharedModule {}
