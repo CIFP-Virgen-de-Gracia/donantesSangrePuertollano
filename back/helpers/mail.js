@@ -37,4 +37,4 @@ const mandarCorreo = (userId, destinatario) => {
   
 module.exports = mandarCorreo;
 
-mandarCorreo(4, 'marioferestevez@gmail.com');
+// mandarCorreo(4, 'marioferestevez@gmail.com');

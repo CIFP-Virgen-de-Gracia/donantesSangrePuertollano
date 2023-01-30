@@ -1,9 +1,9 @@
 const Rol = require('../../models/Rol');
 const User = require('../../models/User');
 const RolUser = require('../../models/RolUser');
-// const {encrypt, decrypt} = require('../../helpers/crypto');
 const moment = require('moment');
-const sequelize = require('../ConexionSequelize');
+const sequelize = require('../ConexionSequelize'); 
+const {Op} = require('sequelize');
 
 
 class QueriesUsers {
@@ -20,73 +20,83 @@ class QueriesUsers {
     }
 
 
-    getUserLogin = async(email, passwd) => {
+    getUserLogin = async(email) => {
+
         try {
             this.sequelize.conectar();
             const user = await User.findOne({
 
-                attributes: ['id', 'nombre', 'iv'],
+                attributes: ['id', 'nombre', 'passwd'],
                 where : {
                     email: email, 
-                    passwd: passwd,
                     emailVerifiedAt: {
                         [Op.ne]: null
                     }
                 },
+
                 include: 'RolUser'
             });
             
             this.sequelize.desconectar();
-            return user;
+            return user.dataValues;
         }
         catch (err) {
-            throw Error(err);
+            throw err;
         }
     }
 
 
-    insertUser = async(nombre, email, passwd) => {  // passwd es un objeto con la contraseña encritpada | {encryptedData: '', iv: ''}
-        try {
+    insertUser = async(nombre, email, passwd) => { 
             this.sequelize.conectar();
 
+        try {
             const resp = await User.create({
                 nombre: nombre,
                 email: email,
-                passwd: passwd.encryptedPasswd,
-                iv: passwd.iv
+                passwd: passwd
             });
 
-            console.log('asdfasdfasdf =====>  ' + resp);
             console.log(resp);
             this.sequelize.desconectar();
-            return resp;
+            return resp.dataValues;
         }
         catch (err) {
-            throw Error(err);
+            throw err;
         }
     }
 
-    insertVerificacionEmail = async(id) => {
+    updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
-            
-            console.log('aquí');
-            
             let user = await User.findByPk(id);
 
             user.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
             const resp = user.save();
 
-            console.log('asdfasdfasdf');
-            console.log(resp);
-
             this.sequelize.desconectar();
 
             return resp;
         }
         catch (err) {
-            throw Error(err);
+            throw err;
+        }
+    }
+
+    getAbilities = async(roles) =>  {
+        try {
+            this.sequelize.conectar();
+            const roles = await Rol.findAll({
+                attributes: ['abilities'],
+                where: {
+                    id: {
+                        [Op.in]: roles
+                    }
+                }
+            });
+        }
+        catch (err) {
+            throw err;
         }
     }
 }
