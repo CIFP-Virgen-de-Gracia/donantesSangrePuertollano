@@ -1,6 +1,6 @@
 const {response,request} = require('express');
 const queriesUsers = require("../database/queries/queriesUsers");
-const enDeCrypt = require('../helpers/crypto');
+// const enDeCrypt = require('../helpers/crypto');
 const generarJWT = require('../helpers/generarJWT');
 const mandarCorreo = require('../helpers/mail');
 
@@ -9,7 +9,6 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
     
     queriesUsers.getUserLogin(req.body.email).then(user => { // get habilities
 
-        console.log(user);
         let resp = null;
 
         if (req.body.passwd == user.passwd) {

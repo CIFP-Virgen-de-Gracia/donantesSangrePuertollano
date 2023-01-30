@@ -14,7 +14,9 @@ class QueriesUsers {
 
     getUser = async(id) => {
         this.sequelize.conectar();
-        const user = await User.findByPk(id, {include: [{model: Rol}]});
+
+        const user = await User.findByPk(id, {include: 'RolUser'});
+        
         this.sequelize.desconectar();
         return user;
     }
@@ -24,6 +26,7 @@ class QueriesUsers {
 
         try {
             this.sequelize.conectar();
+            
             const user = await User.findOne({
 
                 attributes: ['id', 'nombre', 'passwd'],
@@ -56,7 +59,6 @@ class QueriesUsers {
                 passwd: passwd
             });
 
-            console.log(resp);
             this.sequelize.desconectar();
             return resp.dataValues;
         }
@@ -86,7 +88,8 @@ class QueriesUsers {
     getAbilities = async(roles) =>  {
         try {
             this.sequelize.conectar();
-            const roles = await Rol.findAll({
+
+            const rolesAbilities = await Rol.findAll({
                 attributes: ['abilities'],
                 where: {
                     id: {
@@ -94,6 +97,10 @@ class QueriesUsers {
                     }
                 }
             });
+
+            this.sequelize.desconectar();
+
+            return rolesAbilities;
         }
         catch (err) {
             throw err;

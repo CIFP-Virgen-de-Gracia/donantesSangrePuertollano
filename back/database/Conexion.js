@@ -9,15 +9,8 @@ class Conexion {
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
-            connectionLimit: process.env.DB_MAXCONNECTIONS, //Por defecto son 10.
+            connectionLimit: process.env.DB_MAXCONNECTIONS,
             port: process.env.DB_PORT
-
-            // host: '192.168.100.7',
-            // user: 'user',
-            // password: 'test',
-            // database: 'donantes_puertollano',
-            // connectionLimit: 10,
-            // port: 3306
         };
 
         this.pool = mysql.createPool(this.config);
