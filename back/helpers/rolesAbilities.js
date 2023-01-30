@@ -1,8 +1,9 @@
 const queriesUsers = require('../database/queries/queriesUsers');
 const User = require('../models/User');
 const Rol = require('../models/Rol');
+const sequelize = require('../database/ConexionSequelize');
 
-const getRoles = (user) => {
+const getArrayRoles = (user) => {
     let roles = [];
 
     for (const rolKey in user.dataValues.RolUser) {
@@ -17,15 +18,36 @@ const getRoles = (user) => {
 }
 
 
-const getHabilites = async(id) => {   
-    const user = await queriesUsers.getUser(id);
+const userCan = async(req, id, acciones) => { 
+    let arrayAbilities = [];
 
-    console.log(user);
+    if (req.userAbilites) {
+        arrayAbilities = req.userAbilites;
+    }
+    else {
+        const user = await queriesUsers.getUser(id);
+        const roles = getArrayRoles(user);
+        const abilities = await queriesUsers.getAbilities(roles);
 
-    const roles = getRoles(user);
-    const habilities = await queriesUsers.getAbilities(roles);
+        abilities.forEach(ability => {
+            arrayAbilities = Array.from(new Set([...arrayAbilities, ...ability.dataValues.abilities.split(' ')]));
+        });
 
-    console.log(habilities);
+        req.userAbilites = arrayAbilities;
+    }
+
+    let autorizado = true;
+
+    acciones.forEach(accion => {
+        if (!arrayAbilities.includes(accion)) {
+            autorizado = false;
+            
+            return // es un bucle sencillo. Simplemente vuelvo cuando compruebo que no incluye una de las abilites requeridas.
+        } 
+    });
+
+    return autorizado;
 }
 
-getHabilites(1);
+module.exports = userCan;
+
