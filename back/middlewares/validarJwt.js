@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const {response, request} = require('express');
 
-const validarJWT = (req , res , next) => {
+const validarJwt = (req , res , next) => {
     const token = req.header('x-token');
 
     if (!token){
@@ -10,8 +10,8 @@ const validarJWT = (req , res , next) => {
     }
 
     try {
-        const {id} = jwt.verify(token, process.env.JWT_PRIVATEKEY);
-        req.idToken = uid;
+        const {id, nombre} = jwt.verify(token, process.env.JWT_PRIVATEKEY);
+        req.idToken = id;
         next();
     }
     catch (err) {
@@ -20,5 +20,5 @@ const validarJWT = (req , res , next) => {
 }
 
 module.exports = {
-    validarJWT
+    validarJwt
 }
