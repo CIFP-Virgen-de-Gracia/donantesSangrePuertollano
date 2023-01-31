@@ -1,0 +1,11 @@
+<form [formGroup]="emailForm" (ngSubmit)="suscribirse()" class="row">
+  <input type="email"
+    class="col-7"
+    formControlName="email"
+    placeholder="Introduce tu email"
+    [class.error-input]="!valido">
+  <button type="submit" class="col-5 btn">Suscribirse</button><br>
+  <span class="mensaje-error mt-2" *ngIf="!valido">
+    Email no válido
+  </span>
+</form>
