@@ -14,7 +14,10 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
         if (req.body.passwd == user.passwd) {
             resp = {
                 success: true,
-                token: generarJWT(user.id, user.nombre),
+                data: {
+                    id: user.id,
+                    token: generarJWT(user.id, user.nombre),
+                },
                 msg: 'logeado con éxito'
             }
         }
