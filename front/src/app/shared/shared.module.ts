@@ -25,4 +25,5 @@ import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/news
     NewsletterVentanaComponent
   ]
 })
-export class SharedModule { }
+
+export class SharedModule {}
