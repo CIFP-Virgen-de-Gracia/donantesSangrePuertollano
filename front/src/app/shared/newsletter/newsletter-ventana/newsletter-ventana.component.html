@@ -1,0 +1,26 @@
+<div #newsletter class="newsletter container" [@entradaTexto] = "estaSuscrito">
+
+  <div class="row">
+
+    <div class="col-2 avion-grande align-items-center d-flex">
+      <i class="fa-solid {{ icono }} text-center"></i>
+    </div>
+
+    <div class="col-12 col-sm-10 text-start mensaje">
+      <div class="container">
+        <div class="row pb-1">
+          <i class="col-2 fa-solid fa-paper-plane avion-peq"></i>
+          <p class="titulo col-8 col-sm-10"> {{ titulo }} </p>
+          <i class="text-end fa-solid fa-xmark col-2" (click)="cerrar()"></i>
+        </div>
+
+        <div class="row pb-1">
+          <p class="col-12 mb-2"> {{ texto }} </p>
+        </div>
+
+        <app-email-formulario (onSubmit)="cambiarMensaje($event)" *ngIf="estaSuscrito"></app-email-formulario>
+
+      </div>
+    </div>
+  </div>
+</div>

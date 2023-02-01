@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { UsuariosModule } from './usuarios/usuarios.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { PaginasModule } from './paginas/paginas.module';
-// import { SharedModule_1 as SharedModule } from "./shared/shared.module";
+import { UsuariosModule } from './usuarios/usuarios.module';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -21,7 +21,8 @@ import { PaginasModule } from './paginas/paginas.module';
         UsuariosModule,
         FormsModule,
         PaginasModule,
-        SharedModule
+        SharedModule,
+        BrowserAnimationsModule
     ]
 })
 export class AppModule {}
