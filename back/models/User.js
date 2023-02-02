@@ -9,7 +9,7 @@ const User = sequelize.db.define("user", {
     id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: false,
         allowNull: false,
         
     },
@@ -18,18 +18,9 @@ const User = sequelize.db.define("user", {
         unique: true,
         allowNull: false
     },
-    email: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false
-    },
     passwd: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    emailVerifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
     }
 },
 {
