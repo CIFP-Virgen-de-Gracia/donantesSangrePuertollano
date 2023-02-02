@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { UserLogin, Auth } from '../interfaces/auth.interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserLogin, Auth, UserRegsitro, registroResponse } from '../interfaces/auth.interface';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { tap } from 'rxjs';
 })
 export class AuthService {
 
-  private authUrl: string = 'http://localhost/api/'; // cambiar en el server // hacer archivo env
+  private authUrl: string = 'http://localhost:8090/api/'; // cambiar en el server // hacer archivo env
   private _auth: Auth | undefined;
 
   constructor(private httpUsers: HttpClient) {}
@@ -17,5 +17,10 @@ export class AuthService {
 
     return this.httpUsers.post<Auth>(this.authUrl + '/login', user)
       .pipe(tap(auth => this._auth = auth));
+  }
+
+  registro (user: UserRegsitro) {
+
+    return this.httpUsers.post<registroResponse>(this.authUrl + '/register', user);
   }
 }
