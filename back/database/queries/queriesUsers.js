@@ -4,12 +4,27 @@ const RolUser = require('../../models/RolUser');
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const {Op} = require('sequelize');
+const Email = require('../../models/Email');
 
 
 class QueriesUsers {
     
     constructor() {
         this.sequelize = sequelize; 
+    }
+
+    getIdEmail = async(email) => {
+        const id = await Email.findOne({
+            attributes: ['id'],
+            where: {
+                email: email,
+                emailVerifiedAt: {
+                    [Op.ne]: null
+                }
+            }
+        });
+
+        return id
     }
 
     getUser = async(id) => {
@@ -22,40 +37,36 @@ class QueriesUsers {
     }
 
 
-    getUserLogin = async(email) => {
+    getUserLogin = async(email, passwd) => {
 
-        try {
-            this.sequelize.conectar();
-            
-            const user = await User.findOne({
+        console.log(email + ' <= email | passwd => ' + passwd);
+        this.sequelize.conectar();
+        
+        const id = await this.getIdEmail(email);
 
-                attributes: ['id', 'nombre', 'passwd'],
-                where : {
-                    email: email, 
-                    emailVerifiedAt: {
-                        [Op.ne]: null
-                    }
-                },
+        const user = await User.findOne({
+            attributes: ['id', 'nombre'],
+            where : {
+                id: id.dataValues.id,
+                passwd: passwd
+            },
 
-                include: 'RolUser'
-            });
-            
-            this.sequelize.desconectar();
-            return user.dataValues;
-        }
-        catch (err) {
-            throw err;
-        }
+            include: 'RolUser'
+        });
+
+        console.log('user => ' + user);
+        this.sequelize.desconectar();
+        return user.dataValues;
     }
 
 
-    insertUser = async(nombre, email, passwd) => { 
+    insertUser = async(id, nombre, passwd) => { 
             this.sequelize.conectar();
 
         try {
             const resp = await User.create({
+                id: id,
                 nombre: nombre,
-                email: email,
                 passwd: passwd
             });
 
@@ -67,14 +78,39 @@ class QueriesUsers {
         }
     }
 
+    insertEmail = async(email) => {
+        this.sequelize.conectar();
+
+        let resp = null;
+        resp = await Email.findOne({
+            attributes: ['id', 'emailVerifiedAt'],
+            where: {
+                email: email,
+            }
+        });
+
+        if (resp == null) {
+            resp = await Email.create({
+                email: email
+            });
+        }
+        else if (resp.dataValues.emailVerifiedAt != null){
+            throw Error('usuario ya registrado');
+        }
+
+        this.sequelize.desconectar();
+        return resp.dataValues.id;
+    }
+
+
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
-            let user = await User.findByPk(id);
+            let email = await Email.findByPk(id);
 
-            user.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
+            email.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
-            const resp = user.save();
+            const resp = email.save();
 
             this.sequelize.desconectar();
 
@@ -84,6 +120,7 @@ class QueriesUsers {
             throw err;
         }
     }
+
 
     getAbilities = async(roles) =>  {
         try {
