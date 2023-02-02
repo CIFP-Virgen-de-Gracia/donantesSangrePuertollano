@@ -1,0 +1,26 @@
+<!-- <div *ngIf="this.registradoExito" class="alert alert-success alert-dismissible fade show" role="alert">
+    El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
+    Pincha en el enlace para poder acceder con tu cuenta. <span (click)="irAlLogin()">Ir al login</span>.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div> -->
+
+<div class="container-fluid d-flex justify-content-center align-content-center">
+    <div class="card border-0 rounded-0">
+        <div class="card-header d-flex justify-content-center align-items-center py-1 border-bottom-0">
+            <h1 *ngIf="this.accion == 'login'">Login</h1>
+            <h1 *ngIf="this.accion == 'registro'">Registro</h1>
+        </div>
+        <div class="card-body p-5">
+
+            <app-login *ngIf="this.accion == 'login'"></app-login>
+            <app-registro *ngIf="this.accion == 'registro'"></app-registro>
+
+            <div class="card-body w-100 p-0">
+                <div class="botonRegistro">
+                    <button type="button" class="btn w-100 border border-black mt-4">sign up with google</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
