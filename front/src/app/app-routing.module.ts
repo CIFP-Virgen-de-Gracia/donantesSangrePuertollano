@@ -8,6 +8,10 @@ const routes: Routes = [
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+  {
     path: '**',
     redirectTo: ''
   }/* ,

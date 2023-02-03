@@ -6,8 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { PaginasModule } from './paginas/paginas.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthModule } from './auth/auth.module';
+import { AuthRoutingModule } from './auth/auth-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -18,11 +19,13 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     imports: [
         BrowserModule,
         AppRoutingModule,
-        UsuariosModule,
         FormsModule,
         PaginasModule,
         SharedModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AuthModule,
+        AuthRoutingModule
     ]
 })
 export class AppModule {}
