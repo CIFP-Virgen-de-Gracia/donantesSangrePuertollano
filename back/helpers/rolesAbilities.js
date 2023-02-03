@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Rol = require('../models/Rol');
 const sequelize = require('../database/ConexionSequelize');
 
+//Todo Mario
 const getArrayRoles = (user) => {
     let roles = [];
 

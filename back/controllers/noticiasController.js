@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const queriesFile = require("../database/queries/queriesFile");
 
+//Todo Isa
 const getListado = async (req, res = response) => {
     queriesNoticias.getListado(req.params.seccion).then((noticia) => {
         let not = [];

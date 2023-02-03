@@ -2,6 +2,8 @@ const {Router} = require('express');
 const router = Router();
 const controlador=require('../controllers/noticiasController');
 
+
+//Todo Isa
 router.post('/get',controlador.getNoticia);
 router.get('/:seccion',controlador.getListado);
 router.post('/registrar',controlador.registrarNoticia);

@@ -2,7 +2,7 @@ const { response, request } = require('express');
 const queriesUsers = require("../database/queries/queriesUsers");
 const correos = require('../helpers/mail');
 
-
+//Todo Alicia
 const suscripcionNewsletter = async (req, res = response) => {
 
     try {

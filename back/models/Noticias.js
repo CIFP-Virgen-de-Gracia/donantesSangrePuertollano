@@ -1,7 +1,7 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require('../database/ConexionSequelize');
 require('dotenv').config();
-
+//Isa
 const Imagen = require('../models/Imagen');
 
 const Noticia = sequelize.db.define("noticias", {

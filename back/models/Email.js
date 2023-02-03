@@ -1,7 +1,7 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require('../database/ConexionSequelize');
 require('dotenv').config();
-
+//Alicia
 sequelize.conectar();
 
 const Email = sequelize.db.define("email", {

@@ -1,4 +1,6 @@
 const mysql = require('mysql2');
+
+//Todo Alejandro
 class Conexion_Apto_Sangre {
     constructor(options){
         this.connection = mysql.createConnection({

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-
+//Mario
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-
+//Mario
 const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
     const cuerpoHtml = `Pincha en el <a href="http://${process.env.HOST}:${process.env.PORT}/api/${ruta}/${userId}/">link</a> para confirmar tu suscripción a nuestra newsletter`;

@@ -6,7 +6,7 @@ const email = require('../helpers/mail');
 const titleCase = require('title-case');
 require('dotenv').config();
 
-
+//Todo Mario menos activarNewsletter
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
     queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get habilities
@@ -63,7 +63,7 @@ const activarCorreo = (req, res = response) => {
         });
 }
 
-
+// Alicia
 const activarNewsletter = (req, res = response) => {
     const html = `<div style="font-family: Arial, Helvetica, sans-serif;">
                     <h2 style="border-bottom: 0.3rem solid rgb(174, 17, 40);padding-bottom:.5rem;width:fit-content;">
