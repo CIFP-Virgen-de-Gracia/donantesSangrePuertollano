@@ -1,8 +1,6 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config()
-
-const User = require('../models/User');
+require('dotenv').config();
 
 sequelize.conectar();
 
@@ -30,3 +28,5 @@ const Email = sequelize.db.define("email", {
 
 sequelize.sync();
 sequelize.desconectar();
+
+module.exports = Email;

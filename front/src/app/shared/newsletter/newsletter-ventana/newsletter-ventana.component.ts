@@ -66,9 +66,9 @@ export class NewsletterVentanaComponent {
     this.suscrito = true;
 
     this.titulo = '¡Gracias por apuntarte!';
-    this.texto = 'Recibirás un correo cada vez que publiquemos una noticia.';
+    this.texto = 'Hemos enviado un enlace de verificación a tu correo ¡No olvides visitarlo para empezar a recibir notificaciones!';
     this.icono = 'fa-envelope-circle-check';
 
-    setTimeout(() => this.cerrar(), 4000);
+    setTimeout(() => this.cerrar(), 5000);
   }
 }

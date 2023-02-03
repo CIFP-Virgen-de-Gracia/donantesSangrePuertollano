@@ -46,10 +46,10 @@ body {
 
     a, i, .mensaje-error {
       color: var(--bs-white);
+    }
 
-      a:hover, i:hover {
-        color: var(--color-granate);
-      }
+    a:hover, i:hover {
+      color: var(--color-granate);
     }
   }
 
