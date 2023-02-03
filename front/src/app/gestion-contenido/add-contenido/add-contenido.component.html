@@ -1,0 +1,67 @@
+<button type="button" class="btn botonNoticia ms-5 mb-5" data-bs-toggle="modal" data-bs-target="#modalContenido">Añadir
+  Contenido</button>
+
+<div class="modal" id="modalContenido" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Añadiendo Contenido</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="agregarNoticia();">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="titulo">Título del contenido:</label>
+                <input type="text" [(ngModel)]="noticia.titulo" id="titulo" name="titulo" class="form-control mb-3"
+                  placeholder="Escribe un titulo" required />
+                <label for="titulo">Subtítulo del contenido:</label>
+                <input type="text" [(ngModel)]="noticia.subtitulo" id="subtitulo" placeholder="Escribe un subtitulo"
+                  name="subtitulo" class="form-control mb-3" />
+                <label for="titulo">Contenido:</label>
+                <textarea class="form-control mb-3" [(ngModel)]="noticia.contenido" rows="10"
+                  placeholder="Escribe tu contenido..." id="contenido" name="contenido" required></textarea>
+                <label for="imagen">Seleccionar Imagen:</label>
+                <input (change)="capturarFile($event)" accept="image/*" class="form-control" type="file" #imagen
+                  value="select" name="imagen" />
+
+                <!--<div class="dropzone w-100 mt-3">
+                <div class="text-wrapped p-1 w-100">
+                  <div class="centered">
+                    Arrastra y suelta tu imagen aquí o
+                    <a class="seleccion" (click)="imagen.click()">búscala pinchando aquí</a>
+                  </div>
+                </div>
+              </div>-->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="alert!=='no'" class="container mt-3 mb-2">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!!</strong> Los campos titulo y contenido son obligatorios.
+              <button (click)="limpiarAlert()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          <div *ngIf="aviso===1" class="container mt-3 mb-2">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              La noticia se ha añadido correctamente.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          <div *ngIf="aviso===2" class="container mt-3 mb-2">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              La noticia no se ha podido añadir.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Aceptar</button>
+            <button type="button" (click)="limpiarAlert()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

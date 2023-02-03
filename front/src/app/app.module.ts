@@ -8,6 +8,9 @@ import { SharedModule } from './shared/shared.module';
 import { PaginasModule } from './paginas/paginas.module';
 // import { SharedModule_1 as SharedModule } from "./shared/shared.module";
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
+import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
     declarations: [
@@ -21,7 +24,10 @@ import { PaginasModule } from './paginas/paginas.module';
         UsuariosModule,
         FormsModule,
         PaginasModule,
-        SharedModule
+        SharedModule,
+        GestionContenidoModule,
+        NoticiasRoutingModule,
+        HttpClientModule,
     ]
 })
 export class AppModule {}
