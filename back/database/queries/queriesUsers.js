@@ -5,7 +5,6 @@ const RolUser = require('../../models/RolUser');
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const {Op} = require('sequelize');
-const Email = require('../../models/Email');
 
 
 class QueriesUsers {
@@ -13,6 +12,7 @@ class QueriesUsers {
     constructor() {
         this.sequelize = sequelize; 
     }
+
 
     getIdEmail = async(email) => {
         const id = await Email.findOne({
@@ -27,6 +27,19 @@ class QueriesUsers {
 
         return id
     }
+
+
+    getEmail = async(email) => {
+        
+        const resp = await Email.findOne({
+            where: {
+                email: email
+            }
+        });
+
+        return resp;
+    }
+
 
     getUser = async(id) => {
         this.sequelize.conectar();
@@ -61,8 +74,31 @@ class QueriesUsers {
     }
 
 
-    insertUser = async(id, nombre, passwd) => { 
+    getAbilities = async(roles) =>  {
+        try {
             this.sequelize.conectar();
+
+            const rolesAbilities = await Rol.findAll({
+                attributes: ['abilities'],
+                where: {
+                    id: {
+                        [Op.in]: roles
+                    }
+                }
+            });
+
+            this.sequelize.desconectar();
+
+            return rolesAbilities;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+    
+
+    insertUser = async(id, nombre, passwd) => { 
+        this.sequelize.conectar();
 
         try {
             const resp = await User.create({
@@ -79,66 +115,6 @@ class QueriesUsers {
         }
     }
 
-    insertEmail = async(email) => {
-        this.sequelize.conectar();
-
-        let resp = null;
-        resp = await Email.findOne({
-            attributes: ['id', 'emailVerifiedAt'],
-            where: {
-                email: email,
-            }
-        });
-
-        if (resp == null) {
-            resp = await Email.create({
-                email: email
-            });
-        }
-        else if (resp.dataValues.emailVerifiedAt != null){
-            throw Error('usuario ya registrado');
-        }
-
-        this.sequelize.desconectar();
-        return resp.dataValues.id;
-    }
-
-
-
-    insertEmail = async(email) => { 
-        this.sequelize.conectar();
-        
-        try {
-            
-            const resp = await Email.create({
-                email: email
-            });
-            
-            this.sequelize.desconectar();
-            return resp.dataValues;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
-
-
-    insertEmail = async(email) => { 
-        this.sequelize.conectar();
-        
-        try {
-            
-            const resp = await Email.create({
-                email: email
-            });
-            
-            this.sequelize.desconectar();
-            return resp.dataValues;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
 
     insertEmail = async(email) => {
         this.sequelize.conectar();
@@ -162,6 +138,26 @@ class QueriesUsers {
 
         this.sequelize.desconectar();
         return resp.dataValues.id;
+    }
+
+
+
+    insertEmailNewsletter = async(email) => { 
+        this.sequelize.conectar();
+        
+        try {
+            
+            const resp = await Email.create({
+                email: email
+            });
+            
+            this.sequelize.desconectar();
+            
+            return resp;
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
 
@@ -195,52 +191,6 @@ class QueriesUsers {
             this.sequelize.desconectar();
 
             return resp;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
-
-    getAbilities = async(roles) =>  {
-        try {
-            this.sequelize.conectar();
-
-            const rolesAbilities = await Rol.findAll({
-                attributes: ['abilities'],
-                where: {
-                    id: {
-                        [Op.in]: roles
-                    }
-                }
-            });
-
-            this.sequelize.desconectar();
-
-            return rolesAbilities;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
-
-
-    getIdByEmail = async(email) => {
-        try {
-            this.sequelize.conectar();
-
-            const resp = await Email.findOne({
-                attributes: ['id'],
-                where: {
-                    email: {
-                        [Op.eq]: email
-                    }
-                }
-            });
-
-            this.sequelize.desconectar();
-
-            if (resp) return resp.dataValues
-            else return resp;
         }
         catch (err) {
             throw err;

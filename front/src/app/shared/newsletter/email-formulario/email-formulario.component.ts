@@ -41,8 +41,8 @@ export class EmailFormularioComponent {
           this.mensaje = resp.msg;
 
           if (resp.success) {
-            this.onSubmit.emit(true);
             this.icono = 'fa-circle-check';
+            this.onSubmit.emit(true);
             return;
           }
         });
