@@ -48,28 +48,8 @@ footer {
         }
       }
 
-      .newsletter-redes .newsletter {
-        height: 35px;
-
-        input {
-          font-size: var(--letra-pequena);
-
-          &[type=email] {
-            padding: 0 .5rem;
-            border-radius: 2px 0px 0 2px;
-            width: 100%;
-          }
-
-          &[type=button] {
-            background-color: var(--color-granate);
-            color: var(--bs-white);
-            border-radius: 0 2px 2px 0;
-
-            &:hover {
-              background-color: var(--color-granate-oscuro);
-            }
-          }
-        }
+      .newsletter input[type=email] {
+        width: 100%;
       }
     }
 
