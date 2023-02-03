@@ -9,8 +9,12 @@ class Server {
     constructor() {
         this.app = express();
         this.path = '/api/';
+
+        this.apto_sangre = "/test-apto";
+
         this.pathNoticias='/api/Noticias/'
         
+
         //Middlewares
         this.middlewares();
 
@@ -27,8 +31,13 @@ class Server {
     }
 
     routes(){
+
+        // this.app.use(this.path , require('../routes/routes'));
+        this.app.use(this.apto_sangre, require('../routes/apto_sangre'));
+
         this.app.use(this.path , require('../routes/routes'));
         this.app.use(this.pathNoticias , require('../routes/NoticiasRoutes'));
+
     }
 
     listen() {
