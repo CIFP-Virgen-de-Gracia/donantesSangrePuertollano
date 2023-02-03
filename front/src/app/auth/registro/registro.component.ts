@@ -12,7 +12,7 @@ import { TitleCasePipe } from '@angular/common';
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent {
-  
+
   contraErronea: boolean = false;
 
   registradoExito: number = -1; // 0 => regsitro correcto | 1 => registro fallido
@@ -41,14 +41,14 @@ export class RegistroComponent {
   registro() {
 
     const nombre = this.registroForm.get('nombre')?.value + ' '
-      + this.registroForm.get('ap1')?.value + ' ' 
+      + this.registroForm.get('ap1')?.value + ' '
       + this.registroForm.get('ap2')?.value;
 
     this.contraErronea = false;
     console.log(this.registroForm.get('passwd')?.value);
     console.log(this.registroForm.get('passwdRep')?.value);
     if (this.registroForm.get('passwd')?.value == this.registroForm.get('passwdRep')?.value) {
-      
+
       const passwdHash = Md5.hashStr(this.registroForm.get('passwd')?.value);
 
       this.authHttsService.registro({
