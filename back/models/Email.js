@@ -30,7 +30,3 @@ const Email = sequelize.db.define("email", {
 
 sequelize.sync();
 sequelize.desconectar();
-
-/* Email.hasOne(User, {as: 'idUser', foreignKey: 'id'});
- */
-module.exports = Email;
