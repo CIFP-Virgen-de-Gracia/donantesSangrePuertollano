@@ -20,10 +20,7 @@ class Server {
     
     middlewares() {
         global.__basedir = __dirname;
-        var corsOptions = {
-            origin: "http://localhost:4200"
-          };
-        this.app.use(cors(corsOptions));
+        this.app.use(cors({origin: '*'}));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(fileupload());
