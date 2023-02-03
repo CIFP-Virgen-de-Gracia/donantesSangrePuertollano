@@ -18,4 +18,6 @@ router.get('/activarNewsletter/:id', auth.activarNewsletter);
 // user routes
 router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
 
+
+
 module.exports = router;
