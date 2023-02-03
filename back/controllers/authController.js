@@ -3,6 +3,7 @@ const queriesUsers = require("../database/queries/queriesUsers");
 // const enDeCrypt = require('../helpers/crypto');
 const generarJWT = require('../helpers/generarJWT');
 const mandarCorreoActivacion = require('../helpers/mail');
+require('dotenv').config();
 
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
     
@@ -62,10 +63,9 @@ const activarCorreo = (req, res = response) => {
 const activarNewsletter = (req, res = response) => {
     queriesUsers.updateVerificacionEmailNewsletter(req.params.id)
         .then(resp => {
-
-            res.status(201).json({ success: true, resp: resp });
+            res.status(201).redirect(process.env.INDEX);/* 
+            res.status(201).json({ success: true, resp: resp }); */
         }).catch(err => {
-
             res.status(200).json({ success: false, error: 'Se ha producido un error' });
         });
 }
