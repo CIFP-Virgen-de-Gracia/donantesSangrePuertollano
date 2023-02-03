@@ -9,6 +9,8 @@ import { PaginasModule } from './paginas/paginas.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
+import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 
 @NgModule({
     declarations: [
@@ -22,8 +24,10 @@ import { HttpClientModule } from '@angular/common/http';
         FormsModule,
         PaginasModule,
         SharedModule,
+        GestionContenidoModule,
+        NoticiasRoutingModule,
+        HttpClientModule,,
         BrowserAnimationsModule,
-        HttpClientModule,
         AuthModule,
         AuthRoutingModule
     ]
