@@ -2,7 +2,7 @@
 
 ### Pasos a seguir para instalar el proyecto
 ## Back
-Crear una base de datos llamada "donantes"
+Crear una base de datos llamada "donantes"<br />
 En visual studio code ejecutar los comandos:
   1. cd back
   2. npm install
