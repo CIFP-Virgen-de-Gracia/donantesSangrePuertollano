@@ -2,37 +2,35 @@ const {DataTypes} = require("sequelize");
 const sequelize = require('../database/ConexionSequelize');
 require('dotenv').config()
 
-const RolUser = require('../models/RolUser');
+const User = require('../models/User');
 
 sequelize.conectar();
 
-const Rol = sequelize.db.define("rol", {
+const Email = sequelize.db.define("email", {
     id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
-        
+        allowNull: false, 
     },
-    nombre: {
+    email: {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false
     },
-    habilities: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-        defaultValue: '*'
+    emailVerifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    newsletterVerifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
-},
-{
-    tableName: 'roles'
 });
 
 sequelize.sync();
 sequelize.desconectar();
 
-Rol.hasMany(RolUser, {as: 'RolUser', foreignKey: 'idRol'});
-
-module.exports = Rol;
+/* Email.hasOne(User, {as: 'idUser', foreignKey: 'id'});
+ */
+module.exports = Email;

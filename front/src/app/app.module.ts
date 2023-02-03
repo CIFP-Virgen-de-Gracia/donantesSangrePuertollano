@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,19 +11,20 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-    ],
-    providers: [],
-    bootstrap: [AppComponent],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        UsuariosModule,
-        FormsModule,
-        PaginasModule,
-        SharedModule,
-        BrowserAnimationsModule
-    ]
+  declarations: [
+    AppComponent,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    UsuariosModule,
+    FormsModule,
+    PaginasModule,
+    SharedModule,
+    HttpClientModule,
+    BrowserAnimationsModule
+  ]
 })
-export class AppModule {}
+export class AppModule { }

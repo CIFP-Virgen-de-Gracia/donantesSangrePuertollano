@@ -1,11 +1,10 @@
-const {response,request} = require('express');
+const { response, request } = require('express');
 const queriesUsers = require("../database/queries/queriesUsers");
 // const enDeCrypt = require('../helpers/crypto');
 const generarJWT = require('../helpers/generarJWT');
-const mandarCorreo = require('../helpers/mail');
+const mandarCorreoActivacion = require('../helpers/mail');
 
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
-
     
     queriesUsers.getUserLogin(req.body.email).then(user => { // get habilities
 
@@ -39,28 +38,42 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 
 const register = (req, res = response) => {
     queriesUsers.insertUser(req.body.nombre, req.body.email, req.body.passwd).then(resp => {
-        
-        mandarCorreo(resp.id, req.body.email);
-        res.status(201).json({success: true, msg: 'Registrado con éxito'});
+
+        mandarCorreoActivacion(resp.id, req.body.email);
+        res.status(201).json({ success: true, msg: 'Registrado con éxito' });
     }).catch(err => {
 
-        res.status(200).json({success: false, msg: 'Se ha producido un error'});
+        res.status(200).json({ success: false, msg: 'Se ha producido un error' });
     });
 }
 
-const activarUsuario = (req, res = response) => {
-    queriesUsers.updateVerificacionEmail(req.params.id).then(resp => {
-        
-        res.status(201).json({success: true, resp: resp});
-    }).catch(err => {
+const activarCorreo = (req, res = response) => {
+    queriesUsers.updateVerificacionEmail(req.params.id)
+        .then(resp => {
 
-        res.status(200).json({success: false, error: 'Se ha producido un error'});
-    });
+            res.status(201).json({ success: true, resp: resp });
+        }).catch(err => {
+
+            res.status(200).json({ success: false, error: 'Se ha producido un error' });
+        });
+}
+
+
+const activarNewsletter = (req, res = response) => {
+    queriesUsers.updateVerificacionEmailNewsletter(req.params.id)
+        .then(resp => {
+
+            res.status(201).json({ success: true, resp: resp });
+        }).catch(err => {
+
+            res.status(200).json({ success: false, error: 'Se ha producido un error' });
+        });
 }
 
 module.exports = {
     login,
     register,
-    activarUsuario
+    activarCorreo,
+    activarNewsletter
 }
 

@@ -26,10 +26,6 @@ const User = sequelize.db.define("user", {
     passwd: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    emailVerifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
     }
 },
 {
