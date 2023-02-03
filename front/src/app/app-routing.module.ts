@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './paginas/inicio/inicio.component';
-
+import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
+import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+  },
+  {
+    path: 'test-apto',
+    component: AptoSangreComponent
+  },
+  {
+    path: 'resultado',
+    component: ResultadoComponent
+
   },
   {
     path: 'auth',
@@ -18,7 +28,14 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: ''
-  },
+
+  }
+
+  /* ,
+  {
+    path: '404',
+    component: ErrorPageComponent
+  }*/
 
 ];
 
