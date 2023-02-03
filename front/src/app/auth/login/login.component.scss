@@ -1,0 +1,130 @@
+div.errorLogin {
+    color: var(--color-primario);
+}
+
+input {
+    padding: .4rem 1rem;
+    border-radius: 2px;
+
+    // &:hover {
+    //   background-color: var(--color-secundario);
+    //   color: var(--bs-white);
+    // }
+}
+
+div {
+    a.olvidoPasswd {
+        color: var(--color-constraste-oscuro);
+        text-decoration: none;
+        font-size: (--letra-pequena);
+
+        &:hover {
+            color: var(--color-secundario);
+        }
+    }
+}
+
+button {
+    &.btnAceptar {
+        background-color: var(--color-secundario);
+        color: var(--bs-white);
+
+        &:hover {
+            border: solid 1px var(--color-primario); 
+            background-color: var(--color-primario);
+        }
+    }
+    
+    &.border-red {    
+        border: solid 1px var(--color-secundario);  
+        color: var(--color-secundario);
+
+        &:hover {
+            background-color: var(--color-contraste);
+            
+        }
+    }
+
+    border-radius: 2px;
+}
+// div.container-fluid {
+//     background-color: var(--color-contraste);
+//     height: 100vh;
+//     div.card {
+//         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+//         width: 40vw;
+
+//         @media (max-width: 768px) {
+//             & {
+//                 width: 100vw;
+//             }
+//         }
+
+
+//         div.card-header {
+//             background-color: var(--color-primario);
+//             color: var(--bs-white);
+//             height: 6.5rem;
+
+//             margin-top: 4.5rem;
+//             margin-bottom: 1rem;
+//             border-radius: 2px 2px 0px 0px;
+
+//         }
+
+//         div.card-body {
+
+//             div.errorLogin {
+//                 color: var(--color-primario);
+//             }
+
+//             input {
+//                 padding: .4rem 1rem;
+//                 border-radius: 2px;
+            
+//                 // &:hover {
+//                 //   background-color: var(--color-secundario);
+//                 //   color: var(--bs-white);
+//                 // }
+//             }
+
+//             div {
+//                 a.olvidoPasswd {
+//                     color: var(--color-constraste-oscuro);
+//                     text-decoration: none;
+//                     font-size: (--letra-pequena);
+
+//                     &:hover {
+//                         color: var(--color-secundario);
+//                     }
+//                 }
+//             }
+        
+//             button {
+//                 &.btnAceptar {
+//                     background-color: var(--color-secundario);
+//                     color: var(--bs-white);
+
+//                     &:hover {
+//                         border: solid 1px var(--color-primario); 
+//                         background-color: var(--color-primario);
+//                     }
+//                 }
+                
+//                 &.border-red {    
+//                     border: solid 1px var(--color-secundario);  
+//                     color: var(--color-secundario);
+
+//                     &:hover {
+//                         background-color: var(--color-contraste);
+                        
+//                     }
+//                 }
+        
+//                 border-radius: 2px;
+//             }
+//         }
+    
+//     }
+// }    
+

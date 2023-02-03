@@ -15,6 +15,11 @@ const routes: Routes = [
   {
     path: 'resultado',
     component: ResultadoComponent
+
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: '**',
