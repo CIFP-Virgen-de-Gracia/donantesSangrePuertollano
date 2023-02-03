@@ -1,5 +1,6 @@
 const Rol = require('../../models/Rol');
 const User = require('../../models/User');
+const Email = require('../../models/Email');
 const RolUser = require('../../models/RolUser');
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
@@ -50,7 +51,7 @@ class QueriesUsers {
 
 
     insertUser = async(nombre, email, passwd) => { 
-            this.sequelize.conectar();
+        this.sequelize.conectar();
 
         try {
             const resp = await User.create({
@@ -67,14 +68,51 @@ class QueriesUsers {
         }
     }
 
+
+    insertEmail = async(email) => { 
+        this.sequelize.conectar();
+        
+        try {
+            
+            const resp = await Email.create({
+                email: email
+            });
+            
+            this.sequelize.desconectar();
+            return resp.dataValues;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
             let user = await User.findByPk(id);
 
+            console.log(id)
             user.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
             const resp = user.save();
+
+            this.sequelize.desconectar();
+
+            return resp;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+    updateVerificacionEmailNewsletter = async(id) => {
+        try {
+            this.sequelize.conectar();
+            let email = await Email.findByPk(id);
+
+            email.update({newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
+
+            const resp = email.save();
 
             this.sequelize.desconectar();
 
@@ -101,6 +139,30 @@ class QueriesUsers {
             this.sequelize.desconectar();
 
             return rolesAbilities;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+
+    getIdByEmail = async(email) => {
+        try {
+            this.sequelize.conectar();
+
+            const resp = await Email.findOne({
+                attributes: ['id'],
+                where: {
+                    email: {
+                        [Op.eq]: email
+                    }
+                }
+            });
+
+            this.sequelize.desconectar();
+
+            if (resp) return resp.dataValues
+            else return resp;
         }
         catch (err) {
             throw err;
