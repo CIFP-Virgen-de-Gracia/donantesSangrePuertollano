@@ -1,9 +1,15 @@
-<!-- <div *ngIf="this.registradoExito" class="alert alert-success alert-dismissible fade show" role="alert">
+<div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show" role="alert">
     El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
-    Pincha en el enlace para poder acceder con tu cuenta. <span (click)="irAlLogin()">Ir al login</span>.
+    Pincha en el enlace para poder acceder con tu cuenta. <a (click)="irAlLogin()"><strong>Ir al login.</strong></a>
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div> -->
+</div>
+
+<div *ngIf="this.registradoExito == 1" class="alert alert-danger alert-dismissible position-fixed fade show" role="alert">
+    Se ha producido un error en el registro.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
 <div class="container-fluid d-flex justify-content-center align-content-center">
     <div class="card border-0 rounded-0">
@@ -14,7 +20,8 @@
         <div class="card-body p-5">
 
             <app-login *ngIf="this.accion == 'login'"></app-login>
-            <app-registro *ngIf="this.accion == 'registro'"></app-registro>
+            <app-registro *ngIf="this.accion == 'registro'"
+                (onFormValido)="showAlert($event)"></app-registro>
 
             <div class="card-body w-100 p-0">
                 <div class="botonRegistro">

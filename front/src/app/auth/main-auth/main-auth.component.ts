@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { RegistroComponent } from '../registro/registro.component';
@@ -11,7 +11,8 @@ import { RegistroComponent } from '../registro/registro.component';
 export class MainAuthComponent implements OnInit{
 
   accion: string = 'login';
-  // registradoExito
+  registradoExito: number = -1;
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -20,7 +21,7 @@ export class MainAuthComponent implements OnInit{
     }
     else {
       this.accion = 'registro';
-      // this.registradoExito = false;
+      this.registradoExito = -1;
     }
   }
 
@@ -28,6 +29,10 @@ export class MainAuthComponent implements OnInit{
   //   return this.registradoExito
   // }
   
+  showAlert(event : number) {
+    this.registradoExito = event;
+  }
+
   irAlLogin() {
     this.router.navigate(['auth/login']);
   }
