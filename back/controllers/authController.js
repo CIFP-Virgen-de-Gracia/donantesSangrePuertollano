@@ -43,7 +43,7 @@ const register = async (req, res = response) => { // poner código
 
     queriesUsers.insertUser(id, titleCase.titleCase(req.body.nombre), req.body.passwd).then(resp => {
 
-        email.mandarCorreoActivacion(resp.id, req.body.email);
+        email.mandarCorreoActivacion(resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'Registrado con éxito' });
     }).catch(err => {
 
