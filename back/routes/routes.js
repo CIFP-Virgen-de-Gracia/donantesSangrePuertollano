@@ -13,10 +13,11 @@ router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/activarCorreo/:id', auth.activarCorreo);
 router.get('/activarNewsletter/:id', auth.activarNewsletter);
-
+router.get('/activarusuario/:id', auth.activarUsuario);
 
 // user routes
 router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
+
 
 
 
