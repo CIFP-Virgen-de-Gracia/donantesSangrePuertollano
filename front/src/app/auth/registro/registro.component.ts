@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Md5 } from 'ts-md5';
 import { NombreCompleto, UserRegsitro } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
@@ -11,68 +12,67 @@ import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms'
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent {
-
-  nuevoUsrReg: UserRegsitro = {
-    email: '',
-    nombre: '',
-    passwd: ''
-  }
-
-  nombreCompleto: NombreCompleto =  {
-    nombre: '',
-    ap1: '',
-    ap2: ''
-  }
   
-  contraRep: string = ''
   contraErronea: boolean = false;
 
-  registroForm!: FormGroup;
+  registradoExito: number = -1; // 0 => regsitro correcto | 1 => registro fallido
+  @Output() onFormValido: EventEmitter<number> = new EventEmitter();
+
+  registroForm: FormGroup = new FormGroup({
+    nombre: new FormControl('', [Validators.required]),
+    ap1: new FormControl('', [Validators.required]),
+    ap2: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required,   Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    passwd: new FormControl('', [Validators.required]),
+    passwdRep: new FormControl('', [Validators.required])
+  });
+
 
   constructor(
     private authHttsService: AuthService,
     private router: Router,
-    ) {}
+  ) {}
 
-    ngOnInit() {
-      this.contraErronea = false;
-
-      this.registroForm = new FormGroup({
-        'nombre': new FormControl('', [Validators.required]),
-        'ap1': new FormControl('', [Validators.required]),
-        'ap2': new FormControl('', [Validators.required]),
-        'email': new FormControl('', [Validators.required, Validators.email]),
-        'passwd': new FormControl('', [Validators.required]),
-        'passwdRep': new FormControl('', [Validators.required])
-      });
-    }
+  ngOnInit() {
+    this.contraErronea = false;
+    this.registradoExito = -1;
+  }
 
   registro() {
 
-    console.log(this.registroForm);
-    console.log(this.registroForm);
+    const nombre = this.registroForm.get('nombre')?.value + ' '
+      + this.registroForm.get('ap1')?.value + ' ' 
+      + this.registroForm.get('ap2')?.value;
 
-    this.nuevoUsrReg.nombre = this.nombreCompleto.nombre + ' '
-      + this.nombreCompleto.ap1 + ' ' 
-      + this.nombreCompleto.ap2;
-
-    if (this.nuevoUsrReg.passwd == this.contraRep) {
+    this.contraErronea = false;
+    console.log(this.registroForm.get('passwd')?.value);
+    console.log(this.registroForm.get('passwdRep')?.value);
+    if (this.registroForm.get('passwd')?.value == this.registroForm.get('passwdRep')?.value) {
       
-      const passwdHash = Md5.hashStr(this.nuevoUsrReg.passwd);
+      const passwdHash = Md5.hashStr(this.registroForm.get('passwd')?.value);
 
       this.authHttsService.registro({
-        email: this.nuevoUsrReg.email,
-        nombre: this.nuevoUsrReg.nombre,
+        email: this.registroForm.get('email')?.value,
+        nombre: nombre,
         passwd: passwdHash
       }).subscribe(resp => {
 
         if (resp.success) {
+          console.log(resp);
+          this.onFormValido.emit(0);
+        }
+        else {
 
+          this.onFormValido.emit(1);
         }
       });
     }
     else {
       this.contraErronea = true;
     }
+  }
+
+  irAlLogin() {
+    this.router.navigate(['auth/login']);
   }
 }
