@@ -4,6 +4,7 @@ const { extname } = require("path");
 const maxSize = 2 * 1024 * 1024;
 console.log(__basedir);
 
+//Todo Isa
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, __basedir + "/../resources/static/assets/uploads/");

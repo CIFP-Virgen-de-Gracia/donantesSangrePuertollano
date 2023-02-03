@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const {response, request} = require('express');
 
+//Mario
 const validarJwt = (req , res , next) => {
     const token = req.header('x-token');
 

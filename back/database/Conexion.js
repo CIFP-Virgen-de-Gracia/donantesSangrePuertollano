@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+//Todo Mario
 class Conexion {
 
     constructor() {

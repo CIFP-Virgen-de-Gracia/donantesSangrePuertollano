@@ -9,6 +9,7 @@ const user = require('../controllers/userController');
 const {midEjemplo} = require('../middlewares/userMiddlewares');
 const controlador=require('../controllers/noticiasController');
 
+// Mario y Alicia
 // auth routes
 router.post('/login', auth.login);
 router.post('/register', auth.register);
