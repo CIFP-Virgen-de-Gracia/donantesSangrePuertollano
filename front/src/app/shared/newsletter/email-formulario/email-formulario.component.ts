@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { SharedService } from '../../services/shared.service';
+import { Email } from '../../interfaces/email.interface';
 
 @Component({
   selector: 'app-email-formulario',
@@ -8,12 +10,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class EmailFormularioComponent {
 
-  @Output() onSubmit:EventEmitter<boolean> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<boolean> = new EventEmitter();
 
-  emailForm!:FormGroup;
-  valido:boolean = true;
+  emailForm!: FormGroup;
+  mensaje: string = '';
+  icono: string = '';
 
-  constructor(private fb:FormBuilder) { }
+
+  constructor(
+    private fb: FormBuilder,
+    private sharedService: SharedService
+  ) { }
 
   ngOnInit(): void {
     this.emailForm = this.fb.group({
@@ -26,12 +33,24 @@ export class EmailFormularioComponent {
 
   suscribirse() {
     if (this.emailForm.valid) {
-      this.valido = true;
-      this.onSubmit.emit(true);
-      console.log('Form submitted!');
+
+      const email: Email = this.emailForm.value;
+
+      this.sharedService.suscripcionNewsletter(email)
+        .subscribe(resp => {
+          this.mensaje = resp.msg;
+
+          if (resp.success) {
+            this.onSubmit.emit(true);
+            this.icono = 'fa-circle-check';
+            return;
+          }
+        });
+
     } else {
-      this.valido = false;
-      console.log('no');
+      this.mensaje = 'Email no válido';
     }
+
+    this.icono = 'fa-triangle-exclamation';
   }
 }

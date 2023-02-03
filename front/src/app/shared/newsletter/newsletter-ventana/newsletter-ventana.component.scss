@@ -23,11 +23,11 @@
     font-size: var(--letra-media);
   }
 
-  .avion-peq {
+  .icono-peq {
     display: none;
   }
 
-  .avion-grande {
+  .icono-grande {
     background-color: var(--color-granate);
     border-radius: 2px 0px 0 2px;
 
@@ -38,7 +38,7 @@
   }
 
   .mensaje {
-    padding: 1rem 1.5rem;
+    padding: 1.5rem 1.5rem .5rem;
 
     i {
       font-size: var(--letra-media);
@@ -55,15 +55,15 @@
   .newsletter {
     width: 300px;
 
-    .avion-peq {
+    .mensaje i.icono-peq {
       display: block;
       padding: 0;
       font-size: var(--letra-media);
+      color: var(--color-granate);
     }
 
-    .avion-grande {
+    .icono-grande {
       display: none !important;
     }
   }
 }
-
