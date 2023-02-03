@@ -2,27 +2,36 @@ const express = require('express');
 // const body_parser = require('body-parser');
 const cors = require('cors');
 const {conexion, sequelize} = require('../database/Conexion');
+const fileupload = require("express-fileupload");
 
 class Server {
 
     constructor() {
         this.app = express();
         this.path = '/api/';
+        this.pathNoticias='/api/Noticias/'
         
         //Middlewares
         this.middlewares();
 
         this.routes();
-        
+
     }
     
     middlewares() {
-        this.app.use(cors());
+        global.__basedir = __dirname;
+        var corsOptions = {
+            origin: "http://localhost:4200"
+          };
+        this.app.use(cors(corsOptions));
         this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(fileupload());
     }
 
     routes(){
         this.app.use(this.path , require('../routes/routes'));
+        this.app.use(this.pathNoticias , require('../routes/NoticiasRoutes'));
     }
 
     listen() {
