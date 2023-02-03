@@ -1,0 +1,39 @@
+.dropzone {
+  height: 150px;
+  min-width: 100px;
+  display: table;
+  background-color: #eee;
+  border: dashed 1px #aaa;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.centered {
+  text-align: center;
+}
+.desaparecer{
+  display: none;
+}
+.text-wrapped {
+  vertical-align: middle;
+  display: table-cell;
+}
+.seleccion{
+  color:blue;
+  cursor:pointer;
+  text-decoration: none;
+}
+.seleccion:hover{
+  color:red;
+  cursor:pointer;
+  text-decoration: none;
+}
+.botonNoticia{
+  color:white;
+  background-color: var(--color-secundario);
+  &:hover{
+    color:white;
+    background-color:black;
+  }
+}

@@ -6,7 +6,7 @@ const vJwt = require('../middlewares/validarJwt');
 
 const auth = require('../controllers/authController');
 const {midEjemplo} = require('../middlewares/userMiddlewares');
-
+const controlador=require('../controllers/noticiasController');
 // auth routes
 
 router.post('/login', auth.login);
