@@ -1,5 +1,4 @@
 /node_modules
-
 .env
-
-zzzPruebasSucio.js
+./zzzPruebasSucio.js
+.gitkeep
