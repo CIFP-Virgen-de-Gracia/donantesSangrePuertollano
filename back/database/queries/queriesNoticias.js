@@ -5,6 +5,7 @@ const Noticia = require('../../models/Noticias');
 const File = require('./queriesFile');
 const Op=require("sequelize");
 
+//Todo Isa
 class QueriesNoticias {
 
     constructor() {

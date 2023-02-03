@@ -13,7 +13,7 @@ class QueriesUsers {
         this.sequelize = sequelize; 
     }
 
-
+//Mario
     getIdEmail = async(email) => {
         const id = await Email.findOne({
             attributes: ['id'],
@@ -28,7 +28,7 @@ class QueriesUsers {
         return id
     }
 
-
+//Alicia
     getEmail = async(email) => {
         
         const resp = await Email.findOne({
@@ -40,7 +40,7 @@ class QueriesUsers {
         return resp;
     }
 
-
+//Mario
     getUser = async(id) => {
         this.sequelize.conectar();
 
@@ -50,7 +50,7 @@ class QueriesUsers {
         return user;
     }
 
-
+//Mario
     getUserLogin = async(email, passwd) => {
 
         console.log(email + ' <= email | passwd => ' + passwd);
@@ -73,7 +73,7 @@ class QueriesUsers {
         return user.dataValues;
     }
 
-
+//Mario
     getAbilities = async(roles) =>  {
         try {
             this.sequelize.conectar();
@@ -96,7 +96,7 @@ class QueriesUsers {
         }
     }
     
-
+//Mario
     insertUser = async(id, nombre, passwd) => { 
         this.sequelize.conectar();
 
@@ -115,7 +115,7 @@ class QueriesUsers {
         }
     }
 
-
+//Mario
     insertEmail = async(email) => {
         this.sequelize.conectar();
 
@@ -141,7 +141,7 @@ class QueriesUsers {
     }
 
 
-
+//Alicia
     insertEmailNewsletter = async(email) => { 
         this.sequelize.conectar();
         
@@ -160,7 +160,7 @@ class QueriesUsers {
         }
     }
 
-
+//Mario
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
@@ -179,6 +179,7 @@ class QueriesUsers {
         }
     }
 
+//Alicia
     updateVerificacionEmailNewsletter = async(id) => {
         try {
             this.sequelize.conectar();

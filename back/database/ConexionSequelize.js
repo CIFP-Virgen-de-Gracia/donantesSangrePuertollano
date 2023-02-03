@@ -2,7 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql2');
 const {Sequelize} = require('sequelize'); 
 
-
+//Todo Mario
 class CnxnSequelize {
     
     constructor() {

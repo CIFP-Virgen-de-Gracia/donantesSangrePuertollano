@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const RolUser = require('../models/RolUser');
 
-
+//Mario
 const User = sequelize.db.define("user", {
     id: {
         type: DataTypes.BIGINT,

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const Noticias = require('../models/Noticias');
 
-
+//Isa
 const Imagen = sequelize.db.define("imagenes", {
     idNoticia: {
         type: DataTypes.BIGINT,

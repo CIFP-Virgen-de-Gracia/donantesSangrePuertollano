@@ -1,6 +1,6 @@
 const {response, request} = require('express');
 const Conexion_Apto_Sangre = require('./Conexion_Apto_Sangre');
-
+//Todo Alejandro
 const mostrarPreguntas = (req = request, res = response) => {
     const conx = new Conexion_Apto_Sangre();
     conx.getPreguntas()

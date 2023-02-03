@@ -5,7 +5,7 @@ require('dotenv').config()
 const RolUser = require('../models/RolUser');
 
 sequelize.conectar();
-
+//Mario
 const Rol = sequelize.db.define("rol", {
     id: {
         type: DataTypes.BIGINT,
