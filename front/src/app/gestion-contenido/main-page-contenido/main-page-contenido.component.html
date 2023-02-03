@@ -1,0 +1,50 @@
+<router-outlet></router-outlet>
+<div class="container-fluid fondo-contraste pt-5">
+  <div class="row">
+    <div class="col text-center ">
+      <h1>Noticias</h1>
+    </div>
+  </div>
+</div>
+<svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+  <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1" d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
+  </path>
+</svg>
+<div class="container pb-5 pt-5"><!--Utilizar un aqui un ngFor para repetir toda la estrucura-->
+  <div class="row">
+    <div class="col">
+      <h1>Lorem</h1>
+      <h4>subtitulo</h4>
+      <img src="https://cdn.pixabay.com/photo/2017/01/10/07/09/blood-1968457_960_720.png" class=" img-fluid">
+      <div class="pt-3 pb-3">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit molestias corporis sed consequuntur fuga
+          laborum, id velit voluptates, accusantium, eligendi ea consequatur eaque iusto nihil voluptas! A nesciunt
+          libero cum.
+          Amet ratione eum numquam fugit non deserunt dignissimos quam quos in mollitia molestiae repellat sit pariatur
+          laudantium excepturi neque doloribus maxime, maiores, blanditiis accusamus nihil laborum rerum. Deserunt,
+          omnis impedit?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo voluptas unde fugiat laborum error deserunt
+          optio eum. Maxime nulla aut ab veritatis illum laborum eum quas! Officiis quaerat rem est?
+          Totam tenetur, dolorum, dolorem illo reiciendis temporibus dolores ducimus distinctio voluptate cupiditate
+          tempora quidem itaque aspernatur ad explicabo incidunt aliquid laboriosam voluptates nulla iusto. Praesentium
+          velit aliquid dolore dolorem pariatur.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container pb-5 pt-5" *ngFor="let noticia of contenido">
+  <div class="row">
+    <div class="col">
+      <h1 class="titulo subrayado">{{noticia.titulo}}</h1>
+      <h5 class="pt-3 pb-2">{{noticia.subtitulo}}</h5>
+      <p class="pb-3"><small>Añadido a {{noticia.fecha}}</small></p>
+      <!--Cuando se recuperen adecuadamente las imagenes añadir un ngIf para añadirlas-->
+      <div>
+        <p *ngFor="let p of noticia.contenido">
+          {{p}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<app-add-contenido></app-add-contenido>

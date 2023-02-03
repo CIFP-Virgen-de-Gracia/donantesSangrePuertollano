@@ -7,12 +7,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { PaginasModule } from './paginas/paginas.module';
+import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
+import { AptoSangreModule } from './apto-sangre/apto-sangre.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
+import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
+import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 
 @NgModule({
     declarations: [
         AppComponent,
+        AptoSangreComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -22,10 +27,13 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
         FormsModule,
         PaginasModule,
         SharedModule,
-        BrowserAnimationsModule,
+        GestionContenidoModule,
+        NoticiasRoutingModule,
         HttpClientModule,
+        BrowserAnimationsModule,
         AuthModule,
-        AuthRoutingModule
+        AuthRoutingModule,
+        AptoSangreModule
     ]
 })
-export class AppModule { }
+export class AppModule {}
