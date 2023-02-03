@@ -11,5 +11,6 @@ const controlador=require('../controllers/noticiasController');
 
 router.post('/login', auth.login);
 router.post('/register', auth.register);
+router.get('/activarusuario/:id', auth.activarUsuario);
 
 module.exports = router;
