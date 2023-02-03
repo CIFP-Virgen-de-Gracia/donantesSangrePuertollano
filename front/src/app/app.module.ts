@@ -7,24 +7,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { PaginasModule } from './paginas/paginas.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthModule } from './auth/auth.module';
+import { AuthRoutingModule } from './auth/auth-routing.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    UsuariosModule,
-    FormsModule,
-    PaginasModule,
-    SharedModule,
-    HttpClientModule,
-    BrowserAnimationsModule
-  ]
+    declarations: [
+        AppComponent,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        PaginasModule,
+        SharedModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AuthModule,
+        AuthRoutingModule
+    ]
 })
 export class AppModule { }
