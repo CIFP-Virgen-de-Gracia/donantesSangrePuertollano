@@ -54,7 +54,7 @@ body {
   }
 
   // Botones - inputs
-  input, button {
+  input[type=email], button {
     border: none;
     outline: none;
     border-radius: 2px;
