@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { InicioComponent } from './inicio/inicio.component';
-
+import { LaHermandadComponent } from './la-hermandad/la-hermandad/la-hermandad.component';
+import { MainPageComponent } from './main-page/main-page.component';
 const routes: Routes = [
   {
     path: '',
-    component: InicioComponent,
+    component: MainPageComponent,
     children: [
-      /* { path: 'listado', component: ListadoComponent } */
+      { path: '', component: InicioComponent },
+      { path: 'hermandad', component: LaHermandadComponent }
     ]
   }
 ];
@@ -15,7 +17,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forChild( routes )
+    RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule
