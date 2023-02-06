@@ -6,7 +6,7 @@ const vJwt = require('../middlewares/validarJwt');
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 
-const {midEjemplo} = require('../middlewares/userMiddlewares');
+// const {midEjemplo} = require('../middlewares/userMiddlewares');
 const controlador=require('../controllers/noticiasController');
 
 // Mario y Alicia
