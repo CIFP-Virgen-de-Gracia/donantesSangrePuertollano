@@ -14,6 +14,7 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 
+
 @NgModule({
     declarations: [
         AppComponent,
