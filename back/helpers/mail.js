@@ -31,18 +31,14 @@ const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 }
 
 
-const mandarCorreo = (idUser, destinatario) => {
+const mandarCorreo = (destinatario, contenido) => {
     //TODO: TODO MAL
-
-    const cuerpoHtml = ` `;
-
-    const asunto = '';
 
     mailOptions = {
         from: process.env.EMAIL_ACCOUNT,
         to: destinatario,
-        subject: asunto,
-        html: cuerpoHtml
+        subject: contenido.asunto,
+        html: contenido.cuerpoHtml
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -50,11 +46,9 @@ const mandarCorreo = (idUser, destinatario) => {
         else console.log('Email sent: ' + info.response);
     });
 }
-
-
+        
 module.exports = {
     mandarCorreoActivacion,
     mandarCorreo
 }
 
-// mandarCorreo(4, 'marioferestevez@gmail.com');

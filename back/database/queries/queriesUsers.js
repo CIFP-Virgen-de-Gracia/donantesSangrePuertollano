@@ -25,7 +25,7 @@ class QueriesUsers {
             }
         });
 
-        return id
+        return id.dataValues;
     }
 
 //Alicia
@@ -38,6 +38,16 @@ class QueriesUsers {
         });
 
         return resp;
+    }
+
+//Mario
+    getEmailById = async(id) => {
+        this.sequelize.conectar();
+
+        const resp = await Email.findByPk(id);
+
+        this.sequelize.desconectar();
+        return resp.dataValues;
     }
 
 //Mario
@@ -97,7 +107,7 @@ class QueriesUsers {
     }
     
 //Mario
-    insertUser = async(id, nombre, passwd) => { 
+    insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
 
         try {
@@ -160,6 +170,7 @@ class QueriesUsers {
         }
     }
 
+
 //Mario
     updateVerificacionEmail = async(id) => {
         try {
@@ -197,8 +208,23 @@ class QueriesUsers {
             throw err;
         }
     }
+
+//Mario
+    updateUserPasswd = async(id, nuevaPasswd) => {
+        this.sequelize.conectar();
+
+        let user = await queriesUsers.getUser(id);
+        user.passwd = nuevaPasswd;
+
+        const resp = await user.save();
+
+        this.sequelize.desconectar();
+        return resp.dataValues;
+    }
 }
 
 const queriesUsers = new QueriesUsers();
 
 module.exports = queriesUsers;
+
+queriesUsers.getEmailById(3).then(console.log);
