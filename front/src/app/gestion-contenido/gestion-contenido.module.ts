@@ -5,7 +5,7 @@ import { MainPageContenidoComponent } from './main-page-contenido/main-page-cont
 import { AddContenidoComponent } from './add-contenido/add-contenido.component';
 import { NoticiasRoutingModule } from './noticias-routing.module';
 import { ContenidoService } from './contenido.service';
-
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { ContenidoService } from './contenido.service';
   imports: [
     CommonModule,
     NoticiasRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   providers: [
     ContenidoService
