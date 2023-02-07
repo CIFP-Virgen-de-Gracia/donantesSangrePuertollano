@@ -56,16 +56,28 @@ const googleSignin = async(req, res = response) => {
         let user = null;
         user = (creado) 
             ? await queriesUsers.insertUser(email.id, nombre)
-            : await queriesUsers.getUserLogin(email.id);
+            : await queriesUsers.getUser(email.id);
         
-        resp = {
+        const resp = {
             success: true,
-            token: generarJWT(user.id, user.nombre),
+            data: {
+                id: user.id,
+                nombre: user.nombre,
+                token: generarJWT(user.id),
+            },
             msg: 'logeado con éxito'
         }
+
+        return res.status(200).json(resp);
     }
     catch (err) {
 
+        const resp = {
+            success: false,
+            msg: 'error en el registro'
+        }
+
+        return res.status(200).json(resp);
     }
 }
 
