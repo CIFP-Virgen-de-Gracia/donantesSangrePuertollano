@@ -51,13 +51,13 @@ class QueriesUsers {
     }
 
 //Mario
-    getUser = async(id) => {
+    getUser = async(id) => { // CAMBIAR ROLESABILTIES.
         this.sequelize.conectar();
 
         const user = await User.findByPk(id, {include: 'RolUser'});
         
         this.sequelize.desconectar();
-        return user;
+        return user.dataValues;
     }
 
 //Mario
