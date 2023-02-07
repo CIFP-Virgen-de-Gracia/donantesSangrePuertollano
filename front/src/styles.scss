@@ -57,7 +57,7 @@ body {
   }
 
   // Botones - inputs
-  input,
+  input[type=email],
   button {
     border: none;
     outline: none;
@@ -117,15 +117,15 @@ body {
   .titulo {
     font-family: var(--tipo-titulos);
     letter-spacing: 2px;
-  }
 
-  .subrayado.titulo::after {
-    content: "";
-    display: block;
-    width: 6rem;
-    max-width: 60%;
-    border-bottom: 0.3rem solid var(--color-primario);
-    margin: 0 auto 1rem;
+    &.subrayado::after {
+      content: "";
+      display: block;
+      width: 6rem;
+      max-width: 60%;
+      border-bottom: 0.3rem solid var(--color-primario);
+      margin: 0 auto 1rem;
+    }
   }
 
   .fondo-contraste {
