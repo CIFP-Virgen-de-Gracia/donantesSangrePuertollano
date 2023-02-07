@@ -44,58 +44,13 @@
       </path>
     </svg>
 
-    <div>
+    <div *ngIf="junta">
       <h2 class="titulo subrayado">Junta rectora</h2>
 
       <div class="tarjetas d-flex flex-wrap text-center">
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Presidente</p>
-          <p>Ramón Moya Gil</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Vicepresidente</p>
-          <p>Manuel Alcaide Funcia</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Secretaria General</p>
-          <p>Emilia Sánchez Gonzalez</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Tesorero</p>
-          <p>José Javier Almodóvar Molina</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Censor de Cuentas</p>
-          <p>Nuria Gómez Fernández</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Censor de Cuentas</p>
-          <p>Ana María Ortiz Baberán</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Vocal</p>
-          <p>Eduardo Camacho Sánchez</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Vocal</p>
-          <p>Manuel Casternado Calvo</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Vocal</p>
-          <p>Jose Antonio Lendrino Villanueva</p>
-        </div>
-
-        <div class="tarjeta fondo-contraste flex-fill">
-          <p>Vocal</p>
-          <p>Elena Cabrero Arevalo</p>
+        <div class="tarjeta fondo-contraste flex-fill" *ngFor="let integrante of junta">
+          <p>{{ integrante.cargo }}</p>
+          <p>{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}</p>
         </div>
       </div>
     </div>

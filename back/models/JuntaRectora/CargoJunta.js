@@ -1,11 +1,11 @@
 const {DataTypes} = require("sequelize");
-const sequelize = require('../../database/ConexionSequelize');
+const sequelize = require('../../database/ConexionSequelize');/* 
+const CargoIntegrante = require("./CargoIntegrante"); */
 require('dotenv').config();
 
 //Alicia
-sequelize.conectar();
 
-const CargoJunta = sequelize.db.define("cargoJunta", {
+module.exports = (sequelize) => { sequelize.db.define("cargoJunta", {
     id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
@@ -21,7 +21,6 @@ const CargoJunta = sequelize.db.define("cargoJunta", {
     tableName: 'cargosJunta'
 });
 
-sequelize.sync();
-sequelize.desconectar();
+}
+/* CargoJunta.hasOne(CargoIntegrante, {as: 'CargoIntegrante', foreignKey: 'idCargo'}); */
 
-module.exports = CargoJunta;
