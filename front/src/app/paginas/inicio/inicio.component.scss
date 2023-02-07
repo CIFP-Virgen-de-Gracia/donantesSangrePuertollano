@@ -1,11 +1,11 @@
 .container {
   margin: 0;
   max-width: 100%;
-}
 
-/* div.cita {
-  padding: 5rem 0;
-} */
+  &>:first-child {
+    padding-top: 5rem;
+  }
+}
 
 p {
   font-size: var(--letra-media);
