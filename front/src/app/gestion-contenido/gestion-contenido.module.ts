@@ -5,8 +5,8 @@ import { MainPageContenidoComponent } from './main-page-contenido/main-page-cont
 import { AddContenidoComponent } from './add-contenido/add-contenido.component';
 import { NoticiasRoutingModule } from './noticias-routing.module';
 import { ContenidoService } from './contenido.service';
+import { SharedModule } from '../shared/shared.module';import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxPaginationModule} from 'ngx-pagination';
-
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     CommonModule,
     NoticiasRoutingModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     NgxPaginationModule,
   ],
