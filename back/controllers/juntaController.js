@@ -7,22 +7,13 @@ require('dotenv').config();
 const getIntegrantesCargo = (req, res = response) => {
     queriesJunta.getCargoIntegrantes()
         .then(listadoJunta => {
-            /* listadoJunta.forEach(integrante => {
-               let i = {
-
-               }
-            });
+            
             const resp = {
                 success: true,
-                data: {
-                    id: user.id,
-                    nombre: user.nombre,
-                    token: generarJWT(user.id),
-                },
-                msg: 'Registros encontrados'
-            } */
+                data: listadoJunta
+            }
 
-            res.status(200).json(listadoJunta);
+            res.status(200).json(resp);
 
         }).catch(err => {
 
