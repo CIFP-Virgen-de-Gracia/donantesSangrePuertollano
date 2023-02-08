@@ -12,7 +12,6 @@ class Server {
         this.path = '/api/';
 
         this.apto_sangre = "/test-apto";
-
         this.pathNoticias='/api/Noticias/'
         
 
@@ -24,11 +23,14 @@ class Server {
     }
     
     middlewares() {
-        global.__basedir = __dirname;
         this.app.use(cors({origin: '*'}));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(fileupload());
+        this.app.use(fileupload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true 
+        }));
     }
 
     routes(){

@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
-
+import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+  },
+  {
+    path: 'aviso',
+    component: AvisoComponent
   },
   {
     path: 'test-apto',
@@ -27,7 +31,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ''
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
+    redirectTo: '' */
 
   }
 
@@ -40,7 +45,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
