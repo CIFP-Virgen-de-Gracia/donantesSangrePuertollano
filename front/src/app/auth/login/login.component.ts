@@ -41,5 +41,5 @@ export class LoginComponent {
       }
       else this.erroneo = true;
     });
-  } 
+  }
 }
