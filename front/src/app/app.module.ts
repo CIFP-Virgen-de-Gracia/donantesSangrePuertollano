@@ -13,6 +13,8 @@ import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
+import {NgxPaginationModule} from 'ngx-pagination';
+
 
 @NgModule({
     declarations: [
@@ -33,7 +35,8 @@ import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.modu
         BrowserAnimationsModule,
         AuthModule,
         AuthRoutingModule,
-        AptoSangreModule
+        AptoSangreModule,
+        NgxPaginationModule,
     ]
 })
 export class AppModule {}

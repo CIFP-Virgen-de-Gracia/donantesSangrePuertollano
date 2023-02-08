@@ -10,7 +10,9 @@
   <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1" d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
   </path>
 </svg>
-<div class="container pb-5 pt-5"><!--Utilizar un aqui un ngFor para repetir toda la estrucura-->
+
+<app-add-contenido></app-add-contenido>
+<div class="container pb-3 pt-3"><!--Utilizar un aqui un ngFor para repetir toda la estrucura-->
   <div class="row">
     <div class="col">
       <h1>Lorem</h1>
@@ -32,13 +34,13 @@
     </div>
   </div>
 </div>
-<div class="container pb-5 pt-5" *ngFor="let noticia of contenido">
+<div class="container pb-5 pt-5" *ngFor="let noticia of contenido| paginate: { itemsPerPage: 3, currentPage: p }">
   <div class="row">
     <div class="col">
       <h1 class="titulo subrayado">{{noticia.titulo}}</h1>
       <h5 class="pt-3 pb-2">{{noticia.subtitulo}}</h5>
-      <p class="pb-3"><small>Añadido a {{noticia.fecha}}</small></p>
-      <!--Cuando se recuperen adecuadamente las imagenes añadir un ngIf para añadirlas-->
+      <p class="pb-3"><small>Añadido el {{noticia.fecha}}</small></p>
+     <!--<img *ngIf="noticia.imagen!==null" class="imagen" [src]=noticia.imagen/>-->
       <div>
         <p *ngFor="let p of noticia.contenido">
           {{p}}
@@ -47,4 +49,10 @@
     </div>
   </div>
 </div>
-<app-add-contenido></app-add-contenido>
+<pagination-controls (pageChange)="p = $event"
+                      previousLabel="Anterior"
+                      nextLabel="Siguiente"
+                      class="text-center"
+                      >
+</pagination-controls>
+
