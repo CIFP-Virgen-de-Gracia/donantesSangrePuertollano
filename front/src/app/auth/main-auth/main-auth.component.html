@@ -1,18 +1,31 @@
 <div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
     El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
-    Pincha en el enlace para poder acceder con tu cuenta. <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login.</strong></a>
+    Pincha en el enlace para poder acceder con tu cuenta. <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login.</strong></a>.
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
-<div *ngIf="this.registradoExito == 1" class="alert alert-danger alert-dismissible position-fixed fade show ms-3" role="alert">
-    Se ha producido un error en el registro.
+<div *ngIf="this.recPasswdExito == 3" class="alert alert-danger alert-dismissible position-fixed fade show ms-3" role="alert">
+    Se ha producido un error a la hora de contactar.
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
-<div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
+<div *ngIf="this.recPasswdExito == 2" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
     Debes haber recibido un mensaje en tu cuenta de correo con el código a introducir.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div *ngIf="this.recPasswdExito == 1" class="alert alert-danger alert-dismissible position-fixed fade show ms-3" role="alert">
+    Se ha producido un error al recuperar la contraseña.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div *ngIf="this.recPasswdExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
+    Contraseña resetada con éxito.
+    . <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login.</strong></a>.
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>

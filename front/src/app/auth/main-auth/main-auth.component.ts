@@ -28,10 +28,6 @@ export class MainAuthComponent implements OnInit{
       this.accion = 'recuperacion';
     }
   }
-
-  // public get registradoExito() : boolean {
-  //   return this.registradoExito
-  // }
   
   showAlertRegistro(event : number) {
     this.registradoExito = event;
