@@ -1,0 +1,63 @@
+
+<form *ngIf="this.emailRecPasswdEnviado == -1 || this.emailRecPasswdEnviado == 1" 
+    [formGroup]="emailRecPasswdForm" (ngSubmit)="mandarEmailRecPasswd()">
+
+    <div class="mt-4 mb-2">
+        <label class="form-label" for="emailRecPasswd">Email</label><br>
+        <input 
+            type="text" 
+            class="form-control"
+            name="email"
+            placeholder="Introduce una dirección de email"
+            formControlName="email"
+        >
+    </div>
+
+    <span
+        class="form-text errorLogin mb-2"
+        *ngIf="this.emailRecPasswdForm.get('email')?.errors?.['pattern'] 
+            && this.emailRecPasswdForm.get('email')?.touched"
+    >Formato de email inválido</span>
+    <span
+        class="form-text errorLogin mb-3"
+        *ngIf="this.emailRecPasswdForm.get('email')?.errors?.['required'] 
+            && this.emailRecPasswdForm.get('email')?.touched"
+    >Este campo es obligatorio</span>
+
+    <div class="d-flex justify-content-end">
+        <button
+            type="button"
+            class="border-red me-2"
+            (click)="irAlLogin()">Cancelar</button>
+        <button 
+        type="submit"
+        class="btnAceptar me-3">Aceptar</button>
+    </div>
+</form>
+
+
+
+<form *ngIf="this.emailRecPasswdEnviado == 0"
+    [formGroup]="codForm" (ngSubmit)="recuperarPasswd()">
+
+    <div class="mt-4 mb-2">
+        <label class="form-label" for="emailRecPasswd">Código</label><br>
+        <input 
+            type="text" 
+            class="form-control"
+            name="cod"
+            placeholder="Introduce el código"
+            formControlName="cod"
+        >
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button
+            type="button"
+            class="border-red me-2"
+            (click)="irAlLogin()">Cancelar</button>
+        <button 
+        type="submit"
+        class="btnAceptar me-3">Aceptar</button>
+    </div>
+</form>

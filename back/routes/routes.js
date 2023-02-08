@@ -14,6 +14,9 @@ const controlador=require('../controllers/noticiasController');
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/activarCorreo/:id', auth.activarCorreo);
+router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd);
+router.post('/recuperarpasswd/:id', auth.recuperarPasswd);
+
 router.get('/activarNewsletter/:id', auth.activarNewsletter);
 
 

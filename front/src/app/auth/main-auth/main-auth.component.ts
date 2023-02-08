@@ -12,6 +12,7 @@ export class MainAuthComponent implements OnInit{
 
   accion: string = 'login';
   registradoExito: number = -1;
+  recPasswdExito: number = -1;
 
   constructor(private router: Router) {}
 
@@ -19,9 +20,12 @@ export class MainAuthComponent implements OnInit{
     if (this.router.url.includes('login')) {
       this.accion = 'login';
     }
-    else {
+    else if (this.router.url.includes('registro')) {
       this.accion = 'registro';
       this.registradoExito = -1;
+    }
+    else if (this.router.url.includes('recuperacionpasswd')) {
+      this.accion = 'recuperacion';
     }
   }
 
@@ -29,8 +33,12 @@ export class MainAuthComponent implements OnInit{
   //   return this.registradoExito
   // }
   
-  showAlert(event : number) {
+  showAlertRegistro(event : number) {
     this.registradoExito = event;
+  }
+
+  showAlertRecPasswd(event: number) {
+    this.recPasswdExito = event;
   }
 
   irAlLogin() {
