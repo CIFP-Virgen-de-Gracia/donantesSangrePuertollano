@@ -20,7 +20,13 @@ div.container-fluid {
         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
         width: 40vw;
 
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
+            & {
+                width: 80vw;
+            }
+        }
+
+        @media (max-width: 720px) {
             & {
                 width: 100vw;
             }
@@ -30,10 +36,8 @@ div.container-fluid {
         div.card-header {
             background-color: var(--color-primario);
             color: var(--bs-white);
-            height: 6.5rem;
+            height: 9rem;
 
-            margin-top: 4.5rem;
-            margin-bottom: 1rem;
             border-radius: 2px 2px 0px 0px;
 
         }
