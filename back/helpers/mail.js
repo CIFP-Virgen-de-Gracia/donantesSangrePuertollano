@@ -41,10 +41,7 @@ const mandarCorreo = (destinatario, contenido) => {
         html: contenido.cuerpoHtml
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) throw error;
-        else console.log('Email sent: ' + info.response);
-    });
+    transporter.sendMail(mailOptions);
 }
         
 module.exports = {
