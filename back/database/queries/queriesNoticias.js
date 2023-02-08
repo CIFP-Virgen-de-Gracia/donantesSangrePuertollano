@@ -2,8 +2,9 @@ const Noticias = require('../../models/Noticias');
 const Imagen = require('../../models/Imagen');
 const sequelize = require('../ConexionSequelize');
 const Noticia = require('../../models/Noticias');
-const File = require('./queriesFile');
-const Op=require("sequelize");
+const Op = require("sequelize");
+const fileUpload = require('express-fileupload');
+const File = require('../../helpers/FileUpload');
 
 //Todo Isa
 class QueriesNoticias {
@@ -11,45 +12,57 @@ class QueriesNoticias {
     constructor() {
         this.sequelize = sequelize;
     }
-    insertarNoticias = async (req, res) => {
+    insertarNoticias = async (req) => {
         let resultado = 0
         this.sequelize.conectar();
         try {
-            if (req.body.imagen.length===0) {
-                let noticia = new Noticia();
+            let noticia = new Noticia();
+
+            if (!req.files) {
                 noticia.id = null;
                 noticia.titulo = req.body.titulo;
                 noticia.subtitulo = req.body.subtitulo;
                 noticia.contenido = req.body.contenido;
-                noticia.seccion = req.body.seccion,
+                noticia.seccion = req.body.seccion;
                 noticia.save();
+                resultado = 1
 
             } else {
-                let noticia = new Noticia();
+
                 noticia.id = null;
                 noticia.titulo = req.body.titulo;
                 noticia.subtitulo = req.body.subtitulo;
                 noticia.contenido = req.body.contenido;
-                noticia.seccion = req.body.seccion,
-                noticia.save();
-                let imagen= new Imagen();
-                imagen.idNoticia=noticia.id;
-                imagen.nombre=req.files.name;
-                await File.upload(req, res);
+                noticia.seccion = req.body.seccion;
+                const resp = await noticia.save();
+
+                const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                const ruta = "http://127.0.0.1:8090/api/Noticias/upload/" + nombre;
+
+                let imagen = new Imagen();
+                imagen.idNoticia = resp.id;
+                imagen.nombre = ruta;
+                imagen.save();
+                resultado = 1
             }
-            resultado = 1
+
         } catch (err) {
+            resultado = 0
             throw err;
+
         }
         this.sequelize.desconectar();
         return resultado;
     }
+
     getListado = async (seccion) => {
         this.sequelize.conectar();
-        const noticias = await Noticias.findAll( 
-            {where:{seccion:seccion},
-            include:"Imagen",
-            order: ['createdAt','id']});
+        const noticias = await Noticias.findAll(
+            {
+                where: { seccion: seccion },
+                include: "Imagen",
+                order: [['createdAt', 'DESC'], ['id', 'DESC']]
+            });
         this.sequelize.desconectar();
         return noticias;
     }
@@ -59,8 +72,17 @@ class QueriesNoticias {
         this.sequelize.desconectar();
         return noticias;
     }
+    getImagen = async (nombre) => {
+        this.sequelize.conectar();
+        const imagen = await Imagen.findOne({
+            where: { nombre: nombre }
+        });
+        
+        this.sequelize.desconectar();
+        return imagen;
+    }
 
-    modificarNoticia = async (id, req, res) => {
+    modificarNoticia = async (id, req) => {
         this.conectar();
         let resultado = await Noticia.findByPk(id);
         if (!resultado) {
