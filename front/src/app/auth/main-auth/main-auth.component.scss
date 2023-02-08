@@ -1,5 +1,6 @@
 div.alert {
     z-index: 9000;
+    width: 25rem;
 
     a {
         text-decoration: none;
@@ -13,7 +14,7 @@ div.alert {
 
 div.container-fluid {
     background-color: var(--color-contraste);
-    // min-height: 50vh;
+    // min-height: 80vh;
 
     div.card {
         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
