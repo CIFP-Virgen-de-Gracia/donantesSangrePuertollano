@@ -13,18 +13,46 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
+
                 <label for="titulo">Título del contenido:</label>
-                <input type="text" [(ngModel)]="noticia.titulo" id="titulo" name="titulo" class="form-control mb-3"
-                  placeholder="Escribe un titulo" required />
+
+                <input
+                [(ngModel)]="noticia.titulo"
+                type="text"
+                id="titulo"
+                name="titulo"
+                class="form-control mb-3"
+                placeholder="Escribe un titulo"/>
+
                 <label for="titulo">Subtítulo del contenido:</label>
-                <input type="text" [(ngModel)]="noticia.subtitulo" id="subtitulo" placeholder="Escribe un subtitulo"
-                  name="subtitulo" class="form-control mb-3" />
+
+                <input
+                [(ngModel)]="noticia.subtitulo"
+                type="text"
+                id="subtitulo"
+                placeholder="Escribe un subtitulo"
+                name="subtitulo"
+                class="form-control mb-3"/>
+
                 <label for="titulo">Contenido:</label>
-                <textarea class="form-control mb-3" [(ngModel)]="noticia.contenido" rows="10"
-                  placeholder="Escribe tu contenido..." id="contenido" name="contenido" required></textarea>
+
+                <textarea
+                [(ngModel)]="noticia.contenido"
+                class="form-control mb-3"
+                rows="10"
+                placeholder="Escribe tu contenido..."
+                id="contenido"
+                name="contenido"></textarea>
+
                 <label for="imagen">Seleccionar Imagen:</label>
-                <input (change)="capturarFile($event)" accept="image/*" class="form-control" type="file" #imagen
-                  value="select" name="imagen" />
+
+                <input
+                (change)="capturarFile($event)"
+                accept="image/*"
+                class="form-control"
+                type="file"
+                id=imagen
+                name="imagen"/>
 
                 <!--<div class="dropzone w-100 mt-3">
                 <div class="text-wrapped p-1 w-100">
@@ -34,6 +62,7 @@
                   </div>
                 </div>
               </div>-->
+
               </div>
             </div>
           </div>
@@ -58,7 +87,12 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Aceptar</button>
-            <button type="button" (click)="limpiarAlert()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            <button
+            type="button"
+            (click)="limpiarAlert()"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">Close</button>
           </div>
         </form>
       </div>
