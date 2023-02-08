@@ -40,7 +40,7 @@
       <h1 class="titulo subrayado">{{noticia.titulo}}</h1>
       <h5 class="pt-3 pb-2">{{noticia.subtitulo}}</h5>
       <p class="pb-3"><small>Añadido el {{noticia.fecha}}</small></p>
-     <!--<img *ngIf="noticia.imagen!==null" class="imagen" [src]=noticia.imagen/>-->
+    <!--<img *ngIf="noticia.imagen" class="imagen" src=noticia.imagen/>-->
       <div>
         <p *ngFor="let p of noticia.contenido">
           {{p}}
