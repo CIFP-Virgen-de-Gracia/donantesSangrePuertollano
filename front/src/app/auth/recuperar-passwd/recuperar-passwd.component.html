@@ -31,7 +31,8 @@
             (click)="irAlLogin()">Cancelar</button>
         <button 
         type="submit"
-        class="btnAceptar me-3">Aceptar</button>
+        class="btnAceptar me-3"
+        [disabled]="emailRecPasswdForm.invalid">Aceptar</button>
     </div>
 </form>
 
@@ -58,6 +59,7 @@
             (click)="irAlLogin()">Cancelar</button>
         <button 
         type="submit"
-        class="btnAceptar me-3">Aceptar</button>
+        class="btnAceptar me-3"
+        [disabled]="emailRecPasswdForm.invalid">Aceptar</button>
     </div>
 </form>

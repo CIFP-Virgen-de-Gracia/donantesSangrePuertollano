@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 export class RecuperarPasswdComponent {
 
   emailRecPasswdEnviado: number = -1;
-  codRecPasswd: number = -1;
 
   constructor(
     private authHttsService: AuthService,
@@ -21,7 +20,6 @@ export class RecuperarPasswdComponent {
   ngOnInit() {
     
     this.emailRecPasswdEnviado = -1;
-    this.codRecPasswd = -1;
   }
 
   @Output() onRecPasswd: EventEmitter<number> = new EventEmitter();
@@ -42,11 +40,11 @@ export class RecuperarPasswdComponent {
 
         localStorage.setItem('user', JSON.stringify({id: resp.id}));
         this.emailRecPasswdEnviado = 0;
-        this.codRecPasswd = 2;
+        this.onRecPasswd.emit(2);
       }
       else {
         this.emailRecPasswdEnviado = 1;
-        this.codRecPasswd = 3;
+        this.onRecPasswd.emit(3);
       }
 
     });
@@ -59,13 +57,12 @@ export class RecuperarPasswdComponent {
       console.log(resp);
       if (resp.success) {
 
-        this.codRecPasswd = 0;
+        this.onRecPasswd.emit(0);
       }
       else {
-        this.codRecPasswd = 1;
+        this.onRecPasswd.emit(1);
       }
     });
-
   }
 
   irAlLogin() {

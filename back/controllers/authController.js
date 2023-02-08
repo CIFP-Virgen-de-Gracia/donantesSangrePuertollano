@@ -83,13 +83,6 @@ const register = async (req, res = response) => { // poner código
 
 
     const emailUser = await queriesUsers.insertEmail(req.body.email);
-        
-    // }).catch(err => {
-        
-    //     console.log('asdfdefuera');
-    //     console.log(err);
-    //     res.status(200).json({success: false, msg: 'usuario ya registrado'});
-    // });
 
     console.log(emailUser.id);
     queriesUsers.insertUser(emailUser.id, titleCase.titleCase(req.body.nombre), req.body.passwd).then(resp => {
@@ -105,7 +98,6 @@ const register = async (req, res = response) => { // poner código
 
         res.status(200).json({success: false, msg: msg});
     });
-
 }
 
 
