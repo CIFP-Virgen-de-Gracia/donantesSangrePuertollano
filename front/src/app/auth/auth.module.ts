@@ -8,12 +8,14 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RegistroComponent } from './registro/registro.component';
 import { MainAuthComponent } from './main-auth/main-auth.component';
 import { fromEvent } from 'rxjs';
+import { RecuperarPasswdComponent } from './recuperar-passwd/recuperar-passwd.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistroComponent,
-    MainAuthComponent
+    MainAuthComponent,
+    RecuperarPasswdComponent
   ],
   imports: [
     CommonModule,
