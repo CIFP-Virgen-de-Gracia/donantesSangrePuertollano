@@ -31,7 +31,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ''
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
+    redirectTo: '' */
 
   }
 

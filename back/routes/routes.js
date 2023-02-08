@@ -5,6 +5,7 @@ const vJwt = require('../middlewares/validarJwt');
 // const mids = require("../middlewares/userMiddlewares");
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
+const junta = require('../controllers/juntaController');
 
 const {midEjemplo} = require('../middlewares/userMiddlewares');
 const controlador=require('../controllers/noticiasController');
@@ -19,6 +20,10 @@ router.get('/activarNewsletter/:id', auth.activarNewsletter);
 
 // user routes
 router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
+
+// Junta routes
+router.get('/getIntegrantesCargo', junta.getIntegrantesCargo);
+
 
 
 
