@@ -1,6 +1,7 @@
 <div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
     El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
-    Pincha en el enlace para poder acceder con tu cuenta. <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login.</strong></a>.
+    Pincha en el enlace para poder acceder con tu cuenta.
+    <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login</strong></a>.
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -24,18 +25,18 @@
 </div>
 
 <div *ngIf="this.recPasswdExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
-    Contraseña resetada con éxito.
-    . <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login.</strong></a>.
+    Contraseña resetada con éxito.<br>
+    <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login</strong></a>.
 
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
-<div class="container-fluid d-flex justify-content-center align-content-center">
+<div class="container-fluid d-flex justify-content-center align-content-center p-5">
     <div class="card border-0 rounded-0">
         <div class="card-header d-flex justify-content-center align-items-center py-1 border-bottom-0">
             <h1 *ngIf="this.accion == 'login'">Login</h1>
             <h1 *ngIf="this.accion == 'registro'">Registro</h1>
-            <h1 *ngIf="this.accion == 'recuperacion'">Recuperación de la contraseña</h1>
+            <h1 *ngIf="this.accion == 'recuperacion'">Recuperar contraseña</h1>
         </div>
         <div class="card-body p-5">
 
@@ -53,5 +54,5 @@
                 </div> -->
             </div>
         </div>
-    </div>    
+    </div>
 </div>

@@ -40,9 +40,10 @@ export class LoginComponent {
       }
       else this.erroneo = true;
     });
-  } 
+  }
 
   irARecPasswd() {
     this.router.navigate(['/auth/recuperacionpasswd']);
   }
+  
 }
