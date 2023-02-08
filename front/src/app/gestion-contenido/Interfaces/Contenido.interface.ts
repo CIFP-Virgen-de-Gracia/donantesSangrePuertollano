@@ -5,3 +5,7 @@ export interface Contenido{
   seccion:string,
   imagen:any
 }
+
+/*export interface Archivo{
+  archivo:File[]
+}*/
