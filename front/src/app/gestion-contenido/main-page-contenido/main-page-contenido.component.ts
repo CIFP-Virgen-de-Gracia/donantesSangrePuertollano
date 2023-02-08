@@ -11,12 +11,15 @@ export class MainPageContenidoComponent implements OnInit {
 
   contenido:any=this.ContenidoService.noticias;
   constructor(private ContenidoService:ContenidoService){}
+  p: number = 1;
 
   ngOnInit(){
     this.ContenidoService.getListado().subscribe((res)=>{
       this.contenido=res;
     });
   }
+
+
 
 
 }

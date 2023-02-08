@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Contenido } from './Interfaces/Contenido.interface';
+import { Contenido} from './Interfaces/Contenido.interface';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -16,14 +16,13 @@ export class ContenidoService {
   noticias: any[] = [];
 
   getListado() {
-   return this.http.get<any>(`${this.baseURL}/noticias`).pipe(tap(resp=>this.noticias=resp))
+    return this.http.get<any>(`${this.baseURL}/noticias`).pipe(tap(resp => this.noticias = resp))
   }
 
-  añadirNoticia(noticia: Contenido): Observable<any> {
+
+  añadirNoticia(noticia:Contenido) {
     let json = JSON.stringify(noticia);
-    console.log(noticia);
     let headers = new HttpHeaders().set("Content-Type", "application/json");
     return this.http.post(`${this.baseURL}/registrar`, json, { headers });
   }
 }
-

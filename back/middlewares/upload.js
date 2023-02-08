@@ -1,4 +1,23 @@
-const util = require("util");
+//Todo Isa
+const comprobarArchivos = (req, res, next) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        res.status(404).send("No hay archivos para subir");
+        return;
+    }
+
+    if (!req.files.archivo) {
+        res.status(404).send("No hay archivos para subir");
+        return;
+    }
+    console.log("Archivos que vienen en req.files:", req.files);
+    next();
+}
+
+module.exports = {
+    comprobarArchivos
+}
+
+/*const util = require("util");
 const multer = require("multer");
 const { extname } = require("path");
 const maxSize = 2 * 1024 * 1024;
@@ -22,4 +41,4 @@ let uploadFile = multer({
 }).single("file");
 
 let uploadFileMiddleware = util.promisify(uploadFile);
-module.exports = uploadFileMiddleware;
+module.exports = uploadFileMiddleware;*/
