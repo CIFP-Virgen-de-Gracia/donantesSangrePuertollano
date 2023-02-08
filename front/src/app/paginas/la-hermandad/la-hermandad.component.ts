@@ -10,14 +10,23 @@ import { Integrante } from '../interfaces/Paginas.interfaces';
 })
 export class LaHermandadComponent implements OnInit {
 
-  junta:Array<Integrante> | undefined;
+  junta:Integrante[]  | undefined;
+  integrante: Integrante | undefined;
+
 
   constructor(private PaginasService: PaginasService){}
 
   ngOnInit(){
     this.PaginasService.getIntegrantesCargo()
-      .subscribe( resp =>{
-        this.junta = resp;
+      .subscribe( resp => {
+        if (resp.success) {
+
+          resp.data.map((i: Integrante | undefined) => this.integrante = i);
+          this.junta = resp.data;
+
+        } else {
+          this.junta = undefined;
+        }
       });
   }
 }

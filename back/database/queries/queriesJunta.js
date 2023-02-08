@@ -16,6 +16,7 @@ class QueriesJunta {
 
 
     getCargoIntegrantes = async () => {
+
         const cargosIntegrantes = await models.db.models.integranteJunta.findAll({
             
             include: [
@@ -29,7 +30,8 @@ class QueriesJunta {
                     ]
                 }
             ],
-            attributes: ['nombre', 'apellido1', 'apellido2', [Sequelize.col('cargoIntegrante.cargoJunta.nombre'), 'nombreCargo']]
+            attributes: ['nombre', 'apellido1', 'apellido2', 
+                        [Sequelize.col('cargoIntegrante.cargoJunta.nombre'), 'cargo']]
         });
 
 
@@ -39,15 +41,8 @@ class QueriesJunta {
         on integrantesjunta.id = cargointegrantes.idIntegrante 
         join cargosjunta 
         on cargosjunta.id = cargointegrantes.idCargo`*/
-
-        /* 
-                await UsersDb.models.order.findOne({ 
-                    where: { id: 1 }, 
-                    include: [ProductsDb.models.product] 
-                  });
-         */
-        console.log(cargosIntegrantes)
-        return cargosIntegrantes
+        
+        return cargosIntegrantes;
     }
 }
 

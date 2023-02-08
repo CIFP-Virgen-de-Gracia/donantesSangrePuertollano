@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import { Integrante } from '../interfaces/Paginas.interfaces';
 
 
 @Injectable({
@@ -15,6 +16,6 @@ export class PaginasService {
 
 
   getIntegrantesCargo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`);
+    return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`)
   }
 }
