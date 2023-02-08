@@ -34,7 +34,7 @@
     </div>
   </div>
 </div>
-<div class="container pb-5 pt-5" *ngFor="let noticia of contenido| paginate: { itemsPerPage: 3, currentPage: p }">
+<div class="container pb-5 pt-5" *ngFor="let noticia of resultado| paginate: { itemsPerPage: 3, currentPage: p }">
   <div class="row">
     <div class="col">
       <h1 class="titulo subrayado">{{noticia.titulo}}</h1>

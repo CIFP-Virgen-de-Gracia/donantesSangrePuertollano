@@ -9,7 +9,8 @@ import { ContenidoService } from '../contenido.service';
 })
 export class MainPageContenidoComponent implements OnInit {
 
-  contenido:any=this.ContenidoService.noticias;
+  contenido:any=this.ContenidoService.resultado;
+
   constructor(private ContenidoService:ContenidoService){}
   p: number = 1;
 
@@ -17,6 +18,9 @@ export class MainPageContenidoComponent implements OnInit {
     this.ContenidoService.getListado().subscribe((res)=>{
       this.contenido=res;
     });
+  }
+  get resultado() {
+    return this.ContenidoService.resultado
   }
 
 
