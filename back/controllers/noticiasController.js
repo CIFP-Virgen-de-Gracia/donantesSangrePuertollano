@@ -41,9 +41,9 @@ const getListado = async (req, res = response) => {
 }
 const registrarNoticia = async (req, res = response) => {
     queriesNoticias.insertarNoticias(req).then((noticia) => {
-        console.log(req.files);
         res.status(200).json(noticia);
     }).catch((err) => {
+        console.log(err)
         res.status(203).json("Error de registro");
     });
 }

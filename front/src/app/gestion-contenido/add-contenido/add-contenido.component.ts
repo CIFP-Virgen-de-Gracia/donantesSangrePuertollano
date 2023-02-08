@@ -31,6 +31,7 @@ export class AddContenidoComponent {
   constructor(private ContenidoService: ContenidoService) {
   }
 
+
   limpiarAlert() {
     this.alert = "no";
     this.aviso = 0;
@@ -45,6 +46,9 @@ export class AddContenidoComponent {
     this.noticia.contenido = "";
     this.noticia.imagen = "";
   }
+  get resultado() {
+    return this.ContenidoService.resultado
+  }
   agregarNoticia() {
     /*const payload = new FormData();
     payload.append('titulo', this.noticiasForm.get('titulo')?.value);
@@ -56,11 +60,10 @@ export class AddContenidoComponent {
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
       this.alert = "si";
     } else {
-
       this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-        if (res === 1) {
+        if (res!=="Error de registro") {
           this.aviso = 1;
-          this.ContenidoService.getListado().subscribe();
+          this.ContenidoService.agregar(res);
           this.limpiarContenido();
         } else {
           this.aviso = 2;

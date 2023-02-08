@@ -8,12 +8,12 @@ const File = require('../../helpers/FileUpload');
 
 //Todo Isa
 class QueriesNoticias {
-
     constructor() {
         this.sequelize = sequelize;
     }
     insertarNoticias = async (req) => {
         let resultado = 0
+        let data="";
         this.sequelize.conectar();
         try {
             let noticia = new Noticia();
@@ -24,7 +24,20 @@ class QueriesNoticias {
                 noticia.subtitulo = req.body.subtitulo;
                 noticia.contenido = req.body.contenido;
                 noticia.seccion = req.body.seccion;
-                noticia.save();
+                const resp = await noticia.save();
+
+                let fecha = new Date(noticia.createdAt).toLocaleString();
+                let parrafo = noticia.contenido.split("\n");
+                data = {
+                    "id": resp.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido": parrafo,
+                    "fecha": fecha,
+                    "imagen": noticia["Imagen"]
+                }
+
+
                 resultado = 1
 
             } else {
@@ -44,6 +57,18 @@ class QueriesNoticias {
                 imagen.nombre = ruta;
                 imagen.save();
                 resultado = 1
+
+                let fecha = new Date(noticia.createdAt).toLocaleString();
+                let parrafo = noticia.contenido.split("\n");
+                data = {
+                    "id": resp.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido": parrafo,
+                    "fecha": fecha,
+                    "imagen": ruta
+                }
+
             }
 
         } catch (err) {
@@ -52,7 +77,7 @@ class QueriesNoticias {
 
         }
         this.sequelize.desconectar();
-        return resultado;
+        return data;
     }
 
     getListado = async (seccion) => {
@@ -77,7 +102,7 @@ class QueriesNoticias {
         const imagen = await Imagen.findOne({
             where: { nombre: nombre }
         });
-        
+
         this.sequelize.desconectar();
         return imagen;
     }
