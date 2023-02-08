@@ -7,7 +7,7 @@ const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const junta = require('../controllers/juntaController');
 
-const {midEjemplo} = require('../middlewares/userMiddlewares');
+// const {midEjemplo} = require('../middlewares/userMiddlewares');
 const controlador=require('../controllers/noticiasController');
 
 // Mario y Alicia
@@ -15,6 +15,9 @@ const controlador=require('../controllers/noticiasController');
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/activarCorreo/:id', auth.activarCorreo);
+router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd);
+router.post('/recuperarpasswd/:id', auth.recuperarPasswd);
+
 router.get('/activarNewsletter/:id', auth.activarNewsletter);
 
 

@@ -4,7 +4,6 @@ import { Md5 } from 'ts-md5';
 import { NombreCompleto, UserRegsitro } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
@@ -13,16 +12,16 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class RegistroComponent {
 
-  contraErronea: boolean = false;
+    contraErronea: boolean = false;
+    registradoExito: number = -1;  // 0 => regsitro correcto | 1 => registro fallido
 
-  registradoExito: number = -1; // 0 => regsitro correcto | 1 => registro fallido
   @Output() onFormValido: EventEmitter<number> = new EventEmitter();
 
   registroForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     ap1: new FormControl('', [Validators.required]),
     ap2: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required,   Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     passwd: new FormControl('', [Validators.required]),
     passwdRep: new FormControl('', [Validators.required])
   });
@@ -34,6 +33,7 @@ export class RegistroComponent {
   ) {}
 
   ngOnInit() {
+    
     this.contraErronea = false;
     this.registradoExito = -1;
   }
@@ -45,8 +45,8 @@ export class RegistroComponent {
       + this.registroForm.get('ap2')?.value;
 
     this.contraErronea = false;
-    console.log(this.registroForm.get('passwd')?.value);
-    console.log(this.registroForm.get('passwdRep')?.value);
+    // console.log(this.registroForm.get('passwd')?.value);
+    // console.log(this.registroForm.get('passwdRep')?.value);
     if (this.registroForm.get('passwd')?.value == this.registroForm.get('passwdRep')?.value) {
 
       const passwdHash = Md5.hashStr(this.registroForm.get('passwd')?.value);
@@ -57,8 +57,8 @@ export class RegistroComponent {
         passwd: passwdHash
       }).subscribe(resp => {
 
+        console.log(resp);
         if (resp.success) {
-          console.log(resp);
           this.onFormValido.emit(0);
         }
         else {

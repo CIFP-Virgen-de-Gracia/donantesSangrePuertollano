@@ -24,10 +24,11 @@
             [(ngModel)]="nuevoUsr.passwd"
         >
         <div class="mt-2 mb-5 d-flex justify-content-end">
-            <a class="me-2 olvidoPasswd" href="#">¿Olvidaste tu contraseña?</a>
+            <a
+                class="me-2 olvidoPasswd" 
+                (click)="irARecPasswd()">¿Olvidaste tu contraseña?</a>
         </div>
     </div>
-
 
     
     <div class="botonesLogin mb-3 d-flex justify-content-center">
