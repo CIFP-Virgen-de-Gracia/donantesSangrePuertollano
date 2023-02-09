@@ -40,13 +40,15 @@ const getListado = async (req, res = response) => {
     });
 }
 const registrarNoticia = async (req, res = response) => {
+    console.log(req.files);
     queriesNoticias.insertarNoticias(req).then((noticia) => {
-        console.log(req.files);
         res.status(200).json(noticia);
     }).catch((err) => {
+        console.log(err)
         res.status(203).json("Error de registro");
     });
 }
+
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         res.status(200).json(noticia);
@@ -54,6 +56,7 @@ const getNoticia = (req, res = response) => {
         res.status(200).json("No encontrada");
     });
 }
+
 const borrarNoticia = (req, res = response) => {
     queriesNoticias.borrarNoticias(req.body.id).then((noticia) => {
         res.status(200).json("La noticia ha sido borrada");
@@ -62,12 +65,9 @@ const borrarNoticia = (req, res = response) => {
     });
 }
 const mostrarImagen = (req, res = response) => {
-    console.log('entro');
-    let ruta = "http://127.0.0.1:8090/api/Noticias/upload/" + req.params.nombre;
-    queriesNoticias.getImagen(ruta).then((imagen) => {
+    queriesNoticias.getImagen(req.params.id).then((imagen) => {
         if (imagen) {
-            pathImagen = path.join(__dirname, '../uploads', 'noticias', req.params.nombre);
-            console.log(pathImagen);
+            pathImagen = path.join(__dirname, '../uploads', 'noticias', imagen.nombre);
             if (fs.existsSync(pathImagen)) {
                 return res.sendFile(pathImagen)
             }

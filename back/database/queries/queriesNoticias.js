@@ -8,24 +8,36 @@ const File = require('../../helpers/FileUpload');
 
 //Todo Isa
 class QueriesNoticias {
-
     constructor() {
         this.sequelize = sequelize;
     }
+
     insertarNoticias = async (req) => {
-        let resultado = 0
+        let data = "";
         this.sequelize.conectar();
         try {
             let noticia = new Noticia();
 
             if (!req.files) {
+
                 noticia.id = null;
                 noticia.titulo = req.body.titulo;
                 noticia.subtitulo = req.body.subtitulo;
                 noticia.contenido = req.body.contenido;
                 noticia.seccion = req.body.seccion;
-                noticia.save();
-                resultado = 1
+                const resp = await noticia.save();
+               
+                let fecha = new Date(resp.createdAt).toLocaleString();
+                let parrafo = noticia.contenido.split("\n");
+               
+                data = {
+                    "id": resp.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido": parrafo,
+                    "fecha": fecha,
+                    "imagen": noticia["Imagen"]
+                }
 
             } else {
 
@@ -37,22 +49,32 @@ class QueriesNoticias {
                 const resp = await noticia.save();
 
                 const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-                const ruta = "http://127.0.0.1:8090/api/Noticias/upload/" + nombre;
+                const ruta = "http://127.0.0.1:8090/api/Noticias/upload/" + resp.id;
 
                 let imagen = new Imagen();
                 imagen.idNoticia = resp.id;
-                imagen.nombre = ruta;
+                imagen.nombre = nombre;
+                imagen.ruta = ruta;
                 imagen.save();
-                resultado = 1
+
+                let fecha = new Date(resp.createdAt).toLocaleString();
+                let parrafo = noticia.contenido.split("\n");
+                
+                data = {
+                    "id": resp.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido": parrafo,
+                    "fecha": fecha,
+                    "imagen": ruta
+                }
             }
-
         } catch (err) {
-            resultado = 0
             throw err;
-
         }
+
         this.sequelize.desconectar();
-        return resultado;
+        return data;
     }
 
     getListado = async (seccion) => {
@@ -72,12 +94,9 @@ class QueriesNoticias {
         this.sequelize.desconectar();
         return noticias;
     }
-    getImagen = async (nombre) => {
+    getImagen = async (id) => {
         this.sequelize.conectar();
-        const imagen = await Imagen.findOne({
-            where: { nombre: nombre }
-        });
-        
+        const imagen = await Imagen.findByPk(id);
         this.sequelize.desconectar();
         return imagen;
     }
