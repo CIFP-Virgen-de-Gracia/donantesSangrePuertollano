@@ -40,6 +40,7 @@ const getListado = async (req, res = response) => {
     });
 }
 const registrarNoticia = async (req, res = response) => {
+    console.log(req.files);
     queriesNoticias.insertarNoticias(req).then((noticia) => {
         res.status(200).json(noticia);
     }).catch((err) => {
@@ -66,9 +67,7 @@ const borrarNoticia = (req, res = response) => {
 const mostrarImagen = (req, res = response) => {
     queriesNoticias.getImagen(req.params.id).then((imagen) => {
         if (imagen) {
-            console.log(imagen.nombre);
             pathImagen = path.join(__dirname, '../uploads', 'noticias', imagen.nombre);
-            console.log(pathImagen);
             if (fs.existsSync(pathImagen)) {
                 return res.sendFile(pathImagen)
             }

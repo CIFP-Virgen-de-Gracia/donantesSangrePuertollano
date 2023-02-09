@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild,ElementRef } from '@angular/core';
 import { Contenido } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
@@ -18,15 +18,7 @@ export class AddContenidoComponent {
     seccion: "noticias",
     imagen:""
   }
-  /*
-  noticiasForm: FormGroup = new FormGroup({
-    titulo: new FormControl('', [Validators.required]),
-    subtitulo: new FormControl(''),
-    contenido: new FormControl('', [Validators.required]),
-    imagen: new FormControl(''),
-    fileSource: new FormControl(''),
-    seccion: new FormControl('noticias'),
-  });*/
+  @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
   constructor(private ContenidoService: ContenidoService) {
   }
@@ -45,17 +37,13 @@ export class AddContenidoComponent {
     this.noticia.subtitulo = "";
     this.noticia.contenido = "";
     this.noticia.imagen = "";
+    this.foto.nativeElement.value=''
+
   }
   get resultado() {
     return this.ContenidoService.resultado
   }
   agregarNoticia() {
-    /*const payload = new FormData();
-    payload.append('titulo', this.noticiasForm.get('titulo')?.value);
-    payload.append('subtitulo', this.noticiasForm.get('subtitulo')?.value);
-    payload.append('contenido', this.noticiasForm.get('contenido')?.value);
-    payload.append('seccion', this.noticiasForm.get('seccion')?.value);
-    payload.append('imagen',this.noticiasForm.get('fileSource')?.value);*/
 
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
       this.alert = "si";
@@ -65,6 +53,7 @@ export class AddContenidoComponent {
           this.aviso = 1;
           this.ContenidoService.agregar(res);
           this.limpiarContenido();
+
         } else {
           this.aviso = 2;
         }
