@@ -7,7 +7,7 @@ router.post('/get', controlador.getNoticia);
 router.get('/:seccion', controlador.getListado);
 router.post('/registrar', controlador.registrarNoticia);
 router.delete('/borrar', controlador.borrarNoticia);
-router.get('upload/:nombre',controlador.mostrarImagen);
+router.get('/upload/:id',controlador.mostrarImagen);
 //router.put('/modificar',controlador.modificarNoticia);
 
 module.exports = router;

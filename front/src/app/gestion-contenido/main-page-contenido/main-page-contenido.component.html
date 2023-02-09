@@ -34,13 +34,13 @@
     </div>
   </div>
 </div>
-<div class="container pb-5 pt-5" *ngFor="let noticia of contenido| paginate: { itemsPerPage: 3, currentPage: p }">
+<div class="container pb-5 pt-5" *ngFor="let noticia of resultado| paginate: { itemsPerPage: 3, currentPage: p }">
   <div class="row">
     <div class="col">
       <h1 class="titulo subrayado">{{noticia.titulo}}</h1>
       <h5 class="pt-3 pb-2">{{noticia.subtitulo}}</h5>
       <p class="pb-3"><small>Añadido el {{noticia.fecha}}</small></p>
-     <!--<img *ngIf="noticia.imagen!==null" class="imagen" [src]=noticia.imagen/>-->
+      <!--<img *ngIf="noticia.imagen" class="imagen" [src]=getImagen({{noticia.id}})/>-->
       <div>
         <p *ngFor="let p of noticia.contenido">
           {{p}}
@@ -49,9 +49,5 @@
     </div>
   </div>
 </div>
-<pagination-controls (pageChange)="p = $event"
-                      previousLabel="Anterior"
-                      nextLabel="Siguiente"
-                      class="text-center"
-                      >
+<pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente" class="text-center">
 </pagination-controls>
