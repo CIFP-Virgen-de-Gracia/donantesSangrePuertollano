@@ -16,6 +16,7 @@ import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.modu
 import {NgxPaginationModule} from 'ngx-pagination';
 
 
+
 @NgModule({
     declarations: [
         AppComponent,
