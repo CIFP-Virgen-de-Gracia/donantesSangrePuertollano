@@ -22,7 +22,4 @@ export class MainPageContenidoComponent implements OnInit {
     return this.ContenidoService.resultado
   }
 
-
-
-
 }
