@@ -26,8 +26,13 @@ export class ContenidoService {
   }
 
   añadirNoticia(noticia:Contenido) {
-    let json = JSON.stringify(noticia);
-    let headers = new HttpHeaders().set("Content-Type", "application/json");
-    return this.http.post(`${this.baseURL}/registrar`, json, { headers });
+    const payload = new FormData();
+    payload.append('titulo', noticia.titulo);
+    payload.append('subtitulo',noticia.subtitulo );
+    payload.append('contenido', noticia.contenido);
+    payload.append('seccion', noticia.seccion);
+    payload.append('archivo',noticia.imagen);
+
+    return this.http.post(`${this.baseURL}/registrar`, payload);
   }
 }
