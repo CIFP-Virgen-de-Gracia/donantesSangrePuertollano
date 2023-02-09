@@ -31,7 +31,8 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: ''
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
+    redirectTo: '' */
 
   }
 
@@ -44,7 +45,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

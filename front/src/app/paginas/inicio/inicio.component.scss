@@ -1,11 +1,11 @@
 .container {
   margin: 0;
   max-width: 100%;
-}
 
-/* div.cita {
-  padding: 5rem 0;
-} */
+  &>:first-child {
+    padding-top: 5rem;
+  }
+}
 
 p {
   font-size: var(--letra-media);
@@ -28,15 +28,6 @@ input {
   &:hover {
     background-color: var(--color-secundario);
   }
-}
-
-h2::after {
-  content: "";
-  display: block;
-  width: 6rem;
-  max-width: 60%;
-  border-bottom: 0.3rem solid var(--color-primario);
-  margin: 0 auto 1rem;
 }
 
 .mapa {

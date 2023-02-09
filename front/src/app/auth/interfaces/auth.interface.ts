@@ -14,6 +14,7 @@ export interface NombreCompleto {
     ap1: string;
     ap2: string;
 }
+
 export interface Auth {
     success: boolean;
     data: {
@@ -25,6 +26,17 @@ export interface Auth {
 }
 
 export interface registroResponse {
+    success: boolean;
+    msg: string;
+}
+
+export interface solicitarRecPasswdResponse {
+    success: boolean;
+    id: number;
+    msg: string;
+}
+
+export interface recPasswdResponse {
     success: boolean;
     msg: string;
 }

@@ -33,7 +33,6 @@ export class LoginComponent {
     const passwd = Md5.hashStr(this.nuevoUsr.passwd);
     this.authHttsService.login({email: this.nuevoUsr.email, passwd: passwd}).subscribe(resp => {
 
-      console.log(resp);
       if (resp.success) {
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.erroneo = false;
@@ -41,5 +40,10 @@ export class LoginComponent {
       }
       else this.erroneo = true;
     });
-  } 
+  }
+
+  irARecPasswd() {
+    this.router.navigate(['/auth/recuperacionpasswd']);
+  }
+  
 }
