@@ -12,10 +12,15 @@ export class MainPageContenidoComponent implements OnInit {
 
   constructor(private ContenidoService:ContenidoService){}
   p: number = 1;
-
+  valor: number = 0;
   ngOnInit(){
     this.ContenidoService.getListado().subscribe((res)=>{
-      console.log(res);
+      if(res === "No encontrada"){
+        this.valor = 1;
+      }
+      else{
+        this.valor = 0;
+      }
     });
   }
   get resultado() {
