@@ -40,9 +40,6 @@ export class AddContenidoComponent {
     this.foto.nativeElement.value=''
 
   }
-  get resultado() {
-    return this.ContenidoService.resultado
-  }
   agregarNoticia() {
 
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
