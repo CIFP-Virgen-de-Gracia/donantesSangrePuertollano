@@ -161,7 +161,7 @@ const mandarEmailRecuperarPasswd = async(req, res = response) => {
         res.status(200).json(resp);
     }
     catch (err) {
-
+        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
