@@ -3,6 +3,8 @@ const Imagen = require('../../models/Imagen');
 const sequelize = require('../ConexionSequelize');
 const Noticia = require('../../models/Noticias');
 const Op = require("sequelize");
+const path = require("path");
+const fs = require("fs");
 const fileUpload = require('express-fileupload');
 const File = require('../../helpers/FileUpload');
 
@@ -26,17 +28,17 @@ class QueriesNoticias {
                 noticia.contenido = req.body.contenido;
                 noticia.seccion = req.body.seccion;
                 const resp = await noticia.save();
-               
+
                 let fecha = new Date(resp.createdAt).toLocaleString();
                 let parrafo = noticia.contenido.split("\n");
-               
+
                 data = {
                     "id": resp.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
                     "contenido": parrafo,
                     "fecha": fecha,
-                    "imagen": noticia["Imagen"]
+                    "imagen": ""
                 }
 
             } else {
@@ -49,24 +51,22 @@ class QueriesNoticias {
                 const resp = await noticia.save();
 
                 const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-                const ruta = "http://127.0.0.1:8090/api/Noticias/upload/" + resp.id;
 
                 let imagen = new Imagen();
                 imagen.idNoticia = resp.id;
                 imagen.nombre = nombre;
-                imagen.ruta = ruta;
                 imagen.save();
 
                 let fecha = new Date(resp.createdAt).toLocaleString();
                 let parrafo = noticia.contenido.split("\n");
-                
+
                 data = {
                     "id": resp.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
                     "contenido": parrafo,
                     "fecha": fecha,
-                    "imagen": ruta
+                    "imagen": ""
                 }
             }
         } catch (err) {
@@ -90,7 +90,12 @@ class QueriesNoticias {
     }
     getNoticia = async (id) => {
         this.sequelize.conectar();
-        const noticias = await Noticias.findByPk(id, { include: "Imagen" });
+        const noticias = await Noticias.findOne(
+            {
+                where: { id: id },
+                include: "Imagen",
+
+            });
         this.sequelize.desconectar();
         return noticias;
     }
@@ -101,59 +106,112 @@ class QueriesNoticias {
         return imagen;
     }
 
-    modificarNoticia = async (id, req) => {
-        this.conectar();
-        let resultado = await Noticia.findByPk(id);
-        if (!resultado) {
-            this.desconectar();
-            throw error;
-        }
-        if (req.body.imagen === undefined) {
-            let data = {
-                titulo: req.body.titulo,
-                subtitulo: req.body.subtitulo,
-                contenido: req.bodycontenido,
-                seccion: req.body.seccion
-            }
-            await resultado.update(data);
-        } else {
-            let data = {
-                titulo: req.body.titulo,
-                subtitulo: req.body.subtitulo,
-                contenido: req.bodycontenido,
-                seccion: req.body.seccion
-            }
-            await resultado.update(data);
-            let foto = await Imagen.findByPk(id);
-            if (!foto) {
-                await Imagen.create({
-                    idNoticia: id,
-                    nombre: req.body.name,
-                    url: req.body.url
-                });
-            } else {
-                let img = {
-                    nombre: req.body.name,
-                    url: req.body.url
-                }
-                await foto.update(img);
-            }
-        }
-        this.desconectar();
-        return resultado;
+    modificarNoticia = async (req) => {
+        let data = "";
 
+        this.sequelize.conectar();
+        try {
+            let noticia = await Noticias.findOne(
+                {
+                    where: { id: req.body.id },
+                    include: "Imagen",
+
+                });
+
+            if (noticia) {
+                if (!req.files) {
+                    noticia.id = noticia.id;
+                    noticia.titulo = req.body.titulo;
+                    noticia.subtitulo = req.body.subtitulo;
+                    noticia.contenido = req.body.contenido;
+                    noticia.seccion = noticia.seccion;
+                    const resp = await noticia.save();
+
+                    let fecha = new Date(noticia.createdAt).toLocaleString();
+                    let parrafo = resp.contenido.split("\n");
+
+                    data = {
+                        "id": resp.id,
+                        "titulo": resp.titulo,
+                        "subtitulo": resp.subtitulo,
+                        "contenido": parrafo,
+                        "fecha": fecha,
+                        "imagen": ""
+                    }
+
+                } else {
+
+                    noticia.id = noticia.id;
+                    noticia.titulo = req.body.titulo;
+                    noticia.subtitulo = req.body.subtitulo;
+                    noticia.contenido = req.body.contenido;
+                    noticia.seccion = noticia.seccion;
+                    noticia.save();
+
+                    if (noticia["Imagen"].length > 0) {
+                        const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
+                        if (fs.existsSync(pathImagen)) {
+                            fs.unlinkSync(pathImagen);
+                        }
+                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                       
+                        noticia["Imagen"][0]["idNoticia"] = noticia.id;
+                        noticia["Imagen"][0]["nombre"]= nombre;
+                        noticia["Imagen"][0].save();
+                   
+                    } else {
+
+                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+
+                        let imagen = new Imagen();
+                        imagen.idNoticia = noticia.id;
+                        imagen.nombre = nombre;
+                        imagen.save();
+                    }
+
+                    let fecha = new Date(noticia.createdAt).toLocaleString();
+                    let parrafo = noticia.contenido.split("\n");
+
+                    data = {
+                        "id": noticia.id,
+                        "titulo": noticia.titulo,
+                        "subtitulo": noticia.subtitulo,
+                        "contenido": parrafo,
+                        "fecha": fecha,
+                        "imagen": "http://127.0.0.1:8090/api/Noticias/upload/" + noticia.id
+                    }
+                }
+            }
+
+        } catch (err) {
+            throw err;
+        }
+
+        this.sequelize.desconectar();
+        return data;
     }
 
     borrarNoticia = async (id) => {
-        this.conectar();
-        let resultado = await Noticia.findByPk(id);
-        if (!resultado) {
+        this.sequelize.conectar();
+        let noticia = await Noticias.findOne(
+            {
+                where: { id: id },
+                include: "Imagen",
+
+            });
+        if (!noticia) {
             this.sequelize.desconectar();
             throw error;
         }
-        await resultado.destroy();
+        if (noticia["Imagen"].length > 0) {
+            const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
+            if (fs.existsSync(pathImagen)) {
+                fs.unlinkSync(pathImagen);
+            }
+        }
+        await noticia.destroy();
         this.sequelize.desconectar();
-        return resultado;
+        return noticia;
     }
 }
 const queriesNoticias = new QueriesNoticias();
