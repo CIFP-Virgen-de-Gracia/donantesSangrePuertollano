@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Contenido} from './Interfaces/Contenido.interface';
+import { Contenido } from './Interfaces/Contenido.interface';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -16,22 +16,22 @@ export class ContenidoService {
   }
 
   getListado() {
-    return this.http.get<any>(`${this.baseURL}/noticias`).pipe(tap(resp => this.noticias = resp))
+    return this.http.get<any>(`${this.baseURL}/noticias`).pipe(tap(resp => { if (resp !== "No encontrada") { this.noticias = resp } }))
   }
   get resultado() {
     return [...this.noticias];
   }
-  agregar(noticia:any){
+  agregar(noticia: any) {
     this.noticias.unshift(noticia);
   }
 
-  añadirNoticia(noticia:Contenido) {
+  añadirNoticia(noticia: Contenido) {
     const payload = new FormData();
     payload.append('titulo', noticia.titulo);
-    payload.append('subtitulo',noticia.subtitulo );
+    payload.append('subtitulo', noticia.subtitulo);
     payload.append('contenido', noticia.contenido);
     payload.append('seccion', noticia.seccion);
-    payload.append('archivo',noticia.imagen);
+    payload.append('archivo', noticia.imagen);
 
     return this.http.post(`${this.baseURL}/registrar`, payload);
   }
