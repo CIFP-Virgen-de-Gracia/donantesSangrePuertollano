@@ -1,0 +1,24 @@
+<main>
+
+  <h2 class="titulo subrayado">Contenidos de la página</h2>
+
+  <div class="contenedor row">
+
+    <div class="col-3 menu-horizontal g-0">
+      <ul class="">
+        <li *ngFor="let e of elementos; let i = index"
+          routerLink="./{{ e.nombre }}"
+          [class.activo]="i == elementoActivo"
+          (click) = "elementoActivo = i">
+          <i class="fa-solid {{ e.icono }}"></i>
+          {{ e.nombre | titlecase }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-9 config">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+</main>

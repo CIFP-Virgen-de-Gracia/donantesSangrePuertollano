@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -19,7 +21,6 @@ const routes: Routes = [
   {
     path: 'resultado',
     component: ResultadoComponent
-
   },
   {
     path: 'auth',
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'noticias',
     loadChildren: () => import('./gestion-contenido/gestion-contenido.module').then( m => m.GestionContenidoModule )
+  },
+  {
+    path: 'configuracion',
+    loadChildren: () => import('./config/config.module').then( m => m.ConfigModule )
   },
   {
     path: '**',
