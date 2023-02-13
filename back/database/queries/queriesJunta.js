@@ -16,7 +16,7 @@ class QueriesJunta {
 
 
     getCargoIntegrantes = async () => {
-
+        //https://stackoverflow.com/questions/68132680/how-to-return-values-from-joined-tables-in-sequelize-at-the-same-level-as-master
         const cargosIntegrantes = await models.db.models.integranteJunta.findAll({
             
             include: [
@@ -34,17 +34,10 @@ class QueriesJunta {
                         [Sequelize.col('cargoIntegrante.cargoJunta.nombre'), 'cargo']]
         });
 
-
-
-        /*  `Select integrantesjunta.nombre, apellido1, apellido2, cargosjunta.nombre 
-        from integrantesjunta join cargointegrantes
-        on integrantesjunta.id = cargointegrantes.idIntegrante 
-        join cargosjunta 
-        on cargosjunta.id = cargointegrantes.idCargo`*/
-        
         return cargosIntegrantes;
     }
 }
+
 
 const queriesJunta = new QueriesJunta();
 

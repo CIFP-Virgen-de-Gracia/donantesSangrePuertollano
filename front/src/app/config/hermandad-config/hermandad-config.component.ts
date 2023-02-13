@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Integrante } from '../interfaces/Paginas.interfaces';
-
+import { Integrante } from 'src/app/paginas/interfaces/Paginas.interfaces';
 
 @Component({
-  selector: 'app-la-hermandad',
-  templateUrl: './la-hermandad.component.html',
-  styleUrls: ['./la-hermandad.component.scss']
+  selector: 'app-hermandad-config',
+  templateUrl: './hermandad-config.component.html',
+  styleUrls: ['./hermandad-config.component.scss']
 })
-export class LaHermandadComponent implements OnInit {
+export class HermandadConfigComponent {
 
   junta!: Integrante[];
 
@@ -23,4 +22,5 @@ export class LaHermandadComponent implements OnInit {
         }
       });
   }
+
 }

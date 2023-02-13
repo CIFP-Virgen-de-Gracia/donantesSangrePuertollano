@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Integrante } from 'src/app/paginas/interfaces/Paginas.interfaces';
 import { environment } from 'src/environment/environment';
 import { Email } from '../interfaces/email.interface';
 
@@ -15,7 +16,13 @@ export class SharedService {
   constructor(private http: HttpClient) { }
 
 
-  suscripcionNewsletter(email:Email): Observable<any> {
+
+  suscripcionNewsletter(email: Email): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/api/suscripcionNewsletter`, email);
+  }
+
+
+  getIntegrantesCargo(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`)
   }
 }

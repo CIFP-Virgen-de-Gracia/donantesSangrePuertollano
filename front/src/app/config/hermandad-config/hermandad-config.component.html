@@ -1,0 +1,23 @@
+<div class="historia">
+  <h3 class="titulo">Historia</h3>
+  <textarea></textarea>
+</div>
+
+<div class="junta">
+  <h3 class="titulo">Junta rectora</h3>
+
+  <!-- <div class="contenedor-integrantes">
+    <div class="integrante" *ngFor="let integrante of junta">
+      <p class="cargo align-middle">{{ integrante.cargo }}</p>
+      <p class="nombre align-middle">{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}</p>
+    </div>
+  </div> -->
+
+  <div class="contenedor-integrantes">
+    <div class="integrante d-flex" *ngFor="let integrante of junta">
+      <input type="text" class="cargo align-middle" value="{{ integrante.cargo }}">
+      <input type="text" class="nombre align-middle" value="{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}">
+    </div>
+  </div>
+
+</div>
