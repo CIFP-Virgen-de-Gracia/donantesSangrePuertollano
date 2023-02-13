@@ -20,6 +20,10 @@ const User = sequelize.db.define("user", {
     passwd: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    codRecPasswd: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 },
 {
