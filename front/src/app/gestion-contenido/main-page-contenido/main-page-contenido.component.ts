@@ -9,17 +9,16 @@ import { ContenidoService } from '../contenido.service';
 })
 export class MainPageContenidoComponent implements OnInit {
 
-  contenido:any=this.ContenidoService.noticias;
-  constructor(private ContenidoService:ContenidoService){}
+  constructor(private ContenidoService: ContenidoService) { }
   p: number = 1;
-
-  ngOnInit(){
-    this.ContenidoService.getListado().subscribe((res)=>{
-      this.contenido=res;
+  ngOnInit() {
+    this.ContenidoService.getListado().subscribe((res) => {
+      console.log(res);
     });
   }
+  get resultado() {
 
-
-
+    return this.ContenidoService.resultado
+  }
 
 }
