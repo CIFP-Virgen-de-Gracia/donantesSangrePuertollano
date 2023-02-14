@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Integrante } from 'src/app/paginas/interfaces/Paginas.interfaces';
 import { environment } from 'src/environment/environment';
 import { Email } from '../interfaces/email.interface';
 
@@ -23,6 +22,11 @@ export class SharedService {
 
 
   getIntegrantesCargo(): Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`)
+    return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`);
+  }
+
+
+  getHistoria(): Observable<String>{
+    return this.http.get<String>(`${this.baseUrl}/api/getHistoria`);
   }
 }
