@@ -1,11 +1,7 @@
 const sequelize = require('../ConexionSequelize');
-const { Op } = require('sequelize');
-const CargoIntegrante = require('../../models/JuntaRectora/CargoIntegrante');
-const IntegranteJunta = require('../../models/JuntaRectora/IntegranteJunta');
-const CargoJunta = require('../../models/JuntaRectora/CargoJunta');
 const models = require('../../models/JuntaRectora');
-
 const Sequelize = require('sequelize');
+
 
 //Alicia
 class QueriesJunta {
