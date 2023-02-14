@@ -1,33 +1,24 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
-
-//Alicia
-sequelize.conectar();
-
-const Email = sequelize.db.define("email", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false, 
-    },
-    email: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false
-    },
-    emailVerifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    newsletterVerifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
+'use strict';
+const { Model } = require('sequelize');
+ 
+module.exports = (sequelize, DataTypes) => {
+  class Email extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-});
-
-sequelize.sync();
-sequelize.desconectar();
-
-module.exports = Email;
+  }
+  Email.init({
+    email: DataTypes.STRING,
+    emailVerifiedAt: DataTypes.DATE,
+    newsletterVerifiedAt: DataTypes.DATE,
+  }, {
+    sequelize,
+    modelName: 'Email',
+  });
+  return Email;
+};

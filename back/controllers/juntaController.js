@@ -22,7 +22,7 @@ const getIntegrantesCargo = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(resp);
+            res.status(200).json(err);
         });
 }
 

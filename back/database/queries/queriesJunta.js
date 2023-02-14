@@ -1,7 +1,6 @@
 const sequelize = require('../ConexionSequelize');
-const models = require('../../models/JuntaRectora');
+const models = require('../../models/index.js');
 const Sequelize = require('sequelize');
-
 
 //Alicia
 class QueriesJunta {
@@ -13,21 +12,21 @@ class QueriesJunta {
 
     getCargoIntegrantes = async () => {
         //https://stackoverflow.com/questions/68132680/how-to-return-values-from-joined-tables-in-sequelize-at-the-same-level-as-master
-        const cargosIntegrantes = await models.db.models.integranteJunta.findAll({
+        const cargosIntegrantes = await models.IntegranteJunta.findAll({
             
             include: [
-                { model: models.db.models.cargoIntegrante,
+                { model: models.CargoIntegrante,
                     attributes: [],
-                    as: 'cargoIntegrante',
+                    as: 'CargoIntegrante',
                     include: [
-                        { model: models.db.models.cargoJunta,
+                        { model: models.CargoJunta,
                             attributes: [],
-                        as: 'cargoJunta'}
+                        as: 'CargoJunta'}
                     ]
                 }
             ],
             attributes: ['nombre', 'apellido1', 'apellido2', 
-                        [Sequelize.col('cargoIntegrante.cargoJunta.nombre'), 'cargo']]
+                        [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo']]
         });
 
         return cargosIntegrantes;
