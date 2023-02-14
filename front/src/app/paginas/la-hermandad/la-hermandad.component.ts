@@ -22,5 +22,10 @@ export class LaHermandadComponent implements OnInit {
           this.junta = resp.data;
         }
       });
+
+    this.SharedService.getHistoria()
+      .subscribe(resp => {
+        console.log(resp)
+      });
   }
 }

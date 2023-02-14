@@ -1,7 +1,3 @@
-.titulo {
-  margin-bottom: 1rem;
-}
-
 .historia {
   textarea {
     width: 100%;
@@ -14,6 +10,10 @@
 .junta {
   .titulo {
     margin-top: 4rem;
+  }
+
+  .info {
+    font-size: var(--letra-pequena);
   }
 
   .contenedor-integrantes {
