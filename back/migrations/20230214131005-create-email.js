@@ -1,20 +1,26 @@
-'use strict';
+'use strict'; 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('contenidos', {
+    await queryInterface.createTable('emails', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.BIGINT,
         primaryKey: true,
-        type: Sequelize.BIGINT
+        autoIncrement: true,
+        allowNull: false,
       },
-      nombre: {
+      email: {
         type: Sequelize.STRING,
-        unique: true
+        unique: true,
+        allowNull: false
       },
-      valor: {
-        type: Sequelize.STRING(5000)
+      emailVerifiedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      newsletterVerifiedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       createdAt: {
         allowNull: false,
@@ -27,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('contenidos');
+    await queryInterface.dropTable('emails');
   }
 };

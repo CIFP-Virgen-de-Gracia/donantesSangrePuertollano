@@ -1,38 +1,24 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config()
+'use strict';
+const { Model } = require('sequelize');
 
-const RolUser = require('../models/RolUser');
-
-//Mario
-const User = sequelize.db.define("user", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: false,
-        allowNull: false,
-        
-    },
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    passwd: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    codRecPasswd: {
-        type: DataTypes.STRING,
-        allowNull: true
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      User.hasMany(models.RolUser, {as: 'RolUser', foreignKey: 'idUser'});
     }
-},
-{
-    tableName: 'users'
-});
-
-sequelize.sync();
-sequelize.desconectar();
-
-User.hasMany(RolUser, {as: 'RolUser', foreignKey: 'idUser'});
-
-module.exports = User;
+  }
+  User.init({
+    nombre: DataTypes.STRING,
+    passwd: DataTypes.STRING,
+    codRecPasswd: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
+  return User;
+};
