@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('contenidos', {
+    await queryInterface.createTable('integrantesJunta', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,10 +11,15 @@ module.exports = {
       },
       nombre: {
         type: Sequelize.STRING,
-        unique: true
+        allowNull: false
       },
-      valor: {
-        type: Sequelize.STRING(5000)
+      apellido1: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      apellido2: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -23,10 +28,13 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('contenidos');
+    await queryInterface.dropTable('integrantesJunta');
   }
-};
+}; 

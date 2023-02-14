@@ -1,9 +1,4 @@
 const sequelize = require('../ConexionSequelize');
-const { Op } = require('sequelize');
-const Sequelize = require('sequelize');/* 
-const Contenido  = require('../../models/Contenido')(sequelize, Sequelize.DataTypes); */
-/* const models = require('../../models') */
-/* const User = require('../../models/User'); */
 const models = require('../../models/index.js');
 
 //Alicia
@@ -14,24 +9,16 @@ class QueriesContenidos {
     }
 
 
-    getHistoria = async () => {/* 
-        console.log(prueba) */
-        /* try {
+    getHistoria = async () => {
+        
+        const historia = await models.Contenido.findOne({
+            attributes: ['nombre', 'valor'],
+            where: {
+                nombre: 'historia'
+            }
+        });
 
-            const historia = await Contenido.findOne({
-                attributes: ['nombre', 'valor'],
-                where: {
-                    nombre: 'historia'
-                }
-            });
-
-            
-            return historia;
-
-        } catch (err) {
-            console.log(err)
-        } */
-
+        return historia;
     }
 }
 
