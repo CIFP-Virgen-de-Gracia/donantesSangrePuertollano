@@ -1,27 +1,33 @@
-const mysql = require('mysql2');
-const conexion = require('../Conexion');
 const sequelize = require('../ConexionSequelize');
-const Pregunta = require('../../models/Pregunta');
+const models = require('../../models/index.js');
+
+
 //Todo Alejandro
 class query_Apto_Sangre {
 
     constructor() {
         this.sequelize = sequelize; 
     }
+
+
     getPreguntas = async() => {
         this.sequelize.conectar();
         let resultado = [];
+
         try {
-            console.log("Accediendo a los datos");
-            resultado = await Pregunta.findAll();
+
+            resultado = await models.Pregunta.findAll();
             this.sequelize.desconectar();
+
         } catch(error) {
-            console.log(error);
+
             this.sequelize.desconectar();
             throw error;
         }
         return resultado
     }
+
+
     getPregunta = async(id) => {
         this.sequelize.conectar();
         let resultado = [];

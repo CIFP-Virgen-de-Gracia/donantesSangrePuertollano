@@ -26,7 +26,7 @@ export class SharedService {
   }
 
 
-  getHistoria(): Observable<String>{
-    return this.http.get<String>(`${this.baseUrl}/api/getHistoria`);
+  getHistoria(): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/api/getHistoria`);
   }
 }

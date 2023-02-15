@@ -13,14 +13,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      apellido1: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      apellido2: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

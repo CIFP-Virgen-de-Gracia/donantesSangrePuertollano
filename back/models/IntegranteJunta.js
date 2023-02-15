@@ -17,8 +17,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   IntegranteJunta.init({
     nombre: DataTypes.STRING,
-    apellido1: DataTypes.STRING,
-    apellido2: DataTypes.STRING
   }, {
     sequelize,
     paranoid: true,
