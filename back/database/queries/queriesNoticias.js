@@ -1,10 +1,12 @@
-const models = require('../../models/index');
 const sequelize = require('../ConexionSequelize');
-const Op = require("sequelize");
 const path = require("path");
 const fs = require("fs");
 const fileUpload = require('express-fileupload');
 const File = require('../../helpers/FileUpload');
+const models = require('../../models/index.js');
+const Imagen = require('../../models/Imagen');
+const Noticia = require('../../models/Noticia');
+
 
 //Todo Isa
 class QueriesNoticias {
@@ -77,7 +79,7 @@ class QueriesNoticias {
 
     getListado = async (seccion) => {
         this.sequelize.conectar();
-        const noticias = await Noticias.findAll(
+        const noticias = await models.Noticias.findAll(
             {
                 where: { seccion: seccion },
                 include: "Imagen",
@@ -86,9 +88,11 @@ class QueriesNoticias {
         this.sequelize.desconectar();
         return noticias;
     }
+
+
     getNoticia = async (id) => {
         this.sequelize.conectar();
-        const noticias = await Noticias.findOne(
+        const noticias = await models.Noticias.findOne(
             {
                 where: { id: id },
                 include: "Imagen",
@@ -97,19 +101,22 @@ class QueriesNoticias {
         this.sequelize.desconectar();
         return noticias;
     }
+
+
     getImagen = async (id) => {
         this.sequelize.conectar();
-        const imagen = await Imagen.findByPk(id);
+        const imagen = await models.Imagen.findByPk(id);
         this.sequelize.desconectar();
         return imagen;
     }
+
 
     modificarNoticia = async (req) => {
         let data = "";
 
         this.sequelize.conectar();
         try {
-            let noticia = await Noticias.findOne(
+            let noticia = await models.Noticias.findOne(
                 {
                     where: { id: req.body.id },
                     include: "Imagen",
@@ -151,7 +158,7 @@ class QueriesNoticias {
                         if (fs.existsSync(pathImagen)) {
                             fs.unlinkSync(pathImagen);
                         }
-                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                        const nombre = await models.File.subirArchivo(req.files, undefined, 'noticias');
                        
                         noticia["Imagen"][0]["idNoticia"] = noticia.id;
                         noticia["Imagen"][0]["nombre"]= nombre;
@@ -191,7 +198,7 @@ class QueriesNoticias {
 
     borrarNoticia = async (id) => {
         this.sequelize.conectar();
-        let noticia = await Noticias.findOne(
+        let noticia = await models.Noticias.findOne(
             {
                 where: { id: id },
                 include: "Imagen",

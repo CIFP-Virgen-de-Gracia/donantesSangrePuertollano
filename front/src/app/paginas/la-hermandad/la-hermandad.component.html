@@ -2,40 +2,7 @@
   <div class="container gx-0">
     <div class="fondo-contraste historia">
       <h2 class="titulo subrayado">Historia</h2>
-      <p class="">
-        En <span class="fw-bold">1.973</span>, año en que fue <span class="fw-bold">inagurada la entonces Residencia
-        Sanitaria “Santa Bárbara“</span>, se creó la primera Junta
-        Local de la Hermandad de Donantes de Sangre, dándose los primeros pasos para implantar en nuestra ciudad la
-        Hermandad de Donantes de Sangre.
-      </p>
-      <p>
-        Los problemas que hubo que superar fueron muchos, ya que nuestro Hospital no fue proyectado adecuadamente por
-        los servicios competentes de la Administración del INSALUD; olvidando, pensamos, contemplar los servicios de
-        Banco de Sangre, Hematología y dependencias afines a la Hermandad de Donantes de Sangre.
-      </p>
-
-      <p>
-        Sin paliar esta carencia estructural se crean dos plazas de hematólogo, los cuales
-        sobre el año 80 se incorporan a sus funciones sin las instalaciones indispensables para el desarrollo de su
-        trabajo.
-      </p>
-
-      <p>
-        Fue a <span class="fw-bold">partir de 1.984</span> cuando se observó una <span class="fw-bold">mejora en las
-        instalaciones</span> de la Hermandad en todo el Servicio relacionado con ella.
-      </p>
-
-      <p>
-        Tras una larga y complicada gestión, <span class="fw-bold">fueron aprobados los Estatutos de la Hermandad el 12
-        de Enero de 1.987</span>. Con la legalización de nuestra Asociacion se consiguió mayor peso específico,
-        permitiendonos realizar actividades que hasta ese momento no se habían puesto en marcha por falta de medios.
-      </p>
-
-      <p>
-        Actualmente seguimos trabajando para que no falte sangre en nuestro Hospital, desarrollando campañas
-        informativas y con la esperanza de superar nuevos retos; <span class="fw-bold">plasmaféresis y extracciones
-        extrahospitalarias.</span>
-      </p>
+      <div [innerHtml]="historia"></div>
     </div>
 
     <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
@@ -50,7 +17,7 @@
       <div class="tarjetas d-flex flex-wrap text-center">
         <div class="tarjeta fondo-contraste flex-fill" *ngFor="let integrante of junta">
           <p>{{ integrante.cargo }}</p>
-          <p>{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}</p>
+          <p>{{ integrante.nombre }}</p>
         </div>
       </div>
     </div>

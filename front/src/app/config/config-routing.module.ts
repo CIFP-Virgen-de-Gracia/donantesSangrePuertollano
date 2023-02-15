@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainConfigComponent } from './main-config/main-config.component';
 import { HermandadConfigComponent } from './hermandad-config/hermandad-config.component';
 import { ContactoConfigComponent } from './contacto-config/contacto-config.component';
+
 const routes: Routes = [
   {
     path: '',
