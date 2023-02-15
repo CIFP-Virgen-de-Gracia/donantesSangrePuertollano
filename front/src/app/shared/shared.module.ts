@@ -7,6 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { DirectivasModule } from './directivas/directivas.module';
 import { EmailFormularioComponent } from './newsletter/email-formulario/email-formulario.component';
 import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/newsletter-ventana.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/news
     CommonModule,
     RouterModule,
     DirectivasModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularEditorModule
   ],
   exports: [
     MenuComponent,

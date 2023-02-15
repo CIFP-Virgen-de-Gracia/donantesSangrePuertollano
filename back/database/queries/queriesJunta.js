@@ -25,8 +25,7 @@ class QueriesJunta {
                     ]
                 }
             ],
-            attributes: ['nombre', 'apellido1', 'apellido2', 
-                        [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo']]
+            attributes: ['nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo']]
         });
 
         return cargosIntegrantes;

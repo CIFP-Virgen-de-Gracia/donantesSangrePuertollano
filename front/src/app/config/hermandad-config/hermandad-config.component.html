@@ -1,24 +1,34 @@
-<div class="historia">
-  <h3 class="titulo mb-4">Historia</h3>
-  <textarea></textarea>
-</div>
-
-<div class="junta">
-  <h3 class="titulo">Junta rectora</h3>
-  <p class="info mb-4">Pincha sobre cualquier campo para cambiar su valor. Puedes modificar tanto el cargo como el nombre del integrante.</p>
-  <!-- <div class="contenedor-integrantes">
-    <div class="integrante" *ngFor="let integrante of junta">
-      <p class="cargo align-middle">{{ integrante.cargo }}</p>
-      <p class="nombre align-middle">{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}</p>
-    </div>
-  </div> -->
-
-  <div class="contenedor-integrantes">
-    <div class="integrante d-flex" *ngFor="let integrante of junta">
-      <input type="text" class="cargo align-middle" value="{{ integrante.cargo }}">
-      <input type="text" class="nombre align-middle" value="{{ integrante.nombre }} {{ integrante.apellido1 }} {{ integrante.apellido2 }}">
-    </div>
+  <div class="botones d-flex flex-row-reverse">
+    <button (click)="guardar()" class="btn-primario" type="submit">Guardar</button>
   </div>
 
-</div>
 
+  <div class="historia">
+
+    <h3 class="titulo mb-4">Historia</h3>
+
+    <angular-editor [(ngModel)]="historia" [config]="editorTextoConfig"></angular-editor>
+
+  </div>
+
+
+  <div class="junta">
+
+    <h3 class="titulo">Junta rectora</h3>
+
+    <p class="info mb-4">Pincha sobre cualquier campo para cambiar su valor. Puedes modificar tanto el cargo como el
+      nombre del integrante.</p>
+
+    <div class="contenedor-integrantes">
+      <div class="integrante d-flex" *ngFor="let integrante of junta">
+        <input type="text"
+          class="cargo align-middle"
+          [(ngModel)]="integrante.cargo">
+
+        <input type="text"
+          class="nombre align-middle"
+          [(ngModel)]="integrante.nombre">
+      </div>
+    </div>
+
+  </div>

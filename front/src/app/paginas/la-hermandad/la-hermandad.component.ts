@@ -11,7 +11,7 @@ import { Integrante } from '../interfaces/Paginas.interfaces';
 export class LaHermandadComponent implements OnInit {
 
   junta!: Integrante[];
-
+  historia: String = '';
 
   constructor(private SharedService: SharedService) { }
 
@@ -25,7 +25,9 @@ export class LaHermandadComponent implements OnInit {
 
     this.SharedService.getHistoria()
       .subscribe(resp => {
-        console.log(resp)
+        if (resp.success) {
+          this.historia = resp.data.valor;
+        }
       });
   }
 }
