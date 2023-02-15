@@ -26,8 +26,26 @@
           {{p}}
         </p>
       </div>
+     <div class="pt-5 pb-2 centrado">
+        <button
+        id=A{{noticia.id}}
+        (click)="obtenerId($event)"
+        class="btn custom-btn btn-1 ms-5 mb-5"
+        data-bs-toggle="modal"
+        data-bs-target="#modalConfirmacion">Borrar</button>
+
+        <button
+        (click)="obtenerNoticiaAEditar($event)"
+        id=M{{noticia.id}}
+        class="btn custom-btn btn-1 ms-5 mb-5"
+        data-bs-toggle="modal"
+        data-bs-target="#modalEditado">Modificar</button>
+      </div>
     </div>
   </div>
 </div>
 <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente" class="text-center">
 </pagination-controls>
+
+<app-borrar [idBorrado]="idBorrado"></app-borrar>
+<app-editado [idModificar]="idModificar" [infoNoticia]="infoNoticia"></app-editado>
