@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     tableName: 'cargoIntegrante',
     modelName: 'CargoIntegrante',
+    timestamps: false
   });
+
+  
+  CargoIntegrante.removeAttribute('id');
+  
   return CargoIntegrante;
 };

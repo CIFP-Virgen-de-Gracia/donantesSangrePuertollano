@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { SharedService } from 'src/app/shared/services/shared.service';
+import { Cargo } from '../interfaces/config.interface';
+import { Integrante } from 'src/app/shared/interfaces/shared.interface';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Integrante } from 'src/app/paginas/interfaces/Paginas.interfaces';
+import { ConfigService } from '../services/config.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
+
 
 @Component({
   selector: 'app-hermandad-config',
@@ -20,15 +23,21 @@ export class HermandadConfigComponent {
     defaultParagraphSeparator: '',
     outline: false,
     sanitize: true,
-    toolbarHiddenButtons: [ [ 'fontName' ] ]
+    toolbarHiddenButtons: [['fontName']]
   };
 
 
-  junta!: Integrante[];
+  junta: Integrante[] = [];
   historia: String = '';
+  cargos: Cargo[] = [];
+  mensaje: String = '';
+  actualizado!: boolean;
 
+  constructor(
+    private SharedService: SharedService,
+    private ConfigService: ConfigService
+  ) { }
 
-  constructor(private SharedService: SharedService) { }
 
   ngOnInit() {
     this.SharedService.getIntegrantesCargo()
@@ -44,17 +53,28 @@ export class HermandadConfigComponent {
           this.historia = resp.data.valor;
         }
       });
+
+    this.ConfigService.getCargosJunta()
+      .subscribe(resp => {
+        if (resp.success) {
+          this.cargos = resp.data;
+        }
+      });
   }
 
 
   guardar() {
-    this.SharedService.updateConfigHermandad()
-      .subscribe( resp => {
-        if (resp.success) {
-          console.log('ok')
-        } else {
-          console.log(':(')
-        }
+
+    this.ConfigService.updateConfigHermandad(this.historia, this.junta)
+      .subscribe(resp => {
+
+        this.mensaje = resp.msg;
+
+        if (resp.success) this.actualizado = true;
+        else this.actualizado = false;
+
+        setTimeout(() => this.mensaje = '', 4000);
+
       });
   }
 }

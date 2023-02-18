@@ -1,4 +1,6 @@
 .botones {
+  margin-bottom: 1rem;
+
   .btn-primario {
     padding: 0 1rem;
   }
@@ -25,17 +27,23 @@
   .contenedor-integrantes {
 
     .integrante {
-      input {
+
+      input,
+      .cargos {
         border: none;
         outline: none;
         padding: .5rem 1rem;
         margin-bottom: 1.5rem;
       }
 
-      .cargo {
+      .cargos {
         background-color: var(--color-primario);
         color: var(--bs-white);
         width: 40%;
+
+        option {
+          font-family: arial !important;
+        }
       }
 
       .nombre {

@@ -44,7 +44,7 @@ body {
   }
 
   ul {
-  list-style: none;
+    list-style: none;
   }
 
   footer,
@@ -64,7 +64,8 @@ body {
   }
 
   // Botones - inputs
-  input[type=email], button {
+  input[type=email],
+  button {
     border: none;
     outline: none;
     border-radius: 2px;
@@ -138,15 +139,31 @@ body {
     background-color: var(--color-contraste);
   }
 
-  .mensaje-error {
+  .mensaje-error, .mensaje-ok {
     margin: 0;
     padding: 0;
-    color: var(--color-primario);
     font-size: var(--letra-pequena);
+  }
+
+  .mensaje-error {
+    color: var(--color-primario);
+  }
+
+  .mensaje-ok {
+    color: var(--color-granate);
   }
 
   .error-input {
     border: 1px solid var(--color-secundario);
     background-color: rgb(255, 220, 231);
+  }
+
+  .contenedor-historia {
+
+    p,
+    div:not(:first-of-type) {
+      padding-top: 1.5rem !important;
+      text-align: unset;
+    }
   }
 }
