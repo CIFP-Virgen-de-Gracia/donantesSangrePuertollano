@@ -7,6 +7,7 @@ const titleCase = require('title-case');
 const md5 = require('md5');
 const genCode = require('../helpers/genCode');
 const User = require('../models/User');
+const models = require('../../models/index.js');
 
 
 
@@ -46,7 +47,7 @@ const googleSignin = async(req, res = response) => {
     try {
         const { correo, nombre, img } = await googleVerify( id_token );
 
-        const [email, creado] = await Email.findOrCreate({
+        const [email, creado] = await models.Email.findOrCreate({
             where: {email: correo}
         });
 

@@ -6,6 +6,7 @@ import { MainConfigComponent } from './main-config/main-config.component';
 import { HermandadConfigComponent } from './hermandad-config/hermandad-config.component';
 import { ContactoConfigComponent } from './contacto-config/contacto-config.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -14,11 +15,12 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ContactoConfigComponent
   ],
   imports: [
+    FormsModule,
     CommonModule,
+    SharedModule,
     ConfigRoutingModule,
     ReactiveFormsModule,
     AngularEditorModule,
-    FormsModule
   ],
   exports: [
     MainConfigComponent
