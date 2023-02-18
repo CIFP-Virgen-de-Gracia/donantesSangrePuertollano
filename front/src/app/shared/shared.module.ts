@@ -14,7 +14,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MenuComponent,
     FooterComponent,
     EmailFormularioComponent,
-    NewsletterVentanaComponent,
+    NewsletterVentanaComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +26,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
   exports: [
     MenuComponent,
     FooterComponent,
-    NewsletterVentanaComponent
+    NewsletterVentanaComponent,
   ]
 })
 

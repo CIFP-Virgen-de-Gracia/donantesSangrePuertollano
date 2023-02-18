@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Integrante } from '../interfaces/Paginas.interfaces';
+import { Integrante } from 'src/app/shared/interfaces/shared.interface';
 
 
 @Component({
@@ -10,7 +10,7 @@ import { Integrante } from '../interfaces/Paginas.interfaces';
 })
 export class LaHermandadComponent implements OnInit {
 
-  junta!: Integrante[];
+  junta: Integrante[] = [];
   historia: String = '';
 
   constructor(private SharedService: SharedService) { }

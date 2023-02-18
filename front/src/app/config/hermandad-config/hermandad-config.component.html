@@ -1,14 +1,22 @@
-  <div class="botones d-flex flex-row-reverse">
+  <div class="botones mensajes d-flex justify-content-between">
+    <div [ngClass]="actualizado ? 'mensaje-ok' : 'mensaje-error'" class="d-flex align-items-center">
+
+      <i [ngClass]="actualizado ? 'fa-circle-check' : 'fa-triangle-exclamation'"
+        class="fa-solid icono-peq me-2"
+        *ngIf="mensaje">
+      </i>
+
+      <div>{{ mensaje }}</div>
+    </div>
+
     <button (click)="guardar()" class="btn-primario" type="submit">Guardar</button>
   </div>
 
 
   <div class="historia">
-
     <h3 class="titulo mb-4">Historia</h3>
 
     <angular-editor [(ngModel)]="historia" [config]="editorTextoConfig"></angular-editor>
-
   </div>
 
 
@@ -21,9 +29,21 @@
 
     <div class="contenedor-integrantes">
       <div class="integrante d-flex" *ngFor="let integrante of junta">
-        <input type="text"
-          class="cargo align-middle"
+
+        <select name="cargos"
+          class="cargos"
           [(ngModel)]="integrante.cargo">
+
+          <option value="{{ cargo.nombre }}"
+            *ngFor="let cargo of cargos">
+            {{ cargo.nombre }}
+          </option>
+
+        </select>
+
+      <!--   <input type="text"
+          class="cargo align-middle"
+          [(ngModel)]="integrante.cargo"> -->
 
         <input type="text"
           class="nombre align-middle"
