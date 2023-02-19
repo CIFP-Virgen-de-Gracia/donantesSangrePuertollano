@@ -42,7 +42,7 @@ testem.log
 Thumbs.db
 
 front/node_modules
-.env
+back/.env
 .gitkeep
 zzzPruebasSucio.js
 
