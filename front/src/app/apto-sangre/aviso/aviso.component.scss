@@ -1,12 +1,43 @@
-h2::after, h3::after {
-  content: "";
-  display: block;
-  width: 6rem;
-  max-width: 60%;
-  border-bottom: 0.3rem solid var(--color-granate-oscuro);
-  margin: 0 auto 1rem;
-}
+main {
+  padding: 5rem 7rem 10rem 7rem;
 
-p {
-  font-size: var(--letra-media);
+  table {
+    td, th {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    thead,
+    tbody .cabecera {
+      color: var(--bs-white);
+    }
+
+    thead {
+      background-color: var(--color-granate);
+      border-color: var(--color-granate);
+    }
+
+    tbody {
+      border-color: var(--color-contraste-oscuro);
+
+      .cabecera {
+        background-color: var(--color-secundario);
+        border-color: var(--color-secundario);
+      }
+
+      .separador,
+      .separador td {
+        border: none;
+        border-bottom: 1px solid var(--color-secundario);
+
+        td {
+          height: 50px;
+        }
+      }
+    }
+  }
+
+  p {
+    font-size: var(--letra-media);
+  }
 }
