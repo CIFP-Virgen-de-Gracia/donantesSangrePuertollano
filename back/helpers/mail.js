@@ -32,8 +32,7 @@ const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
 
 const mandarCorreo = (destinatario, contenido) => {
-    //TODO: TODO MAL
-
+    
     mailOptions = {
         from: process.env.EMAIL_ACCOUNT,
         to: destinatario,
@@ -41,7 +40,9 @@ const mandarCorreo = (destinatario, contenido) => {
         html: contenido.cuerpoHtml
     };
 
-    transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) throw error;
+    });
 }
         
 module.exports = {

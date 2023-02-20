@@ -119,6 +119,29 @@ class QueriesUsers {
         }
     }
     
+
+//Alicia
+    getSuscritosNewsletter = async() => {
+        try {
+            this.sequelize.conectar();
+
+            const emails = await models.Email.findAll({
+                attributes: ['newsletterVerifiedAt'],
+                newsletterVerifiedAt: {
+                    [Op.ne]: null
+                }
+            });
+
+            this.sequelize.desconectar();
+
+            return emails;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+
 //Mario
     insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
