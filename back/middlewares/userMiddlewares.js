@@ -2,7 +2,18 @@ require('dotenv').config();
 const queriesUsers = require('../database/queries/queriesUsers');
 const getAbilites = require('../helpers/rolesAbilities');
 const userCan = require('../helpers/rolesAbilities');
-const {response,request} = require('express');
+const { response, request } = require('express');
+
+
+const midReadWriteDelete = async (req, res, next) => {
+
+    if (await userCan(req, req.idToken, ['read', 'write', 'delete'])) {
+        next();                                                      
+    } else {
+        return res.status(403).json({ msg: 'No estás autorizado' });
+    }
+}
+
 
 // MIDDLEWARE DE EJEMPLO PARA CHECKEAR LAS ABILITES
 
@@ -18,5 +29,5 @@ const {response,request} = require('express');
 // }
 
 module.exports = {
-    
+
 }
