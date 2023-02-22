@@ -16,11 +16,7 @@ const Imagen = sequelize.db.define("imagenes", {
     nombre: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    ruta: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+    }
 },
     {
         tableName: 'imagenes'
