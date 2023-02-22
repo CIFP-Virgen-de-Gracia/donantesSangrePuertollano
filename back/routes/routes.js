@@ -1,21 +1,17 @@
 const {Router} = require('express');
 const router = Router();
-const midsUSer = require('../middlewares/userMiddlewares');
+const midsUser = require('../middlewares/userMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
-// const mids = require("../middlewares/userMiddlewares");
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
-
-
-// const {midEjemplo} = require('../middlewares/userMiddlewares');
-const controlador=require('../controllers/noticiasController');
 
 // Mario y Alicia
 // auth routes
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/activarCorreo/:id', auth.activarCorreo);
+router.get('/puedeModificar/:id', auth.puedeModificar);
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd);
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd);
 router.get('/activarNewsletter/:id', auth.activarNewsletter);
@@ -29,7 +25,7 @@ router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
 router.get('/getHistoria', contenido.getHistoria);
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
-router.put('/updateConfigHermandad', contenido.updateConfigHermandad);
+router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
 
 
 

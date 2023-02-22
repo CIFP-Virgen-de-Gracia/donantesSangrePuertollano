@@ -1,4 +1,4 @@
-const {response,request} = require('express');
+const { response, request } = require('express');
 const queriesUsers = require("../database/queries/queriesUsers");
 const generarJWT = require('../helpers/generarJWT');
 const correo = require('../helpers/mail');
@@ -6,15 +6,14 @@ const genPasswd = require('generate-password');
 const titleCase = require('title-case');
 const md5 = require('md5');
 const genCode = require('../helpers/genCode');
-const User = require('../models/User');
 const models = require('../models/index.js');
-
+const userCan = require('../helpers/rolesAbilities');
 
 
 //Todo Mario menos activarNewsletter
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
-    queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get habilities
+    queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get abilities
 
         const resp = {
             success: true,
@@ -106,7 +105,7 @@ const activarCorreo = (req, res = response) => {
     queriesUsers.updateVerificacionEmail(req.params.id)
         .then(resp => {
 
-            res.status(201).json({ success: true, resp: resp });
+        res.status(201).json({ success: true, resp: resp });
     }).catch(err => {
 
         res.status(200).json({ success: false, error: 'Se ha producido un error' });
@@ -213,11 +212,25 @@ const recuperarPasswd = async(req, res = response) => {
 }
 
 
+const puedeModificar = async(req, res = response) =>  {
+    
+    userCan(req, req.params.id, ['leer','editar','borrar'])
+        .then(resp => {
+            res.status(200).json({ success: true });
+            
+        }).catch(err => {
+            res.status(200).json({ success: false });
+        });
+}
+
+
+
 module.exports = {
     login,
     register,
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,
-    recuperarPasswd
+    recuperarPasswd,
+    puedeModificar
 }

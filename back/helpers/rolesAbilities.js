@@ -7,11 +7,11 @@ const sequelize = require('../database/ConexionSequelize');
 const getArrayRoles = (user) => {
     let roles = [];
 
-    for (const rolKey in user.dataValues.RolUser) {
-        if (Object.hasOwnProperty.call(user.dataValues.RolUser, rolKey)) {
-            const rol = user.dataValues.RolUser[rolKey];
+    for (const rolKey in user.RolUser) {
+        if (Object.hasOwnProperty.call(user.RolUser, rolKey)) {
+            const rol = user.RolUser[rolKey];
             
-            roles.push(rol.dataValues.idRol);
+            roles.push(rol.idRol);
         }
     }
 
@@ -26,14 +26,14 @@ const userCan = async(req, id, acciones) => {
         arrayAbilities = req.userAbilites;
     }
     else {
-        const user = await queriesUsers.getUser(id);
+        const user = await queriesUsers.getUserRoles(id);
         const roles = getArrayRoles(user);
         const abilities = await queriesUsers.getAbilities(roles);
 
         abilities.forEach(ability => {
             arrayAbilities = Array.from(new Set([...arrayAbilities, ...ability.dataValues.abilities.split(' ')]));
         });
-
+        
         req.userAbilites = arrayAbilities;
     }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import * as interfaces from '../interfaces/auth.interface';
 import { tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -30,13 +30,13 @@ export class AuthService {
 
   solicitarRecPasswd (email: string) {
 
-    return this.httpUsers.post<interfaces.solicitarRecPasswdResponse>(this.authUrl 
+    return this.httpUsers.post<interfaces.solicitarRecPasswdResponse>(this.authUrl
       + '/solicitarrecpasswd', {email: email});
   }
 
 
   recuperarPasswd (id: string, cod: string) {
-    return this.httpUsers.post<interfaces.recPasswdResponse>(this.authUrl 
+    return this.httpUsers.post<interfaces.recPasswdResponse>(this.authUrl
       + '/recuperarpasswd/' + id, {cod: cod});
   }
 }
