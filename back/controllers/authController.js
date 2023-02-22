@@ -7,7 +7,7 @@ const titleCase = require('title-case');
 const md5 = require('md5');
 const genCode = require('../helpers/genCode');
 const User = require('../models/User');
-const models = require('../../models/index.js');
+const models = require('../models/index.js');
 
 
 
