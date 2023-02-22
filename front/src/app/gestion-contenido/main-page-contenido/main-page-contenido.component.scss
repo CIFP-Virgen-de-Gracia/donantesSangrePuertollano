@@ -1,7 +1,83 @@
-.subrayado{
+.bordeSubrayado {
   border-bottom: 0.3rem solid var(--color-primario);
 }
-.imagen{
+
+.imagen {
   border-radius: 10px;
 }
 
+.botonNoticia {
+  color: var(--bs-white);
+  background-color: var(--color-secundario);
+
+  &:hover {
+    color: var(--bs-white);
+    background-color: var(--bs-dark);
+  }
+}
+
+.centrado {
+  display: flex;
+  justify-content: center;
+}
+
+.custom-btn {
+  width: 200px;
+  height: 40px;
+  color: var(--bs-white);
+  border-radius: 5px;
+  padding: 10px 25px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+    7px 7px 20px 0px rgba(0, 0, 0, .1),
+    4px 4px 5px 0px rgba(0, 0, 0, .1);
+  outline: none;
+}
+
+.btn-1 {
+  width: 150px;
+  height: 40px;
+  line-height: 47px;
+  padding: 0;
+  border: none;
+  background: var(--color-secundario);
+}
+
+.btn-1:hover {
+  color: var(--color-granate);
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn-1:before,
+.btn-1:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(320deg, var(--color-granate-oscuro) 0%, var(--color-secundario) 70%, var(--color-primario) 30%);
+  box-shadow:
+    -1px -1px 5px 0px #fff,
+    7px 7px 20px 0px #0003,
+    4px 4px 5px 0px #0002;
+  transition: 400ms ease all;
+}
+
+.btn-1:after {
+  right: inherit;
+  top: 40px;
+  left: 0;
+  bottom: 0;
+}
+
+.btn-1:hover:before,
+.btn-1:hover:after {
+  width: 100%;
+  transition: 800ms ease all;
+}
