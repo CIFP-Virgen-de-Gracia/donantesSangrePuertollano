@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     timestamps: false,
+    tableName: 'rolUser',
     modelName: 'RolUser',
   });
+
+  RolUser.removeAttribute('id');
+
   return RolUser;
 }; 

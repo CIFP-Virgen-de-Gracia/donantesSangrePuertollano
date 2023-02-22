@@ -29,4 +29,9 @@ export class SharedService {
   getHistoria(): Observable<any>{
     return this.http.get<any>(`${this.baseUrl}/api/getHistoria`);
   }
+
+
+  puedeModificar(id: number): Observable<any>{
+    return this.http.get<any>(`${this.baseUrl}/api/puedeModificar/${id}`);
+  }
 }

@@ -113,6 +113,7 @@ class QueriesUsers {
         }
     }
     
+
 //Mario
     insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
