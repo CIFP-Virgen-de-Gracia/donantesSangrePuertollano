@@ -7,11 +7,15 @@ import { NoticiasRoutingModule } from './noticias-routing.module';
 import { ContenidoService } from './contenido.service';
 import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BorrarComponent } from './borrar/borrar.component';
+import { EditadoComponent } from './editado/editado.component';
 
 @NgModule({
   declarations: [
     MainPageContenidoComponent,
-    AddContenidoComponent
+    AddContenidoComponent,
+    BorrarComponent,
+    EditadoComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
   ],
   exports: [
     AddContenidoComponent,
-    MainPageContenidoComponent
+    MainPageContenidoComponent,
+    BorrarComponent,
+    EditadoComponent
   ]
 })
 export class GestionContenidoModule { }
