@@ -30,10 +30,13 @@ const routes: Routes = [
     loadChildren: () => import('./gestion-contenido/gestion-contenido.module').then( m => m.GestionContenidoModule )
   },
   {
+    path: 'citas',
+    loadChildren: () => import('./pedir-cita/pedir-cita.module').then(m => m.PedirCitaModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
     redirectTo: '' */
-
   }
 
   /* ,

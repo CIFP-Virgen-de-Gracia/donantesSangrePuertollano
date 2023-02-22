@@ -32,7 +32,6 @@ const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
 
 const mandarCorreo = (destinatario, contenido) => {
-    //TODO: TODO MAL
 
     mailOptions = {
         from: process.env.EMAIL_ACCOUNT,

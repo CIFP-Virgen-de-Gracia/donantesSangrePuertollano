@@ -1,0 +1,17 @@
+<ng-template #content let-modal>
+	<div class="modal-header border-0">
+		<h4 class="modal-title" id="modal-basic-title">Inicio de sesión necesario.</h4>
+	</div>
+	<div class="modal-body p-5">
+		Es necesario que inicies sesión para poder pedir cita.
+	</div>
+	<div class="modal-footer border-0">
+		<button type="button" class="btn btnAceptar" (click)="irAlLogin()">Iniciar sesión</button>
+        <button type="button" class="btn border-red" (click)="irAPagPrincipal()">Volver a la página principal</button>
+	</div>
+</ng-template>
+
+
+<hr/>
+
+<pre>{{ closeResult }}</pre>
