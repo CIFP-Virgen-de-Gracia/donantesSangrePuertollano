@@ -2,23 +2,9 @@ const queriesUsers = require('../database/queries/queriesUsers');
 const User = require('../models/User');
 const Rol = require('../models/Rol');
 const sequelize = require('../database/ConexionSequelize');
+const { getArrayRoles } = require('./getRelaciones');
 
-//Todo Mario
-const getArrayRoles = (user) => {
-    let roles = [];
-
-    for (const rolKey in user.dataValues.RolUser) {
-        if (Object.hasOwnProperty.call(user.dataValues.RolUser, rolKey)) {
-            const rol = user.dataValues.RolUser[rolKey];
-            
-            roles.push(rol.dataValues.idRol);
-        }
-    }
-
-    return roles;
-}
-
-
+//Mario
 const userCan = async(req, id, acciones) => { 
     let arrayAbilities = [];
 

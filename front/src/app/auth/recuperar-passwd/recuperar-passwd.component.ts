@@ -54,7 +54,6 @@ export class RecuperarPasswdComponent {
   recuperarPasswd() {
     const user = JSON.parse(localStorage.getItem('user') || '');
     this.authHttsService.recuperarPasswd(user.id, this.codForm.get('cod')?.value).subscribe(resp => {
-      console.log(resp);
       if (resp.success) {
 
         this.onRecPasswd.emit(0);
