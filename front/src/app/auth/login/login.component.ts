@@ -3,7 +3,6 @@ import { UserLogin } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { Md5 } from 'ts-md5';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -45,5 +44,5 @@ export class LoginComponent {
   irARecPasswd() {
     this.router.navigate(['/auth/recuperacionpasswd']);
   }
-  
+
 }

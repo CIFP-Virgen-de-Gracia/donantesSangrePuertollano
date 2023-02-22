@@ -14,7 +14,7 @@ module.exports = {
         unique: true,
         allowNull: false
       },
-      habilities: {
+      abilities: {
         type: Sequelize.STRING,
         unique: true,
         allowNull: false,

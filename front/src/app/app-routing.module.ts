@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
-
+import { AuthGuard } from './auth/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -32,13 +32,13 @@ const routes: Routes = [
   },
   {
     path: 'configuracion',
-    loadChildren: () => import('./config/config.module').then( m => m.ConfigModule )
+    loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
+    canMatch: [ AuthGuard ],
+    canActivate: [ AuthGuard ]
   },
   {
     path: '**',
-    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
-    redirectTo: '' */
-
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
   }
 
   /* ,
