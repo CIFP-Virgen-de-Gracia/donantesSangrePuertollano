@@ -1,0 +1,8 @@
+<ngb-datepicker #dp 
+    [(ngModel)]="model" 
+    [displayMonths]="displayMonths"
+    [navigation]="navigation"
+    [markDisabled]="isDisabled"
+    (navigate)="date = $event.next"
+    (click)="mandarFecha()"
+    ></ngb-datepicker>

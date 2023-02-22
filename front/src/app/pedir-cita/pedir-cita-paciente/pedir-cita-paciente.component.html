@@ -1,0 +1,61 @@
+<!-- <div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
+  El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
+  Pincha en el enlace para poder acceder con tu cuenta.
+  <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login</strong></a>. -->
+
+<div class="container-fluid fondo p-5">
+  <div class="row">
+    <div class="col-3 col-m-2"></div>
+
+    <div class="col-6 col-m-8 contenedor">
+      <div class="card border-0 rounded-0 w-100 mb-0">
+        <div
+          class="card-header d-flex justify-content-center align-items-center py-1 border-bottom-0"
+        >
+          <h1>Pedir cita</h1>
+        </div>
+        <div class="card-body p-5 mt-5">
+          <form [formGroup]="citaForm" (ngSubmit)="pedirCita()">
+            <div class="row">
+              <div class="col-6 d-flex justify-content-center">
+                <app-date-picker
+                  (onNuevaFecha)="setDia($event)"
+                ></app-date-picker>
+              </div>
+              <div class="col-6">
+                <select
+                  formControlName="hora"
+                  name="hora"
+                  class="form-select form-select-sm"
+                  aria-label=".form-select-sm example"
+                >
+                  <option *ngIf="this.sinSeleccionar" value="" disabled selected hidden>Selecciona una fecha</option>
+                  <option value="" disabled selected hidden>Horas disponibles</option>
+                  <option *ngIf="this.noHayHoras">
+                    No hay horas disponibles
+                  </option>
+                  <option
+                    *ngFor="let hora of this.horasDisponibles"
+                    value="{{ hora }}"
+                  >
+                    {{ hora }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="card-body p-0 mt-5">
+              <button type="submit" class="btn w-100 btnAceptar mb-3">
+                Aceptar
+              </button>
+              <button type="button" class="btn w-100 border-red">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-3 col-m-2"></div>
+    </div>
+  </div>
+</div>

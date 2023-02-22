@@ -9,9 +9,9 @@ class Conexion {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE,
+            database: process.env.DB_NAME,
             connectionLimit: process.env.DB_MAXCONNECTIONS,
-            port: process.env.DB_PORT
+            port: process.env.DB_PORT,
         };
 
         this.pool = mysql.createPool(this.config);

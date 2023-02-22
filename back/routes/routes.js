@@ -6,6 +6,7 @@ const vJwt = require('../middlewares/validarJwt');
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const junta = require('../controllers/juntaController');
+const citas = require('../controllers/citasController');
 
 // const {midEjemplo} = require('../middlewares/userMiddlewares');
 const controlador=require('../controllers/noticiasController');
@@ -28,7 +29,12 @@ router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
 router.get('/getIntegrantesCargo', junta.getIntegrantesCargo);
 
 
-
-
+// pedir cita routes
+// router.get('/citas/citasreservadas/:fecha', citas.getCitasReservadas);
+// router.get('/citas/gethorariocitas', citas.getHorarioCitas);
+router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
+router.post('/citas/pedircita', citas.pedirCita);
+router.get('/citas/usernotienecita/:id', citas.userNoTieneCita);
+router.post('/citas/mandarcorreocita', citas.mandarCorreoFechaCita);
 
 module.exports = router;

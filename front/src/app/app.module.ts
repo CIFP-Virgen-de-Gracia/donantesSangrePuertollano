@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +14,11 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { PedirCitaModule } from './pedir-cita/pedir-cita.module';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs); 
 
 
 
@@ -22,7 +27,9 @@ import {NgxPaginationModule} from 'ngx-pagination';
         AppComponent,
         AptoSangreComponent,
     ],
-    providers: [],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'es-es' }
+    ],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
