@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     newsletterVerifiedAt: DataTypes.DATE,
   }, {
     sequelize,
+    tableName: 'emails',
     modelName: 'Email',
   });
   return Email;
