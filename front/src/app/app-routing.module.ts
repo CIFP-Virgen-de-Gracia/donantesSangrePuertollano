@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
-import { AuthGuard } from './auth/guards/auth.guard';
+import { ConfigGuard } from './auth/guards/config.guard';
 
 const routes: Routes = [
   {
@@ -33,8 +33,8 @@ const routes: Routes = [
   {
     path: 'configuracion',
     loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
-    canMatch: [ AuthGuard ],
-    canActivate: [ AuthGuard ]
+    canMatch: [ ConfigGuard ],
+    canActivate: [ ConfigGuard ]
   },
   {
     path: '**',
