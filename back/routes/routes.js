@@ -12,6 +12,7 @@ const citas = require('../controllers/citasController');
 const controlador=require('../controllers/noticiasController');
 
 // Mario y Alicia
+
 // auth routes
 router.post('/login', auth.login);
 router.post('/register', auth.register);
@@ -35,6 +36,8 @@ router.get('/getIntegrantesCargo', junta.getIntegrantesCargo);
 router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
 router.post('/citas/pedircita', citas.pedirCita);
 router.get('/citas/usernotienecita/:id', citas.userNoTieneCita);
+router.get('/citas/hayhuecohora/:fecha', citas.hayHuecoHora);
 router.post('/citas/mandarcorreocita', citas.mandarCorreoFechaCita);
+// router.get('/citas/getcitapendienteuser/:id', citas.);
 
 module.exports = router;

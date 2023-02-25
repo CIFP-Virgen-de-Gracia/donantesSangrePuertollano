@@ -30,6 +30,9 @@ class QueriesUsers {
             }
         });
 
+        console.log('asdfasdfasdf');
+        console.log(id);
+
         return id.dataValues;
     }
 
@@ -82,7 +85,7 @@ class QueriesUsers {
 
 //Mario
     getUserCitas = async(id) => {
-        const user = await User.findByPk(id, {include: ['citas']});
+        const user = await User.findByPk(id, {include: ['citasPendientes', 'citasPasadas']});
 
         user.dataValues.citas = getArrayCitas(user);
 
@@ -92,9 +95,6 @@ class QueriesUsers {
 
 //Mario
     getUserLogin = async(email, passwd) => {
-
-        this.sequelize.conectar();
-        
         const id = await this.getIdEmail(email);
         console.log(id);
 
@@ -108,9 +108,6 @@ class QueriesUsers {
             include: 'RolUser'
         });
 
-        console.log('asdfasdfasdfasdf');
-        console.log('user => ' + user);
-        this.sequelize.desconectar();
         return user.dataValues;
     }
 
@@ -118,8 +115,6 @@ class QueriesUsers {
 //Mario
     getAbilities = async(roles) =>  {
         try {
-            this.sequelize.conectar();
-
             const rolesAbilities = await Rol.findAll({
                 attributes: ['abilities'],
                 where: {
@@ -128,8 +123,6 @@ class QueriesUsers {
                     }
                 }
             });
-
-            this.sequelize.desconectar();
 
             return rolesAbilities;
         }

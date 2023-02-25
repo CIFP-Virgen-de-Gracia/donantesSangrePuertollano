@@ -1,34 +1,22 @@
 const { response, request } = require('express');
-const { Cita } = require('../models/CitaPendiente');
+const { Cita } = require('../models/Cita');
 const email = require('../helpers/mail');
 const queriesCitas = require('../database/queries/queriesCitas');
 const moment = require('moment');
 const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
-const colocarFecha = require('../helpers/colocarFecha');
+const metodosFecha = require('../helpers/fechas');
 const { QueryInterface } = require('sequelize');
 
+//TODO: hacer una tabla de parametrización en db en principio para el n de pacientes que pueden atender en una misma hora
 
 // todo Mario
-// const getCitasReservadas = async(req, res = response) => {
-//     try {
-//         console.log(req.params.fecha);
-//         const citas = await queriesCitas.getCitasFechaHora(req.params.fecha);
-
-//         res.status(200).json({success: true, citas: citas});    
-//     }
-//     catch (err) {
-
-//         res.status(200).json({success: false, msg: 'se ha producido un error'});
-//     }
-// }
-
-
 const pedirCita = async(req, res = response) => {
     try {
         const cita = {
             fecha: req.body.fecha,
-            userId: req.body.id
+            userId: req.body.id,
+            donacion: req.body.donacion
         }
 
         const resp = await queriesCitas.insertCita(cita);
@@ -61,26 +49,34 @@ const getHorasDisponibles = async(req, res = response) => {
     Promise.all([queriesCitas.getHorarioCitas(), queriesCitas.getCitasFechaHora(req.params.fecha)])
         .then(([horasSeg, horasReservadas]) => {
 
-            console.log('asdfasdf');
-            console.log(horasSeg);
             let arrayHorasHorario = [];
             horasSeg.forEach(horaSeg => {
-                arrayHorasHorario.push(horaSeg.slice(0,5));
+
+                // si la hora es después que la actual y es el mismo día o si es otro día (en estos casos las horas
+                // comparadas están disponibles)
+                if (!moment(req.params.fecha, 'YYYY-MM-DD').isSame(moment().format('YYYY-MM-DD'))
+                    || metodosFecha.horaEsMayor(moment(horaSeg, 'HH:mm:ss').format('HH:mm'), moment().format('HH:mm'))
+                        && moment(req.params.fecha, 'YYYY-MM-DD').isSame(moment().format('YYYY-MM-DD'))) {
+                
+                            arrayHorasHorario.push(horaSeg.slice(0,5));
+                }
             });
 
-            console.log(horasReservadas);
             let arrayHorasReservadas = [];
             if (horasReservadas.length > 0) {
                 horasReservadas.forEach(horaRes => {
+                    
                     arrayHorasReservadas.push(horaRes.hora);
                 });
             }
 
+            console.log(arrayHorasReservadas);
+
             let horasDisponibles = [];
             for (const hora of arrayHorasHorario) {
-                if (!arrayHorasReservadas.includes(hora)) horasDisponibles.push(hora);
+                console.log(hora);
+                if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora);
             }
-
 
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
@@ -103,6 +99,23 @@ const userNoTieneCita = async(req, res = response) => {
 }
 
 
+const hayHuecoHora = async(req, res = response) => {
+    try {
+        const nUsers = await queriesCitas.getNumUsersFecha(req.params.fecha);
+
+        if (nUsers < 2) {
+            res.status(200).json({success: true, msg: 'hay hueco'});
+        }
+        else {
+            res.status(200).json({success: false, msg: 'no hay hueco'});
+        }
+    }
+    catch (err) {
+
+        res.status(500).json({success: false, msg: 'error del servidor'});
+    }
+}
+
 const mandarCorreoFechaCita = async(req, res = response) => {
     try {
 
@@ -114,8 +127,8 @@ const mandarCorreoFechaCita = async(req, res = response) => {
         contenido.asunto = 'Recordatorio de tu cita.';
 
         contenido.cuerpoHtml = `
-            Hola. Recuerda que el día <strong>${(colocarFecha.colocarFecha(dia))}</strong> a las 
-            <strong>${(colocarFecha.colocarHora(hora))}</strong> tienes una cita para donar sangre.
+            Hola. Recuerda que el día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
+            <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar sangre.
         `;
 
         const correo = await queriesUsers.getEmailById(req.body.id);
@@ -131,48 +144,18 @@ const mandarCorreoFechaCita = async(req, res = response) => {
 }
 
 
-// const getCitasPendientes = async(req, res = response) => {
-//     try {
-//         const citasPendientes = await citas.
-//     }
-// }
-
-// const marcarCitasPasadas = async() => {  // hago queries directamente por cuestiones de optimización  
-//     sequelize.conectar();                // solamente en esta funcionalidad en concreto.
-
-//     let success = true;
-
-//     try {
-//         const citas = await Cita.findAll({
-//             where: {
-//                 fecha: {
-//                     [Op.lte]: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-//                 }
-//             }
-//         });
-    
-//         citas.forEach(cita => {
-//             cita.update({
-//                 pasada: 1
-//             });
-//         });
-//     }
-//     catch (err) {
-
-//         success = false;
-//     }
-
-//     sequelize.desconectar();
-//     return success;
-// }
-
-
 module.exports = {
     getCitasUser,
     pedirCita,
     // getCitasReservadas,
     // getHorarioCitas,
+    hayHuecoHora,
     getHorasDisponibles,
     userNoTieneCita,
     mandarCorreoFechaCita
 }
+
+const arr = [2, 3, 1, 3, 4, 5, 3, 1]
+
+
+console.log(arr.filter(h => (h == 3)).length); 
