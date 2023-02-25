@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     codRecPasswd: DataTypes.STRING
   }, {
     sequelize,
+    tableName: 'users',
     modelName: 'User',
   });
   return User;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { SharedService } from '../services/shared.service';
-import { NavigationEnd, Router } from '@angular/router';
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -12,14 +13,24 @@ export class MenuComponent implements OnInit {
   estaRegistrado: boolean = false;
 
   constructor(
+    private AuthService: AuthService,
     private SharedService: SharedService,
-    private router: Router
   ) { }
 
 
   ngOnInit() {
 
-    this.router.events.subscribe(event => {
+    this.SharedService.comprobarPermisos.subscribe(registrado => {
+      this.estaRegistrado = registrado;
+
+      if (registrado) {
+        this.AuthService.puedeModificar().subscribe(resp => {
+          this.puedeModificar = (resp) ? true : false;
+        });
+      }
+    })
+
+    /* this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
 
         const user = localStorage.getItem('user');
@@ -27,11 +38,12 @@ export class MenuComponent implements OnInit {
         if (user) {
           this.estaRegistrado = true;
 
-          this.SharedService.puedeModificar(JSON.parse(user!).id).subscribe(resp => {
-            this.puedeModificar = (resp.success) ? true : false;
+
+          this.AuthService.puedeModificar().subscribe(resp => {
+            this.puedeModificar = (resp) ? true : false;
           });
         }
       }
-    });
+    }); */
   }
 }

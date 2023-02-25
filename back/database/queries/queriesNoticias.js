@@ -79,7 +79,8 @@ class QueriesNoticias {
 
     getListado = async (seccion) => {
         this.sequelize.conectar();
-        const noticias = await models.Noticias.findAll(
+
+        const noticias = await models.Noticia.findAll(
             {
                 where: { seccion: seccion },
                 include: "Imagen",
@@ -92,7 +93,7 @@ class QueriesNoticias {
 
     getNoticia = async (id) => {
         this.sequelize.conectar();
-        const noticias = await models.Noticias.findOne(
+        const noticias = await models.Noticia.findOne(
             {
                 where: { id: id },
                 include: "Imagen",
@@ -116,7 +117,7 @@ class QueriesNoticias {
 
         this.sequelize.conectar();
         try {
-            let noticia = await models.Noticias.findOne(
+            let noticia = await models.Noticia.findOne(
                 {
                     where: { id: req.body.id },
                     include: "Imagen",
@@ -198,7 +199,7 @@ class QueriesNoticias {
 
     borrarNoticia = async (id) => {
         this.sequelize.conectar();
-        let noticia = await models.Noticias.findOne(
+        let noticia = await models.Noticia.findOne(
             {
                 where: { id: id },
                 include: "Imagen",

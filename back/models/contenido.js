@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     valor: DataTypes.STRING(5000)
   }, {
     sequelize,
+    tableName: 'contenidos',
     modelName: 'Contenido',
   });
   return Contenido;

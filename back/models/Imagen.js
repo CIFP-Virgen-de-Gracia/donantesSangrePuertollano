@@ -17,7 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING
   }, {
     sequelize,
+    tableName: 'imagenes',
     modelName: 'Imagen',
+    timestamps: false,
   });
+
+  Imagen.removeAttribute('id');
+
   return Imagen;
 }; 
