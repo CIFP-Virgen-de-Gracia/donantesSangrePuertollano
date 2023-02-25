@@ -1,11 +1,10 @@
-const CitaPendiente = require('../../models/CitaPendiente');
+const Cita = require('../../models/Cita');
 const sequelize = require('../ConexionSequelize');
 const conexion = require('../Conexion');
 const moment = require('moment');
 const {Op, DATE} = require('sequelize');
 const HoraCita = require('../../models/HorasCitas');
 const User = require('../../models/User');
-const CitaPasada = require('../../models/CitaPasada');
 
 
 // todo Mario
@@ -21,67 +20,26 @@ const getDataValues = (citas) => {
 
 const insertCita = async(cita) => {
 
-    const resp = await CitaPendiente.create({
+    console.log('asdfasdfasdf');
+    console.log(cita);
+    const resp = await Cita.create({
         fecha: cita.fecha,
-        userId: cita.userId
+        userId: cita.userId,
+        donacion: cita.donacion
     });
 
-    sequelize.desconectar();
     return resp.dataValues;
 }
 
 
-// const getCitas = async() => {
+const getNumCitasHora = async(fecha) => {
+    const n = await Cita.count({
+        where: {fecha: fecha}
+    });
 
-//     const citas = await CitaPendiente.findAll();
-    
-//     return getDataValues(citas);
-// }
+    return n;
+}
 
-
-// const getFechaCitasRes = async() => {
-//     const citas = await Cita.findAll({
-//         attributes: [fecha]
-//     });
-
-//     return getDataValues(citas);
-// }
-
-
-// const getCitasUser = async(userDni) => {
-//     const citas = await Cita.findAll({
-//         where: {userDni: userDni},
-//         order: ['fecha', 'DESC']
-//     });
-
-//     return citas;
-// }
-
-
-// const getCitasAntes = async(fecha) => {
-//     const citas = await Cita.findAll({
-//         where: {
-//             fecha: {
-//                 [Op.lt]: fecha
-//             }
-//         }
-//     });
-
-//     return citas.dataValues;
-// }
-
-// const getCitasDespues = async(fecha) => {
-//     const citas = await Cita.findAll({
-//         where: {
-//             fecha: {
-//                 [Op.gt]: fecha
-//             }
-//         }
-//     });
-
-//     return getDataValues(citas);
-
-// }
 
 const getCitasFecha = async(fecha) => { // estos dos métodos son iguales
     const citas = await conexion.query('SELECT citas.fecha, users.nombre FROM citas '
@@ -100,9 +58,9 @@ const getCitasFecha = async(fecha) => { // estos dos métodos son iguales
 const getCitasFechaHora = async(fecha) => {
     try {
         
-        const citas = await conexion.query('SELECT citasPendientes.fecha FROM citasPendientes '
-            + 'JOIN users ON citasPendientes.userId = users.id '
-            + 'WHERE DATE(citasPendientes.fecha) = ?;', fecha
+        const citas = await conexion.query('SELECT citas.fecha FROM citas '
+            + 'JOIN users ON citas.userId = users.id '
+            + 'WHERE DATE(citas.fecha) = ?;', fecha
         );
 
         citas.forEach(cita => {
@@ -129,12 +87,27 @@ const getHorarioCitas = async() => {
 }
 
 const getCitaPendienteUser = async(id) => {
-    const user = await CitaPendiente.findOne({
-        where: {userId: id}
+    const citasUser = await Cita.findOne({
+        where: {
+            userId: id,
+            fecha: {
+                [Op.gt]: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+        }
     });
 
-    return user;
+    return citasUser.dataValues;
 }
+
+
+// FIXME: cambiar por cita (con todo lo q supone)
+// const getCitasPasadasUser = async(id) => {
+//     const citasUser = await CitaPasada.findAll({
+//         where: {userId: id}
+//     });
+
+//     return citasUser;
+// }
 
 
 const getCitasPendientes = async() => {
@@ -145,24 +118,6 @@ const getCitasPendientes = async() => {
 const getCitasPasadas = async() => {
     return await CitaPasada.findAll({include: ['user']});
 }
-
-
-// const updateCitaPendiente = async(id, cita) => {
-//     for (const key in cita) {
-//         if (Object.hasOwnProperty.call(cita, key)) {
-//             const val = cita[key];
-
-//             if (val == null) {
-//                 delete cita[`${(key)}`];
-//             }
-//         }
-//     }
-
-//     let citaUpdate = await CitaPendiente.findByPk(id);
-//     citaUpdate.update(cita);
-
-//     return cita;
-// }
 
 
 const updateFechaCitaPendiente = async(id, fecha) => {
@@ -188,23 +143,15 @@ const updateConfirmadaCitaPasada = async(id, confirmada) => {
 
 
 module.exports = {
-    insertCita,
     getCitasFecha,
     getCitasFechaHora,
     getHorarioCitas,
+    getNumCitasHora,
     getCitaPendienteUser,
+    // getCitasPasadasUser,
     getCitasPasadas,
     getCitasPendientes,
+    insertCita,
     updateFechaCitaPendiente,
     updateConfirmadaCitaPasada
-}
-
-
-const cita = {
-    at1: null,
-    at2: 'ps na',
-    at3: null,
-    at4: 2
-}
-
-
+};

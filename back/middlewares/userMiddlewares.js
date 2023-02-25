@@ -9,7 +9,7 @@ const {response,request} = require('express');
 // const midEjemplo = async(req, res, next) => {
 //     if (await userCan(req, req.idToken, ['ability1', 'ability2'])) { // hay que pasarle el objeto req.
 //         next();                                                      // las abilities que queremos comprobar si
-//     }                                                                // tiene hay que pasarlas en un array.
+//     }                                                                // tiene. Hay que pasarlas en un array.
 //     else {
 //         return res.status(403).json({
 //             msg: 'No estás autorizado'
@@ -17,6 +17,17 @@ const {response,request} = require('express');
 //     }
 // }
 
+
+const midPrueba = async(req, res, next) => {
+    if (await userCan(req, ['ability1', 'ability2'])) {next();}
+    else {
+        return res.status(403).json({
+            msg: 'No estás autorizado'
+        });
+    }
+}
+
+
 module.exports = {
-    
+    midPrueba
 }
