@@ -39,22 +39,22 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 }
 
 
-const googleSignin = async(req, res = response) => {
+const googleSignin = async (req, res = response) => {
 
     const { id_token } = req.body;
 
     try {
-        const { correo, nombre, img } = await googleVerify( id_token );
+        const { correo, nombre, img } = await googleVerify(id_token);
 
         const [email, creado] = await models.Email.findOrCreate({
-            where: {email: correo}
+            where: { email: correo }
         });
 
         let user = null;
-        user = (creado) 
+        user = (creado)
             ? await queriesUsers.insertUser(email.id, nombre)
             : await queriesUsers.getUser(email.id);
-        
+
         const resp = {
             success: true,
             data: {
@@ -81,7 +81,6 @@ const googleSignin = async(req, res = response) => {
 
 const register = async (req, res = response) => { // poner código
 
-
     const emailUser = await queriesUsers.insertEmail(req.body.email);
 
     console.log(emailUser.id);
@@ -89,14 +88,14 @@ const register = async (req, res = response) => { // poner código
 
         correo.mandarCorreoActivacion(resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
-    }).catch(err => { 
+    }).catch(err => {
 
         console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
 
-        res.status(200).json({success: false, msg: msg});
+        res.status(200).json({ success: false, msg: msg });
     });
 }
 
@@ -105,11 +104,11 @@ const activarCorreo = (req, res = response) => {
     queriesUsers.updateVerificacionEmail(req.params.id)
         .then(resp => {
 
-        res.status(201).json({ success: true, resp: resp });
-    }).catch(err => {
+            res.status(201).json({ success: true, resp: resp });
+        }).catch(err => {
 
-        res.status(200).json({ success: false, error: 'Se ha producido un error' });
-    });
+            res.status(200).json({ success: false, error: 'Se ha producido un error' });
+        });
 }
 
 
@@ -134,7 +133,7 @@ const activarNewsletter = (req, res = response) => {
 }
 
 
-const mandarEmailRecuperarPasswd = async(req, res = response) => {
+const mandarEmailRecuperarPasswd = async (req, res = response) => {
 
     try {
         // const emailUser = await queriesUsers.getEmailById(email); // req.params.id
@@ -146,12 +145,12 @@ const mandarEmailRecuperarPasswd = async(req, res = response) => {
                 Tu código: ${(cod)}.
             `
         }
-    
+
         correo.mandarCorreo(req.body.email, contenido);
 
         const emailUser = await queriesUsers.getIdEmail(req.body.email);
         const respUser = await queriesUsers.updateCodRecPasswd(emailUser.id, cod);
-    
+
         const resp = {
             success: true,
             id: respUser.user.id,
@@ -162,31 +161,31 @@ const mandarEmailRecuperarPasswd = async(req, res = response) => {
     }
     catch (err) {
 
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
+        res.status(200).json({ success: false, msg: 'se ha producido un error' });
     }
 }
 
 
-const recuperarPasswd = async(req, res = response) => {
-    
+const recuperarPasswd = async (req, res = response) => {
+
     try {
         const user = await queriesUsers.getUser(req.params.id);
-        
+
         let resp = null;
         console.log(user.codRecPasswd);
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);
-        
+
             const respUpdate = await queriesUsers.updateUserPasswd(req.params.id, nuevaPasswdHash); // req.params.id
-            
+
             const email = await queriesUsers.getEmailById(req.params.id);
             const contenido = {
                 asunto: 'Cambio de contraseña',
                 cuerpoHtml: `La nueva contraseña para tu cuenta: ${(nuevaPasswd)}.`
             }
             correo.mandarCorreo(email.email, contenido);
-            
+
             resp = {
                 success: true,
                 id: user.id,
@@ -202,25 +201,40 @@ const recuperarPasswd = async(req, res = response) => {
 
         res.status(200).json(resp);
     }
-    catch(err) {
+    catch (err) {
 
         console.log(err);
-        const resp = {success: false, msg: 'ha sucedido un error'};
+        const resp = { success: false, msg: 'ha sucedido un error' };
 
         res.status(200).json(resp);
     }
 }
 
 
-const puedeModificar = async(req, res = response) =>  {
-    
-    userCan(req, req.params.id, ['leer','editar','borrar'])
-        .then(resp => {
-            res.status(200).json({ success: true });
-            
-        }).catch(err => {
-            res.status(200).json({ success: false });
-        });
+const puedeModificar = async (req, res = response) => {
+    let resp = { success: false };
+
+    try {
+        const autorizado = await userCan(req, req.params.id, ['leer', 'editar', 'borrar']);
+
+        if (autorizado) {
+            const user = queriesUsers.getUser(req.params.id);
+
+            resp = {
+                success: true,
+                data: {
+                    id: user.id,
+                    nombre: user.nombre,
+                    token: generarJWT(user.id),
+                }
+            }            
+        };
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
 }
 
 
