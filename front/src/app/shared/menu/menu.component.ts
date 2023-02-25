@@ -18,16 +18,20 @@ export class MenuComponent implements OnInit {
   ) { }
 
 
+
   ngOnInit() {
+
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.estaRegistrado = true;
+
+      this.comprobarPuedeModificar();
+    }
 
     this.SharedService.comprobarPermisos.subscribe(registrado => {
       this.estaRegistrado = registrado;
 
-      if (registrado) {
-        this.AuthService.puedeModificar().subscribe(resp => {
-          this.puedeModificar = (resp) ? true : false;
-        });
-      }
+      this.comprobarPuedeModificar();
     })
 
     /* this.router.events.subscribe(event => {
@@ -46,4 +50,13 @@ export class MenuComponent implements OnInit {
       }
     }); */
   }
+
+  comprobarPuedeModificar() {
+    if (this.estaRegistrado) {
+      this.AuthService.puedeModificar().subscribe(resp => {
+        this.puedeModificar = (resp) ? true : false;
+      });
+    }
+  }
+
 }
