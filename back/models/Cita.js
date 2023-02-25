@@ -5,7 +5,7 @@ require('dotenv').config();
 //Mario
 sequelize.conectar();
 
-const CitaPendiente = sequelize.db.define("citaPendiente", {
+const Cita = sequelize.db.define("cita", {
     id: {
         type: DataTypes.BIGINT,
         primaryKey: true,
@@ -19,15 +19,23 @@ const CitaPendiente = sequelize.db.define("citaPendiente", {
     },
     fecha: {
         type: DataTypes.DATE,
-        unique: true,
         allowNull: false
+    },
+    donacion: {
+        type: DataTypes.ENUM('sangre', 'plasma'),
+        allowNull: false
+    },
+    confirmada: {
+        type: DataTypes.TINYINT,
+        defaultValue: 0,
+        allowNull: true
     }
 },
 {
-    tableName: 'citasPendientes'
+    tableName: 'citas'
 });
 sequelize.sync();
 sequelize.desconectar();
 
 
-module.exports = CitaPendiente;
+module.exports = Cita;

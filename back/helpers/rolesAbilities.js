@@ -5,14 +5,14 @@ const sequelize = require('../database/ConexionSequelize');
 const { getArrayRoles } = require('./getRelaciones');
 
 //Mario
-const userCan = async(req, id, acciones) => { 
+const userCan = async(req, acciones) => { 
     let arrayAbilities = [];
 
     if (req.userAbilites) {
         arrayAbilities = req.userAbilites;
     }
     else {
-        const user = await queriesUsers.getUser(id);
+        const user = await queriesUsers.getUserRoles(req.idToken);
         const roles = getArrayRoles(user);
         const abilities = await queriesUsers.getAbilities(roles);
 
@@ -38,3 +38,7 @@ const userCan = async(req, id, acciones) => {
 
 module.exports = userCan;
 
+queriesUsers.getUserRoles(11).then(user => {
+    const roles = getArrayRoles(user);
+    queriesUsers.getAbilities(roles).then(console.log);
+});
