@@ -12,7 +12,7 @@ class Server {
         this.path = '/api/';
 
         this.apto_sangre = "/test-apto";
-        this.pathNoticias='/api/Noticias/'
+        this.pathNoticias='/api/noticias/'
         
 
         //Middlewares
