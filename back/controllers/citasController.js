@@ -21,6 +21,9 @@ const pedirCita = async(req, res = response) => {
 
         const resp = await queriesCitas.insertCita(cita);
 
+        const fecha = moment(cita.fecha, 'YYYY-MM-DD HH:mm:ss').format('YYYY/MM/DD HH:mm');
+        mandarCorreoFechaCita(cita.id, cita.fecha, cita.donacion);
+        
         res.status(200).json({success: true, msg: 'cita insertada con éxito'});
     }
     catch (err) {
@@ -70,13 +73,15 @@ const getHorasDisponibles = async(req, res = response) => {
                 });
             }
 
-            console.log(arrayHorasReservadas);
-
+            // * esta línea devuelve el número de veces que se repite una hora determinada en el array de horas
+            // reservadas. Este control lo hago porq sólo pueden pedir cita dos usuarios a la vez en la misma hora.
+            // TODO: preguntar a Fernando sobre esto.
             let horasDisponibles = [];
             for (const hora of arrayHorasHorario) {
                 console.log(hora);
-                if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora);
+                if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora); // explicación justo arriba (*)
             }
+
 
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
@@ -116,31 +121,22 @@ const hayHuecoHora = async(req, res = response) => {
     }
 }
 
-const mandarCorreoFechaCita = async(req, res = response) => {
-    try {
+const mandarCorreoFechaCita = async(id, fecha, donacion) => {
 
-        const dia = req.body.fecha.slice(0, 10);
-        const hora = req.body.fecha.slice(11);
+    const dia = fecha.slice(0, 10);
+    const hora = fecha.slice(11);
 
-        let contenido = {};
+    let contenido = {};
 
-        contenido.asunto = 'Recordatorio de tu cita.';
+    contenido.asunto = 'Recordatorio de tu cita.';
 
-        contenido.cuerpoHtml = `
-            Hola. Recuerda que el día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
-            <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar sangre.
-        `;
+    contenido.cuerpoHtml = `
+        Hola. Recuerda que el día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
+        <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar <strong>${(donacion)}</strong>.
+    `;
 
-        const correo = await queriesUsers.getEmailById(req.body.id);
-        const resp = email.mandarCorreo(correo.email, contenido);
-
-        res.status(200).json({success: true, msg: 'Correo enviado correctamente.'});
-    }
-    catch (err) {
-
-        console.log(err);
-        res.status(200).json({success: false, msg: 'Se ha producido un error.'})
-    }
+    const correo = await queriesUsers.getEmailById(id);
+    const resp = email.mandarCorreo(correo.email, contenido);
 }
 
 
@@ -151,11 +147,5 @@ module.exports = {
     // getHorarioCitas,
     hayHuecoHora,
     getHorasDisponibles,
-    userNoTieneCita,
-    mandarCorreoFechaCita
+    userNoTieneCita
 }
-
-const arr = [2, 3, 1, 3, 4, 5, 3, 1]
-
-
-console.log(arr.filter(h => (h == 3)).length); 

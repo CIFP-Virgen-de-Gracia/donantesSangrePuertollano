@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import * as interfaces from '../interfaces/pedir-cita.interface';
+import * as interfaces from '../interfaces/citas.interface';
 
 
 @Injectable({
@@ -25,14 +25,26 @@ export class PedirCitaService {
   //     + '/gethorariocitas').pipe(tap(horas => this._horasCitas = horas));
   // }
 
-  insertCita(id: string, fecha: string) {
+  insertCita(id: string, fecha: string, donacion: string) {
     return this.httpPedirCita.post<interfaces.SuccessMsgResponse>(this.pedirCitaUrl
-      + '/pedircita', {id: id, fecha: fecha});
+      + '/pedircita', {id: id, fecha: fecha, donacion: donacion});
   }
 
 
-  mandarCorreo(id:string, fecha: string) {
+  mandarCorreo(id:string, fecha: string, donacion: string) {
     return this.httpPedirCita.post<interfaces.SuccessMsgResponse>(this.pedirCitaUrl
-      + '/mandarcorreocita', {id: id, fecha: fecha});
+      + '/mandarcorreocita', {id: id, fecha: fecha, donacion: donacion});
+  }
+
+
+  fetchCitaPendiente(id: string) {
+    return this.httpPedirCita.get<interfaces.fetchCitaPendienteResponse>(this.pedirCitaUrl
+      + '/getcitapendiente/' + id);
+  }
+
+  
+  fetchCitasPasadas(id: string) {
+    return this.httpPedirCita.get<interfaces.fetchCitasPasadasResponse>(this.pedirCitaUrl
+      + '/getcitaspasadas/' + id);
   }
 }

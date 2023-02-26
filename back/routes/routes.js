@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const midsUSer = require('../middlewares/userMiddlewares');
+const midsCitas = require('../middlewares/citasMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
 // const mids = require("../middlewares/userMiddlewares");
 const auth = require('../controllers/authController');
@@ -34,10 +35,9 @@ router.get('/getIntegrantesCargo', junta.getIntegrantesCargo);
 // router.get('/citas/citasreservadas/:fecha', citas.getCitasReservadas);
 // router.get('/citas/gethorariocitas', citas.getHorarioCitas);
 router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
-router.post('/citas/pedircita', citas.pedirCita);
+router.post('/citas/pedircita', [midsCitas.yaHaPedidoUnaCita], citas.pedirCita);
 router.get('/citas/usernotienecita/:id', citas.userNoTieneCita);
 router.get('/citas/hayhuecohora/:fecha', citas.hayHuecoHora);
-router.post('/citas/mandarcorreocita', citas.mandarCorreoFechaCita);
 // router.get('/citas/getcitapendienteuser/:id', citas.);
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const {DataTypes} = require("sequelize");
 const sequelize = require('../database/ConexionSequelize');
+const CitaPendiente = require("./CitaPendiente");
+const CitaPasada = require('./CitaPasada');
 require('dotenv').config();
 
 //Mario
@@ -27,8 +29,7 @@ const Cita = sequelize.db.define("cita", {
     },
     confirmada: {
         type: DataTypes.TINYINT,
-        defaultValue: 0,
-        allowNull: true
+        allowNull: true 
     }
 },
 {
@@ -37,5 +38,11 @@ const Cita = sequelize.db.define("cita", {
 sequelize.sync();
 sequelize.desconectar();
 
+
+Cita.hasOne(CitaPendiente, {as: 'cancelada'});
+CitaPendiente.belongsTo(Cita, {foreignKey: 'citaId', as:'info'});
+
+Cita.hasOne(CitaPasada, {as: 'asistido'});
+CitaPasada.belongsTo(CitaPasada, {foreignKey: 'id', as: 'info'});
 
 module.exports = Cita;

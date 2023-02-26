@@ -14,7 +14,7 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { PedirCitaModule } from './pedir-cita/pedir-cita.module';
+import { PedirCitaModule } from './citas/pedir-cita.module';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 

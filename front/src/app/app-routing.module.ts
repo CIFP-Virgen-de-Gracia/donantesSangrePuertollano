@@ -31,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'citas',
-    loadChildren: () => import('./pedir-cita/pedir-cita.module').then(m => m.PedirCitaModule)
+    loadChildren: () => import('./citas/pedir-cita.module').then(m => m.PedirCitaModule)
   },
   {
     path: '**',
