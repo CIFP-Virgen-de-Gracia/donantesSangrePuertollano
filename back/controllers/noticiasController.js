@@ -1,8 +1,6 @@
 const { response, request } = require('express');
-const uploadFile = require("../middlewares/upload");
 const queriesNoticias = require("../database/queries/queriesNoticias");
 const fs = require('fs');
-const codificar = require('image-to-base64');
 const path = require('path');
 
 //Todo Isa
@@ -62,7 +60,26 @@ const registrarNoticia = async (req, res = response) => {
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         if (noticia !== null) {
-            res.status(200).json(noticia);
+            if (noticia['Imagen'].length > 0) {
+                data = {
+                    "id": noticia.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido":noticia.contenido,
+                    "seccion":noticia.seccion,
+                    "imagen":"http://127.0.0.1:8090/api/Noticias/upload/" + noticia.id,
+                }
+            } else {
+                data = {
+                    "id": noticia.id,
+                    "titulo": noticia.titulo,
+                    "subtitulo": noticia.subtitulo,
+                    "contenido":noticia.contenido,
+                    "seccion":noticia.seccion,
+                    "imagen": ""
+                }
+            }
+            res.status(200).json(data);
         } else {
             res.status(200).json("No encontrada");
         }
@@ -73,7 +90,8 @@ const getNoticia = (req, res = response) => {
 
 
 const borrarNoticia = (req, res = response) => {
-    queriesNoticias.borrarNoticia(req.body.id).then((noticia) => {
+    queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
+        console.log(noticia);
         res.status(200).json("La noticia ha sido borrada");
     }).catch((err) => {
         console.log(err);
@@ -103,7 +121,6 @@ const mostrarImagen = (req, res = response) => {
                 }
             }
         }).catch((err) => {
-            console.log(err)
             console.log("No se ha encontrado la foto");
         });
 }
