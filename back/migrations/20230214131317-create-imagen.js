@@ -3,10 +3,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('imagenes', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.BIGINT
+      },
       idNoticia: {
         type: Sequelize.BIGINT,
-        primaryKey: true,
-        autoIncrement: false,
         allowNull: false,
       },
       nombre: {

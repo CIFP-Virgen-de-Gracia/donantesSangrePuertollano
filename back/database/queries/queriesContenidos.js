@@ -12,7 +12,6 @@ class QueriesContenidos {
 
 
     getHistoria = async () => {
-
         const historia = await models.Contenido.findOne({
             attributes: ['id', 'nombre', 'valor'],
             where: {
@@ -25,7 +24,6 @@ class QueriesContenidos {
 
 
     getCargosJunta = async () => {
-
         const cargos = await models.CargoJunta.findAll();
 
         return cargos;
@@ -35,7 +33,6 @@ class QueriesContenidos {
     getCargoIntegrantes = async () => {
         //https://stackoverflow.com/questions/68132680/how-to-return-values-from-joined-tables-in-sequelize-at-the-same-level-as-master
         const cargosIntegrantes = await models.IntegranteJunta.findAll({
-
             include: [
                 {
                     model: models.CargoIntegrante,
@@ -50,7 +47,8 @@ class QueriesContenidos {
                     ]
                 }
             ],
-            attributes: ['id', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'], [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
+            attributes: ['id', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'], 
+                        [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
         });
 
         return cargosIntegrantes;
@@ -58,7 +56,6 @@ class QueriesContenidos {
 
 
     updateHistoria = async (valor) => {
-
         try {
             this.sequelize.conectar();
 

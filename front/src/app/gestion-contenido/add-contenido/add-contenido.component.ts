@@ -1,4 +1,4 @@
-import { Component, ViewChild,ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Contenido } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
@@ -16,37 +16,44 @@ export class AddContenidoComponent {
     subtitulo: "",
     contenido: "",
     seccion: "noticias",
-    imagen:""
+    imagen: ""
   }
+
   @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
-  constructor(private ContenidoService: ContenidoService) {
-  }
+  constructor(private ContenidoService: ContenidoService) {}
 
 
   limpiarAlert() {
     this.alert = "no";
     this.aviso = 0;
   }
+
+
   capturarFile(event: any): any {
     const files = event.target.files[0];
     this.noticia.imagen = files;
   }
+
+
   limpiarContenido() {
     this.noticia.titulo = "";
     this.noticia.subtitulo = "";
     this.noticia.contenido = "";
     this.noticia.imagen = "";
-    this.foto.nativeElement.value=''
+    this.foto.nativeElement.value = ''
 
   }
-  agregarNoticia() {
 
+
+  agregarNoticia() {
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
       this.alert = "si";
+
     } else {
       this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-        if (res!=="Error de registro") {
+
+        if (res !== "Error de registro") {
           this.aviso = 1;
           this.ContenidoService.agregar(res);
           this.limpiarContenido();
