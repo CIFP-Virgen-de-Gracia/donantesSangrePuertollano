@@ -28,25 +28,20 @@
       nombre del integrante.</p>
 
     <div class="contenedor-integrantes">
-      <div class="integrante d-flex" *ngFor="let integrante of junta">
+      <div class="integrante row" *ngFor="let integrante of junta">
 
         <select name="cargos"
-          class="cargos"
+          class="cargos col-12 col-sm-5"
           [(ngModel)]="integrante.cargo">
 
           <option value="{{ cargo.nombre }}"
             *ngFor="let cargo of cargos">
             {{ cargo.nombre }}
           </option>
-
         </select>
 
-      <!--   <input type="text"
-          class="cargo align-middle"
-          [(ngModel)]="integrante.cargo"> -->
-
         <input type="text"
-          class="nombre align-middle"
+          class="nombre align-middle col-12 col-sm-7"
           [(ngModel)]="integrante.nombre">
       </div>
     </div>
