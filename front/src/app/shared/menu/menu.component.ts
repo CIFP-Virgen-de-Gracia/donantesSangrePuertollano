@@ -33,23 +33,8 @@ export class MenuComponent implements OnInit {
 
       this.comprobarPuedeModificar();
     })
-
-    /* this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-
-        const user = localStorage.getItem('user');
-
-        if (user) {
-          this.estaRegistrado = true;
-
-
-          this.AuthService.puedeModificar().subscribe(resp => {
-            this.puedeModificar = (resp) ? true : false;
-          });
-        }
-      }
-    }); */
   }
+
 
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {

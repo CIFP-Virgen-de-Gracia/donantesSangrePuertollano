@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Imagen.belongsTo(models.Noticia, {
+        foreignKey: 'idNoticia',
+        targetKey: 'id',
+        as: 'Noticia'
+      });
     }
   }
   Imagen.init({
@@ -21,8 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Imagen',
     timestamps: false,
   });
-
-  Imagen.removeAttribute('id');
 
   return Imagen;
 }; 
