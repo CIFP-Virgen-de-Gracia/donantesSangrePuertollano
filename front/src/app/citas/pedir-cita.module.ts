@@ -5,11 +5,13 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { PedirCitaRoutingModule } from './pedir-cita-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './modal/modal.component';
+import { MostrarCitasComponent } from './mostrar-citas/mostrar-citas.component';
 
 
 @NgModule({
   declarations: [
     PedirCitaPacienteComponent,
+    MostrarCitasComponent,
   ],
   imports: [
     CommonModule,

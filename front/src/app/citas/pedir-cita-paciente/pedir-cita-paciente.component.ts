@@ -20,13 +20,14 @@ export class PedirCitaPacienteComponent {
   fecha: NgbDateStruct;
   sinSeleccionar = true;
   registrado: boolean = false;
-  noHayHoras: boolean = false
+  noHayHoras: boolean = false;
   horasDisponibles: string[] = [];
   fechaSeleccionada: string;
 
   citaForm: FormGroup = new FormGroup({
     hora: new FormControl('', [Validators.required])
   });
+
 
   constructor(
     private pedirCitaHttpService: PedirCitaService,
@@ -57,16 +58,20 @@ export class PedirCitaPacienteComponent {
      console.log(this.registrado);
   }
 
+
   transFecha(fechaCalendar: NgbDateStruct) {
     this.fechaSeleccionada = this.fecha.year + '-' + this.fecha.month + '-' + this.fecha.day;
   }
 
+
   traerHorario() {
     this.pedirCitaHttpService.fetchHorasDisponibles(this.fechaSeleccionada).subscribe(resp => {
       this.horasDisponibles = resp.horas;
+      console.log(this.horasDisponibles);
       if (this.horasDisponibles.length == 0) this.noHayHoras = true;
     });
   }
+
 
   setDia(event: NgbDateStruct) {
     this.fecha = event;
@@ -75,23 +80,18 @@ export class PedirCitaPacienteComponent {
     this.sinSeleccionar = false;
   }
 
+
   pedirCita() {
     const id = JSON.parse(localStorage.getItem('user') || '{}');
 
     const fechaCita = this.fechaSeleccionada
       + ' ' + this.citaForm.get('hora')?.value + ':00';
 
-    console.log(fechaCita);
+    const tipoDonacion = this.citaForm.get('donacion')?.value;
 
-    this.pedirCitaHttpService.insertCita(id, fechaCita).subscribe(resp => {
+    this.pedirCitaHttpService.insertCita(id, fechaCita, tipoDonacion).subscribe(resp => {
       this.onCitaPedida.emit(true);
 
-      // const {id: value}: Storage = localStorage;
-
-      this.pedirCitaHttpService.mandarCorreo(id, this.fechaSeleccionada).subscribe(resp => {
-        console.log(resp);
-        // this.router.navigate(['']);
-      });
     });
   }
 }

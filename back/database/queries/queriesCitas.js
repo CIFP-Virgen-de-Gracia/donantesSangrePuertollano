@@ -1,4 +1,6 @@
 const Cita = require('../../models/Cita');
+const CitaPendiente = require('../../models/CitaPendiente');
+const CitaPasada = require('../../models/CitaPasada');
 const sequelize = require('../ConexionSequelize');
 const conexion = require('../Conexion');
 const moment = require('moment');
@@ -22,13 +24,21 @@ const insertCita = async(cita) => {
 
     console.log('asdfasdfasdf');
     console.log(cita);
-    const resp = await Cita.create({
+    const resp0 = await Cita.create({
         fecha: cita.fecha,
         userId: cita.userId,
         donacion: cita.donacion
     });
 
-    return resp.dataValues;
+    const resp1 = await CitaPendiente.create({
+        id: resp0.dataValues.id
+    });
+
+    const resp2 = await CitaPasada.create({
+        id: resp0.dataValues.id
+    });
+
+    return resp0.dataValues;
 }
 
 
@@ -41,18 +51,32 @@ const getNumCitasHora = async(fecha) => {
 }
 
 
-const getCitasFecha = async(fecha) => { // estos dos métodos son iguales
-    const citas = await conexion.query('SELECT citas.fecha, users.nombre FROM citas '
-        + 'JOIN users ON citas.userId = users.id '
-        + 'WHERE DATE(citas.fecha) = ?;', fecha
-    );
-
-    citas.forEach(cita => {
-        cita.hora = moment(cita.fecha).format('HH:mm');
+const getNumCitasPendientesUser = async(id) => {
+    const n = await Cita.count({
+        where: {
+            userId: id,
+            fecha: {
+                [Op.gt]: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+        }
     });
 
-    return citas;
+    return n;
 }
+
+// NOTE: no sé si esto vale ya
+// const getCitasFecha = async(fecha) => { // estos dos métodos son iguales
+//     const citas = await conexion.query('SELECT citas.fecha, users.nombre FROM citas '
+//         + 'JOIN users ON citas.userId = users.id '
+//         + 'WHERE DATE(citas.fecha) = ?;', fecha
+//     );
+
+//     citas.forEach(cita => {
+//         cita.hora = moment(cita.fecha).format('HH:mm');
+//     });
+
+//     return citas;
+// }
 
 
 const getCitasFechaHora = async(fecha) => {
@@ -86,6 +110,7 @@ const getHorarioCitas = async() => {
     return arrayHoras;
 }
 
+
 const getCitaPendienteUser = async(id) => {
     const citasUser = await Cita.findOne({
         where: {
@@ -100,14 +125,18 @@ const getCitaPendienteUser = async(id) => {
 }
 
 
-// FIXME: cambiar por cita (con todo lo q supone)
-// const getCitasPasadasUser = async(id) => {
-//     const citasUser = await CitaPasada.findAll({
-//         where: {userId: id}
-//     });
+const getCitasPasadasUser = async(id) => {
+    const citasUser = await Cita.findOne({
+        where: {
+            userId: id,
+            fecha: {
+                [Op.lte]: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+        }
+    });
 
-//     return citasUser;
-// }
+    return citasUser.dataValues;
+}
 
 
 const getCitasPendientes = async() => {
@@ -143,10 +172,11 @@ const updateConfirmadaCitaPasada = async(id, confirmada) => {
 
 
 module.exports = {
-    getCitasFecha,
+    // getCitasFecha,
     getCitasFechaHora,
     getHorarioCitas,
     getNumCitasHora,
+    getNumCitasPendientesUser,
     getCitaPendienteUser,
     // getCitasPasadasUser,
     getCitasPasadas,
@@ -155,3 +185,6 @@ module.exports = {
     updateFechaCitaPendiente,
     updateConfirmadaCitaPasada
 };
+
+console.log('asdf');
+getCitaPendienteUser(11).then(console.log);
