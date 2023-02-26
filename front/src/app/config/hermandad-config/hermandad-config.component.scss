@@ -25,21 +25,18 @@
   }
 
   .contenedor-integrantes {
-
     .integrante {
 
-      input,
+      .nombre,
       .cargos {
         border: none;
         outline: none;
         padding: .5rem 1rem;
-        margin-bottom: 1.5rem;
       }
 
       .cargos {
         background-color: var(--color-primario);
         color: var(--bs-white);
-        width: 40%;
 
         option {
           font-family: arial !important;
@@ -48,8 +45,16 @@
 
       .nombre {
         border-bottom: 2px solid var(--color-primario);
-        width: 60%;
+        margin-bottom: 2.5rem;
       }
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .junta .contenedor-integrantes .integrante {
+    .nombre, .cargos {
+      margin-bottom: 2rem;
     }
   }
 }
