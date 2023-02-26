@@ -76,6 +76,10 @@ body {
       padding: 0 .5rem;
     }
 
+    &.btn-primario, &.btn-secundario {
+      padding: 0 1.5rem;
+    }
+
     &.btn-primario {
       background-color: var(--color-granate);
       color: var(--bs-white);
@@ -83,6 +87,44 @@ body {
       &:hover,
       &:active {
         background-color: var(--color-granate-oscuro);
+      }
+    }
+
+    &.btn-secundario {
+      background-color: var(--color-granate);
+      color: var(--bs-white);
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        background: transparent;
+        color: var(--color-granate);
+
+        &:before,
+        &:after {
+          width: 100%;
+        }
+      }
+
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        height: 5px;
+        width: 0;
+        background-color: var(--color-granate);
+        transition: 400ms ease all;
+      }
+
+      &:before {
+        top: 0;
+        right: 0;
+      }
+
+      &:after {
+        top: 30px;
+        left: 0;
+        bottom: 0;
       }
     }
   }
