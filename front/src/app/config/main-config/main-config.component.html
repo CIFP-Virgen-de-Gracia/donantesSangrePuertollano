@@ -4,19 +4,19 @@
 
   <div class="contenedor row">
 
-    <div class="col-3 menu-horizontal g-0">
+    <div class="col-2 col-md-3 menu-horizontal g-0">
       <ul class="">
         <li *ngFor="let e of elementos; let i = index"
           routerLink="./{{ e.nombre }}"
           [class.activo]="i == elementoActivo"
           (click) = "elementoActivo = i">
           <i class="fa-solid {{ e.icono }}"></i>
-          {{ e.nombre | titlecase }}
+          <span class="oculto">{{ e.nombre | titlecase }}</span>
         </li>
       </ul>
     </div>
 
-    <div class="col-9 config">
+    <div class="col-10 col-md-9 config">
       <router-outlet></router-outlet>
     </div>
 
