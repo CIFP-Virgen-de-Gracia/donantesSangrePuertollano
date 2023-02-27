@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const File = require('../../helpers/FileUpload');
 const models = require('../../models/index.js');
+const { now } = require('sequelize/types/utils');
 
 
 //Todo Isa
@@ -129,14 +130,9 @@ class QueriesNoticias {
                     include: [
                         {
                             model: models.Imagen,
-                            attributes: [],
                             as: 'Imagen'
                         }
                     ],
-                    attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',  
-                                [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                                [Sequelize.col('Imagen.idNoticia'), 'idNoticia'],
-                                [Sequelize.col('Imagen.id'), 'idImagen']],
                 });
 
             if (noticia) {
@@ -146,6 +142,7 @@ class QueriesNoticias {
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
                     noticia.seccion = noticia.seccion;
+                    noticia.updatedAt = new Date(now).toLocaleString();
                     const resp = await noticia.save();
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
@@ -166,9 +163,11 @@ class QueriesNoticias {
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
                     noticia.seccion = noticia.seccion;
+                    noticia.updatedAt = new Date(now).toLocaleString();
                     noticia.save();
 
-                    if (noticia.dataValues.nombreImagen != null) {
+                    console.log(noticia)
+                    /* if (noticia.dataValues.nombreImagen != null) {
                         const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia.dataValues.nombreImagen);
                         if (fs.existsSync(pathImagen)) {
                             fs.unlinkSync(pathImagen);
@@ -186,7 +185,7 @@ class QueriesNoticias {
                         imagen.idNoticia = noticia.id;
                         imagen.nombre = nombre;
                         imagen.save();
-                    }
+                    } */
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
                     let parrafo = noticia.contenido.split("\n");

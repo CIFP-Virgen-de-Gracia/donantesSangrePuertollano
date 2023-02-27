@@ -28,13 +28,11 @@ export class MainPageContenidoComponent implements OnInit {
     });
   }
   get resultado() {
-
     return this.ContenidoService.resultado
   }
   obtenerId(event: any) {
     let id = event.target.id;
     this.idBorrado = id.slice(1);
-    console.log(this.idBorrado);
   }
   limpiarIdBorrado() {
     this.idBorrado = "";
