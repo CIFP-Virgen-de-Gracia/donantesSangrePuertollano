@@ -1,7 +1,5 @@
 const express = require('express');
-// const body_parser = require('body-parser');
 const cors = require('cors');
-const {conexion, sequelize} = require('../../database/Conexion');
 const fileupload = require("express-fileupload");
 
 //Mario
@@ -11,7 +9,7 @@ class Server {
         this.app = express();
         this.path = '/api/';
 
-        this.apto_sangre = "/test-apto";
+        this.pathAptoSangre = "/test-apto";
         this.pathNoticias='/api/noticias/'
         
 
@@ -36,10 +34,10 @@ class Server {
     routes(){
 
         // this.app.use(this.path , require('../routes/routes'));
-        this.app.use(this.apto_sangre, require('../../routes/apto_sangre'));
+        this.app.use(this.pathAptoSangre, require('../../routes/aptoSangreRoutes'));
 
         this.app.use(this.path , require('../../routes/routes'));
-        this.app.use(this.pathNoticias , require('../../routes/NoticiasRoutes'));
+        this.app.use(this.pathNoticias , require('../../routes/noticiasRoutes'));
 
     }
 

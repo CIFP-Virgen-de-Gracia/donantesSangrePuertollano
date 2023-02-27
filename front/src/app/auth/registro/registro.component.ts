@@ -33,7 +33,7 @@ export class RegistroComponent {
   ) {}
 
   ngOnInit() {
-    
+
     this.contraErronea = false;
     this.registradoExito = -1;
   }
@@ -45,8 +45,7 @@ export class RegistroComponent {
       + this.registroForm.get('ap2')?.value;
 
     this.contraErronea = false;
-    // console.log(this.registroForm.get('passwd')?.value);
-    // console.log(this.registroForm.get('passwdRep')?.value);
+
     if (this.registroForm.get('passwd')?.value == this.registroForm.get('passwdRep')?.value) {
 
       const passwdHash = Md5.hashStr(this.registroForm.get('passwd')?.value);

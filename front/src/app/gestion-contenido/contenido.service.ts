@@ -18,12 +18,18 @@ export class ContenidoService {
   getListado() {
     return this.http.get<any>(`${this.baseURL}/noticias`).pipe(tap(resp => { if (resp !== "No encontrada") { this.noticias = resp } }))
   }
+
+
   get resultado() {
     return [...this.noticias];
   }
+
+
   agregar(noticia: any) {
     this.noticias.unshift(noticia);
   }
+
+
   editar(id: string, noticia: any) {
     console.log(id);
     console.log(noticia);
@@ -33,13 +39,19 @@ export class ContenidoService {
     console.log(this.noticias);
 
   }
+
+
   borrar(id: string) {
     let not = this.noticias.filter((noticia) => noticia.id != id);
     this.noticias = not;
   }
+
+
   borrarNoticia(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseURL}/borrar/${id}`);
   }
+
+
   editarNoticia(id: string, noticia: Contenido): Observable<any> {
     const payload = new FormData();
     payload.append('id', id);
@@ -51,6 +63,8 @@ export class ContenidoService {
 
     return this.http.put<any>(`${this.baseURL}/modificar/`, payload);
   }
+
+
   obtenerInfo(id: string): Contenido {
     let not = this.noticias.filter((noticia) => noticia.id == id);
     let noticia: Contenido = {
@@ -62,12 +76,15 @@ export class ContenidoService {
     }
     return noticia;
   }
+
+
   obtenerNoticia(id: string): Observable<any> {
     let idnot={
       id:id
     }
     return this.http.post<any>(`${this.baseURL}/get`, idnot);
   }
+
 
   añadirNoticia(noticia: Contenido): Observable<any> {
     const payload = new FormData();
