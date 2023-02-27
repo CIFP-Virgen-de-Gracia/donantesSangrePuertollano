@@ -3,7 +3,7 @@ const models = require('../../models/index.js');
 
 
 //Todo Alejandro
-class query_Apto_Sangre {
+class queriesAptoSangre {
 
     constructor() {
         this.sequelize = sequelize; 
@@ -55,4 +55,4 @@ class query_Apto_Sangre {
     }
 }
 
-module.exports = query_Apto_Sangre;
+module.exports = queriesAptoSangre;

@@ -1,7 +1,7 @@
 //Todo Alejandro
 
 const { Router } = require('express');
-const controlador = require('../controllers/controlador_apto_sangre');
+const controlador = require('../controllers/aptoSangreController');
 const router = Router();
 // const middleware = require('../middlewares/middleware');
 // const midsJWT = require("../middlewares/validarJWT");

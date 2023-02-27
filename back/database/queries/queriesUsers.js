@@ -105,7 +105,6 @@ class QueriesUsers {
             });
 
             this.sequelize.desconectar();
-
             return rolesAbilities;
         }
         catch (err) {
