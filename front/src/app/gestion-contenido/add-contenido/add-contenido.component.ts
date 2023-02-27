@@ -23,6 +23,10 @@ export class AddContenidoComponent {
 
   constructor(private ContenidoService: ContenidoService) {}
 
+  get resultado() {
+    return this.ContenidoService.resultado
+  }
+
 
   limpiarAlert() {
     this.alert = "no";
