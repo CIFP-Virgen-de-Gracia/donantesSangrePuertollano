@@ -83,14 +83,12 @@ const register = async (req, res = response) => { // poner código
 
     const emailUser = await queriesUsers.insertEmail(req.body.email);
 
-    console.log(emailUser.id);
     queriesUsers.insertUser(emailUser.id, titleCase.titleCase(req.body.nombre), req.body.passwd).then(resp => {
 
         correo.mandarCorreoActivacion(resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
     }).catch(err => {
 
-        console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';

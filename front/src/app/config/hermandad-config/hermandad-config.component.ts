@@ -64,7 +64,6 @@ export class HermandadConfigComponent {
 
 
   guardar() {
-
     this.ConfigService.updateConfigHermandad(this.historia, this.junta)
       .subscribe(resp => {
 
