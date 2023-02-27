@@ -13,6 +13,7 @@ class Server {
 
         this.apto_sangre = "/test-apto";
         this.pathNoticias='/api/Noticias/'
+        this.pathMusica="/api/Musica";
         
 
         //Middlewares
@@ -40,6 +41,7 @@ class Server {
 
         this.app.use(this.path , require('../routes/routes'));
         this.app.use(this.pathNoticias , require('../routes/NoticiasRoutes'));
+        this.app.use(this.pathMusica , require('../routes/CancionRoute'));
 
     }
 

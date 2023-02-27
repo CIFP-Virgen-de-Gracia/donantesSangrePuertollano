@@ -27,9 +27,9 @@ export class ContenidoService {
   editar(id: string, noticia: any) {
     console.log(id);
     console.log(noticia);
-    let posicion=this.noticias.findIndex(n=>n.id==id);
+    let posicion = this.noticias.findIndex(n => n.id == id);
     console.log(posicion);
-    this.noticias[posicion]=noticia;
+    this.noticias[posicion] = noticia;
     console.log(this.noticias);
 
   }
@@ -41,6 +41,7 @@ export class ContenidoService {
     return this.http.delete<any>(`${this.baseURL}/borrar/${id}`);
   }
   editarNoticia(id: string, noticia: Contenido): Observable<any> {
+    console.log(noticia);
     const payload = new FormData();
     payload.append('id', id);
     payload.append('titulo', noticia.titulo);
@@ -48,6 +49,8 @@ export class ContenidoService {
     payload.append('contenido', noticia.contenido);
     payload.append('seccion', noticia.seccion);
     payload.append('archivo', noticia.imagen);
+    console.log(payload.get("titulo"));
+
 
     return this.http.put<any>(`${this.baseURL}/modificar/`, payload);
   }
@@ -63,8 +66,8 @@ export class ContenidoService {
     return noticia;
   }
   obtenerNoticia(id: string): Observable<any> {
-    let idnot={
-      id:id
+    let idnot = {
+      id: id
     }
     return this.http.post<any>(`${this.baseURL}/get`, idnot);
   }

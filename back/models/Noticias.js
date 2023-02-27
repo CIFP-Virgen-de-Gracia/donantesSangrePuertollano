@@ -20,7 +20,7 @@ const Noticia = sequelize.db.define("noticias", {
         allowNull: true
     },
     contenido: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100000000),
         allowNull: false
     },
     seccion: {
