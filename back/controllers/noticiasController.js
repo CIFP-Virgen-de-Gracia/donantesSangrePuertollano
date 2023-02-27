@@ -11,22 +11,23 @@ const getListado = async (req, res = response) => {
             noticia.forEach(n => {
                 let data;
                 let fecha = new Date(n.createdAt).toLocaleString();
-                let parrafo = n.contenido.split("\n");
                 if (n['Imagen'].length > 0) {
                     data = {
                         "id": n.id,
                         "titulo": n.titulo,
                         "subtitulo": n.subtitulo,
-                        "contenido": parrafo,
+                        "contenido": n.contenido,
+                        "seccion":n.seccion,
                         "fecha": fecha,
-                        "imagen": "http://127.0.0.1:8090/api/Noticias/upload/" + n.id,
+                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + n.id,
                     }
                 } else {
                     data = {
                         "id": n.id,
                         "titulo": n.titulo,
                         "subtitulo": n.subtitulo,
-                        "contenido": parrafo,
+                        "contenido": n.contenido,
+                        "seccion":n.seccion,
                         "fecha": fecha,
                         "imagen": ""
                     }
@@ -59,7 +60,7 @@ const getNoticia = (req, res = response) => {
                     "subtitulo": noticia.subtitulo,
                     "contenido":noticia.contenido,
                     "seccion":noticia.seccion,
-                    "imagen":"http://127.0.0.1:8090/api/Noticias/upload/" + noticia.id,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id,
                 }
             } else {
                 data = {

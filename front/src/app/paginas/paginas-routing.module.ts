@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { InicioComponent } from './inicio/inicio.component';
 import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { HimnoComponent } from './himno/himno.component';
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
     component: MainPageComponent,
     children: [
       { path: '', component: InicioComponent },
-      { path: 'hermandad', component: LaHermandadComponent }
+      { path: 'hermandad', component: LaHermandadComponent },
+      { path: 'himnos', component: HimnoComponent }
     ]
   }
 ];
