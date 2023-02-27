@@ -20,17 +20,14 @@
       <h1 class="titulo bordeSubrayado">{{noticia.titulo}}</h1>
       <h5 class="pt-3 pb-2">{{noticia.subtitulo}}</h5>
       <p class="pb-3"><small>Añadido el {{noticia.fecha}}</small></p>
-      <img *ngIf="noticia.imagen!==''" class="img-fluid mb-3" [src]="noticia.imagen">
-      <div>
-        <p *ngFor="let p of noticia.contenido">
-          {{p}}
-        </p>
+      <img *ngIf="noticia.imagen!==''" class="img-fluid mb-3" [src]=noticia.imagen>
+      <div [innerHtml]="noticia.contenido">
       </div>
      <div class="pt-5 pb-2 centrado">
         <button
         id=A{{noticia.id}}
         (click)="obtenerId($event)"
-        class="btn custom-btn btn-1 ms-5 mb-5"
+        class="btn custom-btn btn-1 mb-5"
         data-bs-toggle="modal"
         data-bs-target="#modalConfirmacion">Borrar</button>
 
@@ -48,4 +45,4 @@
 </pagination-controls>
 
 <app-borrar [idBorrado]="idBorrado"></app-borrar>
-<app-editado [idModificar]="idModificar" [infoNoticia]="infoNoticia"></app-editado>
+<app-editado [idModificar]="idModificar" [infoNoticia]="info"></app-editado>

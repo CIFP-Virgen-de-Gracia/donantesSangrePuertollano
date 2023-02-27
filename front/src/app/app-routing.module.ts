@@ -22,6 +22,23 @@ const routes: Routes = [
 
   },
   {
+    path: 'donacion',
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+  },
+  {
+    path: 'sangre',
+    component: AvisoComponent
+  },
+  {
+    path: 'medula',
+    component: AptoSangreComponent
+  },
+  {
+    path: 'plasma',
+    component: ResultadoComponent
+
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },

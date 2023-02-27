@@ -30,13 +30,12 @@ class QueriesNoticias {
                 const resp = await noticia.save();
 
                 let fecha = new Date(resp.createdAt).toLocaleString();
-                let parrafo = noticia.contenido.split("\n");
 
                 data = {
                     "id": resp.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido": parrafo,
+                    "contenido": noticia.contenido,
                     "fecha": fecha,
                     "imagen": ""
                 }
@@ -58,15 +57,14 @@ class QueriesNoticias {
                 imagen.save();
 
                 let fecha = new Date(resp.createdAt).toLocaleString();
-                let parrafo = noticia.contenido.split("\n");
 
                 data = {
                     "id": resp.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido": parrafo,
+                    "contenido": noticia.contenido,
                     "fecha": fecha,
-                    "imagen": ""
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + resp.id,
                 }
             }
         } catch (err) {
@@ -108,7 +106,8 @@ class QueriesNoticias {
 
     modificarNoticia = async (req) => {
         let data = "";
-
+        console.log(req.body);
+        console.log(req.files);
         this.sequelize.conectar();
         try {
             let noticia = await Noticias.findOne(
@@ -128,15 +127,24 @@ class QueriesNoticias {
                     const resp = await noticia.save();
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
-                    let parrafo = resp.contenido.split("\n");
-
-                    data = {
-                        "id": resp.id,
-                        "titulo": resp.titulo,
-                        "subtitulo": resp.subtitulo,
-                        "contenido": parrafo,
-                        "fecha": fecha,
-                        "imagen": ""
+                    if (noticia["Imagen"].length > 0) {
+                        data = {
+                            "id": resp.id,
+                            "titulo": resp.titulo,
+                            "subtitulo": resp.subtitulo,
+                            "contenido": resp.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id
+                        }
+                    } else {
+                        data = {
+                            "id": resp.id,
+                            "titulo": resp.titulo,
+                            "subtitulo": resp.subtitulo,
+                            "contenido": resp.contenido,
+                            "fecha": fecha,
+                            "imagen": ""
+                        }
                     }
 
                 } else {
@@ -154,11 +162,11 @@ class QueriesNoticias {
                             fs.unlinkSync(pathImagen);
                         }
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-                       
+
                         noticia["Imagen"][0]["idNoticia"] = noticia.id;
-                        noticia["Imagen"][0]["nombre"]= nombre;
+                        noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
-                   
+
                     } else {
 
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
@@ -170,15 +178,14 @@ class QueriesNoticias {
                     }
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
-                    let parrafo = noticia.contenido.split("\n");
 
                     data = {
                         "id": noticia.id,
                         "titulo": noticia.titulo,
                         "subtitulo": noticia.subtitulo,
-                        "contenido": parrafo,
+                        "contenido": noticia.contenido,
                         "fecha": fecha,
-                        "imagen": "http://127.0.0.1:8090/api/Noticias/upload/" + noticia.id
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id
                     }
                 }
             }
