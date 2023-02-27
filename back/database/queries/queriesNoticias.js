@@ -4,7 +4,6 @@ const path = require("path");
 const fs = require("fs");
 const File = require('../../helpers/FileUpload');
 const models = require('../../models/index.js');
-const { now } = require('sequelize/types/utils');
 
 
 //Todo Isa
@@ -27,13 +26,12 @@ class QueriesNoticias {
 
             if (!req.files) {
                 let fecha = new Date(noticia.createdAt).toLocaleString();
-                let parrafo = noticia.contenido.split("\n");
 
                 data = {
-                    "id": noticia.id,
+                    "id": resp.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido": parrafo,
+                    "contenido": noticia.contenido,
                     "fecha": fecha,
                     "imagen": ""
                 }
@@ -47,13 +45,12 @@ class QueriesNoticias {
                 });
 
                 let fecha = new Date(noticia.createdAt).toLocaleString();
-                let parrafo = noticia.contenido.split("\n");
 
                 data = {
                     "id": noticia.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido": parrafo,
+                    "contenido": noticia.contenido,
                     "fecha": fecha,
                     "imagen": imagen
                 }
@@ -79,9 +76,9 @@ class QueriesNoticias {
                     as: 'Imagen'
                 }
             ],
-            attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',  
-                        [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                        [Sequelize.col('Imagen.id'), 'idImagen']],
+            attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',
+                [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
+                [Sequelize.col('Imagen.id'), 'idImagen']],
             order: [['createdAt', 'DESC'], ['id', 'DESC']],
         });
 
@@ -102,9 +99,9 @@ class QueriesNoticias {
                         as: 'Imagen'
                     }
                 ],
-                attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',  
-                            [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                            [Sequelize.col('Imagen.id'), 'idImagen']],
+                attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',
+                    [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
+                    [Sequelize.col('Imagen.id'), 'idImagen']],
             });
         this.sequelize.desconectar();
         return noticias;
@@ -116,6 +113,12 @@ class QueriesNoticias {
         const imagen = await models.Imagen.findByPk(id);
         this.sequelize.desconectar();
         return imagen;
+    }
+
+
+    borrarImagen = async (id) => {
+        const imagen = await this.getImagen(id);
+        await imagen.destroy();
     }
 
 
@@ -142,19 +145,30 @@ class QueriesNoticias {
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
                     noticia.seccion = noticia.seccion;
-                    noticia.updatedAt = new Date(now).toLocaleString();
+                    noticia.updatedAt = new Date();
                     const resp = await noticia.save();
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
-                    let parrafo = resp.contenido.split("\n");
 
-                    data = {
-                        "id": resp.id,
-                        "titulo": resp.titulo,
-                        "subtitulo": resp.subtitulo,
-                        "contenido": parrafo,
-                        "fecha": fecha,
-                        "imagen": ""
+                    if (noticia["Imagen"].length > 0) {
+                        data = {
+                            "id": resp.id,
+                            "titulo": resp.titulo,
+                            "subtitulo": resp.subtitulo,
+                            "contenido": resp.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id
+                        }
+
+                    } else {
+                        data = {
+                            "id": resp.id,
+                            "titulo": resp.titulo,
+                            "subtitulo": resp.subtitulo,
+                            "contenido": resp.contenido,
+                            "fecha": fecha,
+                            "imagen": ""
+                        }
                     }
 
                 } else {
@@ -163,40 +177,38 @@ class QueriesNoticias {
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
                     noticia.seccion = noticia.seccion;
-                    noticia.updatedAt = new Date(now).toLocaleString();
-                    noticia.save();
+                    noticia.updatedAt = new Date();
+                    await noticia.save();
 
-                    console.log(noticia)
-                    /* if (noticia.dataValues.nombreImagen != null) {
-                        const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia.dataValues.nombreImagen);
+                    if (noticia["Imagen"].length > 0) {
+                        const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
                         if (fs.existsSync(pathImagen)) {
                             fs.unlinkSync(pathImagen);
                         }
-                        const nombre = await models.File.subirArchivo(req.files, undefined, 'noticias');
+                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
 
-                        noticia.dataValues.idNoticia = noticia.id;
-                        noticia.dataValues.nombreImagen = nombre;
+                        noticia["Imagen"][0]["idNoticia"] = noticia.id;
+                        noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
 
                     } else {
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-
-                        let imagen = models.Imagen.create();
-                        imagen.idNoticia = noticia.id;
-                        imagen.nombre = nombre;
-                        imagen.save();
-                    } */
+                        
+                        let imagen = await models.Imagen.create({
+                            idNoticia: noticia.id,
+                            nombre: nombre
+                        });
+                    }
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
-                    let parrafo = noticia.contenido.split("\n");
 
                     data = {
                         "id": noticia.id,
                         "titulo": noticia.titulo,
                         "subtitulo": noticia.subtitulo,
-                        "contenido": parrafo,
+                        "contenido": noticia.contenido,
                         "fecha": fecha,
-                        "imagen": "http://127.0.0.1:8090/api/noticias/upload/" + noticia.dataValues.idImagen
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" +  noticia["Imagen"][0]["id"]
                     }
                 }
             }
@@ -212,38 +224,39 @@ class QueriesNoticias {
 
     borrarNoticia = async (id) => {
         this.sequelize.conectar();
-        let noticia = await models.Noticia.findOne(
-            {
-                where: { id: id },
-                include: [
-                    {
-                        model: models.Imagen,
-                        as: 'Imagen'
-                    }
-                ]
-            });
+        let noticia = await models.Noticia.findOne({
+            where: { id: id },
+            include: [
+                {
+                    model: models.Imagen,
+                    as: 'Imagen'
+                }
+            ]
+        });
 
         if (!noticia) {
             this.sequelize.desconectar();
             throw error;
         }
-
+        
         if (noticia["Imagen"].length > 0) {
+            await this.borrarImagen(noticia["Imagen"][0].id);
+
             const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
             if (fs.existsSync(pathImagen)) {
                 fs.unlinkSync(pathImagen);
             }
-
-            const imagen = await this.getImagen(noticia["Imagen"][0].id);
-            await imagen.destroy();
         }
-        
+
         await noticia.destroy();
 
         this.sequelize.desconectar();
         return noticia;
     }
 }
+
+
+
 
 
 const queriesNoticias = new QueriesNoticias();
