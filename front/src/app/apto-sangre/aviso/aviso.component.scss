@@ -64,9 +64,14 @@ main {
   }
 
   .texto {
-    padding: 0 20rem;
-  }
+      @media (min-width: 576px) {
+        padding: 0 7rem;
+      }
 
+      @media (min-width: 1200px) {
+        padding: 0 20rem;
+      }
+  }
 
   p {
     line-height: 2rem;
