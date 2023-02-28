@@ -23,12 +23,12 @@ class QueriesNoticias {
                 contenido: req.body.contenido,
                 seccion: req.body.seccion
             });
-
+            
             if (!req.files) {
                 let fecha = new Date(noticia.createdAt).toLocaleString();
 
                 data = {
-                    "id": resp.id,
+                    "id": noticia.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
@@ -38,7 +38,7 @@ class QueriesNoticias {
 
             } else {
                 const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-
+                
                 let imagen = await models.Imagen.create({
                     idNoticia: noticia.id,
                     nombre: nombre
@@ -72,13 +72,9 @@ class QueriesNoticias {
             include: [
                 {
                     model: models.Imagen,
-                    attributes: [],
                     as: 'Imagen'
                 }
             ],
-            attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',
-                [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                [Sequelize.col('Imagen.id'), 'idImagen']],
             order: [['createdAt', 'DESC'], ['id', 'DESC']],
         });
 
@@ -193,7 +189,7 @@ class QueriesNoticias {
 
                     } else {
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-                        
+
                         let imagen = await models.Imagen.create({
                             idNoticia: noticia.id,
                             nombre: nombre
