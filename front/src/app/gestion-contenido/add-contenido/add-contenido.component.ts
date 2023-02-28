@@ -56,7 +56,7 @@ export class AddContenidoComponent {
 
     } else {
       this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-
+        console.log(res)
         if (res !== "Error de registro") {
           this.aviso = 1;
           this.ContenidoService.agregar(res);

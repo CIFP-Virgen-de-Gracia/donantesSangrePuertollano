@@ -15,15 +15,14 @@ const getListado = async (req, res = response) => {
                     let fecha = new Date(n.createdAt).toLocaleString();
                     let parrafo = n.contenido.split("\n");
 
-                    if (n.dataValues.nombreImagen != null) {
+                    if (n["Imagen"].length > 0) {
                         data = {
                             "id": n.id,
                             "titulo": n.titulo,
                             "subtitulo": n.subtitulo,
                             "contenido": parrafo,
                             "fecha": fecha,
-                            "imagen": `${process.env.INDEX}/api/noticias/upload/` + n.dataValues.idImagen
-                           /* Por si se lo carga el merge arriba -> "imagen": ruta + n.dataValues.idImagen */
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
                         }
 
                     } else {
@@ -61,14 +60,14 @@ const registrarNoticia = async (req, res = response) => {
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         if (noticia !== null) {
-            if (noticia.dataValues.nombreImagen != null) {
+            if (noticia["Imagen"].length > 0) {
                 data = {
                     "id": noticia.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
                     "seccion": noticia.seccion,
-                    "imagen": `${process.env.INDEX}/api/noticias/upload/` + noticia.dataValues.idImagen
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
                 }
             } else {
                 data = {
