@@ -13,10 +13,10 @@ import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
-
+import { ConfigRoutingModule } from './config/config-routing.module';
 
 
 @NgModule({
@@ -42,6 +42,7 @@ import { GaleriaModule } from './galeria/galeria.module';
         AptoSangreModule,
         NgxPaginationModule,
         GaleriaModule
+        ConfigRoutingModule
     ]
 })
 export class AppModule {}

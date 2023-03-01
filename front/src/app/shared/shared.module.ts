@@ -7,25 +7,26 @@ import { FooterComponent } from './footer/footer.component';
 import { DirectivasModule } from './directivas/directivas.module';
 import { EmailFormularioComponent } from './newsletter/email-formulario/email-formulario.component';
 import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/newsletter-ventana.component';
-import { StickyTopDirective } from './directivas/sticky-top.directive';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
     MenuComponent,
     FooterComponent,
     EmailFormularioComponent,
-    NewsletterVentanaComponent,
+    NewsletterVentanaComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     DirectivasModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularEditorModule
   ],
   exports: [
     MenuComponent,
     FooterComponent,
-    NewsletterVentanaComponent
+    NewsletterVentanaComponent,
   ]
 })
 
