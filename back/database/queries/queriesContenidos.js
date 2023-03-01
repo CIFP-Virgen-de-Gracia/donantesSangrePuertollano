@@ -23,6 +23,13 @@ class QueriesContenidos {
     }
 
 
+    getHorarios = async () => {
+        const horarios = await models.Horario.findAll();
+
+        return horarios;
+    }
+
+
     getCargosJunta = async () => {
         const cargos = await models.CargoJunta.findAll();
 

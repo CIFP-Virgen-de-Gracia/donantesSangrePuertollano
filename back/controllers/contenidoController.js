@@ -1,3 +1,4 @@
+const moment = require('moment');
 const { response, request } = require('express');
 const queriesContenidos = require('../database/queries/queriesContenidos');
 /* process.setMaxListeners(0); */
@@ -21,6 +22,34 @@ const getHistoria = async (req, res = response) => {
             }
 
             res.status(200).json(resp);
+        });
+}
+
+
+const getHorarios = (req, res = response) => {
+    queriesContenidos.getHorarios()
+        .then(horarios => {
+            
+            horarios.map(h => {
+                h.horaEntrada = moment(h.horaEntrada, "HH:mm:ss").format('HH:mm');
+                h.horaSalida = moment(h.horaSalida, "HH:mm:ss").format('HH:mm');
+            })
+
+            const resp = {
+                success: true,
+                data: horarios,
+            }
+
+            res.status(200).json(resp);
+            
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
         });
 }
 
@@ -102,9 +131,9 @@ const updateConfigHermandad = async (req, res = response) => {
 }
 
 
-
 module.exports = {
     getHistoria,
+    getHorarios,
     getCargosJunta,
     getIntegrantesCargo,
     updateConfigHermandad

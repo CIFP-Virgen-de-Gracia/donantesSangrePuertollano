@@ -9,7 +9,7 @@ import { Integrante } from 'src/app/shared/interfaces/shared.interface';
 })
 export class ConfigService {
 
-  baseUrl = environment.baseUrl;
+  configUrl = `${environment.baseUrl}/api`;
 
   constructor(private http: HttpClient) { }
 
@@ -22,11 +22,16 @@ export class ConfigService {
       })
     };
 
-    return this.http.put(`${this.baseUrl}/api/updateConfigHermandad`, { historia: historia, junta: junta}, header);
+    return this.http.put(`${this.configUrl}/updateConfigHermandad`, { historia: historia, junta: junta}, header);
   }
 
 
   getCargosJunta(): Observable<any>{
-    return this.http.get<any>(`${this.baseUrl}/api/getCargosJunta`);
+    return this.http.get<any>(`${this.configUrl}/getCargosJunta`);
+  }
+
+
+  getHorarios(): Observable<any> {
+    return this.http.get<any>(`${this.configUrl}/getHorarios`);
   }
 }
