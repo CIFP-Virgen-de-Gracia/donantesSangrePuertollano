@@ -12,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     MainConfigComponent,
     HermandadConfigComponent,
-    ContactoConfigComponent
+    ContactoConfigComponent,
   ],
   imports: [
     FormsModule,

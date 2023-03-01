@@ -1,1 +1,198 @@
-<p>contacto-config works!</p>
+<div class="botones mensajes d-flex justify-content-between">
+  <div [ngClass]="actualizado ? 'mensaje-ok' : 'mensaje-error'" class="d-flex align-items-center">
+
+    <i [ngClass]="actualizado ? 'fa-circle-check' : 'fa-triangle-exclamation'" class="fa-solid icono-peq me-2"
+      *ngIf="mensaje">
+    </i>
+
+    <div>{{ mensaje }}</div>
+  </div>
+
+  <button (click)="guardar()" class="btn-primario" type="submit">Guardar</button>
+</div>
+
+
+<div class="horarios">
+  <h3 class="titulo mb-4">Horario</h3>
+
+  <div class="horario align-items-center d-flex flex-column flex-xl-row">
+    <div class="dias d-flex flex-column flex-xl-row">
+      <p class="text-center">Días</p>
+
+      <div class="d-flex justify-content-center">
+        <div class="select d-flex">
+          <select name="primerDia">
+            <option value="{{ h.dia }}" *ngFor="let h of horarios">
+              {{ h.dia }}
+            </option>
+          </select>
+        </div>
+
+        <p>a</p>
+
+        <div class="select d-flex">
+          <select name="ultimoDia">
+            <option value="{{ h.dia }}" *ngFor="let h of horarios">
+              {{ h.dia }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="horas d-flex flex-column flex-xl-row">
+      <p class="text-center">Horas</p>
+
+      <div class="d-flex justify-content-center">
+        <div class="select d-flex">
+          <select name="horasEntrada">
+            <option value="{{ h.horaEntrada }}" *ngFor="let h of horarios">
+              {{ h.horaEntrada }}
+            </option>
+          </select>
+        </div>
+
+        <p>a</p>
+
+        <div class="select d-flex">
+          <select name="horasSalida">
+            <option value="{{ h.horaSalida }}" *ngFor="let h of horarios">
+              {{ h.horaSalida }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+     <i class="fa-solid fa-trash ms-auto me-2"></i>
+  </div>
+
+  <div class="horario align-items-center d-flex flex-column flex-xl-row">
+    <div class="dias d-flex flex-column flex-xl-row">
+      <p class="text-center">Días</p>
+
+      <div class="d-flex justify-content-center">
+        <div class="select d-flex">
+          <select name="primerDia">
+            <option value="{{ h.dia }}" *ngFor="let h of horarios">
+              {{ h.dia }}
+            </option>
+          </select>
+        </div>
+
+        <p>a</p>
+
+        <div class="select d-flex">
+          <select name="ultimoDia">
+            <option value="{{ h.dia }}" *ngFor="let h of horarios">
+              {{ h.dia }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="horas d-flex flex-column flex-xl-row">
+      <p class="text-center">Horas</p>
+
+      <div class="d-flex justify-content-center">
+        <div class="select d-flex">
+          <select name="horasEntrada">
+            <option value="{{ h.horaEntrada }}" *ngFor="let h of horarios">
+              {{ h.horaEntrada }}
+            </option>
+          </select>
+        </div>
+
+        <p>a</p>
+
+        <div class="select d-flex">
+          <select name="horasSalida">
+            <option value="{{ h.horaSalida }}" *ngFor="let h of horarios">
+              {{ h.horaSalida }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+     <i class="fa-solid fa-trash ms-auto me-2"></i>
+  </div>
+
+  <button type="submit" (click)="addHorario()" class="btn-primario">
+    Añadir otro
+  </button>
+</div>
+
+
+<div class="telefonos">
+  <h3 class="titulo mb-4">Teléfonos</h3>
+
+  <div class="contenedor">
+
+    <div class="telefono d-flex align-items-center">
+      <input type="text" class="inpt" value="926 43 16 16">
+      <i class="fa-solid fa-trash ms-auto me-2"></i>
+    </div>
+
+    <div class="telefono d-flex align-items-center">
+      <input type="text" class="inpt" value="926 42 11 00 ext. 70480">
+      <i class="fa-solid fa-trash ms-auto me-2"></i>
+    </div>
+
+  </div>
+
+  <button type="submit" (click)="addTelefono()" class="btn-primario">
+    Añadir otro
+  </button>
+</div>
+
+
+<div class="direcciones">
+  <h3 class="titulo mb-4">Dirección</h3>
+
+  <div class="contenedor">
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">Lugar</div>
+      <input type="text" class="valor align-middle col-12 col-xl-8" value="Hospital de Santa Bárbara">
+    </div>
+
+
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">Calle</div>
+      <input type="text" class="valor align-middle col-12 col-xl-8" value="Malagón">
+    </div>
+
+
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">Número</div>
+      <input type="text" class="valor align-middle col-12 col-xl-8" value="s/n">
+    </div>
+
+
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">Ciudad</div>
+      <input type="text" class="valor align-middle col-12 col-xl-8" value="Puertollano">
+    </div>
+
+
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">Provincia</div>
+      <input type="text" class="valor align-middle col-12 col-xl-8" value="Ciudad Real">
+    </div>
+
+
+    <div class="direccion row gx-0">
+      <div class="nombre col-12 col-xl-4">CP</div>
+      <input type="number" class="valor align-middle col-12 col-xl-8" value="13500">
+    </div>
+  </div>
+  <!-- <div class="elemento row gx-0" *ngFor="let elemento of direccion">
+
+    <div class="col-12 col-sm-5">{{ elemento.nombre }}</div>
+
+    <input type="text"
+      class="nombre align-middle col-12 col-sm-7"
+      [(ngModel)]="elemento.valor">
+  </div> -->
+</div>

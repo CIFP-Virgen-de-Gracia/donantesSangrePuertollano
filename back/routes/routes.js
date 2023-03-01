@@ -27,6 +27,7 @@ router.get('/getHistoria', contenido.getHistoria);
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
+router.get('/getHorarios', contenido.getHorarios);
 
 
 
