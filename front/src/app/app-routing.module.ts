@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
+import { GaleriaComponent } from './galeria/galeria.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +21,10 @@ const routes: Routes = [
     path: 'resultado',
     component: ResultadoComponent
 
+  },
+  {
+    path: 'galeria',
+    component: GaleriaComponent
   },
   {
     path: 'auth',
