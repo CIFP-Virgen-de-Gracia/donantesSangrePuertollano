@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
+import { DonacionSangreComponent } from './paginas-donacion/donacion-sangre/donacion-sangre.component';
 const routes: Routes = [
   {
     path: '',
@@ -23,21 +24,9 @@ const routes: Routes = [
   },
   {
     path: 'donacion',
-    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
+    loadChildren: () => import('./paginas-donacion/paginas-donacion.module').then( m => m.PaginasDonacionModule )
   },
-  {
-    path: 'sangre',
-    component: AvisoComponent
-  },
-  {
-    path: 'medula',
-    component: AptoSangreComponent
-  },
-  {
-    path: 'plasma',
-    component: ResultadoComponent
 
-  },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)

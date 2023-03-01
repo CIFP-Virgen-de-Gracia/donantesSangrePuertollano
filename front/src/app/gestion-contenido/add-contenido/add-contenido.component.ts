@@ -11,33 +11,38 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 export class AddContenidoComponent {
   addConfig: AngularEditorConfig = {
     editable: true,
-      height: '100px',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      toolbarHiddenButtons: [ [ 'fontName','insertImage','insertVideo','insertHorizontalRule' ] ]
-};
-  res: string = "no";
-  alert: string = "no";
-  aviso: number = 0
-  noticia: Contenido = {
-    titulo: "",
-    subtitulo: "",
-    contenido: "",
-    seccion: "noticias",
-    imagen: ""
-  }
+    height: '100px',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    toolbarHiddenButtons: [['fontName', 'insertImage', 'insertVideo', 'insertHorizontalRule']]
+  };
+  res: string;
+  alert: string;
+  aviso: number;
+  noticia: Contenido;
+
   @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
   constructor(private ContenidoService: ContenidoService) {
+    this.res = "no";
+    this.alert = "no";
+    this.aviso = 0
+    this.noticia = {
+      titulo: "",
+      subtitulo: "",
+      contenido: "",
+      seccion: "noticias",
+      imagen: ""
+    }
   }
 
 
@@ -57,7 +62,7 @@ export class AddContenidoComponent {
     this.foto.nativeElement.value = ''
 
   }
-  comprobarExtension(file: any):boolean {
+  comprobarExtension(file: any): boolean {
     let permitida = false;
     if (file != "") {
       let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
