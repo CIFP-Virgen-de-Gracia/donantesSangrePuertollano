@@ -5,45 +5,41 @@ const path = require('path');
 
 //Todo Isa
 const getListado = async (req, res = response) => {
-    queriesNoticias.getListado(req.params.seccion)
-        .then(noticia => {
-            if (noticia !== null) {
-                let not = [];
-                
-                noticia.forEach(n => {
-                    let data;
-                    let fecha = new Date(n.createdAt).toLocaleString();
-                    let parrafo = n.contenido.split("\n");
-
-                    if (n["Imagen"].length > 0) {
-                        data = {
-                            "id": n.id,
-                            "titulo": n.titulo,
-                            "subtitulo": n.subtitulo,
-                            "contenido": parrafo,
-                            "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
-                        }
-
-                    } else {
-                        data = {
-                            "id": n.id,
-                            "titulo": n.titulo,
-                            "subtitulo": n.subtitulo,
-                            "contenido": parrafo,
-                            "fecha": fecha,
-                            "imagen": ""
-                        }
+    queriesNoticias.getListado(req.params.seccion).then((noticia) => {
+        if (noticia !== null) {
+            let not = [];
+            noticia.forEach(n => {
+                let data;
+                let fecha = new Date(n.createdAt).toLocaleString();
+                if (n['Imagen'].length > 0) {
+                    data = {
+                        "id": n.id,
+                        "titulo": n.titulo,
+                        "subtitulo": n.subtitulo,
+                        "contenido": n.contenido,
+                        "seccion":n.seccion,
+                        "fecha": fecha,
+                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
                     }
-
-                    not.push(data);
-                });
-
-                res.status(200).json(not);
-            }
-        }).catch((err) => {
-            res.status(200).json("No encontrada");
-        });
+                } else {
+                    data = {
+                        "id": n.id,
+                        "titulo": n.titulo,
+                        "subtitulo": n.subtitulo,
+                        "contenido": n.contenido,
+                        "seccion":n.seccion,
+                        "fecha": fecha,
+                        "imagen": ""
+                    }
+                }
+                not.push(data);
+            });
+            res.status(200).json(not);
+        }
+    }).catch((err) => {
+        console.log(err);
+        res.status(200).json("No encontrada");
+    });
 }
 
 
@@ -62,20 +58,20 @@ const getNoticia = (req, res = response) => {
         if (noticia !== null) {
             if (noticia["Imagen"].length > 0) {
                 data = {
-                    "id": noticia.id,
-                    "titulo": noticia.titulo,
-                    "subtitulo": noticia.subtitulo,
-                    "contenido": noticia.contenido,
-                    "seccion": noticia.seccion,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
+                    "id": noticia.dataValues.id,
+                    "titulo": noticia.dataValues.titulo,
+                    "subtitulo": noticia.dataValues.subtitulo,
+                    "contenido": noticia.dataValues.contenido,
+                    "seccion": noticia.dataValues.seccion,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues.Imagen[0]["id"]
                 }
             } else {
                 data = {
-                    "id": noticia.id,
-                    "titulo": noticia.titulo,
-                    "subtitulo": noticia.subtitulo,
-                    "contenido": noticia.contenido,
-                    "seccion": noticia.seccion,
+                    "id": noticia.dataValues.id,
+                    "titulo": noticia.dataValues.titulo,
+                    "subtitulo": noticia.dataValues.subtitulo,
+                    "contenido": noticia.dataValues.contenido,
+                    "seccion": noticia.dataValues.seccion,
                     "imagen": ""
                 }
             }

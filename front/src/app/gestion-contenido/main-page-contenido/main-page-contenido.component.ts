@@ -24,9 +24,7 @@ export class MainPageContenidoComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.ContenidoService.getListado().subscribe((res) => {
-      console.log(res);
-    });
+    this.ContenidoService.getListado().subscribe((res) => {});
   }
   get resultado() {
 
