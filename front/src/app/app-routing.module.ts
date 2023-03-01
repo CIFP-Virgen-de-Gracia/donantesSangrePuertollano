@@ -5,6 +5,7 @@ import { ResultadoComponent } from './apto-sangre/resultado/resultado.component'
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
 import { ConfigGuard } from './auth/guards/config.guard';
 
+import { GaleriaComponent } from './galeria/galeria.component';
 const routes: Routes = [
   {
     path: '',
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'resultado',
     component: ResultadoComponent
+  },
+  {
+    path: 'galeria',
+    component: GaleriaComponent
   },
   {
     path: 'auth',
