@@ -107,7 +107,6 @@ export class EditadoComponent {
       this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
         next: data => {
           if (data !== "No se ha podido modificar") {
-            console.log(data);
             this.ContenidoService.editar(this.idModificar, data);
             this.limpiarContenido();
             this.aviso = 1;

@@ -6,12 +6,12 @@ const sequelize = require('../database/ConexionSequelize');
 //Todo Mario
 const getArrayRoles = (user) => {
     let roles = [];
-console.log(user.dataValues);
-    for (const rolKey in user.dataValues.RolUser) {
-        if (Object.hasOwnProperty.call(user.dataValues.RolUser, rolKey)) {
-            const rol = user.dataValues.RolUser[rolKey];
 
-            roles.push(rol.dataValues.idRol);
+    for (const rolKey in user.RolUser) {
+        if (Object.hasOwnProperty.call(user.RolUser, rolKey)) {
+            const rol = user.RolUser[rolKey];
+            
+            roles.push(rol.idRol);
         }
     }
 
@@ -33,7 +33,7 @@ const userCan = async (req, id, acciones) => {
         abilities.forEach(ability => {
             arrayAbilities = Array.from(new Set([...arrayAbilities, ...ability.dataValues.abilities.split(' ')]));
         });
-
+        
         req.userAbilites = arrayAbilities;
     }
 

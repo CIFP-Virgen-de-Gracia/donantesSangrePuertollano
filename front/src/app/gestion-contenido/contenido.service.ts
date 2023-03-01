@@ -39,6 +39,7 @@ export class ContenidoService {
     return this.http.delete<any>(`${this.baseUrl}/api/noticias/borrar/${id}`);
   }
   editarNoticia(id: string, noticia: Contenido): Observable<any> {
+    console.log(noticia);
     const payload = new FormData();
     payload.append('id', id);
     payload.append('titulo', noticia.titulo);
@@ -46,7 +47,7 @@ export class ContenidoService {
     payload.append('contenido', noticia.contenido);
     payload.append('seccion', noticia.seccion);
     payload.append('archivo', noticia.imagen);
-    console.log(payload.get("titulo"));
+
 
     return this.http.put<any>(`${this.baseUrl}/api/noticias/modificar/`, payload);
   }
