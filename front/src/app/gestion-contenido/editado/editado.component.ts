@@ -99,7 +99,6 @@ export class EditadoComponent {
     this.foto.nativeElement.value = ''
   }
   modificarNoticia() {
-    console.log(this.infoNoticia);
     if (this.infoNoticia.titulo.trim().length === 0 || this.infoNoticia.contenido.trim().length === 0) {
       this.alert = "si";
     } else if (!this.correcto) {
@@ -108,16 +107,12 @@ export class EditadoComponent {
       this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
         next: data => {
           if (data !== "No se ha podido modificar") {
-            console.log(data);
-            console.log("Se ha editado");
             this.ContenidoService.editar(this.idModificar, data);
             this.limpiarContenido();
-            this.aviso = 1
+            this.aviso = 1;
           }
         },
         error: error => {
-          console.log("No se ha editado");
-          console.log(error);
           this.aviso = 2;
         }
       });
