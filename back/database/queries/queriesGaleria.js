@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const File = require('../../helpers/FileUpload');
-
+const models = require('../../models/index.js');
 const assets = require('../../helpers/irAssets');
 
 //Todo Alejandro
@@ -17,10 +17,9 @@ class Queries_Galeria {
         this.sequelize.conectar();
         let resultado = [];
         try {
-            resultado = await Galeria.findAll();
+            resultado = await models.Galeria.findAll();
             this.sequelize.desconectar();
         } catch(error) {
-            console.log(error);
             this.sequelize.desconectar();
             throw error;
         }
@@ -31,7 +30,7 @@ class Queries_Galeria {
         let data = "";
         this.sequelize.conectar();
         try {
-            let galeria = new Galeria();
+            let galeria = await models.Galeria.create();
             galeria.id = null;
             const nombre = await File.subirArchivo(req.files, undefined, 'galeria');
             assets.copiarAssests('galeria', 'galeria', nombre);
@@ -53,14 +52,14 @@ class Queries_Galeria {
 
     getGaleria_Imagen = async (id) => {
         this.sequelize.conectar();
-        const imagen = await Galeria.findByPk(id);
+        const imagen = await models.Galeria.findByPk(id);
         this.sequelize.desconectar();
         return imagen;
     }
 
     deleteGaleriaImagen = async(id) => {
         this.sequelize.conectar();
-        let galeria = await Galeria.findByPk(id);
+        let galeria = await models.Galeria.findByPk(id);
         if (!galeria) {
             this.sequelize.desconectar();
             throw error;

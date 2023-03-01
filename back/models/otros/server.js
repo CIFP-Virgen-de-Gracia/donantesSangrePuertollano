@@ -39,7 +39,7 @@ class Server {
         this.app.use(this.apto_sangre, require('../../routes/aptoSangreRoutes'));
 
         this.app.use(this.path , require('../../routes/routes'));
-        this.app.use(this.pathNoticias , require('../../routes/NoticiasRoutes'));
+        this.app.use(this.pathNoticias , require('../../routes/noticiasRoutes'));
 
     }
 
