@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require('uuid');  //Este paquete nos permitirá crear un 
 const subirArchivo = ( files, extensionesValidas = ['png','jpg','jpeg','gif','tiff','svg','webp'], carpeta = '' ) => {
 
     return new Promise( (resolve, reject) => {
-        console.log(files);
         const { archivo } = files;
         const nombreCortado = archivo.name.split('.');
         const extension = nombreCortado[ nombreCortado.length - 1 ];
