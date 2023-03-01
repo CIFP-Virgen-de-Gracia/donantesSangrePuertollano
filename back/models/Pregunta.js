@@ -1,47 +1,28 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
-//Alejandro
+'use strict';
+const {  Model } = require('sequelize');
 
-sequelize.conectar();
-
-const Pregunta = sequelize.db.define("preguntas", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false, 
-    },
-    enunciado: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    nombre_pregunta: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    nombre_img: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    respuesta: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    solucion_problema: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    
-},
-{
-    timestamps: false
-},
-{
-    tableName: 'preguntas'
-});
-
-sequelize.sync();
-sequelize.desconectar();
-
-module.exports = Pregunta;
+module.exports = (sequelize, DataTypes) => {
+  class Pregunta extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  Pregunta.init({
+    enunciado: DataTypes.STRING,
+    nombre_pregunta: DataTypes.STRING,
+    nombre_img: DataTypes.STRING,
+    respuesta: DataTypes.STRING,
+    solucion_problema: DataTypes.STRING(500)
+  }, {
+    sequelize,
+    timestamps: false,
+    tableName: 'preguntas',
+    modelName: 'Pregunta',
+  });
+  return Pregunta;
+}; 
