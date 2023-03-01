@@ -1,7 +1,6 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-
 @font-face {
   font-family: titulos;
   src: url('./assets/tipografias/BebasNeue-Regular.ttf') format("woff2");
@@ -45,7 +44,7 @@ body {
   }
 
   ul {
-  list-style: none;
+    list-style: none;
   }
 
   footer,
@@ -65,7 +64,8 @@ body {
   }
 
   // Botones - inputs
-  input[type=email], button {
+  input[type=email],
+  button {
     border: none;
     outline: none;
     border-radius: 2px;
@@ -74,6 +74,10 @@ body {
 
     &[type=email] {
       padding: 0 .5rem;
+    }
+
+    &.btn-primario, &.btn-secundario {
+      padding: 0 1.5rem;
     }
 
     &.btn-primario {
@@ -85,6 +89,44 @@ body {
         background-color: var(--color-granate-oscuro);
       }
     }
+
+    &.btn-secundario {
+      background-color: var(--color-granate);
+      color: var(--bs-white);
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        background: transparent;
+        color: var(--color-granate);
+
+        &:before,
+        &:after {
+          width: 100%;
+        }
+      }
+
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        height: 5px;
+        width: 0;
+        background-color: var(--color-granate);
+        transition: 400ms ease all;
+      }
+
+      &:before {
+        top: 0;
+        right: 0;
+      }
+
+      &:after {
+        top: 30px;
+        left: 0;
+        bottom: 0;
+      }
+    }
   }
 
   .fijo {
@@ -94,7 +136,7 @@ body {
   }
 
   .enlace {
-    padding-bottom: .2rem;
+    padding: .5rem 0 !important;
     text-decoration: none;
     position: relative;
 
@@ -103,7 +145,7 @@ body {
       position: absolute;
       display: block;
       width: 100%;
-      height: 2px;
+      height: 4px;
       bottom: 0;
       left: 0;
       background-color: var(--bs-white);
@@ -139,15 +181,31 @@ body {
     background-color: var(--color-contraste);
   }
 
-  .mensaje-error {
+  .mensaje-error, .mensaje-ok {
     margin: 0;
     padding: 0;
-    color: var(--color-primario);
     font-size: var(--letra-pequena);
+  }
+
+  .mensaje-error {
+    color: var(--color-primario);
+  }
+
+  .mensaje-ok {
+    color: var(--color-granate);
   }
 
   .error-input {
     border: 1px solid var(--color-secundario);
     background-color: rgb(255, 220, 231);
+  }
+
+  .contenedor-historia {
+
+    p,
+    div:not(:first-of-type) {
+      padding-top: 1.5rem !important;
+      text-align: unset;
+    }
   }
 }

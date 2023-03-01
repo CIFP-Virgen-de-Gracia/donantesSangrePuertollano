@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginasService } from '../services/paginas.service';
-import { Integrante } from '../interfaces/Paginas.interfaces';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { Integrante } from 'src/app/shared/interfaces/shared.interface';
 
 
 @Component({
@@ -10,22 +10,23 @@ import { Integrante } from '../interfaces/Paginas.interfaces';
 })
 export class LaHermandadComponent implements OnInit {
 
-  junta:Integrante[]  | undefined;
-  integrante: Integrante | undefined;
+  junta: Integrante[] = [];
+  historia: String = '';
 
+  constructor(private SharedService: SharedService) { }
 
-  constructor(private PaginasService: PaginasService){}
-
-  ngOnInit(){
-    this.PaginasService.getIntegrantesCargo()
-      .subscribe( resp => {
+  ngOnInit() {
+    this.SharedService.getIntegrantesCargo()
+      .subscribe(resp => {
         if (resp.success) {
-
-          resp.data.map((i: Integrante | undefined) => this.integrante = i);
           this.junta = resp.data;
+        }
+      });
 
-        } else {
-          this.junta = undefined;
+    this.SharedService.getHistoria()
+      .subscribe(resp => {
+        if (resp.success) {
+          this.historia = resp.data.valor;
         }
       });
   }

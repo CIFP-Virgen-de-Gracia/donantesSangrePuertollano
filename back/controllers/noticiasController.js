@@ -19,7 +19,7 @@ const getListado = async (req, res = response) => {
                         "contenido": n.contenido,
                         "seccion":n.seccion,
                         "fecha": fecha,
-                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + n.id,
+                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + n["Imagen"][0]["id"],
                     }
                 } else {
                     data = {
@@ -41,34 +41,37 @@ const getListado = async (req, res = response) => {
         res.status(200).json("No encontrada");
     });
 }
+
+
 const registrarNoticia = async (req, res = response) => {
     queriesNoticias.insertarNoticias(req).then((noticia) => {
         res.status(200).json(noticia);
+
     }).catch((err) => {
-        console.log(err)
         res.status(203).json("Error de registro");
     });
 }
 
+
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         if (noticia !== null) {
-            if (noticia['Imagen'].length > 0) {
+            if (noticia["Imagen"].length > 0) {
                 data = {
                     "id": noticia.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido":noticia.contenido,
-                    "seccion":noticia.seccion,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id,
+                    "contenido": noticia.contenido,
+                    "seccion": noticia.seccion,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
                 }
             } else {
                 data = {
                     "id": noticia.id,
                     "titulo": noticia.titulo,
                     "subtitulo": noticia.subtitulo,
-                    "contenido":noticia.contenido,
-                    "seccion":noticia.seccion,
+                    "contenido": noticia.contenido,
+                    "seccion": noticia.seccion,
                     "imagen": ""
                 }
             }
@@ -81,36 +84,42 @@ const getNoticia = (req, res = response) => {
     });
 }
 
+
 const borrarNoticia = (req, res = response) => {
     queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
-        console.log(noticia);
         res.status(200).json("La noticia ha sido borrada");
+
     }).catch((err) => {
-        console.log(err);
         res.status(200).json("No se ha podido borrar");
     });
 }
+
+
 const modificarNoticia = (req, res = response) => {
     queriesNoticias.modificarNoticia(req).then((noticia) => {
         res.status(200).json(noticia);
+
     }).catch((err) => {
-        console.log(err)
         res.status(203).json("No se ha podido modificar");
     });
 }
+
+
 const mostrarImagen = (req, res = response) => {
-    queriesNoticias.getImagen(req.params.id).then((imagen) => {
+    queriesNoticias.getImagen(req.params.id).then(imagen => {
         if (imagen) {
             const pathImagen = path.join(__dirname, '../uploads', 'noticias', imagen.nombre);
+
             if (fs.existsSync(pathImagen)) {
-                return res.sendFile(pathImagen);
+                return res.sendFile(pathImagen)
             }
         }
     }).catch((err) => {
-        console.log(err)
         console.log("No se ha encontrado la foto");
     });
 }
+
+
 
 module.exports = {
     getListado,

@@ -19,25 +19,25 @@
             Información
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item enlace" href="sangre">Donación de sangre</a></li>
-            <li><a class="dropdown-item enlace" href="plasma">Donación de plasma</a></li>
-            <li><a class="dropdown-item enlace" href="medula">Donación de médula</a></li>
+            <li><a class="dropdown-item enlace" href="./donacion/sangre">Donación de sangre</a></li>
+            <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li>
+            <li><a class="dropdown-item enlace" href="./donación/medula">Donación de médula</a></li>
           </ul>
         </li>
 
         <li class="nav-item me-lg-5">
-          <a class="nav-link enlace" href="aviso">¿Puedo donar?</a>
+          <a class="nav-link enlace" href="./aviso">¿Puedo donar?</a>
         </li>
 
         <li class="nav-item me-lg-5">
           <a class="nav-link enlace" href="./noticias">Noticias</a>
         </li>
 
-        <!-- <li class="nav-item me-lg-5">
-          <a class="nav-link enlace" href="#">Galería</a>
+        <li class="nav-item me-lg-5">
+          <a class="nav-link enlace" href="./galeria">Galería</a>
         </li>
 
-        <li class="nav-item me-lg-5">
+        <!-- <li class="nav-item me-lg-5">
           <a class="nav-link enlace" href="#">Pedir cita</a>
         </li>
 
@@ -45,19 +45,19 @@
           <a class="nav-link enlace" href="#">Contacto</a>
         </li> -->
 
-        <li class="nav-item me-lg-5">
-          <a class="nav-link enlace" href="./configuracion/hermandad">Contenidos</a>
+        <li class="nav-item me-lg-5" *ngIf="puedeModificar">
+          <a class="nav-link enlace" href="./configuracion/hermandad">Modificar contenidos</a>
         </li>
 
-        <li class="nav-item me-lg-5">
+        <li class="nav-item me-lg-5" *ngIf="!estaRegistrado">
           <a class="nav-link enlace" href="./auth/login/">Iniciar sesión</a>
         </li>
       </ul>
     </div>
 
-    <!-- <div class="usuario-contenedor">
+    <div class="usuario-contenedor" *ngIf="estaRegistrado">
       <a href="../../auth/login/login.component.html"><i class="fa-solid fa-user-large fs-4 usuario"></i></a>
-    </div> -->
+    </div>
 
   </nav>
 </header>
