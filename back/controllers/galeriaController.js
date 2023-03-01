@@ -1,5 +1,5 @@
 const {response, request} = require('express');
-const queries_Galeria = require('../database/queries/queries_Galeria');
+const queries_Galeria = require('../database/queries/queriesGaleria');
 const fs = require('fs');
 const path = require('path');
 
@@ -14,7 +14,6 @@ const getGaleria_Imagenes = (req = request, res = response) => {
 }
 
 const insertar_Galeria_Imagen = (req = request, res = response) => {
-    console.log(req.files);
     queries_Galeria.insertarGaleria_Imagen(req)
     .then( msg => {
         res.status(201).json(msg);
@@ -31,17 +30,14 @@ const mostrar_Galeria_Imagen = (req, res = response) => {
             }
         }
     }).catch((err) => {
-        console.log(err)
         console.log("No se ha encontrado la Imagen");
     });
 }
 
 const borrarGaleria = (req, res = response) => {
     queries_Galeria.deleteGaleriaImagen(req.params.id).then((imagen) => {
-        console.log(imagen);
         res.status(204).json("La imagen de la Galeria ha sido eliminada");
     }).catch((err) => {
-        console.log(err);
         res.status(400).json("No se ha podido eliminar la imagen de la galeria");
     })
 }

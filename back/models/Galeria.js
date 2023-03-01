@@ -1,31 +1,25 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
-//Alejandro
-
-sequelize.conectar();
-
-const Galeria = sequelize.db.define("galeria", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false, 
-    },
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Galeria extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-    
-},
-{
-    timestamps: false
-},
-{
-    tableName: 'galeria'
-});
-
-sequelize.sync();
-sequelize.desconectar();
-
-module.exports = Galeria;
+  }
+  Galeria.init({
+    nombre: DataTypes.STRING
+  }, {
+    sequelize,
+    ableName: 'galerias',
+    modelName: 'Galeria',
+    timestamps: false,
+  });
+  return Galeria;
+};
