@@ -36,8 +36,8 @@ class Server {
     routes(){
 
         // this.app.use(this.path , require('../routes/routes'));
-        this.app.use(this.apto_sangre, require('../../routes/aptoSangreRoutes'));
-
+        this.app.use(this.pathAptoSangre, require('../../routes/aptoSangreRoutes'));
+        this.app.use(this.pathGaleria, require ('../../routes/galeria_Routes'));
         this.app.use(this.path , require('../../routes/routes'));
         this.app.use(this.pathNoticias , require('../../routes/noticiasRoutes'));
 
