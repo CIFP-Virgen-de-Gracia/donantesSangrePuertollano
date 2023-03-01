@@ -7,7 +7,6 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { HimnoComponent } from './himno/himno.component';
 
-
 @NgModule({
   declarations: [
     InicioComponent,

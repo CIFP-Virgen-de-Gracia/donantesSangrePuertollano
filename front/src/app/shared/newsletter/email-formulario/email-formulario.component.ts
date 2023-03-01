@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
-import { Email } from '../../interfaces/email.interface';
+import { Email } from '../../interfaces/shared.interface';
 
 @Component({
   selector: 'app-email-formulario',
