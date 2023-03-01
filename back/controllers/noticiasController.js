@@ -19,7 +19,7 @@ const getListado = async (req, res = response) => {
                         "contenido": n.contenido,
                         "seccion":n.seccion,
                         "fecha": fecha,
-                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + n["Imagen"][0]["id"],
+                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
                     }
                 } else {
                     data = {
@@ -58,20 +58,20 @@ const getNoticia = (req, res = response) => {
         if (noticia !== null) {
             if (noticia["Imagen"].length > 0) {
                 data = {
-                    "id": noticia.id,
-                    "titulo": noticia.titulo,
-                    "subtitulo": noticia.subtitulo,
-                    "contenido": noticia.contenido,
-                    "seccion": noticia.seccion,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
+                    "id": noticia.dataValues.id,
+                    "titulo": noticia.dataValues.titulo,
+                    "subtitulo": noticia.dataValues.subtitulo,
+                    "contenido": noticia.dataValues.contenido,
+                    "seccion": noticia.dataValues.seccion,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues.Imagen[0]["id"]
                 }
             } else {
                 data = {
-                    "id": noticia.id,
-                    "titulo": noticia.titulo,
-                    "subtitulo": noticia.subtitulo,
-                    "contenido": noticia.contenido,
-                    "seccion": noticia.seccion,
+                    "id": noticia.dataValues.id,
+                    "titulo": noticia.dataValues.titulo,
+                    "subtitulo": noticia.dataValues.subtitulo,
+                    "contenido": noticia.dataValues.contenido,
+                    "seccion": noticia.dataValues.seccion,
                     "imagen": ""
                 }
             }

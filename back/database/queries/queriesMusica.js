@@ -1,8 +1,8 @@
-const Cancion = require('../../models/Cancion');
 const sequelize = require('../ConexionSequelize');
 const path = require("path");
 const fs = require("fs");
 const File = require('../../helpers/FileUpload');
+const models = require('../../models/index.js');
 
 class QueriesMusica {
     constructor() {
@@ -10,24 +10,24 @@ class QueriesMusica {
     }
 
     insertarCancion = async (req) => {
-        let cancion = new Cancion();
         let data = "";
         this.sequelize.conectar();
         try {
             if (req.files) {
                 const nombre = await File.subirArchivo(req.files, ["mp3", "mp4"], 'musica');
-                cancion.id = null;
-                cancion.nombre = nombre;
-                cancion.titulo = req.body.titulo;
-                cancion.letra = req.body.letra;
-                const resp = await cancion.save();
+                let cancion = await models.Cancion.create({
+                    nombre: nombre,
+                    titulo: req.body.titulo,
+                    letra: req.body.letra,
+                });
+
                 data = {
-                    "id": resp.id,
+                    "id": cancion.id,
                     "nombre": nombre,
-                    "titulo": resp.titulo,
-                    "letra": resp.letra,
-                    "cancion": process.env.URL_PETICION + process.env.PORT + "/api/Musica/upload/" + cancion.id,
-                    "descarga":process.env.URL_PETICION + process.env.PORT + "/api/Musica/download/" + cancion.id,
+                    "titulo": cancion.titulo,
+                    "letra": cancion.letra,
+                    "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
+                    "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
                 }
                 this.sequelize.desconectar();
             }
@@ -41,7 +41,8 @@ class QueriesMusica {
         let data = "";
         this.sequelize.conectar();
         try {
-            let cancion = await Cancion.findByPk(req.body.id);
+            let cancion = await models.Cancion.findByPk(req.body.id);
+            console.log(cancion);
             if (cancion) {
                 if (!req.files) {
                     cancion.id = cancion.id;
@@ -55,8 +56,8 @@ class QueriesMusica {
                         "nombre": cancion.nombre,
                         "titulo":cancion.titulo,
                         "letra": cancion.letra,
-                        "cancion": process.env.URL_PETICION + process.env.PORT + "/api/Musica/upload/" + cancion.id,
-                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/Musica/download/" + cancion.id,
+                        "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
+                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
 
                     }
 
@@ -79,8 +80,8 @@ class QueriesMusica {
                         "nombre": cancion.nombre,
                         "titulo":cancion.titulo,
                         "letra": cancion.letra,
-                        "cancion": process.env.URL_PETICION + process.env.PORT + "/api/Musica/upload/" + cancion.id,
-                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/Musica/download/" + cancion.id,
+                        "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
+                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
                     }
                 }
             }
@@ -96,7 +97,7 @@ class QueriesMusica {
         let canciones = "";
         try {
             this.sequelize.conectar();
-            canciones = await Cancion.findAll({ order: [['createdAt', 'DESC'], ['id', 'DESC']] });
+            canciones = await models.Cancion.findAll({ order: [['createdAt', 'DESC'], ['id', 'DESC']] });
             this.sequelize.desconectar();
         } catch (err) {
             this.sequelize.desconectar();
@@ -107,7 +108,8 @@ class QueriesMusica {
     getCancion = async (id) => {
         let cancion = "";
         try {
-            cancion = await Cancion.findByPk(id);
+            cancion = await models.Cancion.findByPk(id);
+            this.sequelize.desconectar();
         } catch (err) {
             this.sequelize.desconectar();
             throw err;
@@ -116,7 +118,7 @@ class QueriesMusica {
     }
     borrarCancion = async (id) => {
         this.sequelize.conectar();
-        let cancion = await Cancion.findByPk(id);
+        let cancion = await models.Cancion.findByPk(id);
         if (!cancion) {
             this.sequelize.desconectar();
             throw error;
