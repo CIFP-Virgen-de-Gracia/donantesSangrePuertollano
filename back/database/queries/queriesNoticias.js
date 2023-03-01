@@ -23,7 +23,7 @@ class QueriesNoticias {
                 contenido: req.body.contenido,
                 seccion: req.body.seccion
             });
-            
+
             if (!req.files) {
                 let fecha = new Date(noticia.createdAt).toLocaleString();
 
@@ -38,7 +38,7 @@ class QueriesNoticias {
 
             } else {
                 const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
-                
+
                 let imagen = await models.Imagen.create({
                     idNoticia: noticia.id,
                     nombre: nombre
@@ -52,7 +52,7 @@ class QueriesNoticias {
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
                     "fecha": fecha,
-                    "imagen": imagen
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id,
                 }
             }
         } catch (err) {
@@ -91,14 +91,11 @@ class QueriesNoticias {
                 include: [
                     {
                         model: models.Imagen,
-                        attributes: [],
                         as: 'Imagen'
                     }
                 ],
-                attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',
-                    [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                    [Sequelize.col('Imagen.id'), 'idImagen']],
             });
+        console.log(noticias);
         this.sequelize.desconectar();
         return noticias;
     }
@@ -120,7 +117,6 @@ class QueriesNoticias {
 
     modificarNoticia = async (req) => {
         let data = "";
-
         this.sequelize.conectar();
         try {
             let noticia = await models.Noticia.findOne(
@@ -136,16 +132,15 @@ class QueriesNoticias {
 
             if (noticia) {
                 if (!req.files) {
-                    noticia.id = noticia.id;
+                    noticia.id = noticia.dataValues.id;
                     noticia.titulo = req.body.titulo;
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
-                    noticia.seccion = noticia.seccion;
+                    noticia.seccion = noticia.dataValues.seccion;
                     noticia.updatedAt = new Date();
                     const resp = await noticia.save();
 
                     let fecha = new Date(noticia.createdAt).toLocaleString();
-
                     if (noticia["Imagen"].length > 0) {
                         data = {
                             "id": resp.id,
@@ -153,9 +148,8 @@ class QueriesNoticias {
                             "subtitulo": resp.subtitulo,
                             "contenido": resp.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id
                         }
-
                     } else {
                         data = {
                             "id": resp.id,
@@ -168,14 +162,14 @@ class QueriesNoticias {
                     }
 
                 } else {
-                    noticia.id = noticia.id;
+                    noticia.id = noticia.dataValues.id;
                     noticia.titulo = req.body.titulo;
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
-                    noticia.seccion = noticia.seccion;
+                    noticia.seccion = noticia.dataValues.seccion;
                     noticia.updatedAt = new Date();
                     await noticia.save();
-
+                    
                     if (noticia["Imagen"].length > 0) {
                         const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
                         if (fs.existsSync(pathImagen)) {
@@ -183,20 +177,22 @@ class QueriesNoticias {
                         }
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
 
-                        noticia["Imagen"][0]["idNoticia"] = noticia.id;
+
+                        noticia["Imagen"][0]["idNoticia"] = noticia.dataValues.id;
                         noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
+
 
                     } else {
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
 
                         let imagen = await models.Imagen.create({
-                            idNoticia: noticia.id,
+                            idNoticia: noticia.dataValues.id,
                             nombre: nombre
                         });
                     }
 
-                    let fecha = new Date(noticia.createdAt).toLocaleString();
+                    let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
 
                     data = {
                         "id": noticia.id,
@@ -204,7 +200,7 @@ class QueriesNoticias {
                         "subtitulo": noticia.subtitulo,
                         "contenido": noticia.contenido,
                         "fecha": fecha,
-                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" +  noticia["Imagen"][0]["id"]
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id
                     }
                 }
             }
@@ -212,7 +208,7 @@ class QueriesNoticias {
         } catch (err) {
             throw err;
         }
-
+        console.log(data);
         this.sequelize.desconectar();
         return data;
     }
@@ -234,7 +230,7 @@ class QueriesNoticias {
             this.sequelize.desconectar();
             throw error;
         }
-        
+
         if (noticia["Imagen"].length > 0) {
             await this.borrarImagen(noticia["Imagen"][0].id);
 
