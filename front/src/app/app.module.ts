@@ -41,7 +41,7 @@ import { ConfigRoutingModule } from './config/config-routing.module';
         AuthRoutingModule,
         AptoSangreModule,
         NgxPaginationModule,
-        GaleriaModule
+        GaleriaModule,
         ConfigRoutingModule
     ]
 })
