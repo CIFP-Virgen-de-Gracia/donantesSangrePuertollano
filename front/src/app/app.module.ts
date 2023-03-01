@@ -13,15 +13,18 @@ import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.module';
-
+import { GaleriaComponent } from './galeria/galeria.component';
+import { GaleriaModule } from './galeria/galeria.module';
+import { ConfigRoutingModule } from './config/config-routing.module';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         AptoSangreComponent,
+        GaleriaComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -39,7 +42,9 @@ import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.modul
         AuthRoutingModule,
         AptoSangreModule,
         NgxPaginationModule,
-        PaginasDonacionModule
+        PaginasDonacionModule,
+        GaleriaModule,
+        ConfigRoutingModule
     ]
 })
 export class AppModule {}

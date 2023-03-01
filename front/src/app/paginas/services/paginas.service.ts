@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Integrante } from '../interfaces/Paginas.interfaces';
-
 
 @Injectable({
   providedIn: 'root'
@@ -29,3 +27,4 @@ export class PaginasService {
   }
 
 }
+
