@@ -83,23 +83,6 @@ export class AddContenidoComponent {
     }
     return permitida;
   }
-  comprobarExtension(file: any): boolean {
-    let permitida = false;
-    if (file != "") {
-      let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
-      let extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
-      if (extension != "") {
-        for (let i = 0; i < extensiones_permitidas.length && !permitida; i++) {
-          if (extensiones_permitidas[i] == extension) {
-            permitida = true;
-          }
-        }
-      }
-    } else {
-      permitida = true;
-    }
-    return permitida;
-  }
 
 
   agregarNoticia() {

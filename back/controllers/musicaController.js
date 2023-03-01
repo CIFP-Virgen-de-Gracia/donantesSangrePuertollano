@@ -60,8 +60,8 @@ const getCancion = async (req, res = response) => {
                 "nombre": cancion.nombre,
                 "titulo":cancion.titulo,
                 "letra": cancion.letra,
-                "cancion": process.env.URL_PETICION + process.env.PORT + "/api/Musica/upload/" + cancion.id,
-                "descarga":process.env.URL_PETICION + process.env.PORT + "/api/Musica/download/" + cancion.id,
+                "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
+                "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
             }
             res.status(203).json(data);
         } else {
@@ -92,8 +92,8 @@ const Listado = async (req, res = response) => {
                     "nombre": cancion.nombre,
                     "titulo":cancion.titulo,
                     "letra": cancion.letra,
-                    "cancion": process.env.URL_PETICION + process.env.PORT + "/api/Musica/upload/" + cancion.id,
-                    "descarga":process.env.URL_PETICION + process.env.PORT + "/api/Musica/download/" + cancion.id,
+                    "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
+                    "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
                 }
                 c.push(data);
             });
