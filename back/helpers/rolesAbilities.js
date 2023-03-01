@@ -19,9 +19,9 @@ const getArrayRoles = (user) => {
 }
 
 
-const userCan = async(req, id, acciones) => { 
+const userCan = async (req, id, acciones) => {
     let arrayAbilities = [];
-
+    
     if (req.userAbilites) {
         arrayAbilities = req.userAbilites;
     }
@@ -42,9 +42,9 @@ const userCan = async(req, id, acciones) => {
     acciones.forEach(accion => {
         if (!arrayAbilities.includes(accion)) {
             autorizado = false;
-            
+
             return // es un bucle sencillo. Simplemente vuelvo cuando compruebo que no incluye una de las abilites requeridas.
-        } 
+        }
     });
 
     return autorizado;
