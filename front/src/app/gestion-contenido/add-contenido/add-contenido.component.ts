@@ -50,10 +50,14 @@ export class AddContenidoComponent {
     this.alert = "no";
     this.aviso = 0;
   }
+
+
   capturarFile(event: any): any {
     const files = event.target.files[0];
     this.noticia.imagen = files;
   }
+
+
   limpiarContenido() {
     this.noticia.titulo = "";
     this.noticia.subtitulo = "";
@@ -79,8 +83,26 @@ export class AddContenidoComponent {
     }
     return permitida;
   }
-  agregarNoticia() {
+  comprobarExtension(file: any): boolean {
+    let permitida = false;
+    if (file != "") {
+      let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
+      let extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
+      if (extension != "") {
+        for (let i = 0; i < extensiones_permitidas.length && !permitida; i++) {
+          if (extensiones_permitidas[i] == extension) {
+            permitida = true;
+          }
+        }
+      }
+    } else {
+      permitida = true;
+    }
+    return permitida;
+  }
 
+
+  agregarNoticia() {
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
       this.alert = "si";
     } else {

@@ -1,31 +1,28 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize')
-require('dotenv').config()
+'use strict';
+const { Model } = require('sequelize');
 
-sequelize.conectar();
-
-//Mario
-const RolUser = sequelize.db.define("rolUser", {
-    idRol: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        allowNull: false,
-        
-    },
-    idUser: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        allowNull: false
+module.exports = (sequelize, DataTypes) => {
+  class RolUser extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-},
-{
-    timestamps: false
-},
-{
-    tableName: 'rolUser' 
-});
+  }
+  RolUser.init({
+    idRol: DataTypes.BIGINT,
+    idUser: DataTypes.BIGINT
+  }, {
+    sequelize,
+    timestamps: false,
+    tableName: 'rolUser',
+    modelName: 'RolUser',
+  });
 
-sequelize.sync();
-sequelize.desconectar();
+  RolUser.removeAttribute('id');
 
-module.exports = RolUser;
+  return RolUser;
+}; 

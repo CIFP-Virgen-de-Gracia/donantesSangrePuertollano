@@ -4,6 +4,9 @@ import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
 import { DonacionSangreComponent } from './paginas-donacion/donacion-sangre/donacion-sangre.component';
+import { ConfigGuard } from './auth/guards/config.guard';
+
+import { GaleriaComponent } from './galeria/galeria.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,7 +23,10 @@ const routes: Routes = [
   {
     path: 'resultado',
     component: ResultadoComponent
-
+  },
+  {
+    path: 'galeria',
+    component: GaleriaComponent
   },
   {
     path: 'donacion',
@@ -36,10 +42,14 @@ const routes: Routes = [
     loadChildren: () => import('./gestion-contenido/gestion-contenido.module').then( m => m.GestionContenidoModule )
   },
   {
+    path: 'configuracion',
+    loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
+    canMatch: [ ConfigGuard ],
+    canActivate: [ ConfigGuard ]
+  },
+  {
     path: '**',
-    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )/* ,
-    redirectTo: '' */
-
+    loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
   }
 
   /* ,
@@ -52,7 +62,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes),
     RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})
   ],
   exports: [RouterModule]
