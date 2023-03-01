@@ -1,34 +1,26 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
-
-//Isa
-
-const Cancion = sequelize.db.define("canciones", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true
-        
-    },
-    nombre: {
-        type: DataTypes.STRING(10000),
-        allowNull: false
-    },
-    titulo:{
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    letra: {
-        type: DataTypes.STRING,
-        allowNull: true
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Cancion extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-},
-{
-    tableName: 'canciones'
-});
-
-sequelize.sync();
-sequelize.desconectar();
-
-module.exports = Cancion;
+  }
+  Cancion.init({
+    nombre: DataTypes.STRING,
+    titulo: DataTypes.STRING,
+    letra: DataTypes.STRING(10000),
+  }, {
+    sequelize,
+    tableName: 'canciones',
+    modelName: 'Cancion',
+  });
+  return Cancion;
+};
