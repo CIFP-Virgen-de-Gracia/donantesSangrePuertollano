@@ -7,9 +7,12 @@ import { ContenidoService } from '../contenido.service';
 })
 export class BorrarComponent {
 
-  @Input() idBorrado: string = "";
-  mensaje: number = 0;
-  constructor(private ContenidoService: ContenidoService) { }
+  @Input() idBorrado: string;
+  mensaje: number;
+  constructor(private ContenidoService: ContenidoService) {
+    this.mensaje = 0;
+    this.idBorrado = "";
+  }
 
   limpiarIdBorrado() {
     this.idBorrado = "";
