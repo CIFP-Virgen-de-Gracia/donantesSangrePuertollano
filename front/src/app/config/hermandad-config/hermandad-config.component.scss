@@ -27,12 +27,10 @@
       .cargos {
         border: none;
         outline: none;
-        padding: .5rem 1rem;
+        padding: .5rem;
       }
 
       .cargos {
-        background-color: var(--color-primario);
-        color: var(--bs-white);
 
         option {
           font-family: arial !important;

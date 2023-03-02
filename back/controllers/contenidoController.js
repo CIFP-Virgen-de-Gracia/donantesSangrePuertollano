@@ -29,7 +29,7 @@ const getHistoria = async (req, res = response) => {
 const getHorarios = (req, res = response) => {
     queriesContenidos.getHorarios()
         .then(horarios => {
-            
+
             horarios.map(h => {
                 h.horaEntrada = moment(h.horaEntrada, "HH:mm:ss").format('HH:mm');
                 h.horaSalida = moment(h.horaSalida, "HH:mm:ss").format('HH:mm');
@@ -41,7 +41,53 @@ const getHorarios = (req, res = response) => {
             }
 
             res.status(200).json(resp);
-            
+
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
+        });
+}
+
+
+const getTelefonos = (req, res = response) => {
+    queriesContenidos.getTelefonos()
+        .then(telefonos => {
+
+            const resp = {
+                success: true,
+                data: telefonos
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
+        });
+}
+
+
+const getDirecciones = (req, res = response) => {
+    queriesContenidos.getDirecciones()
+        .then(direcciones => {
+
+            const resp = {
+                success: true,
+                data: direcciones
+            }
+
+            res.status(200).json(resp);
+
         }).catch(err => {
 
             const resp = {
@@ -134,6 +180,8 @@ const updateConfigHermandad = async (req, res = response) => {
 module.exports = {
     getHistoria,
     getHorarios,
+    getTelefonos,
+    getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
     updateConfigHermandad

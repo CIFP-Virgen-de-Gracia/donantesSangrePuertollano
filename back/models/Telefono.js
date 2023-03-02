@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Telefono.init({
-    numero: DataTypes.INTEGER,
+    numero: DataTypes.STRING(20),
     extension: DataTypes.INTEGER
   }, {
     sequelize,
