@@ -17,7 +17,7 @@
 
   <div class="horario align-items-center d-flex flex-column flex-xl-row">
     <div class="dias d-flex flex-column flex-xl-row">
-      <p class="text-center">Días</p>
+      <p class="text-center f-rojo">Días</p>
 
       <div class="d-flex justify-content-center">
         <div class="select d-flex">
@@ -28,7 +28,7 @@
           </select>
         </div>
 
-        <p>a</p>
+        <p class="align-self-center ps-3 pe-3">a</p>
 
         <div class="select d-flex">
           <select name="ultimoDia">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="horas d-flex flex-column flex-xl-row">
-      <p class="text-center">Horas</p>
+      <p class="text-center f-rojo">Horas</p>
 
       <div class="d-flex justify-content-center">
         <div class="select d-flex">
@@ -52,7 +52,7 @@
           </select>
         </div>
 
-        <p>a</p>
+        <p class="align-self-center ps-3 pe-3">a</p>
 
         <div class="select d-flex">
           <select name="horasSalida">
@@ -69,7 +69,7 @@
 
   <div class="horario align-items-center d-flex flex-column flex-xl-row">
     <div class="dias d-flex flex-column flex-xl-row">
-      <p class="text-center">Días</p>
+      <p class="text-center f-rojo">Días</p>
 
       <div class="d-flex justify-content-center">
         <div class="select d-flex">
@@ -80,7 +80,7 @@
           </select>
         </div>
 
-        <p>a</p>
+        <p class="align-self-center ps-3 pe-3">a</p>
 
         <div class="select d-flex">
           <select name="ultimoDia">
@@ -93,7 +93,7 @@
     </div>
 
     <div class="horas d-flex flex-column flex-xl-row">
-      <p class="text-center">Horas</p>
+      <p class="text-center f-rojo">Horas</p>
 
       <div class="d-flex justify-content-center">
         <div class="select d-flex">
@@ -104,7 +104,7 @@
           </select>
         </div>
 
-        <p>a</p>
+        <p class="align-self-center ps-3 pe-3">a</p>
 
         <div class="select d-flex">
           <select name="horasSalida">
@@ -128,19 +128,21 @@
 <div class="telefonos">
   <h3 class="titulo mb-4">Teléfonos</h3>
 
-  <div class="contenedor">
+    <div class="telefono d-flex flex-column flex-md-row align-items-center"
+      *ngFor="let t of telefonos">
 
-    <div class="telefono d-flex align-items-center">
-      <input type="text" class="inpt" value="926 43 16 16">
-      <i class="fa-solid fa-trash ms-auto me-2"></i>
+      <div class="f-rojo">Número</div>
+      <input type="text"
+        class="inpt numero"
+        [(ngModel)]="t.numero">
+
+      <div class="f-rojo">Extensión</div>
+      <input type="text"
+        class="inpt extension"
+        [(ngModel)]="t.extension">
+
+      <i class="fa-solid fa-trash ms-2 me-2"></i>
     </div>
-
-    <div class="telefono d-flex align-items-center">
-      <input type="text" class="inpt" value="926 42 11 00 ext. 70480">
-      <i class="fa-solid fa-trash ms-auto me-2"></i>
-    </div>
-
-  </div>
 
   <button type="submit" (click)="addTelefono()" class="btn-primario">
     Añadir otro
@@ -151,48 +153,13 @@
 <div class="direcciones">
   <h3 class="titulo mb-4">Dirección</h3>
 
-  <div class="contenedor">
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">Lugar</div>
-      <input type="text" class="valor align-middle col-12 col-xl-8" value="Hospital de Santa Bárbara">
+  <div class="direccion" *ngFor="let d of direcciones">
+
+    <div class="row gx-0" *ngFor="let elemento of d | keyvalue">
+
+      <div class="nombre col-12 col-xl-4 f-rojo">{{ elemento.key | titlecase }}</div>
+
+      <input type="text" class="valor align-middle col-12 col-xl-8 inpt" value="{{ elemento.value }}">
+
     </div>
-
-
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">Calle</div>
-      <input type="text" class="valor align-middle col-12 col-xl-8" value="Malagón">
-    </div>
-
-
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">Número</div>
-      <input type="text" class="valor align-middle col-12 col-xl-8" value="s/n">
-    </div>
-
-
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">Ciudad</div>
-      <input type="text" class="valor align-middle col-12 col-xl-8" value="Puertollano">
-    </div>
-
-
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">Provincia</div>
-      <input type="text" class="valor align-middle col-12 col-xl-8" value="Ciudad Real">
-    </div>
-
-
-    <div class="direccion row gx-0">
-      <div class="nombre col-12 col-xl-4">CP</div>
-      <input type="number" class="valor align-middle col-12 col-xl-8" value="13500">
-    </div>
-  </div>
-  <!-- <div class="elemento row gx-0" *ngFor="let elemento of direccion">
-
-    <div class="col-12 col-sm-5">{{ elemento.nombre }}</div>
-
-    <input type="text"
-      class="nombre align-middle col-12 col-sm-7"
-      [(ngModel)]="elemento.valor">
-  </div> -->
 </div>

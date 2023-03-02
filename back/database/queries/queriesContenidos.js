@@ -30,6 +30,20 @@ class QueriesContenidos {
     }
 
 
+    getTelefonos = async () => {
+        const telefonos = await models.Telefono.findAll();
+
+        return telefonos;
+    }
+
+
+    getDirecciones = async () => {
+        const direcciones = await models.Direccion.findAll();
+
+        return direcciones;
+    }
+
+
     getCargosJunta = async () => {
         const cargos = await models.CargoJunta.findAll();
 

@@ -13,6 +13,25 @@
   button {
     margin-top: 2.5rem;
   }
+
+  .inpt,
+  .f-rojo {
+    padding: .5rem;
+  }
+
+  .horario,
+  .telefono {
+    &:not(:first-of-type) {
+      margin-top: 3.5rem;
+    }
+  }
+
+  select,
+  .dias,
+  .horas,
+  .telefono input {
+    width: 100%;
+  }
 }
 
 .telefonos,
@@ -24,91 +43,53 @@
   .horario {
     position: relative;
     border-bottom: 2px solid var(--color-primario);
-    /* display: grid;
-    grid-template-columns: 45% 45% 2%;
-    column-gap: 4%; */
 
-    &:not(:first-of-type) {
-      margin-top: 2.5rem;
+    .select,
+    select {
+      transition: none;
+
+      &:hover {
+        background-color: var(--color-contraste);
+      }
     }
 
-    .dias,
-    .horas {
+    .select {
+      padding: .5rem;
 
-      &>p:first-child {
-        background-color: var(--color-primario);
-        color: var(--bs-white);
+      &::before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f0d7";
+        font-weight: 900;
+        margin-right: .5rem;
       }
+    }
 
-      .select {
-        padding: .5rem;
-
-        /*  &::before {
-          font-family: "Font Awesome 5 Free";
-          content: "\f0d7";
-          font-weight: 900;
-          margin-right: .5rem;
-        } */
-      }
-
-      select {
-        /*  -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none; */
-        background-color: var(--bs-white);
-        border: none;
-        outline: none;
-        font-weight: bold;
-        width: 100%;
-
-        option {
-          font-family: arial !important;
-        }
-      }
-
-      p {
-        padding: .5rem 1rem;
-      }
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-color: unset;
+      border: none;
+      outline: none;
     }
   }
 }
 
-.telefonos .contenedor {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 3.5rem;
+.telefonos .telefono {
+  border-bottom: 2px solid var(--color-primario);
 
-  .telefono {
-    border-bottom: 2px solid var(--color-primario);
-
-    input {
-      font-size: unset;
-      width: 100%;
-    }
+  input {
+    font-size: unset;
   }
 }
 
-.direcciones .contenedor {
+.direcciones .direccion {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 3.5rem;
 
-  .direccion {
+  &>div {
     margin-bottom: 3.5rem;
-
-    .nombre,
-    .valor {
-      padding: .5rem 1rem;
-    }
-
-    .nombre {
-      background-color: var(--color-primario);
-      color: var(--bs-white);
-
-      option {
-        font-family: arial !important;
-      }
-    }
 
     .valor {
       border: none;
@@ -120,74 +101,49 @@
 
 
 @media (max-width: 768px) {
-  .telefonos .contenedor {
-    grid-template-columns: repeat(1, 1fr);
-
-    .telefono:not(:first-of-type) {
-      margin-top: 2rem;
-    }
+  .direcciones .direccion {
+    grid-template-columns: 1fr;
   }
 
-  .direcciones .contenedor {
-    grid-template-columns: 1fr;
+  .telefonos .telefono {
+    position: relative;
+
+    div,
+    .inpt {
+      text-align: center;
+    }
+
+    div {
+      width: 100%;
+    }
+
+    i {
+      color: var(--bs-white);
+      position: absolute;
+      right: .5rem;
+      top: .7rem;
+
+      &:hover {
+        color: var(--color-granate);
+      }
+    }
   }
 }
 
+
 @media (max-width: 1200px) {
-  .horarios {
-    .horario {
-      &:not(:first-of-type) {
-        margin-top: 3.5rem;
-      }
 
-      .dias,
-      .horas {
-        width: 100%;
-      }
+  .horarios .horario {
 
-      i {
-        color: var(--bs-white);
-        position: absolute;
-        right: .5rem;
-        top: .7rem;
+    i {
+      color: var(--bs-white);
+      position: absolute;
+      right: .5rem;
+      top: .7rem;
 
-        &:hover {
-          color: var(--color-granate);
-        }
+      &:hover {
+        color: var(--color-granate);
       }
     }
   }
-
-  /* .horarios {
-    .horario {
-      select, p {
-        text-align: center;
-      }
-    }
-  } */
-
-  /* .horarios {
-    .horario {
-      grid-template-columns: repeat(1, 1fr);
-      column-gap: 0;
-
-      .dias,
-      .horas {
-        &>p:first-child {
-          width: 80px;
-        }
-      }
-
-      .dias {
-        border-bottom: 2px solid var(--color-primario);
-      }
-      i {
-        color: var(--color-contraste-oscuro);
-
-        &:hover {
-          color: var(--color-primario);
-        }
-      }
-    }
-  } */
 }

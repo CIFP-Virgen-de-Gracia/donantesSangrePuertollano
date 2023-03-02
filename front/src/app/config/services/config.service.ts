@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Integrante } from 'src/app/shared/interfaces/shared.interface';
+import { cargoResponse } from '../interfaces/config.interface';
+import { horarioResponse } from '../interfaces/config.interface';
+import { telefonoResponse } from '../interfaces/config.interface';
+import { direccionResponse } from '../interfaces/config.interface';
+import { updateResponse } from '../interfaces/config.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +19,7 @@ export class ConfigService {
   constructor(private http: HttpClient) { }
 
 
-  updateConfigHermandad(historia:String, junta:Integrante[]): Observable<any> {
+  updateConfigHermandad(historia:String, junta:Integrante[]): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -22,16 +27,26 @@ export class ConfigService {
       })
     };
 
-    return this.http.put(`${this.configUrl}/updateConfigHermandad`, { historia: historia, junta: junta}, header);
+    return this.http.put<updateResponse>(`${this.configUrl}/updateConfigHermandad`, { historia: historia, junta: junta}, header);
   }
 
 
-  getCargosJunta(): Observable<any>{
-    return this.http.get<any>(`${this.configUrl}/getCargosJunta`);
+  getCargosJunta(): Observable<cargoResponse>{
+    return this.http.get<cargoResponse>(`${this.configUrl}/getCargosJunta`);
   }
 
 
-  getHorarios(): Observable<any> {
-    return this.http.get<any>(`${this.configUrl}/getHorarios`);
+  getHorarios(): Observable<horarioResponse> {
+    return this.http.get<horarioResponse>(`${this.configUrl}/getHorarios`);
+  }
+
+
+  getTelefonos(): Observable<telefonoResponse> {
+    return this.http.get<telefonoResponse>(`${this.configUrl}/getTelefonos`);
+  }
+
+
+  getDirecciones(): Observable<direccionResponse> {
+    return this.http.get<direccionResponse>(`${this.configUrl}/getDirecciones`);
   }
 }
