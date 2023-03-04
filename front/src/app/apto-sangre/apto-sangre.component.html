@@ -1,0 +1,30 @@
+<div class="row w-100">
+  <div class="col-md-12 text-center mt-5 mb-4">
+    <h1>Test - Idoneidad para donar:</h1>
+  </div>
+  <div class="col-md-12 text-center">
+    <ng-container *ngIf="preguntas.length > 0">
+      <app-preguntas [pregunta] ="preguntas[contador]" (botonAparece)="mostrarBoton($event)"></app-preguntas>
+    </ng-container>
+    <!-- <div class="row">
+      <div class="col-12 col-md-12">
+        <p>¿Tu pulso son entre 50 y 110 pulsaciones?</p>
+        <img class="img-fluid w-25" src="../../assets/imagenes/sano.png">
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <input #pulso_si type="radio" name="pulso" (change)="onItemChange($event)" class="ms-3">
+          <label for="pulso_si">Si</label>
+          <input #pulso_no type="radio" name="pulso" (change)="onItemChange($event)" class="ms-3">
+          <label for="pulso_no">No</label>
+        </div>
+      </div>
+    </div> -->
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-12 mt-3 mb-3">
+        <button #siguiente type="button" class="btn btn-danger border-0 rounded-pill w-25 mb-2" (click)="evaluarRespuesta()">Siguiente</button>
+      </div>
+    </div>
+  </div>
+</div>
