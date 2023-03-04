@@ -1,11 +1,11 @@
 const {Router} = require('express');
 const router = Router();
-const midsUSer = require('../middlewares/userMiddlewares');
+const midsUser = require('../middlewares/userMiddlewares');
 const midsCitas = require('../middlewares/citasMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
-// const mids = require("../middlewares/userMiddlewares");
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
+const contenido = require('../controllers/contenidoController');
 const junta = require('../controllers/juntaController');
 const citas = require('../controllers/citasController');
 
@@ -15,21 +15,25 @@ const controlador=require('../controllers/noticiasController');
 // Mario y Alicia
 
 // auth routes
-router.post('/login', auth.login);
-router.post('/register', auth.register);
-router.get('/activarCorreo/:id', auth.activarCorreo);
-router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd);
-router.post('/recuperarpasswd/:id', auth.recuperarPasswd);
-
-router.get('/activarNewsletter/:id', auth.activarNewsletter);
+router.post('/login', auth.login); //Mario
+router.post('/register', auth.register); //Mario
+router.get('/activarCorreo/:id', auth.activarCorreo); //Mario
+router.get('/puedeModificar/:id', auth.puedeModificar); //Alicia
+router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
+router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
+router.get('/activarNewsletter/:id', auth.activarNewsletter); //Alicia
 
 
 // user routes
-router.post('/suscripcionNewsletter', user.suscripcionNewsletter);
+router.post('/suscripcionNewsletter', user.suscripcionNewsletter); //Alicia
 
-// Junta routes
-router.get('/getIntegrantesCargo', junta.getIntegrantesCargo);
 
+// Contenido routes
+// Todo Alicia
+router.get('/getHistoria', contenido.getHistoria);
+router.get('/getCargosJunta', contenido.getCargosJunta);
+router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
+router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
 
 // pedir cita routes
 // router.get('/citas/citasreservadas/:fecha', citas.getCitasReservadas);

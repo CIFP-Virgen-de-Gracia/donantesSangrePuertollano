@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserLogin } from '../interfaces/auth.interface';
 import { AuthService } from '../services/auth.service';
 import { Md5 } from 'ts-md5';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -15,14 +15,15 @@ export class LoginComponent {
   erroneo: boolean = false;
 
   nuevoUsr: UserLogin = {
-    email : '',
-    passwd : ''
+    email: '',
+    passwd: ''
   };
 
   constructor(
     private authHttsService: AuthService,
+    private SharedService: SharedService,
     private router: Router
-  ) {}
+  ) { }
 
   irARegistro() {
     this.router.navigate(['/auth/registro']);
@@ -31,11 +32,12 @@ export class LoginComponent {
   login() {
 
     const passwd = Md5.hashStr(this.nuevoUsr.passwd);
-    this.authHttsService.login({email: this.nuevoUsr.email, passwd: passwd}).subscribe(resp => {
+    this.authHttsService.login({ email: this.nuevoUsr.email, passwd: passwd }).subscribe(resp => {
 
       if (resp.success) {
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.erroneo = false;
+        this.SharedService.comprobarPermisos.next(!this.erroneo);
         this.router.navigate(['']);
       }
       else this.erroneo = true;
