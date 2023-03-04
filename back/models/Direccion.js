@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Direccion.init({
     lugar: DataTypes.STRING,
     calle: DataTypes.STRING,
-    numero: DataTypes.INTEGER,
+    numero: DataTypes.STRING(3),
     ciudad: DataTypes.STRING,
     provincia: DataTypes.STRING,
     cp: DataTypes.INTEGER

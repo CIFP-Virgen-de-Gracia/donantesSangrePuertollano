@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Integrante } from 'src/app/shared/interfaces/shared.interface';
-import { cargoResponse } from '../interfaces/config.interface';
+import { cargoResponse, Direccion, Telefono } from '../interfaces/config.interface';
 import { horarioResponse } from '../interfaces/config.interface';
 import { telefonoResponse } from '../interfaces/config.interface';
 import { direccionResponse } from '../interfaces/config.interface';
@@ -19,7 +19,7 @@ export class ConfigService {
   constructor(private http: HttpClient) { }
 
 
-  updateConfigHermandad(historia:String, junta:Integrante[]): Observable<updateResponse> {
+  updateHermandad(historia:String, junta:Integrante[]): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -27,7 +27,26 @@ export class ConfigService {
       })
     };
 
-    return this.http.put<updateResponse>(`${this.configUrl}/updateConfigHermandad`, { historia: historia, junta: junta}, header);
+    return this.http.put<updateResponse>(`${this.configUrl}/updateHermandad`, { historia: historia, junta: junta}, header);
+  }
+
+
+  updateContacto(dirs: Direccion[], tlfns: Telefono[]): Observable<updateResponse> {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'x-token' : JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.http.put<updateResponse>(
+      `${this.configUrl}/updateContacto`,
+      {
+        direcciones: dirs,
+        telefonos: tlfns
+      },
+      header
+    );
   }
 
 

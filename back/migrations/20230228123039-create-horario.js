@@ -13,11 +13,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      horaEntrada: {
+      hEntrada: {
         type: Sequelize.TIME,
         allowNull: false
       },
-      horaSalida: {
+      hSalida: {
         type: Sequelize.TIME,
         allowNull: false
       },

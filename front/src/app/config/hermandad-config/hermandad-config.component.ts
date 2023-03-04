@@ -64,13 +64,11 @@ export class HermandadConfigComponent {
 
 
   guardar() {
-    this.ConfigService.updateConfigHermandad(this.historia, this.junta)
+    this.ConfigService.updateHermandad(this.historia, this.junta)
       .subscribe(resp => {
 
         this.mensaje = resp.msg;
-
-        if (resp.success) this.actualizado = true;
-        else this.actualizado = false;
+        this.actualizado = (resp.success) ? true : false;
 
         setTimeout(() => this.mensaje = '', 4000);
 

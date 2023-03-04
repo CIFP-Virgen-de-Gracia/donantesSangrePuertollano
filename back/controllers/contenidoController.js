@@ -31,8 +31,8 @@ const getHorarios = (req, res = response) => {
         .then(horarios => {
 
             horarios.map(h => {
-                h.horaEntrada = moment(h.horaEntrada, "HH:mm:ss").format('HH:mm');
-                h.horaSalida = moment(h.horaSalida, "HH:mm:ss").format('HH:mm');
+                h.hEntrada = moment(h.hEntrada, "HH:mm:ss").format('HH:mm');
+                h.hSalida = moment(h.hSalida, "HH:mm:ss").format('HH:mm');
             })
 
             const resp = {
@@ -146,17 +146,45 @@ const getIntegrantesCargo = (req, res = response) => {
 }
 
 
-const updateConfigHermandad = async (req, res = response) => {
+const updateHermandad = async (req, res = response) => {
 
     try {
         const historia = await queriesContenidos.updateHistoria(req.body.historia);
-        const nombres = Promise.all(req.body.junta.map(integrante => queriesContenidos.updateNombreIntegranteJunta(integrante)))
+        const nombres = Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta))
         /* const junta = await Promise.all(req.body.junta.map(integrante => queriesContenidos.updateCargoIntegranteJunta(integrante)))
          */
 
+        //TODO: Preguntar a Inma si esto es correcto
         for await (const integrante of req.body.junta) {
             await queriesContenidos.updateCargoIntegranteJunta(integrante);
         }
+
+        const resp = {
+            success: true,
+            msg: 'Se han guardado los cambios',
+        }
+
+        res.status(201).json(resp);
+
+    } catch (err) {
+
+        const resp = {
+            success: false,
+            msg: 'Se ha producido un error',
+        }
+
+        res.status(200).json(resp);
+    }
+}
+
+
+const updateContacto = async (req, res = response) => {
+    try {
+        Promise.all(
+            req.body.direcciones.map(queriesContenidos.updateDireccion),
+            req.body.telefonos.map(queriesContenidos.updateTelefono)/* ,
+            req.body.direcciones.map(queriesContenidos.updateDireccion) */
+        );
 
         const resp = {
             success: true,
@@ -184,5 +212,6 @@ module.exports = {
     getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
-    updateConfigHermandad
+    updateHermandad,
+    updateContacto
 }

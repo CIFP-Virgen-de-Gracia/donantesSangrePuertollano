@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       numero: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING(3)
       },
       ciudad: {
         type: Sequelize.STRING,
@@ -32,7 +32,6 @@ module.exports = {
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE
       }
     });
