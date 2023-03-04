@@ -31,6 +31,7 @@ yarn-error.log
 # Miscellaneous
 front/.angular/cache
 front/.sass-cache/
+front/install_nvm.sh
 /connect.lock
 /coverage
 /libpeerconnection.log
