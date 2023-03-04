@@ -1,14 +1,10 @@
-const Rol = require('../../models/Rol');
-const User = require('../../models/User');
-const Email = require('../../models/Email');
-const RolUser = require('../../models/RolUser');
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const conexion = require('../../database/Conexion');
 const { Op } = require('sequelize');
 const { getArrayCitas } = require('../../helpers/getRelaciones');
 // const { use } = require('../../routes/routes');
-
+const models = require('../../models/index.js');
 
 class QueriesUsers {
     
@@ -20,7 +16,7 @@ class QueriesUsers {
 
 //Mario
     getIdEmail = async(email) => {
-        const id = await Email.findOne({
+        const id = await models.Email.findOne({
             attributes: ['id'],
             where: {
                 email: email,
@@ -40,7 +36,7 @@ class QueriesUsers {
 //Alicia
     getEmail = async(email) => {
         
-        const resp = await Email.findOne({
+        const resp = await models.Email.findOne({
             where: {
                 email: email
             }
@@ -52,7 +48,9 @@ class QueriesUsers {
 
 //Mario
     getEmailById = async(id) => {
-        const resp = await Email.findByPk(id);
+        this.sequelize.conectar();
+
+        const resp = await models.Email.findByPk(id);
 
         console.log(id);
         console.log(resp);
@@ -65,7 +63,7 @@ class QueriesUsers {
     getUser = async(id) => {
         this.sequelize.conectar();
 
-        const user = await User.findByPk(id);
+        const user = await models.User.findByPk(id);
 
         this.sequelize.desconectar();
         return user.dataValues;
@@ -76,7 +74,7 @@ class QueriesUsers {
     getUserRoles = async(id) => { // CAMBIAR ROLESABILTIES.
         this.sequelize.conectar();
 
-        const user = await User.findByPk(id, {include: 'RolUser'});
+        const user = await models.User.findByPk(id, {include: 'RolUser'});
         
         this.sequelize.desconectar();
         return user;
@@ -85,7 +83,7 @@ class QueriesUsers {
 
 //Mario
     getUserCitas = async(id) => {
-        const user = await User.findByPk(id, {include: ['citasPendientes', 'citasPasadas']});
+        const user = await models.User.findByPk(id, {include: ['citasPendientes', 'citasPasadas']});
 
         user.dataValues.citas = getArrayCitas(user);
 
@@ -98,7 +96,7 @@ class QueriesUsers {
         const id = await this.getIdEmail(email);
         console.log(id);
 
-        const user = await User.findOne({
+        const user = await models.User.findOne({
             attributes: ['id', 'nombre'],
             where : {
                 id: id.id,
@@ -115,7 +113,9 @@ class QueriesUsers {
 //Mario
     getAbilities = async(roles) =>  {
         try {
-            const rolesAbilities = await Rol.findAll({
+            this.sequelize.conectar();
+
+            const rolesAbilities = await models.Rol.findAll({
                 attributes: ['abilities'],
                 where: {
                     id: {
@@ -137,7 +137,7 @@ class QueriesUsers {
         this.sequelize.conectar();
 
         try {
-            const resp = await User.create({
+            const resp = await models.User.create({
                 id: id,
                 nombre: nombre,
                 passwd: passwd
@@ -157,7 +157,7 @@ class QueriesUsers {
         this.sequelize.conectar();
 
         let resp = null;
-        resp = await Email.findOne({
+        resp = await models.Email.findOne({
             attributes: ['id', 'emailVerifiedAt'],
             where: {
                 email: email,
@@ -165,7 +165,7 @@ class QueriesUsers {
         });
 
         if (resp == null) {
-            resp = await Email.create({
+            resp = await models.Email.create({
                 email: email
             });
         }
@@ -184,7 +184,7 @@ class QueriesUsers {
         
         try {
             
-            const resp = await Email.create({
+            const resp = await models.Email.create({
                 email: email
             });
             
@@ -202,7 +202,7 @@ class QueriesUsers {
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
-            let email = await Email.findByPk(id);
+            let email = await models.Email.findByPk(id);
 
             email.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
@@ -222,7 +222,7 @@ class QueriesUsers {
     updateVerificacionEmailNewsletter = async(id) => {
         try {
             this.sequelize.conectar();
-            let email = await Email.findByPk(id);
+            let email = await models.Email.findByPk(id);
 
             email.update({newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
@@ -242,7 +242,7 @@ class QueriesUsers {
     updateUserPasswd = async(id, nuevaPasswd) => {
         this.sequelize.conectar();
 
-        let user = await User.findByPk(id);
+        let user = await models.User.findByPk(id);
         user.update({passwd: nuevaPasswd});
         user.passwd = nuevaPasswd;
 
@@ -255,7 +255,7 @@ class QueriesUsers {
 
 //Mario
     updateCodRecPasswd = async(id, cod) => {
-        let user = await User.findByPk(id);
+        let user = await models.User.findByPk(id);
         user.codRecPasswd = cod;
 
         const resp = await user.save();

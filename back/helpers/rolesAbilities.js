@@ -7,7 +7,7 @@ const { getArrayRoles } = require('./getRelaciones');
 //Mario
 const userCan = async(req, acciones) => { 
     let arrayAbilities = [];
-
+    
     if (req.userAbilites) {
         arrayAbilities = req.userAbilites;
     }
@@ -19,7 +19,7 @@ const userCan = async(req, acciones) => {
         abilities.forEach(ability => {
             arrayAbilities = Array.from(new Set([...arrayAbilities, ...ability.dataValues.abilities.split(' ')]));
         });
-
+        
         req.userAbilites = arrayAbilities;
     }
 
@@ -28,9 +28,9 @@ const userCan = async(req, acciones) => {
     acciones.forEach(accion => {
         if (!arrayAbilities.includes(accion)) {
             autorizado = false;
-            
+
             return // es un bucle sencillo. Simplemente vuelvo cuando compruebo que no incluye una de las abilites requeridas.
-        } 
+        }
     });
 
     return autorizado;

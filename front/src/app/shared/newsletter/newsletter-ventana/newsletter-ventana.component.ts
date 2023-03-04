@@ -50,7 +50,7 @@ export const tiempoAnimacion = 250;
 })
 export class NewsletterVentanaComponent {
 
-  @ViewChild('newsletter') newsletter!: ElementRef<HTMLDivElement>;
+/*   @ViewChild('newsletter') newsletter!: ElementRef<HTMLDivElement>; */
 
   mostrar: boolean = true;
   suscrito: boolean = false;
