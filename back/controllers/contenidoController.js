@@ -179,12 +179,15 @@ const updateHermandad = async (req, res = response) => {
 
 
 const updateContacto = async (req, res = response) => {
+    console.log(req.body.horarios)
     try {
-        Promise.all(
+        await Promise.all(
             req.body.direcciones.map(queriesContenidos.updateDireccion),
-            req.body.telefonos.map(queriesContenidos.updateTelefono)/* ,
-            req.body.direcciones.map(queriesContenidos.updateDireccion) */
+            req.body.telefonos.map(queriesContenidos.updateTelefono),
+            req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)),
         );
+
+        await req.body.horarios.borrar.map(queriesContenidos.deleteHorario);
 
         const resp = {
             success: true,
