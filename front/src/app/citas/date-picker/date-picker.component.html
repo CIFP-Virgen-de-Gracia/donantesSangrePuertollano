@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-12 d-flex justify-content-center">
+      <div class="d-flex justify-content-center align-items-center">
+        <ngb-datepicker #dp 
+          [(ngModel)]="model" 
+          [displayMonths]="displayMonths"
+          [navigation]="navigation"
+          [markDisabled]="isDisabled"
+          (navigate)="date = $event.next"
+          (click)="mandarFecha()"
+        ></ngb-datepicker>
+      </div>
+    </div>
+  </div>
+  
