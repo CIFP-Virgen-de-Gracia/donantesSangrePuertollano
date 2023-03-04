@@ -33,8 +33,25 @@ export interface Cargo {
 export interface Horario {
   id: number;
   dia: string;
-  horaEntrada: Time;
-  horaSalida: Time;
+  hEntrada: Time;
+  hSalida: Time;
+}
+
+export interface HorarioMostrar {
+  dias: Dia[];
+  hEntrada: Time;
+  hSalida: Time;
+}
+
+export interface Dia {
+  valor: String;
+  letra: String;
+  seleccionado: boolean;
+}
+
+export interface Hora {
+  entrada: Time;
+  salida: Time;
 }
 
 export interface Telefono {
@@ -47,7 +64,7 @@ export interface Direccion {
   id: number;
   lugar: string;
   calle: string;
-  numero: number;
+  numero: string;
   ciudad: string;
   provincia: string;
   cp: number;
