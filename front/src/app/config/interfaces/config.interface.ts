@@ -43,9 +43,15 @@ export interface HorarioMostrar {
   hSalida: Time;
 }
 
+export interface HorarioGuardar {
+  borrar: number[],
+  guardar: Horario[]
+}
+
 export interface Dia {
-  valor: String;
-  letra: String;
+  id: number;
+  valor: string;
+  letra: string;
   seleccionado: boolean;
 }
 

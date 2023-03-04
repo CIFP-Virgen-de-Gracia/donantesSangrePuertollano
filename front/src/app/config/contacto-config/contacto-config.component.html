@@ -19,12 +19,12 @@
     <div class="horas d-flex">
       <div class="d-flex flex-column flex-xl-row">
         <p class="f-rojo">Entrada</p>
-        <input class="inpt pe-xl-4" type="time" value="{{ h.hEntrada }}"/>
+        <input class="inpt pe-xl-4" type="time" [(ngModel)]="h.hEntrada"/>
       </div>
 
       <div class="d-flex flex-column flex-xl-row">
         <p class="f-rojo">Salida</p>
-        <input class="inpt pe-xl-5" type="time" value="{{ h.hSalida }}"/>
+        <input class="inpt pe-xl-5" type="time" [(ngModel)]="h.hSalida"/>
       </div>
     </div>
 

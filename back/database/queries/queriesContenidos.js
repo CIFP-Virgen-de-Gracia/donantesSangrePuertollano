@@ -76,6 +76,28 @@ class QueriesContenidos {
     }
 
 
+    insertHorario = async (horario) => {
+        try {
+            
+            this.sequelize.conectar();
+
+            const resp = await models.Horario.create({ 
+                dia: horario.dia,
+                hEntrada: horario.hEntrada,
+                hSalida: horario.hSalida,
+                createddAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
     updateHistoria = async (valor) => {
         try {
             this.sequelize.conectar();
@@ -178,6 +200,46 @@ class QueriesContenidos {
                 numero: telefono.numero,
                 extension: telefono.extension,
                 updatedAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    updateHorario = async (horario) => {
+        try {
+            this.sequelize.conectar();
+
+            const h = await models.Horario.findByPk(horario.id);
+            
+            const resp = await h.update({ 
+                hEntrada: horario.hEntrada,
+                hSalida: horario.hSalida,
+                updatedAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    deleteHorario = async (id) => {
+        try {
+            this.sequelize.conectar();
+            
+            const resp = await models.Horario.destroy({ 
+                where: { id: id }
             });
             
             this.sequelize.desconectar();
