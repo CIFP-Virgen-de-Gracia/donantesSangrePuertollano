@@ -23,7 +23,6 @@ router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
 // user routes
 router.post('/suscripcionNewsletter', [
         check('email', 'Formato de correo no válido').isEmail(),
-        check('email').custom( validators.suscritoNewsletter ),
         midsValidar.validarCampos
     ], user.suscripcionNewsletter); //Alicia
 
