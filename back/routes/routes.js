@@ -2,13 +2,12 @@ const { Router } = require('express');
 const router = Router();
 const midsUser = require('../middlewares/userMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
-const validarCampos = require('../middlewares/validarCampos');
+const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
-const junta = require('../controllers/juntaController');
 const { check } = require('express-validator');
-
+const validators = require('../helpers/validators');
 
 // Mario y Alicia
 // auth routes
@@ -19,14 +18,15 @@ router.get('/puedeModificar/:id', auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
 router.get('/activarNewsletter/:id', auth.activarNewsletter); //Alicia
-
+router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
 
 // user routes
 router.post('/suscripcionNewsletter', [
         check('email', 'Formato de correo no válido').isEmail(),
-        check('email').custom( emailExiste ),
-        validarCampos
+        check('email').custom( validators.suscritoNewsletter ),
+        midsValidar.validarCampos
     ], user.suscripcionNewsletter); //Alicia
+
 
 // Contenido routes
 // Todo Alicia

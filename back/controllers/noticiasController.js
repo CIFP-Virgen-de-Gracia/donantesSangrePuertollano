@@ -47,14 +47,20 @@ const getListado = async (req, res = response) => {
 //Isa
 const registrarNoticia = async (req, res = response) => {
     const emails = await queriesUsers.getSuscritosNewsletter(); //Alicia
-
+    
     queriesNoticias.insertarNoticias(req).then((noticia) => {
-        
-        contenido = {
-            asunto: 'Nueva noticia publicada',
-            cuerpoHtml: `<small>${ noticia.fecha }</small><h1>${ noticia.titulo }</h1><h2>${ noticia.subtitulo }</h2><p>${ noticia.parrafo }</p>` 
-        } //Alicia
-        emails.map(e => correo.mandarCorreo(e, contenido) );//Alicia
+        emails.map(e => correo.mandarCorreo(e.email, {
+                    asunto: '¡Hay una noticia nueva!',
+                    cuerpoHtml: `<p>${ noticia.fecha }</p>
+                                <h1>${ noticia.titulo }</h1>
+                                <h2>${ noticia.subtitulo }</h2>
+                                <div>${ noticia.contenido }</div><br><hr>
+                                <p><small>
+                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/">
+                                    Darse de baja
+                                </small></p>` 
+                    })
+                );//Alicia
 
         res.status(200).json(noticia);
 
