@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Contenido } from '../Interfaces/Contenido.interface';
+import { Contenido,Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class MainPageContenidoComponent implements OnInit {
   idBorrado: string = "";
   idModificar = "";
   mensaje: number = 0;
-  infoNoticia: Contenido = {
+  info: Noticia = {
+    id:0,
     titulo: "",
     subtitulo: "",
     contenido: "",
@@ -23,9 +24,7 @@ export class MainPageContenidoComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.ContenidoService.getListado().subscribe((res) => {
-      console.log(res);
-    });
+    this.ContenidoService.getListado().subscribe((res) => {});
   }
   get resultado() {
 
@@ -46,7 +45,8 @@ export class MainPageContenidoComponent implements OnInit {
     this.ContenidoService.obtenerNoticia(this.idModificar).subscribe({
       next: data => {
         if (data !== "No encontrada") {
-          this.infoNoticia = data;
+          this.info = data;
+          console.log(this.info);
         }
       },
       error: error => {
