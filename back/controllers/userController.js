@@ -26,6 +26,7 @@ const suscripcionNewsletter = async (req, res = response) => {
     }
 }
 
+
 module.exports = {
     suscripcionNewsletter
 }
