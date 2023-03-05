@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { Component } from '@angular/core';
 import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora, HorarioGuardar } from '../interfaces/config.interface';
 import { ConfigService } from '../services/config.service';
@@ -12,9 +13,12 @@ export class ContactoConfigComponent {
   mensaje: String = '';
   actualizado!: boolean;
   telefonos: Telefono[] = [];
+  tBorrar: number[] = [];
   direcciones: Direccion[] = [];
   horarios: Horario[] = [];
   hMostrar: HorarioMostrar[] = [];
+  dSemana = [{ nombre: "Lunes", letra: "L" }, { nombre: "Martes", letra: "M" }, { nombre: "Miércoles", letra: "X" },
+  { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }];
 
   constructor(private ConfigService: ConfigService) { }
 
@@ -40,7 +44,10 @@ export class ContactoConfigComponent {
 
 
   guardar() {
-    this.ConfigService.updateContacto(this.direcciones, this.telefonos, this.crearHorarioGuardar())
+    const tlfns = { guardar: this.telefonos, borrar: this.tBorrar };
+    const horarios = this.crearHorarioGuardar();
+
+    this.ConfigService.updateContacto(this.direcciones, tlfns, horarios)
       .subscribe(resp => {
 
         this.mensaje = resp.msg;
@@ -52,12 +59,33 @@ export class ContactoConfigComponent {
 
 
   addTelefono() {
-    
+    this.telefonos.push({
+      id: -1,
+      numero: "",
+      extension: 0
+    });
   }
 
 
   addHorario() {
+    let listaDias: Dia[] = [];
 
+    this.dSemana.forEach(dia => { //TODO: LLevar a función auxiliar
+      listaDias.push(this.crearDia(dia.nombre, dia.letra, false));
+    });
+
+    this.addHorarioMostrar(listaDias);
+  }
+
+
+  deleteHorario(event: Event) {
+
+  }
+
+
+  deleteTelefono(index: number) {
+    const tlfn = this.telefonos.splice(index, 1);
+    this.tBorrar.push(tlfn[0].id);
   }
 
 
@@ -85,37 +113,48 @@ export class ContactoConfigComponent {
 
 
   crearHorarioMostrar() {
-    const dSemana = [{nombre:"Lunes", letra:"L"}, {nombre:"Martes", letra:"M"},{nombre:"Miércoles", letra:"X"},
-                    {nombre:"Jueves", letra:"J"},{nombre:"Viernes", letra:"V"}];
     let horas: Hora[] = [];
     let diasHora: Horario[] = [];
     let listaDias: Dia[];
     let idDia: number | undefined;
+    let selecc: boolean;
 
-    this.horarios.forEach(horario => {
+    this.horarios.forEach(horario => { // Recojo los distintos grupos de horas
       if (!horas.find(h => h.entrada == horario.hEntrada && h.salida == horario.hSalida))
         horas.push({ "entrada": horario.hEntrada, "salida": horario.hSalida });
     });
 
-    horas.forEach(hora => {
+    horas.forEach(hora => { // Recojo los días que tienen ese grupo de horas
       listaDias = [];
       diasHora = this.horarios.filter(h => h.hEntrada == hora.entrada && h.hSalida == hora.salida);
 
-      dSemana.forEach(dia => {
+      this.dSemana.forEach(dia => {
         idDia = diasHora.find(d => d.dia == dia.nombre)?.id;
-        listaDias.push({
-          id: (idDia) ? idDia : -1,
-          valor: dia.nombre,
-          letra: dia.letra,
-          seleccionado: (diasHora.find(d => d.dia == dia.nombre)) ? true : false
-        })
+        selecc = (diasHora.find(d => d.dia == dia.nombre)) ? true : false;
+        listaDias.push(this.crearDia(dia.nombre, dia.letra, selecc, idDia));
       });
 
-      this.hMostrar.push({
-        dias: listaDias,
-        hEntrada: hora.entrada,
-        hSalida: hora.salida
-      });
+      this.addHorarioMostrar(listaDias, hora.entrada, hora.salida);
     });
   }
+
+
+  addHorarioMostrar(listaDias: Dia[], entrada: Time = { hours: 0, minutes: 0 }, salida: Time = { hours: 0, minutes: 0 }) {
+    this.hMostrar.push({
+      dias: listaDias,
+      hEntrada: entrada,
+      hSalida: salida
+    });
+  }
+
+
+  crearDia(valor:string, letra:string, selecc:boolean, id:number = -1) {
+    return {
+      id: id,
+      valor: valor,
+      letra: letra,
+      seleccionado: selecc
+    }
+  }
 }
+

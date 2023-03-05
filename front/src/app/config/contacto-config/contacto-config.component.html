@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <i class="fa-solid fa-trash ms-auto me-2"></i>
+    <i class="fa-solid fa-trash ms-auto me-2" (click)="deleteHorario($event)"></i>
   </div>
 
   <button type="submit" (click)="addHorario()" class="btn-primario">
@@ -57,7 +57,8 @@
 <div class="telefonos">
   <h3 class="titulo mb-4">Teléfonos</h3>
 
-  <div class="telefono d-flex flex-column flex-md-row align-items-center" *ngFor="let t of telefonos">
+  <div class="telefono d-flex flex-column flex-md-row align-items-center"
+    *ngFor="let t of telefonos; let i = index">
 
     <div class="f-rojo">Número</div>
     <input type="text" class="inpt numero" [(ngModel)]="t.numero">
@@ -65,7 +66,7 @@
     <div class="f-rojo">Extensión</div>
     <input type="text" class="inpt extension" [(ngModel)]="t.extension">
 
-    <i class="fa-solid fa-trash ms-2 me-2"></i>
+    <i class="fa-solid fa-trash ms-2 me-2" (click)="deleteTelefono(i)"></i>
   </div>
 
   <button type="submit" (click)="addTelefono()" class="btn-primario">
