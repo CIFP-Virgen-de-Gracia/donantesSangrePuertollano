@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalSubirFoto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Subir Foto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 d-flex justify-content-center">
+            <input (change)="capturarFile($event)" type="file" class="btn btn-light form-control border-3 rounded-2 mb-2" accept="image/jpg,image/gif,image/png,image/jpeg,image/tiff,image/svg,image/webp">
+          </div>
+          <div *ngIf="previsualizacion" class="col-12 d-flex justify-content-center">
+            <img [src]="previsualizacion" class="w-50">
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-end">
+          <button type="button" class="btn btn-primary" [disabled]="loading" (click)="subirFoto()">
+            <span>
+              {{(loading) ? 'Cargando......' : 'Subir Imagen'}}
+            </span>
+          </button>
+          <button type="button" class="btn btn-secundario" data-bs-dismiss="modal"><span>Cerrar</span></button>
+      </div>
+    </div>
+  </div>
+</div>
