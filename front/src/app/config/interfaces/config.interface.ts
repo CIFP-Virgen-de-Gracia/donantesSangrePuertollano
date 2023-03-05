@@ -48,6 +48,11 @@ export interface HorarioGuardar {
   guardar: Horario[]
 }
 
+export interface TelefonoGuardar {
+  borrar: number[],
+  guardar: Telefono[]
+}
+
 export interface Dia {
   id: number;
   valor: string;

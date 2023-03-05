@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Integrante } from 'src/app/shared/interfaces/shared.interface';
-import { cargoResponse, Direccion, HorarioGuardar, Telefono } from '../interfaces/config.interface';
+import { cargoResponse, Direccion, HorarioGuardar, Telefono, TelefonoGuardar } from '../interfaces/config.interface';
 import { horarioResponse } from '../interfaces/config.interface';
 import { telefonoResponse } from '../interfaces/config.interface';
 import { direccionResponse } from '../interfaces/config.interface';
@@ -31,7 +31,7 @@ export class ConfigService {
   }
 
 
-  updateContacto(dirs: Direccion[], tlfns: Telefono[], horarios: HorarioGuardar): Observable<updateResponse> {
+  updateContacto(dirs: Direccion[], tlfns: TelefonoGuardar, horarios: HorarioGuardar): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',

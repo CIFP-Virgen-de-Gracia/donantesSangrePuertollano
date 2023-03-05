@@ -98,6 +98,28 @@ class QueriesContenidos {
     }
 
 
+    insertTelefono = async (tlfn) => {
+        
+        try {
+            
+            this.sequelize.conectar();
+
+            const resp = await models.Telefono.create({ 
+                numero: tlfn.numero,
+                extension: tlfn.extension,
+                createddAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
     updateHistoria = async (valor) => {
         try {
             this.sequelize.conectar();
@@ -239,6 +261,24 @@ class QueriesContenidos {
             this.sequelize.conectar();
             
             const resp = await models.Horario.destroy({ 
+                where: { id: id }
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    deleteTelefono = async (id) => {
+        try {
+            this.sequelize.conectar();
+            
+            const resp = await models.Telefono.destroy({ 
                 where: { id: id }
             });
             
