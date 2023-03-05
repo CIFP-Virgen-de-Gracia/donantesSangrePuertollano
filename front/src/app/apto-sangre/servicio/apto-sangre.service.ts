@@ -5,14 +5,14 @@ import { Pregunta } from '../interface/pregunta';
 @Injectable({
   providedIn: 'root'
 })
-export class ServicioService {
+export class aptosangreService {
 
   constructor(private http: HttpClient) { }
 
   public preguntasEnviadas: any;
 
   getPreguntas(): Observable<Pregunta[]> {
-    return this.http.get<Pregunta[]>('http://localhost:8090/test-apto/mostrarPreguntas');
+    return this.http.get<Pregunta[]>('http://localhost:8090/api/test-apto/mostrarPreguntas');
   }
 
 }

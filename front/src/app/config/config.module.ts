@@ -7,12 +7,20 @@ import { HermandadConfigComponent } from './hermandad-config/hermandad-config.co
 import { ContactoConfigComponent } from './contacto-config/contacto-config.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from '../shared/shared.module';
+import { TestConfigComponent } from './test-config/test-config.component';
+import { AniadirPreguntaComponent } from './test-config/aniadir-pregunta/aniadir-pregunta.component';
+import { ModificarPreguntaComponent } from './test-config/modificar-pregunta/modificar-pregunta.component';
+import { BorrarPreguntaComponent } from './test-config/borrar-pregunta/borrar-pregunta.component';
 
 @NgModule({
   declarations: [
     MainConfigComponent,
     HermandadConfigComponent,
-    ContactoConfigComponent
+    ContactoConfigComponent,
+    TestConfigComponent,
+    AniadirPreguntaComponent,
+    ModificarPreguntaComponent,
+    BorrarPreguntaComponent
   ],
   imports: [
     FormsModule,
