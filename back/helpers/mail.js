@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 //Mario
 const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
-    const cuerpoHtml = `Pincha en el <a href="http://${process.env.HOST}:${process.env.PORT}/api/${ruta}/${userId}/">link</a> para confirmar tu suscripción a nuestra newsletter`;
+    const cuerpoHtml = `Pincha en el <a href="http://${process.env.HOST}:${process.env.PORT}/api/${ruta}/${userId}/">link</a> para confirmar tu correo`;
 
     const asunto = 'Confirmación de cuenta de correo electrónico';
 

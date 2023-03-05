@@ -11,7 +11,7 @@ class QueriesUsers {
         this.conexion = conexion;
     }
 
-//Mario
+    //Mario
     getIdEmail = async(email) => {
         const id = await models.Email.findOne({
             attributes: ['id'],
@@ -26,7 +26,8 @@ class QueriesUsers {
         return id.dataValues;
     }
 
-//Alicia
+
+    //Alicia
     getEmail = async(email) => {
         
         const resp = await models.Email.findOne({
@@ -38,7 +39,8 @@ class QueriesUsers {
         return resp;
     }
 
-//Mario
+
+    //Mario
     getEmailById = async(id) => {
         this.sequelize.conectar();
 
@@ -48,7 +50,8 @@ class QueriesUsers {
         return resp.dataValues;
     }
 
-//Mario
+
+    //Mario
     getUser = async(id) => {
         this.sequelize.conectar();
 
@@ -58,7 +61,8 @@ class QueriesUsers {
         return user.dataValues;
     }
 
-//Mario
+
+    //Mario
     getUserRoles = async(id) => { // CAMBIAR ROLESABILTIES.
         this.sequelize.conectar();
 
@@ -68,7 +72,8 @@ class QueriesUsers {
         return user;
     }
 
-//Mario
+
+    //Mario
     getUserLogin = async(email, passwd) => {
 
         this.sequelize.conectar();
@@ -90,7 +95,8 @@ class QueriesUsers {
         return user.dataValues;
     }
 
-//Mario
+
+    //Mario
     getAbilities = async(roles) =>  {
         try {
             this.sequelize.conectar();
@@ -113,20 +119,21 @@ class QueriesUsers {
     }
     
 
-//Alicia
+    //Alicia
     getSuscritosNewsletter = async() => {
         try {
             this.sequelize.conectar();
 
             const emails = await models.Email.findAll({
-                attributes: ['newsletterVerifiedAt'],
-                newsletterVerifiedAt: {
-                    [Op.ne]: null
+                attributes: ['id', 'email', 'newsletterVerifiedAt'],
+                where: {
+                    newsletterVerifiedAt: {
+                        [Op.ne]: null
+                    }
                 }
             });
 
             this.sequelize.desconectar();
-
             return emails;
         }
         catch (err) {
@@ -135,7 +142,7 @@ class QueriesUsers {
     }
 
 
-//Mario
+    //Mario
     insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
 
@@ -154,7 +161,8 @@ class QueriesUsers {
         }
     }
 
-//Mario
+
+    //Mario
     insertEmail = async(email) => {
         this.sequelize.conectar();
 
@@ -180,7 +188,7 @@ class QueriesUsers {
     }
 
 
-//Alicia
+    //Alicia
     insertEmailNewsletter = async(email) => { 
         this.sequelize.conectar();
         
@@ -200,7 +208,7 @@ class QueriesUsers {
     }
 
 
-//Mario
+    //Mario
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
@@ -219,18 +227,18 @@ class QueriesUsers {
         }
     }
 
-//Alicia
+
+    //Alicia
     updateVerificacionEmailNewsletter = async(id) => {
         try {
             this.sequelize.conectar();
             let email = await models.Email.findByPk(id);
 
-            email.update({newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
-
-            const resp = email.save();
+            const resp = await email.update({
+                newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+            });
 
             this.sequelize.desconectar();
-
             return resp;
         }
         catch (err) {
@@ -238,7 +246,25 @@ class QueriesUsers {
         }
     }
 
-//Mario
+
+    //Alicia
+    updateCancelarNewsletter = async(id) => {
+        try {
+            this.sequelize.conectar();
+            let email = await models.Email.findByPk(id);
+
+            const resp = await email.update({newsletterVerifiedAt: null});
+
+            this.sequelize.desconectar();
+            return resp;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+
+    //Mario
     updateUserPasswd = async(id, nuevaPasswd) => {
         this.sequelize.conectar();
 
@@ -252,7 +278,8 @@ class QueriesUsers {
         return resp.dataValues;
     }
 
-//Mario
+
+    //Mario
     updateCodRecPasswd = async(id, cod) => {
         let user = await models.User.findByPk(id);
         user.codRecPasswd = cod;
