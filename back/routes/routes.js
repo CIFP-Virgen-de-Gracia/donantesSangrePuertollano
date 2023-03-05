@@ -7,7 +7,6 @@ const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
 const { check } = require('express-validator');
-const validators = require('../helpers/validators');
 
 // Mario y Alicia
 // auth routes
