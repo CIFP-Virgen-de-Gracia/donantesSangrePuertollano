@@ -67,11 +67,19 @@ export class ConfigService {
 
   modificarPregunta(id:any, pregunta: Pregunta): Observable<any>{
     const payload = new FormData();
-    payload.append('enunciado', pregunta.enunciado);
-    payload.append('titulo', pregunta.titulo);
-    payload.append('archivo', pregunta.nombre_img);
-    payload.append('respuesta', pregunta.respuesta.toString());
-    payload.append('solucion_problema', pregunta.solucion_problema);
+    if(pregunta.nombre_img == ''){
+      payload.append('enunciado', pregunta.enunciado);
+      payload.append('titulo', pregunta.titulo);
+      payload.append('respuesta', pregunta.respuesta.toString());
+      payload.append('solucion_problema', pregunta.solucion_problema);
+    } else{
+      payload.append('enunciado', pregunta.enunciado);
+      payload.append('titulo', pregunta.titulo);
+      payload.append('archivo', pregunta.nombre_img);
+      payload.append('respuesta', pregunta.respuesta.toString());
+      payload.append('solucion_problema', pregunta.solucion_problema);
+
+    }
 
       return this.http.put<any>(`${this.baseUrl}/api/test-apto/modificarPregunta/${id}`, payload);
   }
