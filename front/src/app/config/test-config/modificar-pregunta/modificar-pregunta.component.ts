@@ -159,8 +159,12 @@ export class ModificarPreguntaComponent{
     else{
       this.pregunta.titulo = titulo.value;
       this.pregunta.enunciado = enunciado.value;
-      this.pregunta.nombre_img = this.archivos[this.archivos.length - 1];
-      this.pregunta
+      if(this.pregunta.nombre_img == this.archivos[this.archivos.length - 1].name){
+        this.pregunta.nombre_img = '';
+      }
+      else{
+        this.pregunta.nombre_img = this.archivos[this.archivos.length - 1];
+      }
       if(si.checked){
         this.pregunta.respuesta = parseInt(si.value);
       }
