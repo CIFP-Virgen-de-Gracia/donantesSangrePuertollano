@@ -1,46 +1,28 @@
-const {DataTypes} = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
-
-//Mario
-sequelize.conectar();
-
-const Cita = sequelize.db.define("cita", {
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-    },
-    userId: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        autoIncrement: false
-    },
-    fecha: {
-        type: DataTypes.DATE,
-        allowNull: false
-    },
-    donacion: {
-        type: DataTypes.ENUM('sangre', 'plasma'),
-        allowNull: false
-    },
-    cancelada: {
-        type: DataTypes.TINYINT,
-        defaultValue: false,
-        allowNull: false
-    },
-    asistida: {
-        type: DataTypes.TINYINT,
-        defaultValue: false,
-        allowNull: false
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Cita extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-},
-{
-    tableName: 'citas'
-});
-sequelize.sync();
-sequelize.desconectar();
-
-
-module.exports = Cita;
+  }
+  Cita.init({
+    userId: DataTypes.INTEGER,
+    fecha: DataTypes.DATE,
+    donacion: DataTypes.ENUM('sangre', 'plasma'),
+    cancelada: DataTypes.TINYINT,
+    asistida: DataTypes.TINYINT
+  }, {
+    sequelize,
+    tableName: 'citas',
+    modelName: 'Cita',
+  });
+  return Cita;
+};

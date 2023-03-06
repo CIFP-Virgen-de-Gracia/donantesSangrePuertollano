@@ -61,7 +61,6 @@ export class DatePickerComponent {
 	}
 
   mandarFecha() {
-    console.log(this.model);
     this.onNuevaFecha.emit(this.model);
   }
 

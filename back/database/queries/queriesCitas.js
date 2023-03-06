@@ -1,10 +1,8 @@
-const Cita = require('../../models/Cita');
 const sequelize = require('../ConexionSequelize');
 const conexion = require('../Conexion');
 const moment = require('moment');
 const {Op, DATE} = require('sequelize');
-const HoraCita = require('../../models/HorasCitas');
-const User = require('../../models/User');
+const models = require('../../models/index.js');
 
 
 // todo Mario
@@ -20,7 +18,7 @@ const getDataValues = (citas) => {
 
 const insertCita = async(cita) => {
 
-    const resp = await Cita.create({
+    const resp = await models.Cita.create({
         fecha: cita.fecha,
         userId: cita.userId,
         donacion: cita.donacion,
@@ -31,7 +29,7 @@ const insertCita = async(cita) => {
 
 
 const getNumCitasHora = async(fecha) => {
-    const n = await Cita.count({
+    const n = await models.Cita.count({
         where: {fecha: fecha}
     });
 
@@ -40,7 +38,7 @@ const getNumCitasHora = async(fecha) => {
 
 
 const getNumCitasPendientesUser = async(id) => {
-    const n = await Cita.count({
+    const n = await models.Cita.count({
         where: {
             userId: id,
             fecha: {
@@ -77,7 +75,7 @@ const getCitasFechaHora = async(fecha) => {
 
 
 const getHorarioCitas = async() => {
-    const horas = await HoraCita.findAll();
+    const horas = await models.HoraCita.findAll();
 
     let arrayHoras = [];
     horas.forEach(hora => {
@@ -89,7 +87,7 @@ const getHorarioCitas = async() => {
 
 
 const getCitaPendienteUser = async(id) => {
-    const citasUser = await Cita.findAll({
+    const citasUser = await models.Cita.findAll({
         attributes: ['id', 'fecha', 'donacion', 'cancelada'],
         where: {
             userId: id,
@@ -106,7 +104,7 @@ const getCitaPendienteUser = async(id) => {
 
 
 const getCitasPasadasUser = async(id) => {
-    const citasUser = await Cita.findAll({
+    const citasUser = await models.Cita.findAll({
         attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
         where: {
             userId: id,
@@ -134,8 +132,7 @@ const getCitasPasadasUser = async(id) => {
 
 // TODO: hacer middleware comproando que la cita sea del usuario que la cancela
 const cancelarCita = async(idCita) => {
-    console.log(idCita);
-    let cita = await Cita.findByPk(idCita);
+    let cita = await models.Cita.findByPk(idCita);
 
     cita.update({cancelada: true});
 
@@ -157,7 +154,7 @@ const cancelarCita = async(idCita) => {
 
 
 const updateCitaPasadaAsistida = async(id, asistida) => {
-    let cita = await Cita.findByPk(id);
+    let cita = await models.Cita.findByPk(id);
 
     cita.update({asistida: asistida});
 
@@ -168,7 +165,6 @@ const updateCitaPasadaAsistida = async(id, asistida) => {
 
 
 module.exports = {
-    // getCitasFecha,
     getCitasFechaHora,
     getHorarioCitas,
     getNumCitasHora,
@@ -181,10 +177,3 @@ module.exports = {
     cancelarCita,
     updateCitaPasadaAsistida
 };
-
-getCitaPendienteUser(1).then(console.log);
-
-
-
-
-
