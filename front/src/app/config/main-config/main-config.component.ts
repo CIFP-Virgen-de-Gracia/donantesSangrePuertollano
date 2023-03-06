@@ -15,6 +15,10 @@ export class MainConfigComponent {
     {
       nombre : "contacto",
       icono: "fa-phone"
+    },
+    {
+      nombre : "himno",
+      icono: "fa-headphones"
     }
   ];
 
