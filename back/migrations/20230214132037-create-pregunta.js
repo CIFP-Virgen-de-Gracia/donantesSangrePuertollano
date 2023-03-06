@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      nombre_pregunta: {
+      titulo: {
         allowNull: false,
         type: Sequelize.STRING
       },
@@ -23,8 +23,8 @@ module.exports = {
       },
       respuesta: {
         allowNull: false,
-        type: Sequelize.NUMBER
-      },
+        type: Sequelize.INTEGER
+      }, 
       solucion_problema: {
         allowNull: false,
         type: Sequelize.STRING(500)

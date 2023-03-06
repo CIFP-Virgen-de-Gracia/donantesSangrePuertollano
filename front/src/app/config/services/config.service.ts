@@ -63,7 +63,7 @@ export class ConfigService {
     return [...this.canciones];
   }
   getListadoAudio(): Observable<ResponseAudio> {
-    return this.http.get<ResponseAudio>(`${this.configUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
+    return this.http.get<ResponseAudio>(`${this.configUrl}/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
   }
   agregarAudio(cancion: Cancion) {
     this.canciones.unshift(cancion);
@@ -80,7 +80,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/insertar`, payload, header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/musica/insertar`, payload, header);
   }
   borrarHimno(id: string) {
     let audios = this.canciones.filter((c) => c.id != id);
@@ -94,7 +94,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseCancion>(`${this.configUrl}/api/musica/borrar/${id}`, header);
+    return this.http.delete<ResponseCancion>(`${this.configUrl}/musica/borrar/${id}`, header);
   }
   borrarHimnoTodos() {
     this.canciones = [];
@@ -107,7 +107,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseAudio>(`${this.configUrl}/api/musica/borrar`, header);
+    return this.http.delete<ResponseAudio>(`${this.configUrl}/musica/borrar`, header);
   }
 
   editarAudio(id: string, cancion: Cancion): Observable<ResponseCancion> {
@@ -121,7 +121,7 @@ export class ConfigService {
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
-    return this.http.put<ResponseCancion>(`${this.configUrl}/api/musica/modificar/`, payload, header);
+    return this.http.put<ResponseCancion>(`${this.configUrl}/musica/modificar/`, payload, header);
   }
   obtenerCancion(id: string): Observable<ResponseCancion> {
     const header = {
@@ -130,7 +130,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/get`,{id:id},header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/musica/get`,{id:id},header);
   }
   editarCancion(cancion: Cancion) {
     let posicion = this.canciones.findIndex(c => c.id == cancion.id);
@@ -138,15 +138,15 @@ export class ConfigService {
   }
 
   getPreguntas(): Observable<Pregunta[]>{
-    return this.http.get<Pregunta[]>(`${this.baseUrl}/api/test-apto/mostrarPreguntas`)
+    return this.http.get<Pregunta[]>(`${this.configUrl}/test-apto/mostrarPreguntas`)
   }
 
   subirFoto(archivo:FormData): Observable<FormData> {
-    return this.http.post<any>(`${this.baseUrl}/api/galeria/insertarGaleria_imagen`, archivo);
+    return this.http.post<any>(`${this.configUrl}/galeria/insertarGaleria_imagen`, archivo);
   }
 
   borrarImagenes(id:any): Observable<any>{
-    return this.http.delete<any>(`${this.baseUrl}/api/galeria/borrarGaleria_Imagen/${id}`);
+    return this.http.delete<any>(`${this.configUrl}/galeria/borrarGaleria_Imagen/${id}`);
   }
 
   añadirPregunta(pregunta : Pregunta): Observable<any>{
@@ -168,7 +168,7 @@ export class ConfigService {
         payload.append('solucion_problema', pregunta.solucion_problema);
       }
 
-      return this.http.post<any>(`${this.baseUrl}/api/test-apto/generarPregunta/`, payload);
+      return this.http.post<any>(`${this.configUrl}/test-apto/generarPregunta/`, payload);
   }
 
   modificarPregunta(id:any, pregunta: Pregunta): Observable<any>{
@@ -187,11 +187,11 @@ export class ConfigService {
 
     }
 
-      return this.http.put<any>(`${this.baseUrl}/api/test-apto/modificarPregunta/${id}`, payload);
+      return this.http.put<any>(`${this.configUrl}/test-apto/modificarPregunta/${id}`, payload);
   }
 
   borrarPregunta(id:any): Observable<any>{
-    return this.http.delete<any>(`${this.baseUrl}/api/test-apto/borrarPregunta/${id}`);
+    return this.http.delete<any>(`${this.configUrl}/test-apto/borrarPregunta/${id}`);
   }
 
 

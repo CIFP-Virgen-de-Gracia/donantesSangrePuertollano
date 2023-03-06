@@ -121,6 +121,8 @@ class QueriesContenidos {
 
 
     updateHistoria = async (valor) => {
+        let resp = null;
+
         try {
             this.sequelize.conectar();
 
@@ -130,8 +132,13 @@ class QueriesContenidos {
                 }
             });
 
-            const resp = await historia.update({ valor: valor });
-
+            if (historia == null) {
+                resp = await models.Contenido.create({
+                    nombre: 'historia',
+                    valor: valor
+                });
+            } else resp = await historia.update({ valor: valor });
+            
             this.sequelize.desconectar();
             return resp;
 
