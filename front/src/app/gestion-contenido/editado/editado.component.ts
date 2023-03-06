@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Contenido, Noticia } from '../Interfaces/Contenido.interface';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import { Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
@@ -33,20 +33,23 @@ export class EditadoComponent {
 
   @Input() idModificar: string;
   @Input() infoNoticia: Noticia;
+  @Input() qho: string;
 
   @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
   constructor(private ContenidoService: ContenidoService) {
+    this.qho = "no";
     this.res = "no";
     this.alert = "no";
     this.aviso = 0;
     this.correcto = true;
     this.idModificar = "";
     this.infoNoticia = {
-      id: 0,
+      id: "0",
       titulo: "",
       subtitulo: "",
       contenido: "",
+      fecha: new Date(),
       seccion: "",
       imagen: ""
     };
@@ -65,11 +68,11 @@ export class EditadoComponent {
   limpiarAlert() {
     this.alert = "no";
     this.aviso = 0;
+    this.qho = "no";
   }
   capturarFile(event: any) {
     const files = event.target.files[0];
     this.infoNoticia.imagen = files;
-    console.log(this.comprobarExtension(files));
     if (!this.comprobarExtension(files)) {
       this.aviso = 3;
     }
@@ -99,7 +102,6 @@ export class EditadoComponent {
     this.foto.nativeElement.value = ''
   }
   modificarNoticia() {
-    console.log(this.infoNoticia);
     if (this.infoNoticia.titulo.trim().length === 0 || this.infoNoticia.contenido.trim().length === 0) {
       this.alert = "si";
     } else if (!this.correcto) {
@@ -107,20 +109,17 @@ export class EditadoComponent {
     } else {
       this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
         next: data => {
-          if (data !== "No se ha podido modificar") {
-            console.log(data);
-            console.log("Se ha editado");
-            this.ContenidoService.editar(this.idModificar, data);
+          if (data.success !== false) {
+            this.ContenidoService.editar(data.data);
             this.limpiarContenido();
-            this.aviso = 1
+            this.aviso = 1;
           }
         },
         error: error => {
-          console.log("No se ha editado");
-          console.log(error);
           this.aviso = 2;
         }
       });
     }
   }
 }
+

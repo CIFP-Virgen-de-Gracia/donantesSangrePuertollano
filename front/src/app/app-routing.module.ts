@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
+import { DonacionSangreComponent } from './paginas-donacion/donacion-sangre/donacion-sangre.component';
 import { ConfigGuard } from './auth/guards/config.guard';
 
+import { GaleriaComponent } from './galeria/galeria.component';
 const routes: Routes = [
   {
     path: '',
@@ -23,6 +25,15 @@ const routes: Routes = [
     component: ResultadoComponent
   },
   {
+    path: 'galeria',
+    component: GaleriaComponent
+  },
+  {
+    path: 'donacion',
+    loadChildren: () => import('./paginas-donacion/paginas-donacion.module').then( m => m.PaginasDonacionModule )
+  },
+
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
@@ -35,6 +46,10 @@ const routes: Routes = [
     loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
     canMatch: [ ConfigGuard ],
     canActivate: [ ConfigGuard ]
+  },
+  {
+    path: 'citas',
+    loadChildren: () => import('./citas/citas.module').then(m => m.PedirCitaModule)
   },
   {
     path: '**',

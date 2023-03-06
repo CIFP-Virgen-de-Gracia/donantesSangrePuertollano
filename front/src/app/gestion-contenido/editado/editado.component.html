@@ -7,6 +7,13 @@
           data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div *ngIf="qho==='si'" class="container mt-3 mb-2">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Se ha producido un error y no he encontrado la información de la noticia.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+              (click)="limpiarAlert()"></button>
+          </div>
+        </div>
         <form (ngSubmit)="modificarNoticia();">
           <div class="row">
             <div class="col-12">
@@ -25,7 +32,7 @@
                 <angular-editor name="contenido" [config]="editConfig" [placeholder]="'Enter text here...'"
                   [(ngModel)]="infoNoticia.contenido"></angular-editor>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-3">
 
                 <label for="imagen">Seleccionar Imagen:</label>
 

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +14,14 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { GestionContenidoModule } from './gestion-contenido/gestion-contenido.module';
 import { NoticiasRoutingModule } from './gestion-contenido/noticias-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PedirCitaModule } from './citas/citas.module';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs); 
+import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.module';
+import { GaleriaComponent } from './galeria/galeria.component';
+import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
 
 
@@ -21,8 +29,12 @@ import { ConfigRoutingModule } from './config/config-routing.module';
     declarations: [
         AppComponent,
         AptoSangreComponent,
+        GaleriaComponent,
+        GaleriaComponent,
     ],
-    providers: [],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'es-es' }
+    ],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
@@ -38,6 +50,8 @@ import { ConfigRoutingModule } from './config/config-routing.module';
         AuthRoutingModule,
         AptoSangreModule,
         NgxPaginationModule,
+        PaginasDonacionModule,
+        GaleriaModule,
         ConfigRoutingModule
     ]
 })
