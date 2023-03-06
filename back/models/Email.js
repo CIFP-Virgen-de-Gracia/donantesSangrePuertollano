@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     emailVerifiedAt: DataTypes.DATE,
     newsletterVerifiedAt: DataTypes.DATE,
+    vKeyNewsletter: DataTypes.STRING,
   }, {
     sequelize,
     tableName: 'emails',
