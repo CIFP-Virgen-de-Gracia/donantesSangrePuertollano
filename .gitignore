@@ -29,9 +29,8 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-frontfront/.angular/cache
-front/front/.sass-cache/
-front/install_nvm.sh
+front/.angular/cache
+front/.sass-cache/
 /connect.lock
 /coverage
 /libpeerconnection.log
@@ -42,6 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
+back/config/config.json
 front/node_modules
 back/.env
 .gitkeep

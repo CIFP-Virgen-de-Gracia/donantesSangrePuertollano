@@ -5,13 +5,8 @@ const midsCitas = require('../middlewares/citasMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
 const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
-const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
-// const junta = require('../controllers/juntaController');
 const citas = require('../controllers/citasController');
-
-// const {midEjemplo} = require('../middlewares/userMiddlewares');
-const controlador=require('../controllers/noticiasController');
 const { check } = require('express-validator');
 
 // Mario y Alicia
@@ -19,18 +14,16 @@ const { check } = require('express-validator');
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
-router.get('/activarCorreo/:id', auth.activarCorreo); //Mario
+router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
-router.get('/activarNewsletter/:id', auth.activarNewsletter); //Alicia
-router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
-
-// user routes
 router.post('/suscripcionNewsletter', [
-        check('email', 'Formato de correo no válido').isEmail(),
-        midsValidar.validarCampos
-    ], user.suscripcionNewsletter); //Alicia
+    check('email', 'Formato de correo no válido').isEmail(),
+    midsValidar.validarCampos
+], auth.mandarEmailNewsletter); //Alicia
+router.get('/activarNewsletter/:id/:vKey', auth.activarNewsletter); //Alicia
+router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alicia
 
 
 // Contenido routes
@@ -39,6 +32,7 @@ router.get('/getHistoria', contenido.getHistoria);
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
+
 
 // pedir cita routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);
@@ -49,5 +43,7 @@ router.get('/citas/hayhuecohora/:fecha', [vJwt.validarJwt, midsUser.midUser],cit
 router.get('/citas/getcitapendienteuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitaPendienteUser);
 router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitasPasadasUser);
 router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser],citas.yaHaPedidoUnaCita);
+
+
 
 module.exports = router;
