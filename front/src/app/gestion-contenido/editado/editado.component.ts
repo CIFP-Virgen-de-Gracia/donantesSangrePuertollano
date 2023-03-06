@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
@@ -109,8 +110,11 @@ export class EditadoComponent {
     } else {
       this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
         next: data => {
+          console.log(data);
           if (data.success !== false) {
+            console.log("entro2");
             this.ContenidoService.editar(data.data);
+            console.log("continuo");
             this.limpiarContenido();
             this.aviso = 1;
           }

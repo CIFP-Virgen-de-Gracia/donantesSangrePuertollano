@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Himno, Cancion } from '../../interfaces/config.interface';

@@ -1,3 +1,4 @@
+//Isa
 import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Cancion } from '../../interfaces/config.interface';
