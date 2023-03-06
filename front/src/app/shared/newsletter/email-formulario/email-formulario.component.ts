@@ -15,7 +15,7 @@ export class EmailFormularioComponent {
   emailForm!: FormGroup;
   mensaje: string = '';
   icono: string = '';
-
+  suscrito: boolean | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -39,18 +39,17 @@ export class EmailFormularioComponent {
       this.sharedService.suscripcionNewsletter(email)
         .subscribe(resp => {
           this.mensaje = resp.msg;
+          this.suscrito = resp.success;
 
           if (resp.success) {
-            this.icono = 'fa-circle-check';
             this.onSubmit.emit(true);
             return;
           }
         });
 
     } else {
+      this.suscrito = false;
       this.mensaje = 'Email no válido';
     }
-
-    this.icono = 'fa-triangle-exclamation';
   }
 }

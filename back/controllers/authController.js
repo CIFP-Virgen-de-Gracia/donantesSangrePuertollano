@@ -131,6 +131,26 @@ const activarNewsletter = (req, res = response) => {
 }
 
 
+// Alicia
+const desactivarNewsletter = (req, res = response) => {
+    const html = `<div style="font-family: Arial, Helvetica, sans-serif;">
+                    <h2 style="border-bottom: 0.3rem solid rgb(174, 17, 40);padding-bottom:.5rem;width:fit-content;">
+                        Te has dado de baja
+                    </h2>
+                    <p>No recibirías más correos cuando publiquemos una noticia</p>
+                </div>`;
+
+    queriesUsers.updateCancelarNewsletter(req.params.id)
+        .then(resp => {
+            res.send(html);
+            
+        }).catch(err => {
+            res.status(200).json({ success: false, error: err });
+        });
+
+}
+
+
 const mandarEmailRecuperarPasswd = async (req, res = response) => {
 
     try {
@@ -244,5 +264,6 @@ module.exports = {
     activarNewsletter,
     mandarEmailRecuperarPasswd,
     recuperarPasswd,
-    puedeModificar
+    puedeModificar,
+    desactivarNewsletter
 }
