@@ -52,7 +52,7 @@ class QueriesNoticias {
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
                     "fecha": fecha,
-                    "imagen": imagen
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + imagen.id
                 }
             }
         } catch (err) {
@@ -91,13 +91,9 @@ class QueriesNoticias {
                 include: [
                     {
                         model: models.Imagen,
-                        attributes: [],
                         as: 'Imagen'
                     }
-                ],
-                attributes: ['id', 'titulo', 'subtitulo', 'contenido', 'seccion', 'createdAt',
-                    [Sequelize.col('Imagen.nombre'), 'nombreImagen'],
-                    [Sequelize.col('Imagen.id'), 'idImagen']],
+                ]
             });
         this.sequelize.desconectar();
         return noticias;
@@ -136,11 +132,11 @@ class QueriesNoticias {
 
             if (noticia) {
                 if (!req.files) {
-                    noticia.id = noticia.id;
+                    noticia.id = noticia.dataValues.id;
                     noticia.titulo = req.body.titulo;
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
-                    noticia.seccion = noticia.seccion;
+                    noticia.seccion = noticia.dataValues.seccion;
                     noticia.updatedAt = new Date();
                     const resp = await noticia.save();
 
@@ -153,7 +149,7 @@ class QueriesNoticias {
                             "subtitulo": resp.subtitulo,
                             "contenido": resp.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + noticia.id
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/Noticias/upload/" + imagen.id
                         }
 
                     } else {
@@ -168,11 +164,11 @@ class QueriesNoticias {
                     }
 
                 } else {
-                    noticia.id = noticia.id;
+                    noticia.id = noticia.dataValues.id;
                     noticia.titulo = req.body.titulo;
                     noticia.subtitulo = req.body.subtitulo;
                     noticia.contenido = req.body.contenido;
-                    noticia.seccion = noticia.seccion;
+                    noticia.seccion = noticia.dataValues.seccion;
                     noticia.updatedAt = new Date();
                     await noticia.save();
 
@@ -183,7 +179,7 @@ class QueriesNoticias {
                         }
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
 
-                        noticia["Imagen"][0]["idNoticia"] = noticia.id;
+                        noticia["Imagen"][0]["idNoticia"] = noticia.dataValues.id;
                         noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
 
@@ -191,7 +187,7 @@ class QueriesNoticias {
                         const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
 
                         let imagen = await models.Imagen.create({
-                            idNoticia: noticia.id,
+                            idNoticia: noticia.dataValues.id,
                             nombre: nombre
                         });
                     }
