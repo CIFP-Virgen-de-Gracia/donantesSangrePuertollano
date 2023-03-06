@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     enunciado: DataTypes.STRING,
     titulo: DataTypes.STRING,
     nombre_img: DataTypes.STRING,
-    respuesta: DataTypes.NUMBER,
+    respuesta: DataTypes.INTEGER,
     solucion_problema: DataTypes.STRING(500)
   }, {
     sequelize,

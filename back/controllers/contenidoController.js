@@ -1,7 +1,7 @@
 const moment = require('moment');
 const { response, request } = require('express');
 const queriesContenidos = require('../database/queries/queriesContenidos');
-/* process.setMaxListeners(0); */
+
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
     queriesContenidos.getHistoria()
@@ -147,10 +147,10 @@ const getIntegrantesCargo = (req, res = response) => {
 
 
 const updateHermandad = async (req, res = response) => {
-
+    
     try {
         const historia = await queriesContenidos.updateHistoria(req.body.historia);
-        const nombres = Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta))
+        const nombres = await Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta));
         /* const junta = await Promise.all(req.body.junta.map(integrante => queriesContenidos.updateCargoIntegranteJunta(integrante)))
          */
 
@@ -167,7 +167,7 @@ const updateHermandad = async (req, res = response) => {
         res.status(201).json(resp);
 
     } catch (err) {
-
+        console.log(err)
         const resp = {
             success: false,
             msg: 'Se ha producido un error',
