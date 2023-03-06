@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       { path: 'hermandad', component: HermandadConfigComponent },
       { path: 'contacto', component: ContactoConfigComponent },
-      { path: 'himno', component: HimnoConfigComponent },
+      { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},
       { path: '**', redirectTo: 'hermandad' }
     ]
