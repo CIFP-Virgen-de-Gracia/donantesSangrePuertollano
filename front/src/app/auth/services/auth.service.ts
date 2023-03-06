@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as interfaces from '../interfaces/auth.interface';
 import { map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -49,7 +49,14 @@ export class AuthService {
       return of(false);
 
     } else {
-      return this.httpUsers.get<interfaces.Auth>(`${this.authUrl}/puedeModificar/${JSON.parse(user).id}`)
+      const header = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+          'x-token' : JSON.parse(localStorage.getItem('user')!).token
+        })
+      };
+
+      return this.httpUsers.get<interfaces.Auth>(`${this.authUrl}/puedeModificar/${JSON.parse(user).id}`, header)
         .pipe(
           map(auth => {
             if (auth.success) {
@@ -65,4 +72,3 @@ export class AuthService {
     }
   }
 }
-  
