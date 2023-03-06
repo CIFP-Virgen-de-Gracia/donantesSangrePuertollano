@@ -41,6 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
+back/config/config.json
 front/node_modules
 back/.env
 .gitkeep
