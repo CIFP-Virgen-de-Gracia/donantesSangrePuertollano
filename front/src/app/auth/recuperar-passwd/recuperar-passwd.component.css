@@ -1,0 +1,23 @@
+input {
+  padding: 0.4rem 1rem;
+  border-radius: 2px;
+}
+
+button {
+  border-radius: 2px;
+}
+button.btnAceptar {
+  background-color: var(--color-secundario);
+  color: var(--bs-white);
+}
+button.btnAceptar:hover {
+  border: solid 1px var(--color-primario);
+  background-color: var(--color-primario);
+}
+button.border-red {
+  border: solid 1px var(--color-secundario);
+  color: var(--color-secundario);
+}
+button.border-red:hover {
+  background-color: var(--color-contraste);
+}/*# sourceMappingURL=recuperar-passwd.component.css.map */
