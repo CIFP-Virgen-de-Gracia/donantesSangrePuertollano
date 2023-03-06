@@ -1,0 +1,12 @@
+h2::after, h3::after {
+  content: "";
+  display: block;
+  width: 6rem;
+  max-width: 60%;
+  border-bottom: 0.3rem solid var(--color-granate-oscuro);
+  margin: 0 auto 1rem;
+}
+
+p {
+  font-size: var(--letra-media);
+}/*# sourceMappingURL=aviso.component.css.map */

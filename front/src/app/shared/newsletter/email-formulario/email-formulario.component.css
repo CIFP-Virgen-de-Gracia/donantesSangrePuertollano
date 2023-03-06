@@ -1,0 +1,7 @@
+input[type=email] {
+  border-radius: 2px 0px 0 2px;
+}
+
+button[type=submit] {
+  border-radius: 0 2px 2px 0;
+}/*# sourceMappingURL=email-formulario.component.css.map */

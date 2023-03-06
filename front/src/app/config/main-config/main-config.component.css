@@ -1,0 +1,53 @@
+main {
+  padding: 5rem 1.5rem 10rem;
+  background-color: var(--color-contraste);
+}
+main h2 {
+  text-align: center;
+}
+main .contenedor {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  background-color: var(--bs-white);
+  border-radius: 2px;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.2);
+}
+main .contenedor .menu-horizontal {
+  border-right: 1.5px solid var(--color-contraste-oscuro);
+}
+main .contenedor .menu-horizontal li {
+  padding: 1rem;
+  width: 100%;
+  border-left: 10px solid var(--bs-white);
+}
+main .contenedor .menu-horizontal li span.oculto {
+  display: none;
+}
+main .contenedor .menu-horizontal li.activo {
+  background-color: var(--color-primario);
+  color: var(--bs-white);
+  border-color: var(--color-granate);
+}
+main .contenedor .config {
+  padding: 1rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  main .contenedor .menu-horizontal li {
+    padding: 1rem 1.5rem;
+  }
+  main .contenedor .menu-horizontal li span.oculto {
+    display: inline-block;
+  }
+  main .contenedor .menu-horizontal li i {
+    margin-right: 0.5rem;
+  }
+  main .contenedor .config {
+    padding: 1rem 3rem;
+  }
+}
+@media (min-width: 992px) {
+  main {
+    padding: 5rem 5rem 10rem;
+  }
+}/*# sourceMappingURL=main-config.component.css.map */
