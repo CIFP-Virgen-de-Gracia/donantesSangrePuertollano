@@ -24,7 +24,7 @@ import { BorrarPreguntaComponent } from './test-config/borrar-pregunta/borrar-pr
     HimnoConfigComponent,
     AddHimnoComponent,
     EditHimnoComponent,
-    DeleteHimnoComponent,,
+    DeleteHimnoComponent,
     TestConfigComponent,
     AniadirPreguntaComponent,
     ModificarPreguntaComponent,
