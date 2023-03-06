@@ -11,7 +11,8 @@ const models = require('../models/index.js');
 const userCan = require('../helpers/rolesAbilities');
 const { v4: uuidv4 } = require('uuid');
 
-//Todo Mario menos cosas newsletter
+
+// Mario
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
     queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get abilities
@@ -40,6 +41,7 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 }
 
 
+// Mario
 const googleSignin = async (req, res = response) => {
 
     const { id_token } = req.body;
@@ -79,7 +81,7 @@ const googleSignin = async (req, res = response) => {
     }
 }
 
-
+// Mario
 const register = async (req, res = response) => { // poner código
     const vKey = uuidv4();
    
@@ -101,6 +103,7 @@ const register = async (req, res = response) => { // poner código
 }
 
 
+// Mario
 const activarCorreo = (req, res = response) => {
     queriesUsers.updateVerificacionEmail(req.params.id, req.params.vKey)
         .then(resp => {
@@ -125,6 +128,7 @@ const activarNewsletter = (req, res = response) => {
         });
 
 }
+
 
 // Alicia
 const mandarEmailNewsletter = async (req, res = response) => {
@@ -165,6 +169,7 @@ const desactivarNewsletter = (req, res = response) => {
 }
 
 
+// Mario
 const mandarEmailRecuperarPasswd = async (req, res = response) => {
 
     try {
@@ -198,6 +203,7 @@ const mandarEmailRecuperarPasswd = async (req, res = response) => {
 }
 
 
+// Mario
 const recuperarPasswd = async (req, res = response) => {
 
     try {
@@ -243,18 +249,20 @@ const recuperarPasswd = async (req, res = response) => {
 }
 
 
+// Alicia
 const puedeModificar = async (req, res = response) => {
-    let resp = { success: false };
-
+    let resp = { success: false }; 
+    
     try {
-        const autorizado = await userCan(req, req.params.id, ['leer', 'editar', 'borrar']);
-
+        
+        const autorizado = await userCan(req, ['leer', 'editar', 'borrar']);
+        
         if (autorizado) {
             const user = queriesUsers.getUser(req.params.id);
 
             resp = {
                 success: true,
-                data: {
+                data: { //TODO: Debería borrar esto?
                     id: user.id,
                     nombre: user.nombre,
                     token: generarJWT(user.id),

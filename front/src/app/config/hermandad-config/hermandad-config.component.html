@@ -28,10 +28,10 @@
       nombre del integrante.</p>
 
     <div class="contenedor-integrantes">
-      <div class="integrante row" *ngFor="let integrante of junta">
+      <div class="integrante row gx-0" *ngFor="let integrante of junta">
 
         <select name="cargos"
-          class="cargos col-12 col-sm-5"
+          class="cargos col-12 col-sm-5 f-rojo"
           [(ngModel)]="integrante.cargo">
 
           <option value="{{ cargo.nombre }}"

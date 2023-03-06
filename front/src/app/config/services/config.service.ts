@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Integrante } from 'src/app/shared/interfaces/shared.interface';
+import { cargoResponse, Direccion, HorarioGuardar, Telefono, TelefonoGuardar } from '../interfaces/config.interface';
+import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
 
@@ -11,15 +13,27 @@ import { Pregunta } from '../../apto-sangre/interface/pregunta';
 })
 export class ConfigService {
 
-  baseUrl = environment.baseUrl;
+  configUrl = `${environment.baseUrl}/api`;
   private canciones: Cancion[];
 
   constructor(private http: HttpClient) {
     this.canciones = [];
   }
 
+  //Alicia
+  updateHermandad(historia:String, junta:Integrante[]): Observable<updateResponse> {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'x-token' : JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
 
-  updateConfigHermandad(historia: String, junta: Integrante[]): Observable<any> {
+    return this.http.put<updateResponse>(`${this.configUrl}/updateHermandad`, { historia: historia, junta: junta}, header);
+  }
+
+  //Alicia
+  updateContacto(dirs: Direccion[], tlfns: TelefonoGuardar, horarios: HorarioGuardar): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -27,20 +41,29 @@ export class ConfigService {
       })
     };
 
-    return this.http.put(`${this.baseUrl}/api/updateConfigHermandad`, { historia: historia, junta: junta }, header);
+    return this.http.put<updateResponse>(
+      `${this.configUrl}/updateContacto`,
+      {
+        direcciones: dirs,
+        telefonos: tlfns,
+        horarios: horarios
+      },
+      header
+    );
+  }
+
+  //Alicia
+  getCargosJunta(): Observable<cargoResponse>{
+    return this.http.get<cargoResponse>(`${this.configUrl}/getCargosJunta`);
   }
 
 
-  getCargosJunta(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/api/getCargosJunta`);
-  }
-
-  //Audio o Himnos
+  //Audio o Himnos (Toda la parte del Audio Isa)
   get audios() {
     return [...this.canciones];
   }
   getListadoAudio(): Observable<ResponseAudio> {
-    return this.http.get<ResponseAudio>(`${this.baseUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
+    return this.http.get<ResponseAudio>(`${this.configUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
   }
   agregarAudio(cancion: Cancion) {
     this.canciones.unshift(cancion);
@@ -57,7 +80,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.baseUrl}/api/musica/insertar`, payload, header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/insertar`, payload, header);
   }
   borrarHimno(id: string) {
     let audios = this.canciones.filter((c) => c.id != id);
@@ -71,7 +94,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseCancion>(`${this.baseUrl}/api/musica/borrar/${id}`, header);
+    return this.http.delete<ResponseCancion>(`${this.configUrl}/api/musica/borrar/${id}`, header);
   }
   borrarHimnoTodos() {
     this.canciones = [];
@@ -84,7 +107,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseAudio>(`${this.baseUrl}/api/musica/borrar`, header);
+    return this.http.delete<ResponseAudio>(`${this.configUrl}/api/musica/borrar`, header);
   }
 
   editarAudio(id: string, cancion: Cancion): Observable<ResponseCancion> {
@@ -98,7 +121,7 @@ export class ConfigService {
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
-    return this.http.put<ResponseCancion>(`${this.baseUrl}/api/musica/modificar/`, payload, header);
+    return this.http.put<ResponseCancion>(`${this.configUrl}/api/musica/modificar/`, payload, header);
   }
   obtenerCancion(id: string): Observable<ResponseCancion> {
     const header = {
@@ -107,7 +130,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.baseUrl}/api/musica/get`,{id:id},header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/get`,{id:id},header);
   }
   editarCancion(cancion: Cancion) {
     let posicion = this.canciones.findIndex(c => c.id == cancion.id);

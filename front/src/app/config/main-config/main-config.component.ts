@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-config',
@@ -26,8 +27,7 @@ export class MainConfigComponent {
     }
   ];
 
-  public elementoActivo = 0;
+  public elementoActivo = this.elementos.map(e => e.nombre).indexOf(this.router.url.split('/').pop()!);
 
-  constructor(){}
-
+  constructor(private router: Router){ }
 }

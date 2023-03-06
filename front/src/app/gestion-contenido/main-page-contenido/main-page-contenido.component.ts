@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Contenido, Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
