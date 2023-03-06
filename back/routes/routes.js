@@ -5,7 +5,6 @@ const midsCitas = require('../middlewares/citasMiddlewares');
 const vJwt = require('../middlewares/validarJwt');
 const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
-const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
 const { check } = require('express-validator');
@@ -15,7 +14,7 @@ const { check } = require('express-validator');
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
-router.get('/activarCorreo/:id', auth.activarCorreo); //Mario
+router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
@@ -25,9 +24,11 @@ router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
 
 // user routes
 router.post('/suscripcionNewsletter', [
-        check('email', 'Formato de correo no válido').isEmail(),
-        midsValidar.validarCampos
-    ], user.suscripcionNewsletter); //Alicia
+    check('email', 'Formato de correo no válido').isEmail(),
+    midsValidar.validarCampos
+], auth.mandarEmailNewsletter); //Alicia
+router.get('/activarNewsletter/:id/:vKey', auth.activarNewsletter); //Alicia
+router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alicia
 
 
 // Contenido routes
@@ -40,6 +41,7 @@ router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
+
 
 
 // pedir cita routes
