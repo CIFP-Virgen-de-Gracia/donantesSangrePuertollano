@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING
   }, {
     sequelize,
-    ableName: 'galerias',
+    tableName: 'galerias',
     modelName: 'Galeria',
     timestamps: false,
   });

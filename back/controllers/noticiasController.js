@@ -17,9 +17,9 @@ const getListado = async (req, res = response) => {
                         "titulo": n.titulo,
                         "subtitulo": n.subtitulo,
                         "contenido": n.contenido,
-                        "seccion":n.seccion,
+                        "seccion": n.seccion,
                         "fecha": fecha,
-                        "imagen":  process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
                     }
                 } else {
                     data = {
@@ -27,28 +27,49 @@ const getListado = async (req, res = response) => {
                         "titulo": n.titulo,
                         "subtitulo": n.subtitulo,
                         "contenido": n.contenido,
-                        "seccion":n.seccion,
+                        "seccion": n.seccion,
                         "fecha": fecha,
                         "imagen": ""
                     }
                 }
                 not.push(data);
             });
-            res.status(200).json(not);
+            const respuesta = {
+                success: true,
+                data: not,
+                msg: 'Noticias encontradas'
+            }
+
+            res.status(200).json(respuesta);
         }
     }).catch((err) => {
         console.log(err);
-        res.status(200).json("No encontrada");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'Noticias no encontradas'
+        }
+        res.status(200).json(respuesta);
     });
 }
 
 
 const registrarNoticia = async (req, res = response) => {
     queriesNoticias.insertarNoticias(req).then((noticia) => {
-        res.status(200).json(noticia);
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia registrada'
+        }
+        res.status(200).json(respuesta);
 
     }).catch((err) => {
-        res.status(203).json("Error de registro");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido registrar'
+        }
+        res.status(203).json(respuesta);
     });
 }
 
@@ -75,32 +96,65 @@ const getNoticia = (req, res = response) => {
                     "imagen": ""
                 }
             }
-            res.status(200).json(data);
+            const respuesta = {
+                success: true,
+                data: data,
+                msg: 'Noticia encontrada'
+            }
+            res.status(200).json(respuesta);
         } else {
-            res.status(200).json("No encontrada");
+            const respuesta = {
+                success: false,
+                msg: 'No se ha encontrado'
+            }
+            res.status(200).json(respuesta);
         }
     }).catch((err) => {
-        res.status(200).json("No encontrada");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha encontrado'
+        }
+        res.status(200).json(respuesta);
     });
 }
 
 
 const borrarNoticia = (req, res = response) => {
     queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
-        res.status(200).json("La noticia ha sido borrada");
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia borrada'
+        }
+        res.status(200).json(respuesta);
 
     }).catch((err) => {
-        res.status(200).json("No se ha podido borrar");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido borrar'
+        }
+        res.status(200).json(respuesta);
     });
 }
 
 
 const modificarNoticia = (req, res = response) => {
     queriesNoticias.modificarNoticia(req).then((noticia) => {
-        res.status(200).json(noticia);
-
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia editada'
+        }
+        res.status(200).json(respuesta);
     }).catch((err) => {
-        res.status(203).json("No se ha podido modificar");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido modificar'
+        }
+        res.status(203).json(respuesta);
     });
 }
 
@@ -115,7 +169,7 @@ const mostrarImagen = (req, res = response) => {
             }
         }
     }).catch((err) => {
-        console.log("No se ha encontrado la foto");
+        res.status(200).json("No se ha encontrado");
     });
 }
 

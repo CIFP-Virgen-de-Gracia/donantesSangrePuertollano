@@ -7,12 +7,12 @@ import { PaginasService } from '../services/paginas.service';
   styleUrls: ['./himno.component.scss']
 })
 export class HimnoComponent implements OnInit {
+  letra: string = "";
+
   constructor(private PaginasService: PaginasService) { }
 
   ngOnInit() {
-    this.PaginasService.getListado().subscribe((res) => {
-      console.log(res);
-    });
+    this.PaginasService.getListado().subscribe((res) => { });
   }
   get resultado() {
     return this.PaginasService.result;
