@@ -1,0 +1,43 @@
+main {
+  margin-bottom: 10rem;
+}
+main .container {
+  margin: 0;
+  max-width: 100%;
+  line-height: 2rem;
+}
+main .container .historia {
+  padding-top: 5rem;
+  margin: 0;
+}
+main .container .titulo {
+  text-align: center;
+}
+main .container > div {
+  padding: 0 3rem;
+}
+@media (min-width: 576px) {
+  main .container > div {
+    padding: 0 7rem;
+  }
+}
+@media (min-width: 1200px) {
+  main .container > div {
+    padding: 0 20rem;
+  }
+}
+main .container .tarjetas {
+  gap: 3rem;
+  margin-top: 3.5rem;
+  justify-content: center;
+}
+main .container .tarjetas .tarjeta {
+  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 2px;
+}
+main .container .tarjetas .tarjeta p:first-child {
+  font-weight: bold;
+  font-size: var(--letra-media);
+  color: var(--color-secundario);
+}/*# sourceMappingURL=la-hermandad.component.css.map */

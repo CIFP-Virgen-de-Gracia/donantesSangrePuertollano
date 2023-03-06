@@ -56,7 +56,6 @@ export class RegistroComponent {
         passwd: passwdHash
       }).subscribe(resp => {
 
-        console.log(resp);
         if (resp.success) {
           this.onFormValido.emit(0);
         }
