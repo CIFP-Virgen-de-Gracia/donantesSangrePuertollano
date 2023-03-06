@@ -7,24 +7,21 @@ const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
-// const junta = require('../controllers/juntaController');
 const citas = require('../controllers/citasController');
-
-// const {midEjemplo} = require('../middlewares/userMiddlewares');
-const controlador=require('../controllers/noticiasController');
 const { check } = require('express-validator');
 
-// Mario y Alicia
 
+// Mario y Alicia
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
 router.get('/activarCorreo/:id', auth.activarCorreo); //Mario
-router.get('/puedeModificar/:id', auth.puedeModificar); //Alicia
+router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
 router.get('/activarNewsletter/:id', auth.activarNewsletter); //Alicia
 router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
+
 
 // user routes
 router.post('/suscripcionNewsletter', [
@@ -43,6 +40,8 @@ router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
+
+
 // pedir cita routes
 router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
 router.post('/citas/pedircita', [midsCitas.yaHaPedidoUnaCita], citas.pedirCita);
@@ -52,5 +51,7 @@ router.get('/citas/hayhuecohora/:fecha', citas.hayHuecoHora);
 router.get('/citas/getcitapendienteuser/:id', citas.getCitaPendienteUser);
 router.get('/citas/getcitaspasadasuser/:id', citas.getCitasPasadasUser);
 router.get('/citas/yatienecita/:id', citas.yaHaPedidoUnaCita);
+
+
 
 module.exports = router;

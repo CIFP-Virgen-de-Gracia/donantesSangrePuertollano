@@ -9,7 +9,6 @@ const genCode = require('../helpers/genCode');
 const models = require('../models/index.js');
 const userCan = require('../helpers/rolesAbilities');
 
-
 //Todo Mario menos activarNewsletter
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
@@ -230,17 +229,18 @@ const recuperarPasswd = async (req, res = response) => {
 
 
 const puedeModificar = async (req, res = response) => {
-    let resp = { success: false };
-
+    let resp = { success: false }; 
+    
     try {
-        const autorizado = await userCan(req, req.params.id, ['leer', 'editar', 'borrar']);
-
+        
+        const autorizado = await userCan(req, ['leer', 'editar', 'borrar']);
+        
         if (autorizado) {
             const user = queriesUsers.getUser(req.params.id);
 
             resp = {
                 success: true,
-                data: {
+                data: { //TODO: Debería borrar esto?
                     id: user.id,
                     nombre: user.nombre,
                     token: generarJWT(user.id),

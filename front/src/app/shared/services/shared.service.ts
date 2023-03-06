@@ -11,17 +11,15 @@ import { Email } from '../interfaces/shared.interface';
 export class SharedService {
 
   baseUrl = environment.baseUrl + '/api';
-
   comprobarPermisos: Subject<boolean>;
   citaPedida: Subject<number>;
-
   /* https://www.c-sharpcorner.com/article/easily-share-data-between-two-unrelated-components-in-angular/ */
   /* https://stackoverflow.com/a/51992202 */
+
 
   constructor(private http: HttpClient) {
     this.comprobarPermisos = new Subject<boolean>();
     this.citaPedida = new Subject<number>();
-
   }
 
 
