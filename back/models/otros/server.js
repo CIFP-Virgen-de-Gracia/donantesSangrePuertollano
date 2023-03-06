@@ -39,7 +39,7 @@ class Server {
         this.app.use(this.pathGaleria, require ('../../routes/galeria_Routes'));
         this.app.use(this.path, require('../../routes/routes'));
         this.app.use(this.pathNoticias , require('../../routes/noticiasRoutes'));
-        this.app.use(this.pathMusica , require('../../routes/CancionRoute'));
+        this.app.use(this.pathMusica , require('../../routes/cancionRoutes'));
 
     }
 

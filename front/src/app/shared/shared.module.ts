@@ -8,20 +8,26 @@ import { DirectivasModule } from './directivas/directivas.module';
 import { EmailFormularioComponent } from './newsletter/email-formulario/email-formulario.component';
 import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/newsletter-ventana.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ModalPedirCitaComponent } from './modal-pedir-cita/modal-pedir-cita.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     MenuComponent,
     FooterComponent,
     EmailFormularioComponent,
-    NewsletterVentanaComponent
+    NewsletterVentanaComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
     DirectivasModule,
     ReactiveFormsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    NgbModule
+  ],
+  entryComponents: [
+    ModalPedirCitaComponent
   ],
   exports: [
     MenuComponent,
