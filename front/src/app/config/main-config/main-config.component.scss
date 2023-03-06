@@ -17,7 +17,7 @@ main {
       border-right: 1.5px solid var(--color-contraste-oscuro);
 
       li {
-        padding: 1rem;
+        padding: 1rem .7rem;
         width: 100%;
         border-left: 10px solid var(--bs-white);
 
@@ -45,6 +45,10 @@ main {
 
     .menu-horizontal li {
       padding: 1rem 1.5rem;
+
+      li {
+        padding: 1rem;
+      }
 
       span.oculto {
         display: inline-block;

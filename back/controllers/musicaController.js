@@ -3,6 +3,7 @@ const queriesMusica = require("../database/queries/queriesMusica");
 const fs = require('fs');
 const path = require('path');
 
+//Todo Isa
 const registrarCancion = async (req, res = response) => {
     queriesMusica.insertarCancion(req).then((cancion) => {
         res.status(200).json({
@@ -177,6 +178,7 @@ const Listado = async (req, res = response) => {
         res.status(200).json(respuesta);
     });
 }
+
 module.exports = {
     registrarCancion,
     descargar,
@@ -185,5 +187,5 @@ module.exports = {
     borrarCancion,
     borrarTodo,
     Listado,
-    getCancion
+    getCancion,
 }
