@@ -132,7 +132,30 @@ class QueriesUsers {
     }
     
 
-//Mario
+    //Alicia
+    getSuscritosNewsletter = async() => {
+        try {
+            this.sequelize.conectar();
+
+            const emails = await models.Email.findAll({
+                attributes: ['id', 'email', 'newsletterVerifiedAt'],
+                where: {
+                    newsletterVerifiedAt: {
+                        [Op.ne]: null
+                    }
+                }
+            });
+
+            this.sequelize.desconectar();
+            return emails;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+
+    //Mario
     insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
 
@@ -178,7 +201,7 @@ class QueriesUsers {
     }
 
 
-//Alicia
+    //Alicia
     insertEmailNewsletter = async(email) => { 
         this.sequelize.conectar();
         
@@ -198,7 +221,7 @@ class QueriesUsers {
     }
 
 
-//Mario
+    //Mario
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
@@ -224,12 +247,28 @@ class QueriesUsers {
             this.sequelize.conectar();
             let email = await models.Email.findByPk(id);
 
-            email.update({newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
-
-            const resp = email.save();
+            const resp = await email.update({
+                newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+            });
 
             this.sequelize.desconectar();
+            return resp;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
 
+
+    //Alicia
+    updateCancelarNewsletter = async(id) => {
+        try {
+            this.sequelize.conectar();
+            let email = await models.Email.findByPk(id);
+
+            const resp = await email.update({newsletterVerifiedAt: null});
+
+            this.sequelize.desconectar();
             return resp;
         }
         catch (err) {

@@ -2,8 +2,10 @@ const { response, request } = require('express');
 const queriesNoticias = require("../database/queries/queriesNoticias");
 const fs = require('fs');
 const path = require('path');
+const queriesUsers = require('../database/queries/queriesUsers');
+const correo = require('../helpers/mail');
 
-//Todo Isa
+//Isa
 const getListado = async (req, res = response) => {
     queriesNoticias.getListado(req.params.seccion).then((noticia) => {
         if (noticia !== null) {
@@ -42,9 +44,24 @@ const getListado = async (req, res = response) => {
     });
 }
 
-
+//Isa
 const registrarNoticia = async (req, res = response) => {
+    const emails = await queriesUsers.getSuscritosNewsletter(); //Alicia
+    
     queriesNoticias.insertarNoticias(req).then((noticia) => {
+        emails.map(e => correo.mandarCorreo(e.email, {
+                    asunto: '¡Hay una noticia nueva!',
+                    cuerpoHtml: `<p>${ noticia.fecha }</p>
+                                <h1>${ noticia.titulo }</h1>
+                                <h2>${ noticia.subtitulo }</h2>
+                                <div>${ noticia.contenido }</div><br><hr>
+                                <p><small>
+                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/">
+                                    Darse de baja
+                                </small></p>` 
+                    })
+                );//Alicia
+
         res.status(200).json(noticia);
 
     }).catch((err) => {
@@ -53,6 +70,7 @@ const registrarNoticia = async (req, res = response) => {
 }
 
 
+//Isa
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         if (noticia !== null) {
@@ -85,6 +103,7 @@ const getNoticia = (req, res = response) => {
 }
 
 
+//Isa
 const borrarNoticia = (req, res = response) => {
     queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
         res.status(200).json("La noticia ha sido borrada");
@@ -94,7 +113,7 @@ const borrarNoticia = (req, res = response) => {
     });
 }
 
-
+//Isa
 const modificarNoticia = (req, res = response) => {
     queriesNoticias.modificarNoticia(req).then((noticia) => {
         res.status(200).json(noticia);
@@ -104,7 +123,7 @@ const modificarNoticia = (req, res = response) => {
     });
 }
 
-
+//Isa
 const mostrarImagen = (req, res = response) => {
     queriesNoticias.getImagen(req.params.id).then(imagen => {
         if (imagen) {
