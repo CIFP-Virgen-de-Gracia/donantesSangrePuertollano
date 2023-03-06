@@ -20,7 +20,7 @@ import { DeleteHimnoComponent } from './auxiliarHimno/delete-himno/delete-himno.
     HimnoConfigComponent,
     AddHimnoComponent,
     EditHimnoComponent,
-    DeleteHimnoComponent,,
+    DeleteHimnoComponent,
   ],
   imports: [
     FormsModule,

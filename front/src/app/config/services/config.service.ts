@@ -79,7 +79,7 @@ export class ConfigService {
     return [...this.canciones];
   }
   getListadoAudio(): Observable<ResponseAudio> {
-    return this.http.get<ResponseAudio>(`${this.baseUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
+    return this.http.get<ResponseAudio>(`${this.configUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
   }
   agregarAudio(cancion: Cancion) {
     this.canciones.unshift(cancion);
@@ -96,7 +96,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.baseUrl}/api/musica/insertar`, payload, header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/insertar`, payload, header);
   }
   borrarHimno(id: string) {
     let audios = this.canciones.filter((c) => c.id != id);
@@ -110,7 +110,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseCancion>(`${this.baseUrl}/api/musica/borrar/${id}`, header);
+    return this.http.delete<ResponseCancion>(`${this.configUrl}/api/musica/borrar/${id}`, header);
   }
   borrarHimnoTodos() {
     this.canciones = [];
@@ -123,7 +123,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.delete<ResponseAudio>(`${this.baseUrl}/api/musica/borrar`, header);
+    return this.http.delete<ResponseAudio>(`${this.configUrl}/api/musica/borrar`, header);
   }
 
   editarAudio(id: string, cancion: Cancion): Observable<ResponseCancion> {
@@ -137,7 +137,7 @@ export class ConfigService {
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
-    return this.http.put<ResponseCancion>(`${this.baseUrl}/api/musica/modificar/`, payload, header);
+    return this.http.put<ResponseCancion>(`${this.configUrl}/api/musica/modificar/`, payload, header);
   }
   obtenerCancion(id: string): Observable<ResponseCancion> {
     const header = {
@@ -146,7 +146,7 @@ export class ConfigService {
       })
     };
 
-    return this.http.post<ResponseCancion>(`${this.baseUrl}/api/musica/get`,{id:id},header);
+    return this.http.post<ResponseCancion>(`${this.configUrl}/api/musica/get`,{id:id},header);
   }
   editarCancion(cancion: Cancion) {
     let posicion = this.canciones.findIndex(c => c.id == cancion.id);
