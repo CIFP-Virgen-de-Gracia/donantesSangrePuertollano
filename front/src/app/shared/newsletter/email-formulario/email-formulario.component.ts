@@ -22,6 +22,7 @@ export class EmailFormularioComponent {
     private sharedService: SharedService
   ) { }
 
+  //Alicia
   ngOnInit(): void {
     this.emailForm = this.fb.group({
       email: ['', Validators.compose([
@@ -31,6 +32,7 @@ export class EmailFormularioComponent {
     });
   }
 
+  //Alicia
   suscribirse() {
     if (this.emailForm.valid) {
 

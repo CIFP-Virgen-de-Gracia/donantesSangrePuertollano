@@ -2,13 +2,14 @@ import { Time } from '@angular/common';
 import { Component } from '@angular/core';
 import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora, HorarioGuardar } from '../interfaces/config.interface';
 import { ConfigService } from '../services/config.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-contacto-config',
   templateUrl: './contacto-config.component.html',
   styleUrls: ['./contacto-config.component.scss']
 })
-export class ContactoConfigComponent {
+export class ContactoConfigComponent { //Todo hecho por Alicia
 
   mensaje: String = '';
   actualizado!: boolean;
@@ -20,11 +21,14 @@ export class ContactoConfigComponent {
   dSemana = [{ nombre: "Lunes", letra: "L" }, { nombre: "Martes", letra: "M" }, { nombre: "Miércoles", letra: "X" },
   { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }];
 
-  constructor(private ConfigService: ConfigService) { }
+  constructor(
+    private ConfigService: ConfigService,
+    private SharedService: SharedService
+  ) { }
 
 
   ngOnInit() {
-    this.ConfigService.getHorarios().subscribe(resp => {
+    this.SharedService.getHorarios().subscribe(resp => {
       if (resp.success) {
         this.horarios = resp.data;
         this.crearHorarioMostrar();
@@ -32,12 +36,12 @@ export class ContactoConfigComponent {
     });
 
 
-    this.ConfigService.getTelefonos().subscribe(resp => {
+    this.SharedService.getTelefonos().subscribe(resp => {
       if (resp.success) this.telefonos = resp.data;
     });
 
 
-    this.ConfigService.getDirecciones().subscribe(resp => {
+    this.SharedService.getDirecciones().subscribe(resp => {
       if (resp.success) this.direcciones = resp.data;
     });
   }

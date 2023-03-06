@@ -4,9 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { Integrante } from 'src/app/shared/interfaces/shared.interface';
 import { cargoResponse, Direccion, HorarioGuardar, Telefono, TelefonoGuardar } from '../interfaces/config.interface';
-import { horarioResponse } from '../interfaces/config.interface';
-import { telefonoResponse } from '../interfaces/config.interface';
-import { direccionResponse } from '../interfaces/config.interface';
 import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion } from '../interfaces/config.interface';
 
@@ -22,7 +19,7 @@ export class ConfigService {
     this.canciones = [];
   }
 
-
+  //Alicia
   updateHermandad(historia:String, junta:Integrante[]): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
@@ -34,7 +31,7 @@ export class ConfigService {
     return this.http.put<updateResponse>(`${this.configUrl}/updateHermandad`, { historia: historia, junta: junta}, header);
   }
 
-
+  //Alicia
   updateContacto(dirs: Direccion[], tlfns: TelefonoGuardar, horarios: HorarioGuardar): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
@@ -54,25 +51,11 @@ export class ConfigService {
     );
   }
 
-
+  //Alicia
   getCargosJunta(): Observable<cargoResponse>{
     return this.http.get<cargoResponse>(`${this.configUrl}/getCargosJunta`);
   }
 
-
-  getHorarios(): Observable<horarioResponse> {
-    return this.http.get<horarioResponse>(`${this.configUrl}/getHorarios`);
-  }
-
-
-  getTelefonos(): Observable<telefonoResponse> {
-    return this.http.get<telefonoResponse>(`${this.configUrl}/getTelefonos`);
-  }
-
-
-  getDirecciones(): Observable<direccionResponse> {
-    return this.http.get<direccionResponse>(`${this.configUrl}/getDirecciones`);
-  }
 
   //Audio o Himnos
   get audios() {
