@@ -34,7 +34,7 @@ export class ConfigService {
     return this.http.get<any>(`${this.baseUrl}/api/getCargosJunta`);
   }
 
-  //Audio o Himnos
+  //Audio o Himnos (Toda la parte del Audio Isa)
   get audios() {
     return [...this.canciones];
   }
