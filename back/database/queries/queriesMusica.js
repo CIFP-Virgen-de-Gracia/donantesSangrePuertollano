@@ -27,7 +27,7 @@ class QueriesMusica {
                     "titulo": cancion.titulo,
                     "letra": cancion.letra,
                     "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
-                    "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
+                    "descarga": process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
                 }
                 this.sequelize.desconectar();
             }
@@ -54,10 +54,10 @@ class QueriesMusica {
                     data = {
                         "id": cancion.id,
                         "nombre": cancion.nombre,
-                        "titulo":cancion.titulo,
+                        "titulo": cancion.titulo,
                         "letra": cancion.letra,
                         "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
-                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
+                        "descarga": process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
 
                     }
 
@@ -72,16 +72,16 @@ class QueriesMusica {
                     cancion.id = cancion.id;
                     cancion.nombre = nombre;
                     cancion.letra = req.body.letra;
-                    cancion.titulo=req.body.titulo;
+                    cancion.titulo = req.body.titulo;
                     cancion.save();
 
                     data = {
                         "id": cancion.id,
                         "nombre": cancion.nombre,
-                        "titulo":cancion.titulo,
+                        "titulo": cancion.titulo,
                         "letra": cancion.letra,
                         "cancion": process.env.URL_PETICION + process.env.PORT + "/api/musica/upload/" + cancion.id,
-                        "descarga":process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
+                        "descarga": process.env.URL_PETICION + process.env.PORT + "/api/musica/download/" + cancion.id,
                     }
                 }
             }
@@ -128,6 +128,24 @@ class QueriesMusica {
             fs.unlinkSync(pathMusic);
         }
         await cancion.destroy();
+        this.sequelize.desconectar();
+        return cancion;
+    }
+    borrarTodo = async () => {
+        this.sequelize.conectar();
+        let cancion = await models.Cancion.findAll();
+        if (!cancion) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        for (let index = 0; index < cancion.length; index++) {
+
+            const pathMusic = path.join(__dirname, '../../uploads', "musica", cancion[index].nombre);
+            if (fs.existsSync(pathMusic)) {
+                fs.unlinkSync(pathMusic);
+                await cancion[index].destroy();
+            }
+        }
         this.sequelize.desconectar();
         return cancion;
     }
