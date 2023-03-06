@@ -8,7 +8,7 @@
       <form (ngSubmit)="modificarPregunta();">
         <div class="modal-body border-buttom border-danger">
           <div class="row d-flex justify-content-center">
-            <div class="col-12 border-custom">
+            <div class="col-12">
               <select (change)="seleccionarPregunta()" #select class="form-select">
                 <option selected>Selecciona una pregunta</option>
                 <option *ngFor="let pregunta of this.preguntas_array" value="{{pregunta.id}}">{{pregunta.titulo}}</option>

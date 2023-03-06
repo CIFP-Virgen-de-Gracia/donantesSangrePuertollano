@@ -27,9 +27,14 @@
               <td class="align-middle">
                 <img class="w-100" src="../../../assets/imagenes/apto_sangre/{{pregunta.nombre_img}}">
               </td>
-              <td class="align-middle">
-                {{mensaje_respuesta[i]}}
+              <td class="align-middle" *ngIf="pregunta.respuesta == 1; else mostrarNo">
+                Si
               </td>
+              <ng-template #mostrarNo>
+                <td class="align-middle">
+                  No
+                </td>
+              </ng-template>
               <td class="align-middle">
                 {{pregunta.solucion_problema}}
               </td>
