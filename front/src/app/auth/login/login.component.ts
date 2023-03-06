@@ -47,5 +47,4 @@ export class LoginComponent {
   irARecPasswd() {
     this.router.navigate(['/auth/recuperacionpasswd']);
   }
-
 }

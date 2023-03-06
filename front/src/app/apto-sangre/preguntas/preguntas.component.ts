@@ -20,7 +20,6 @@ export class PreguntasComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges) {
     if(this.radio_si != null && this.radio_no != null){
       const imagen = this.imagen.nativeElement;
-      console.log(imagen);
       const radio_si = this.radio_si.nativeElement;
       const radio_no = this.radio_no.nativeElement;
       if(radio_si.checked == true){
