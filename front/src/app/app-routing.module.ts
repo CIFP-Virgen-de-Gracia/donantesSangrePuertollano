@@ -47,6 +47,10 @@ const routes: Routes = [
     canActivate: [ ConfigGuard ]
   },
   {
+    path: 'citas',
+    loadChildren: () => import('./citas/citas.module').then(m => m.PedirCitaModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
   }
