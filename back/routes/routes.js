@@ -18,11 +18,6 @@ router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
-router.get('/activarNewsletter/:id', auth.activarNewsletter); //Alicia
-router.get('/desactivarNewsletter/:id', auth.desactivarNewsletter); //Alicia
-
-
-// user routes
 router.post('/suscripcionNewsletter', [
     check('email', 'Formato de correo no válido').isEmail(),
     midsValidar.validarCampos
@@ -45,6 +40,7 @@ router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.
 
 
 // pedir cita routes
+// Todo Mario
 router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
 router.post('/citas/pedircita', [midsCitas.yaHaPedidoUnaCita], citas.pedirCita);
 router.put('/citas/cancelarcita/', citas.cancelarCita);
