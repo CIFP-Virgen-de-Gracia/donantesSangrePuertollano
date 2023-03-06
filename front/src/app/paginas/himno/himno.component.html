@@ -1,3 +1,4 @@
+<!--Todo Isa-->
 <div class="container-fluid fondo-contraste pt-5">
   <div class="row">
     <div class="col text-center">
@@ -27,7 +28,9 @@
         <div class="col-4"></div>
       </div>
       <div *ngIf="cancion.letra!==null" class="text-center mt-4 mb-5">Letra de la canción:
-       <div>{{cancion.letra}}</div>
+       <div *ngFor="let l of letra; let i = index">
+        <div *ngIf="cancion.letra===letra[i]" [innerHTML]= "letra[i]"></div>
+       </div>
       </div>
     </div>
   </div>
