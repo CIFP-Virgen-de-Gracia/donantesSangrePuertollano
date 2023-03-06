@@ -4,7 +4,6 @@ import { PedirCitaPacienteComponent } from './pedir-cita-paciente/pedir-cita-pac
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { PedirCitaRoutingModule } from './citas-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalComponent } from './modal/modal.component';
 import { MostrarCitasComponent } from './mostrar-citas/mostrar-citas.component';
 
 
@@ -17,8 +16,7 @@ import { MostrarCitasComponent } from './mostrar-citas/mostrar-citas.component';
     CommonModule,
     PedirCitaRoutingModule,
     ReactiveFormsModule,
-    DatePickerComponent,
-    ModalComponent
+    DatePickerComponent
   ]
 }) 
 export class PedirCitaModule { }

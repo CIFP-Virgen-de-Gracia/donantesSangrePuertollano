@@ -38,20 +38,12 @@ export class MostrarCitasComponent {
           this.colocarCitas(citasPendientesResp.citas, this.citasPendientes);
           this.colocarCitas(citasPasadasResp.citas, this.citasPasadas);
 
-          console.log(this.citasPendientes);
-          console.log(this.citasPasadas);
 
           if (this.citasPendientes.length == 0) this.noHayCitasPendientes = true;
           if (this.citasPasadas.length == 0) this.noHayCitasPasadas = true;
-
-          console.log('noHayCitasPendientes');
-          console.log(this.noHayCitasPendientes);
-          console.log('noHayCitasPendientes');
-          console.log(this.noHayCitasPasadas);
         }
         else {
 
-          console.log('else');
           this.errorTraerCitas = true;
         }
       });
@@ -72,12 +64,13 @@ export class MostrarCitasComponent {
 
 
   cancelarCita(event: any) {
-    
     const liElement = event.target.closest('li');
     const listItems = Array.from(liElement.parentElement.children);
     const index = listItems.indexOf(liElement);
 
     const id = this.citasPendientes[index].id;
+
+    // const confirm = await getConfirmacion();
 
     this.citasService.cancelarCita(id).subscribe(resp => {
       if (resp.success) {

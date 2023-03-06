@@ -28,8 +28,6 @@ export class CitasService {
   // }
 
   insertCita(id: string, fecha: string, donacion: string) {
-    console.log('donacion');
-    console.log(donacion);
     return this.httpPedirCita.post<interfaces.SuccessMsgResponse>(this.pedirCitaUrl
       + '/pedircita', {id: id, fecha: fecha, donacion: donacion});
   }
@@ -55,5 +53,10 @@ export class CitasService {
   cancelarCita(id: string) {
     return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl
       + '/cancelarcita/', {id: id});
+  }
+
+  compHaPedidoCita(id: string) {
+    return this.httpPedirCita.get<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+      '/yatienecita/' + id);
   }
 }
