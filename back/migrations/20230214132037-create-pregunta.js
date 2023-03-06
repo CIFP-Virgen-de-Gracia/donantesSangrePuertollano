@@ -23,7 +23,7 @@ module.exports = {
       },
       respuesta: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.NUMBER
       },
       solucion_problema: {
         allowNull: false,
