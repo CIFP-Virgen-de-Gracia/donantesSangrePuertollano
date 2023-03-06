@@ -45,7 +45,6 @@ export class ContenidoService {
     return this.http.delete<ResponseNoticia>(`${this.baseUrl}/api/noticias/borrar/${id}`,header);
   }
   editarNoticia(id: string, noticia:Noticia): Observable<ResponseNoticia> {
-    console.log(noticia);
     const payload = new FormData();
     payload.append('id', id);
     payload.append('titulo', noticia.titulo);
@@ -53,12 +52,12 @@ export class ContenidoService {
     payload.append('contenido', noticia.contenido);
     payload.append('seccion', noticia.seccion);
     payload.append('archivo', noticia.imagen);
+
     const header = {
       headers: new HttpHeaders({
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
-
     return this.http.put<ResponseNoticia>(`${this.baseUrl}/api/noticias/modificar/`, payload, header);
   }
 

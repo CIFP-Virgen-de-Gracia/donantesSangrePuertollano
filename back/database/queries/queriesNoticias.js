@@ -182,6 +182,15 @@ class QueriesNoticias {
                         noticia["Imagen"][0]["idNoticia"] = noticia.dataValues.id;
                         noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
+                        let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
+                        data = {
+                            "id": noticia.id,
+                            "titulo": noticia.titulo,
+                            "subtitulo": noticia.subtitulo,
+                            "contenido": noticia.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["id"]
+                        }
 
 
                     } else {
@@ -191,17 +200,15 @@ class QueriesNoticias {
                             idNoticia: noticia.dataValues.id,
                             nombre: nombre
                         });
-                    }
-
-                    let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
-
-                    data = {
-                        "id": noticia.id,
-                        "titulo": noticia.titulo,
-                        "subtitulo": noticia.subtitulo,
-                        "contenido": noticia.contenido,
-                        "fecha": fecha,
-                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id
+                        let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
+                        data = {
+                            "id": noticia.id,
+                            "titulo": noticia.titulo,
+                            "subtitulo": noticia.subtitulo,
+                            "contenido": noticia.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id
+                        }
                     }
                 }
             }
