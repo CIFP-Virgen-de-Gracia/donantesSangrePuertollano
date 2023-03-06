@@ -23,21 +23,28 @@ export class MainPageContenidoComponent implements OnInit {
     imagen: ""
   };
 
+
   ngOnInit() {
     this.ContenidoService.getListado().subscribe((res) => {});
   }
+
+
   get resultado() {
 
     return this.ContenidoService.resultado
   }
+
+
   obtenerId(event: any) {
     let id = event.target.id;
     this.idBorrado = id.slice(1);
-    console.log(this.idBorrado);
   }
+
+
   limpiarIdBorrado() {
     this.idBorrado = "";
   }
+
 
   obtenerNoticiaAEditar(event: any) {
     let id = event.target.id;
@@ -46,13 +53,10 @@ export class MainPageContenidoComponent implements OnInit {
       next: data => {
         if (data !== "No encontrada") {
           this.info = data;
-          console.log(this.info);
         }
       },
       error: error => {
-        console.log(error);
       }
     });
   }
-
 }

@@ -91,7 +91,6 @@ export class AddContenidoComponent {
     } else {
       if (!this.comprobarExtension(this.noticia.imagen)) {
         this.aviso = 3;
-        console.log(this.aviso);
       } else {
         this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
           if (res !== "Error de registro") {

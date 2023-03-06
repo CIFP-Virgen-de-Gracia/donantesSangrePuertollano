@@ -268,13 +268,13 @@ class QueriesUsers {
 
 //Mario
     getCitasPendientesUser = async(id) => {
-        return await User.findByPk(id, {include: ['citasPendientes']});
+        return await models.User.findByPk(id, {include: ['citasPendientes']});
     }
 
 
 //Mario
     getCitasPasadasUser = async(id) => {
-        return await User.findByPk(id, {include: ['citasPasadas']});
+        return await models.User.findByPk(id, {include: ['citasPasadas']});
     }
     
 

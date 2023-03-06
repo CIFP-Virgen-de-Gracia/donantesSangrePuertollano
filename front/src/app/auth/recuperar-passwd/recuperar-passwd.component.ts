@@ -35,7 +35,6 @@ export class RecuperarPasswdComponent {
 
   mandarEmailRecPasswd() {
     this.authHttsService.solicitarRecPasswd(this.emailRecPasswdForm.get('email')?.value).subscribe(resp => {
-      console.log(resp);
       if (resp.success) {
 
         localStorage.setItem('user', JSON.stringify({id: resp.id}));

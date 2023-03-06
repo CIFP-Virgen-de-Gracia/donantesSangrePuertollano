@@ -69,7 +69,6 @@ export class EditadoComponent {
   capturarFile(event: any) {
     const files = event.target.files[0];
     this.infoNoticia.imagen = files;
-    console.log(this.comprobarExtension(files));
     if (!this.comprobarExtension(files)) {
       this.aviso = 3;
     }

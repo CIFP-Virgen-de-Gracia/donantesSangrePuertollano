@@ -20,26 +20,37 @@ export class ContenidoService {
   getListado() {
     return this.http.get<any>(`${this.baseUrl}/api/noticias/noticias`).pipe(tap(resp => { if (resp !== "No encontrada") { this.noticias = resp } }))
   }
+
+
   get resultado() {
     return [...this.noticias];
   }
+
+
   agregar(noticia: any) {
     this.noticias.unshift(noticia);
   }
+
+
   editar(id: string, noticia: any) {
     let posicion = this.noticias.findIndex(n => n.id == id);
 
     this.noticias[posicion] = noticia;
   }
+
+
   borrar(id: string) {
     let not = this.noticias.filter((noticia) => noticia.id != id);
     this.noticias = not;
   }
+
+
   borrarNoticia(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/api/noticias/borrar/${id}`);
   }
+
+
   editarNoticia(id: string, noticia: Contenido): Observable<any> {
-    console.log(noticia);
     const payload = new FormData();
     payload.append('id', id);
     payload.append('titulo', noticia.titulo);
@@ -52,12 +63,14 @@ export class ContenidoService {
     return this.http.put<any>(`${this.baseUrl}/api/noticias/modificar/`, payload);
   }
 
+
   obtenerNoticia(id: string): Observable<any> {
     let idnot = {
       id: id
     }
     return this.http.post<any>(`${this.baseUrl}/api/noticias/get`, idnot);
   }
+  
 
   añadirNoticia(noticia: Contenido): Observable<any> {
     const payload = new FormData();

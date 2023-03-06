@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { CitasService } from '../services/citas.service';
 import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { NgbDateStruct, NgbCalendar, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { CommonModule } from '@angular/common';
 import { Route, Router } from '@angular/router';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 
 
@@ -23,6 +24,7 @@ export class PedirCitaPacienteComponent {
   noHayHoras: boolean = false;
   horasDisponibles: string[] = [];
   fechaSeleccionada: string;
+  citaPedida: number = -1;
 
   citaForm: FormGroup = new FormGroup({
     hora: new FormControl('', [Validators.required]),
@@ -33,8 +35,8 @@ export class PedirCitaPacienteComponent {
   constructor(
     private pedirCitaHttpService: CitasService,
     private calendar: NgbCalendar,
-    private modal: NgbModal,
-    private router: Router
+    private router: Router,
+    private sharedService: SharedService
     ) {}
 
   ngOnInit() {
@@ -45,24 +47,12 @@ export class PedirCitaPacienteComponent {
   }
 
 
-  // ensenarModal() {
-  //   this.modal.open(, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-  // }
-
-
   compRegistro() {
      this.registrado = localStorage.getItem('user') != null;
-     console.log(this.registrado);
   }
 
 
   transFecha(fechaCalendar: NgbDateStruct) {
-    console.log('fecha');
-    console.log(this.fecha);
     this.fechaSeleccionada = this.fecha.year + '-' + this.fecha.month + '-' + this.fecha.day;
   }
 
@@ -70,7 +60,6 @@ export class PedirCitaPacienteComponent {
   traerHorario() {
     this.pedirCitaHttpService.fetchHorasDisponibles(this.fechaSeleccionada).subscribe(resp => {
       this.horasDisponibles = resp.horas;
-      console.log(this.horasDisponibles);
       if (this.horasDisponibles.length == 0) this.noHayHoras = true;
     });
   }
@@ -86,15 +75,27 @@ export class PedirCitaPacienteComponent {
 
   pedirCita() {
     const id = JSON.parse(localStorage.getItem('user') || '{}').id;
-    console.log(id);
     const fechaCita = this.fechaSeleccionada
       + ' ' + this.citaForm.get('hora')?.value + ':00';
 
     const tipoDonacion = this.citaForm.get('donacion')?.value;
 
     this.pedirCitaHttpService.insertCita(id, fechaCita, tipoDonacion).subscribe(resp => {
-      this.onCitaPedida.emit(true);
+      if (resp.success) {
 
+        setTimeout(() => {  
+          this.sharedService.citaPedida.next(0);
+        }, 1500);
+      }
+      else {
+
+        setTimeout(() => {
+
+          this.sharedService.citaPedida.next(1);
+        }, 1500);
+      }
+
+      this.router.navigate(['']);
     });
   }
 }
