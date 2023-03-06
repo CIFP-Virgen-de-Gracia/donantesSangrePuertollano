@@ -11,8 +11,14 @@
   </div>
 
   <div class="mensaje-error mt-2 gx-0">
-    <i class="fa-solid {{ icono }} me-2"></i>
-    <span>{{ mensaje }}</span>
+    <div *ngIf="suscrito != undefined">
+
+      <i class="fa-solid me-2"
+        [ngClass]="suscrito ? 'fa-circle-check' : 'fa-triangle-exclamation'">
+      </i>
+      <span>{{ mensaje }}</span>
+
+    </div>
   </div>
 
 </form>
