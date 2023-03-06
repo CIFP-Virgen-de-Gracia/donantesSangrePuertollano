@@ -5,7 +5,7 @@ const { response, request } = require('express');
 
 
 const midAdmin = async (req, res, next) => {
-    if (await userCan(req, req.idToken, ['leer', 'editar', 'borrar'])) {
+    if (await userCan(req, ['leer', 'editar', 'borrar'])) {
         next();                                                      
     } else {
         return res.status(403).json({ msg: 'No estás autorizado' });
@@ -14,7 +14,7 @@ const midAdmin = async (req, res, next) => {
 
 
 const midUser = async (req, res, next) => {
-    if (await userCan(req, req.idToken, ['leer'])) {
+    if (await userCan(req, ['leer'])) {
         next();                                                      
     } else {
         return res.status(403).json({ msg: 'No estás autorizado' });

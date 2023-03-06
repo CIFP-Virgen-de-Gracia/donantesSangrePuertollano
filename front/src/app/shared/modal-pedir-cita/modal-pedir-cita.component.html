@@ -2,7 +2,7 @@
 	<div class="modal-header">
 		<h4 *ngIf="!this.registrado"
 			class="modal-title titulo" id="modal-basic-title">Inicio de sesión necesario.</h4>
-		<h4 *ngIf="this.registrado && this.puedePedirCita"
+		<h4 *ngIf="this.registrado && !this.puedePedirCita"
 			class="modal-title titulo" id="modal-basic-title">Ya has pedido una cita.</h4>
 	</div>
 	<div class="modal-body px-1 py-5 px-md-3 p-lg-5">

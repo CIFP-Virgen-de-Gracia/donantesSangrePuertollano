@@ -157,7 +157,6 @@ class QueriesUsers {
 
     //Mario
     insertUser = async(id, nombre, passwd = null) => { 
-        this.sequelize.conectar();
 
         try {
             const resp = await models.User.create({
@@ -166,7 +165,11 @@ class QueriesUsers {
                 passwd: passwd
             });
 
-            this.sequelize.desconectar();
+            const resp1 = await models.RolUser.create({
+                idRol: 2,
+                idUser: resp.id
+            });
+
             return resp.dataValues;
         }
         catch (err) {
@@ -177,7 +180,6 @@ class QueriesUsers {
 
 //Mario
     insertEmail = async(email) => {
-        this.sequelize.conectar();
 
         let resp = null;
         resp = await models.Email.findOne({
@@ -196,7 +198,6 @@ class QueriesUsers {
             throw Error('usuario ya registrado');
         }
 
-        this.sequelize.desconectar();
         return resp.dataValues;
     }
 
@@ -224,14 +225,11 @@ class QueriesUsers {
     //Mario
     updateVerificacionEmail = async(id) => {
         try {
-            this.sequelize.conectar();
             let email = await models.Email.findByPk(id);
 
             email.update({emailVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
 
             const resp = await email.save();
-
-            this.sequelize.desconectar();
 
             return resp;
         }
