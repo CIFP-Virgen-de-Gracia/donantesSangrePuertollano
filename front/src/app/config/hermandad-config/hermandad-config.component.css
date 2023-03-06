@@ -1,0 +1,43 @@
+.botones {
+  margin-bottom: 1rem;
+}
+.botones .btn-primario {
+  padding: 0 1rem;
+}
+
+.historia .contenedor-historia {
+  outline: none;
+  padding: 1rem 1.5rem;
+  overflow-y: scroll;
+  border: 1px solid var(--color-contraste-oscuro);
+}
+
+.junta .titulo {
+  margin-top: 4rem;
+}
+.junta .info {
+  font-size: var(--letra-pequena);
+}
+.junta .contenedor-integrantes .integrante .nombre,
+.junta .contenedor-integrantes .integrante .cargos {
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+}
+.junta .contenedor-integrantes .integrante .cargos {
+  background-color: var(--color-primario);
+  color: var(--bs-white);
+}
+.junta .contenedor-integrantes .integrante .cargos option {
+  font-family: arial !important;
+}
+.junta .contenedor-integrantes .integrante .nombre {
+  border-bottom: 2px solid var(--color-primario);
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 576px) {
+  .junta .contenedor-integrantes .integrante .nombre, .junta .contenedor-integrantes .integrante .cargos {
+    margin-bottom: 2rem;
+  }
+}/*# sourceMappingURL=hermandad-config.component.css.map */
