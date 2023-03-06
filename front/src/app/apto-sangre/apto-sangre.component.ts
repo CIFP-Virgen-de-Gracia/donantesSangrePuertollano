@@ -36,7 +36,6 @@ export class AptoSangreComponent implements OnInit, AfterViewInit{
     else{
       this.respuestas[this.respuestas.length - 1] = event;
     }
-    console.log(this.respuestas);
   }
 
   evaluarRespuesta(): void{

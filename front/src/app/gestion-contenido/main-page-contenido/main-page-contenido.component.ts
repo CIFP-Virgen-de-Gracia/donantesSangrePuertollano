@@ -57,14 +57,20 @@ export class MainPageContenidoComponent implements OnInit {
   ngOnInit() {
     this.ContenidoService.getListado().subscribe((res) => {});
   }
+
+
   get resultado() {
 
     return this.ContenidoService.resultado;
   }
+
+
   obtenerId(event: any) {
     let id = event.target.id;
     this.idBorrado = id.slice(1);
   }
+
+
   limpiarIdBorrado() {
     this.idBorrado = "";
   }
