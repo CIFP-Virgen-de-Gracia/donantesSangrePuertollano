@@ -1,15 +1,15 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Contenido } from '../Interfaces/Contenido.interface';
-import { ContenidoService } from '../contenido.service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Himno, Cancion } from '../../interfaces/config.interface';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
-  selector: 'app-add-contenido',
-  templateUrl: './add-contenido.component.html',
-  styleUrls: ['./add-contenido.component.scss']
+  selector: 'app-add-himno',
+  templateUrl: './add-himno.component.html',
+  styleUrls: ['./add-himno.component.scss']
 })
-export class AddContenidoComponent {
-  addConfig: AngularEditorConfig = {
+export class AddHimnoComponent {
+  addLetra: AngularEditorConfig = {
     editable: true,
     height: '100px',
     minHeight: '0',
@@ -28,20 +28,18 @@ export class AddContenidoComponent {
   res: string;
   alert: string;
   aviso: number;
-  noticia: Contenido;
+  cancion: Himno;
 
-  @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
+  @ViewChild('audio') audio!: ElementRef<HTMLInputElement>;
 
-  constructor(private ContenidoService: ContenidoService) {
+  constructor(private ConfigService: ConfigService) {
     this.res = "no";
     this.alert = "no";
     this.aviso = 0
-    this.noticia = {
+    this.cancion = {
       titulo: "",
-      subtitulo: "",
-      contenido: "",
-      seccion: "noticias",
-      imagen: ""
+      letra: "",
+      archivo: ""
     }
   }
 
@@ -54,22 +52,20 @@ export class AddContenidoComponent {
 
   capturarFile(event: any): any {
     const files = event.target.files[0];
-    this.noticia.imagen = files;
+    this.cancion.archivo = files;
   }
 
 
   limpiarContenido() {
-    this.noticia.titulo = "";
-    this.noticia.subtitulo = "";
-    this.noticia.contenido = "";
-    this.noticia.imagen = "";
-    this.foto.nativeElement.value = ''
+    this.cancion.titulo = "";
+    this.cancion.letra = "";
+    this.audio.nativeElement.value = ''
 
   }
   comprobarExtension(file: any): boolean {
     let permitida = false;
     if (file != "") {
-      let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
+      let extensiones_permitidas = ['.mp3', ".mp4"];
       let extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
       if (extension != "") {
         for (let i = 0; i < extensiones_permitidas.length && !permitida; i++) {
@@ -85,17 +81,18 @@ export class AddContenidoComponent {
   }
 
 
-  agregarNoticia() {
-    if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
+  agregarAudio() {
+    if (this.cancion.titulo.trim().length === 0 || Object.prototype.toString.call(this.cancion.archivo) === '[object String]') {
       this.alert = "si";
     } else {
-      if (!this.comprobarExtension(this.noticia.imagen)) {
+      if (!this.comprobarExtension(this.cancion.archivo)) {
         this.aviso = 3;
+        console.log(this.aviso);
       } else {
-        this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
+        this.ConfigService.addAudio(this.cancion).subscribe((res) => {
           if (res.success !== false) {
             this.aviso = 1;
-            this.ContenidoService.agregar(res.data);
+            this.ConfigService.agregarAudio(res.data);
             this.limpiarContenido();
 
           } else {
@@ -107,3 +104,4 @@ export class AddContenidoComponent {
 
   }
 }
+
