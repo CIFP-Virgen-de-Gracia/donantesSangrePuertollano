@@ -1,3 +1,4 @@
+//Isa
 import { Component, Input } from '@angular/core';
 import { ConfigService } from '../../services/config.service';
 

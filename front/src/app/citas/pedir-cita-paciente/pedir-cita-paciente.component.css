@@ -1,0 +1,51 @@
+div.alert {
+  z-index: 9000;
+  width: 25rem;
+}
+div.alert a {
+  text-decoration: none;
+  color: rgb(9, 43, 9);
+}
+div.alert a:hover {
+  color: rgb(2, 51, 2);
+}
+
+div.container-fluid {
+  background-color: var(--color-contraste);
+  min-height: 80vh;
+}
+div.container-fluid div.card {
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+}
+div.container-fluid div.card div.card-header {
+  background-color: var(--color-primario);
+  color: var(--bs-white);
+  height: 9rem;
+  border-radius: 2px 2px 0px 0px;
+}
+div.container-fluid div.card div.card-body {
+  margin-bottom: 2.5rem;
+}
+div.container-fluid div.card div.card-body div.calendario {
+  height: 15rem;
+  width: 20rem;
+  background-color: green;
+}
+div.container-fluid div.card div.card-body button {
+  border-radius: 2px;
+}
+div.container-fluid div.card div.card-body button.btnAceptar {
+  background-color: var(--color-secundario);
+  color: var(--bs-white);
+}
+div.container-fluid div.card div.card-body button.btnAceptar:hover {
+  border: solid 1px var(--color-primario);
+  background-color: var(--color-primario);
+}
+div.container-fluid div.card div.card-body button.border-red {
+  border: solid 1px var(--color-secundario);
+  color: var(--color-secundario);
+}
+div.container-fluid div.card div.card-body button.border-red:hover {
+  background-color: var(--color-contraste);
+}/*# sourceMappingURL=pedir-cita-paciente.component.css.map */
