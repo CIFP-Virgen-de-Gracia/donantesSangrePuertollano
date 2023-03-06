@@ -88,7 +88,7 @@ const register = async (req, res = response) => { // poner código
         correo.mandarCorreoActivacion(resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
     }).catch(err => {
-
+        console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
