@@ -41,13 +41,13 @@ router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
 
 // pedir cita routes
-router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
-router.post('/citas/pedircita', [midsCitas.yaHaPedidoUnaCita], citas.pedirCita);
-router.put('/citas/cancelarcita/', citas.cancelarCita);
-router.get('/citas/usernotienecita/:id', citas.userNoTieneCita);
-router.get('/citas/hayhuecohora/:fecha', citas.hayHuecoHora);
-router.get('/citas/getcitapendienteuser/:id', citas.getCitaPendienteUser);
-router.get('/citas/getcitaspasadasuser/:id', citas.getCitasPasadasUser);
-router.get('/citas/yatienecita/:id', citas.yaHaPedidoUnaCita);
+router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);
+router.post('/citas/pedircita', [vJwt.validarJwt, midsCitas.yaHaPedidoUnaCita, midsCitas.hayCapacidad, midsUser.midUser], citas.pedirCita);
+router.put('/citas/cancelarcita/', [vJwt.validarJwt, midsUser.midUser], citas.cancelarCita);
+router.get('/citas/usernotienecita/:id', [vJwt.validarJwt, midsUser.midUser], citas.userNoTieneCita);
+router.get('/citas/hayhuecohora/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.hayHuecoHora);
+router.get('/citas/getcitapendienteuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitaPendienteUser);
+router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitasPasadasUser);
+router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser],citas.yaHaPedidoUnaCita);
 
 module.exports = router;

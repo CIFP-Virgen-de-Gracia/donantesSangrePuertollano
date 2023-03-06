@@ -13,20 +13,31 @@ const { QueryInterface } = require('sequelize');
 // todo Mario
 const pedirCita = async(req, res = response) => {
     try {
-        const cita = {
-            fecha: moment(req.body.fecha, 'YYYY-MM-DD HH:mm:ss').add(1, 'hour'),
-            userId: req.body.id,
-            donacion: req.body.donacion
+
+        console.log(req.body.fecha);
+        if (metodosFecha.horaEsMayor(req.body.fecha, moment().format('YYYY-MM-DD HH:mm:ss')) 
+                && metodosFecha.horaValida(req.body.fecha)) {
+                    const cita = {
+                        fecha: moment(req.body.fecha, 'YYYY-MM-DD HH:mm:ss').add(1, 'hour'),
+                        userId: req.body.id,
+                        donacion: req.body.donacion
+                    }
+            
+                    const resp = await queriesCitas.insertCita(cita);
+            
+                    mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion);
+                    
+                    res.status(200).json({success: true, msg: 'cita insertada con éxito'});
+            }
+        else {
+
+            res.status(200).json({success: false, msg: 'fecha no válida'});
         }
-
-        const resp = await queriesCitas.insertCita(cita);
-
-        mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion);
         
-        res.status(200).json({success: true, msg: 'cita insertada con éxito'});
     }
     catch (err) {
 
+        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
