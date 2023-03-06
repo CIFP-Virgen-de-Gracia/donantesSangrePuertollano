@@ -1,77 +1,62 @@
 import { Time } from "@angular/common";
 
-export interface updateResponse {
+export interface updateResponse { //Alicia
   success: boolean;
   msg: string;
 }
 
-export interface cargoResponse {
+export interface cargoResponse {//Alicia
   success: boolean;
   data: Cargo[];
 }
 
-export interface horarioResponse {
-  success: boolean;
-  data: Horario[];
-}
-
-export interface telefonoResponse {
-  success: boolean;
-  data: Telefono[];
-}
-
-export interface direccionResponse {
-  success: boolean;
-  data: Direccion[];
-}
-
-export interface Cargo {
+export interface Cargo {//Alicia
   id: number;
   nombre: string;
 }
 
-export interface Horario {
+export interface Horario {//Alicia
   id: number;
   dia: string;
   hEntrada: Time;
   hSalida: Time;
 }
 
-export interface HorarioMostrar {
+export interface HorarioMostrar {//Alicia
   dias: Dia[];
   hEntrada: Time;
   hSalida: Time;
 }
 
-export interface HorarioGuardar {
+export interface HorarioGuardar {//Alicia
   borrar: number[],
   guardar: Horario[]
 }
 
-export interface TelefonoGuardar {
+export interface TelefonoGuardar {//Alicia
   borrar: number[],
   guardar: Telefono[]
 }
 
-export interface Dia {
+export interface Dia {//Alicia
   id: number;
   valor: string;
   letra: string;
   seleccionado: boolean;
 }
 
-export interface Hora {
+export interface Hora {//Alicia
   entrada: Time;
   salida: Time;
 }
 
-export interface Telefono {
+export interface Telefono {//Alicia
   id: number;
   numero: string;
   extension: number;
 }
 
-export interface Direccion {
+export interface Direccion {//Alicia
   id: number;
   lugar: string;
   calle: string;
@@ -80,21 +65,25 @@ export interface Direccion {
   provincia: string;
   cp: number;
 }
+
 export interface ResponseAudio{
   success: boolean,
   data: Cancion[],
   msg: string,
 }
+
 export interface ResponseCancion{
   success: boolean,
   data: Cancion,
   msg: string,
 }
+
 export interface Himno{
   archivo:any,
   titulo:string,
   letra:string
 }
+
 export interface Cancion{
   id:string,
   nombre:string,
