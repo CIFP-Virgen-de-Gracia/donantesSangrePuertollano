@@ -6,7 +6,7 @@ const vJwt = require('../middlewares/validarJwt');
 const auth = require('../controllers/authController');
 const user = require('../controllers/userController');
 const contenido = require('../controllers/contenidoController');
-const junta = require('../controllers/juntaController');
+// const junta = require('../controllers/juntaController');
 const citas = require('../controllers/citasController');
 
 // const {midEjemplo} = require('../middlewares/userMiddlewares');
@@ -36,8 +36,6 @@ router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
 
 // pedir cita routes
-// router.get('/citas/citasreservadas/:fecha', citas.getCitasReservadas);
-// router.get('/citas/gethorariocitas', citas.getHorarioCitas);
 router.get('/citas/gethorasdisponibles/:fecha', citas.getHorasDisponibles);
 router.post('/citas/pedircita', [midsCitas.yaHaPedidoUnaCita], citas.pedirCita);
 router.put('/citas/cancelarcita/', citas.cancelarCita);
@@ -45,6 +43,6 @@ router.get('/citas/usernotienecita/:id', citas.userNoTieneCita);
 router.get('/citas/hayhuecohora/:fecha', citas.hayHuecoHora);
 router.get('/citas/getcitapendienteuser/:id', citas.getCitaPendienteUser);
 router.get('/citas/getcitaspasadasuser/:id', citas.getCitasPasadasUser);
-// router.get('/citas/getcitapendienteuser/:id', citas.);
+router.get('/citas/yatienecita/:id', citas.yaHaPedidoUnaCita);
 
 module.exports = router;

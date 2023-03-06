@@ -14,26 +14,28 @@ export class BorrarComponent {
     this.idBorrado = "";
   }
 
+
   limpiarIdBorrado() {
     this.idBorrado = "";
   }
+
+
   limpiarMensaje() {
     this.mensaje = 0;
   }
-  borradoNoticia() {
-    console.log(this.idBorrado);
-    this.ContenidoService.borrarNoticia(this.idBorrado).subscribe(
-      {
-        next: data => {
-          if (data !== "No se ha podido borrar") {
-            this.ContenidoService.borrar(this.idBorrado);
-            this.mensaje = 1
-          }
-        },
-        error: error => {
-          this.mensaje = 2;
-        }
-      });
-  }
 
+
+  borradoNoticia() {
+    this.ContenidoService.borrarNoticia(this.idBorrado).subscribe({
+      next: data => {
+        if (data !== "No se ha podido borrar") {
+          this.ContenidoService.borrar(this.idBorrado);
+          this.mensaje = 1;
+        }
+      },
+      error: error => {
+        this.mensaje = 2;
+      }
+    });
+  }
 }

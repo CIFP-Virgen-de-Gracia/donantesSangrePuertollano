@@ -40,7 +40,6 @@ const cancelarCita = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err)
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -99,14 +98,14 @@ const getHorasDisponibles = async(req, res = response) => {
 
             let horasDisponibles = [];
             for (const hora of arrayHorasHorario) {
-                console.log(hora);
+
                 if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora); // explicación justo arriba (*)
             }
 
 
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
-            console.log(err);
+
             res.status(200).json({success: false, msg: 'se ha producido un error'});
         });
 }
@@ -143,14 +142,25 @@ const hayHuecoHora = async(req, res = response) => {
 }
 
 
+const yaHaPedidoUnaCita = async(req, res = response) => {
+
+    const nUser = await queriesCitas.getNumCitasPendientesUser(req.params.id);
+    if (nUser < 1) {
+        
+        return res.status(200).json({success: true, msg: 'no has pedido cita'});
+    }
+    else {
+
+        return res.status(200).json({success: false, msg: 'ya has pedido cita'});
+    }
+}
+
+
 const mandarCorreoFechaCita = async(id, fecha, donacion) => {
 
-    console.log('1111111111111111111111111111111111111');
-    console.log(fecha);
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
 
-    console.log('2222222222222222222222222222222222222');
     let contenido = {};
 
     contenido.asunto = 'Recordatorio de tu cita.';
@@ -160,11 +170,8 @@ const mandarCorreoFechaCita = async(id, fecha, donacion) => {
         <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar <strong>${(donacion)}</strong>.
     `;
 
-    console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
 
     const correo = await queriesUsers.getEmailById(id);
-    console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf');
-    console.log(correo)
     const resp = email.mandarCorreo(correo.email, contenido);
 }
 
@@ -178,5 +185,6 @@ module.exports = {
     // getHorarioCitas,
     hayHuecoHora,
     getHorasDisponibles,
-    userNoTieneCita
+    userNoTieneCita,
+    yaHaPedidoUnaCita
 }
