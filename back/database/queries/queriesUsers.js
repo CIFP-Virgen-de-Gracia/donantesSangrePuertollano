@@ -1,7 +1,9 @@
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const conexion = require('../../database/Conexion');
-const {Op} = require('sequelize');
+const { Op } = require('sequelize');
+const { getArrayCitas } = require('../../helpers/getRelaciones');
+// const { use } = require('../../routes/routes');
 const models = require('../../models/index.js');
 
 class QueriesUsers {
@@ -10,6 +12,7 @@ class QueriesUsers {
         this.sequelize = sequelize; 
         this.conexion = conexion;
     }
+
 
 //Mario
     getIdEmail = async(email) => {
@@ -23,8 +26,12 @@ class QueriesUsers {
             }
         });
 
+        console.log('asdfasdfasdf');
+        console.log(id);
+
         return id.dataValues;
     }
+
 
 //Alicia
     getEmail = async(email) => {
@@ -38,15 +45,19 @@ class QueriesUsers {
         return resp;
     }
 
+
 //Mario
     getEmailById = async(id) => {
         this.sequelize.conectar();
 
         const resp = await models.Email.findByPk(id);
 
-        this.sequelize.desconectar();
+        console.log(id);
+        console.log(resp);
+
         return resp.dataValues;
     }
+
 
 //Mario
     getUser = async(id) => {
@@ -58,6 +69,7 @@ class QueriesUsers {
         return user.dataValues;
     }
 
+
 //Mario
     getUserRoles = async(id) => { // CAMBIAR ROLESABILTIES.
         this.sequelize.conectar();
@@ -68,11 +80,19 @@ class QueriesUsers {
         return user;
     }
 
+
+//Mario
+    getUserCitas = async(id) => {
+        const user = await models.User.findByPk(id, {include: ['citasPendientes', 'citasPasadas']});
+
+        user.dataValues.citas = getArrayCitas(user);
+
+        return user.dataValues;
+    }
+
+
 //Mario
     getUserLogin = async(email, passwd) => {
-
-        this.sequelize.conectar();
-        
         const id = await this.getIdEmail(email);
         console.log(id);
 
@@ -86,9 +106,9 @@ class QueriesUsers {
             include: 'RolUser'
         });
 
-        this.sequelize.desconectar();
         return user.dataValues;
     }
+
 
 //Mario
     getAbilities = async(roles) =>  {
@@ -104,7 +124,6 @@ class QueriesUsers {
                 }
             });
 
-            this.sequelize.desconectar();
             return rolesAbilities;
         }
         catch (err) {
@@ -113,7 +132,30 @@ class QueriesUsers {
     }
     
 
-//Mario
+    //Alicia
+    getSuscritosNewsletter = async() => {
+        try {
+            this.sequelize.conectar();
+
+            const emails = await models.Email.findAll({
+                attributes: ['id', 'email', 'newsletterVerifiedAt'],
+                where: {
+                    newsletterVerifiedAt: {
+                        [Op.ne]: null
+                    }
+                }
+            });
+
+            this.sequelize.desconectar();
+            return emails;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+
+    //Mario
     insertUser = async(id, nombre, passwd = null) => { 
         this.sequelize.conectar();
 
@@ -131,6 +173,7 @@ class QueriesUsers {
             throw err;
         }
     }
+
 
 //Mario
     insertEmail = async(email) => {
@@ -158,7 +201,7 @@ class QueriesUsers {
     }
 
 
-//Alicia
+    //Alicia
     insertEmailNewsletter = async(email) => { 
         this.sequelize.conectar();
         
@@ -178,7 +221,7 @@ class QueriesUsers {
     }
 
 
-//Mario
+    //Mario
     updateVerificacionEmail = async(id) => {
         try {
             this.sequelize.conectar();
@@ -197,24 +240,42 @@ class QueriesUsers {
         }
     }
 
+
 //Alicia
     updateVerificacionEmailNewsletter = async(id) => {
         try {
             this.sequelize.conectar();
             let email = await models.Email.findByPk(id);
 
-            email.update({newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')})
-
-            const resp = email.save();
+            const resp = await email.update({
+                newsletterVerifiedAt: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+            });
 
             this.sequelize.desconectar();
-
             return resp;
         }
         catch (err) {
             throw err;
         }
     }
+
+
+    //Alicia
+    updateCancelarNewsletter = async(id) => {
+        try {
+            this.sequelize.conectar();
+            let email = await models.Email.findByPk(id);
+
+            const resp = await email.update({newsletterVerifiedAt: null});
+
+            this.sequelize.desconectar();
+            return resp;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
 
 //Mario
     updateUserPasswd = async(id, nuevaPasswd) => {
@@ -230,6 +291,7 @@ class QueriesUsers {
         return resp.dataValues;
     }
 
+
 //Mario
     updateCodRecPasswd = async(id, cod) => {
         let user = await models.User.findByPk(id);
@@ -242,6 +304,18 @@ class QueriesUsers {
     }
 }
 
+
+//Mario
+    getCitasPendientesUser = async(id) => {
+        return await models.User.findByPk(id, {include: ['citasPendientes']});
+    }
+
+
+//Mario
+    getCitasPasadasUser = async(id) => {
+        return await models.User.findByPk(id, {include: ['citasPasadas']});
+    }
+    
 
 const queriesUsers = new QueriesUsers();
 

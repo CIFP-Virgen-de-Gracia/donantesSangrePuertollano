@@ -17,6 +17,10 @@ export class MainConfigComponent {
       icono: "fa-phone"
     },
     {
+      nombre : "himno",
+      icono: "fa-headphones"
+    },
+    {
       nombre : "test-apto",
       icono: "fa-vial"
     }

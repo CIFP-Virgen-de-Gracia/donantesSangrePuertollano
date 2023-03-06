@@ -1,30 +1,48 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Contenido } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
-import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 @Component({
   selector: 'app-add-contenido',
   templateUrl: './add-contenido.component.html',
   styleUrls: ['./add-contenido.component.scss']
 })
 export class AddContenidoComponent {
-  res: string = "no";
-  alert: string = "no";
-  aviso: number = 0
-  noticia: Contenido = {
-    titulo: "",
-    subtitulo: "",
-    contenido: "",
-    seccion: "noticias",
-    imagen: ""
-  }
+  addConfig: AngularEditorConfig = {
+    editable: true,
+    height: '100px',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    toolbarHiddenButtons: [['fontName', 'insertImage', 'insertVideo', 'insertHorizontalRule']]
+  };
+  res: string;
+  alert: string;
+  aviso: number;
+  noticia: Contenido;
 
   @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
-  constructor(private ContenidoService: ContenidoService) {}
-
-  get resultado() {
-    return this.ContenidoService.resultado
+  constructor(private ContenidoService: ContenidoService) {
+    this.res = "no";
+    this.alert = "no";
+    this.aviso = 0
+    this.noticia = {
+      titulo: "",
+      subtitulo: "",
+      contenido: "",
+      seccion: "noticias",
+      imagen: ""
+    }
   }
 
 
@@ -48,24 +66,43 @@ export class AddContenidoComponent {
     this.foto.nativeElement.value = ''
 
   }
+  comprobarExtension(file: any): boolean {
+    let permitida = false;
+    if (file != "") {
+      let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
+      let extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
+      if (extension != "") {
+        for (let i = 0; i < extensiones_permitidas.length && !permitida; i++) {
+          if (extensiones_permitidas[i] == extension) {
+            permitida = true;
+          }
+        }
+      }
+    } else {
+      permitida = true;
+    }
+    return permitida;
+  }
 
 
   agregarNoticia() {
     if (this.noticia.titulo.trim().length === 0 || this.noticia.contenido.trim().length === 0) {
       this.alert = "si";
-
     } else {
-      this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-        console.log(res)
-        if (res !== "Error de registro") {
-          this.aviso = 1;
-          this.ContenidoService.agregar(res);
-          this.limpiarContenido();
+      if (!this.comprobarExtension(this.noticia.imagen)) {
+        this.aviso = 3;
+      } else {
+        this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
+          if (res.success !== false) {
+            this.aviso = 1;
+            this.ContenidoService.agregar(res.data);
+            this.limpiarContenido();
 
-        } else {
-          this.aviso = 2;
-        }
-      });
+          } else {
+            this.aviso = 2;
+          }
+        });
+      }
     }
 
   }

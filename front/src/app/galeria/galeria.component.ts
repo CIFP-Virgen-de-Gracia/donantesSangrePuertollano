@@ -45,7 +45,6 @@ export class GaleriaComponent implements OnInit{
 
     this.imagenesSeleccionadas.forEach(id => {
       this.galeriaServicio.borrarImagenes(id).subscribe((res) => {
-        console.log('Respuesta del servidor', res);
         this.mostrarImagenes();
       })
     })

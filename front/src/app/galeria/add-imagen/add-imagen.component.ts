@@ -21,7 +21,6 @@ export class AddImagenComponent implements OnInit{
   }
   capturarFile(event: any) {
     const archivoCapturado = event.target.files[0];
-    console.log(archivoCapturado.type);
     if(archivoCapturado.type == 'image/jpg' || archivoCapturado.type == 'image/gif' || archivoCapturado.type == 'image/png'
     || archivoCapturado.type == 'image/jpeg' || archivoCapturado.type == 'image/tiff' || archivoCapturado.type == 'image/svg' || archivoCapturado.type == 'image/webp'){
       this.extraerBase64(archivoCapturado).then((imagen: any)=> {
@@ -68,7 +67,6 @@ export class AddImagenComponent implements OnInit{
         .subscribe((res) => {
 
           this.loading = false;
-          console.log('Respuesta del servidor', res);
           this.recargarImagenes.emit();
 
         })
@@ -76,7 +74,6 @@ export class AddImagenComponent implements OnInit{
 
     } catch (e) {
       this.loading = false;
-      console.log('ERROR', e);
     }
   }
 }
