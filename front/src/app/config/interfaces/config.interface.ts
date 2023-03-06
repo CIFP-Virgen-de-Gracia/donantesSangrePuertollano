@@ -10,7 +10,7 @@ export interface cargoResponse {//Alicia
   data: Cargo[];
 }
 
-export interface Cargo {//Alicia
+export interface Cargo { //Alicia//Alicia
   id: number;
   nombre: string;
 }
@@ -66,25 +66,22 @@ export interface Direccion {//Alicia
   cp: number;
 }
 
-export interface ResponseAudio{
+export interface ResponseAudio{ //Isa
   success: boolean,
   data: Cancion[],
   msg: string,
 }
-
-export interface ResponseCancion{
+export interface ResponseCancion{ //Isa
   success: boolean,
   data: Cancion,
   msg: string,
 }
-
-export interface Himno{
+export interface Himno{ //Isa
   archivo:any,
   titulo:string,
   letra:string
 }
-
-export interface Cancion{
+export interface Cancion{ //Isa
   id:string,
   nombre:string,
   titulo:string,

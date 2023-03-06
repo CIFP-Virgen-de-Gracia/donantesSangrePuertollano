@@ -57,7 +57,7 @@ export class ConfigService {
   }
 
 
-  //Audio o Himnos
+  //Audio o Himnos (Toda la parte del Audio Isa)
   get audios() {
     return [...this.canciones];
   }
