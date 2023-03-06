@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Cancion, ResponseAudio } from '../interfaces/paginas.interface';
+import { Cancion, ResponseAudio} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,6 @@ export class PaginasService {
   constructor(private http: HttpClient) {
     this.canciones = [];
   }
-
   //Alicia
   getIntegrantesCargo(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`)
@@ -28,6 +27,5 @@ export class PaginasService {
   getListado(): Observable<ResponseAudio> {
     return this.http.get<ResponseAudio>(`${this.baseUrl}/api/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
   }
-
 }
 

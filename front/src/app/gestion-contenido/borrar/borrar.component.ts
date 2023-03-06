@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, Input } from '@angular/core';
 import { ContenidoService } from '../contenido.service';
 @Component({
