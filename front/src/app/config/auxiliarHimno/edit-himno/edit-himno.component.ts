@@ -1,15 +1,15 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
-import { Noticia } from '../Interfaces/Contenido.interface';
-import { ContenidoService } from '../contenido.service';
+import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Cancion } from '../../interfaces/config.interface';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
-  selector: 'app-editado',
-  templateUrl: './editado.component.html',
-  styleUrls: ['./editado.component.scss']
+  selector: 'app-edit-himno',
+  templateUrl: './edit-himno.component.html',
+  styleUrls: ['./edit-himno.component.scss']
 })
-export class EditadoComponent {
-  editConfig: AngularEditorConfig = {
+export class EditHimnoComponent {
+  editadoConfig: AngularEditorConfig = {
     editable: true,
     height: '100px',
     minHeight: '0',
@@ -31,40 +31,30 @@ export class EditadoComponent {
   aviso: number;
   correcto: boolean;
 
-  @Input() idModificar: string;
-  @Input() infoNoticia: Noticia;
+  @Input() idModificado: string;
+  @Input() infoAudio: Cancion;
   @Input() qho: string;
 
-  @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
+  @ViewChild('audio') audio!: ElementRef<HTMLInputElement>;
 
-  constructor(private ContenidoService: ContenidoService) {
-    this.qho = "no";
+
+  constructor(private ConfigService: ConfigService) {
+    this.qho = "no"
     this.res = "no";
     this.alert = "no";
     this.aviso = 0;
     this.correcto = true;
-    this.idModificar = "";
-    this.infoNoticia = {
-      id: "0",
+    this.idModificado = "";
+    this.infoAudio = {
+      id: "",
+      nombre: "",
       titulo: "",
-      subtitulo: "",
-      contenido: "",
-      fecha: new Date(),
-      seccion: "",
-      imagen: ""
+      letra: "",
+      cancion: "",
+      descarga: ""
     };
   }
-  mostrarImagen() {
-    let avisoImagen = 0;
-    if (Object.prototype.toString.call(this.infoNoticia.imagen) === '[object String]') {
-      if (this.infoNoticia.imagen === "") {
-        avisoImagen = 1;
-      } else {
-        avisoImagen = 2;
-      }
-    }
-    return avisoImagen;
-  }
+
   limpiarAlert() {
     this.alert = "no";
     this.aviso = 0;
@@ -72,7 +62,7 @@ export class EditadoComponent {
   }
   capturarFile(event: any) {
     const files = event.target.files[0];
-    this.infoNoticia.imagen = files;
+    this.infoAudio.cancion = files;
     if (!this.comprobarExtension(files)) {
       this.aviso = 3;
     }
@@ -80,7 +70,7 @@ export class EditadoComponent {
   comprobarExtension(file: any): boolean {
     let permitida = false;
     this.correcto = false;
-    let extensiones_permitidas = ['.PNG', ".JPG", '.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
+    let extensiones_permitidas = ['.mp4', ".mp3"];
     let extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
     if (extension != "") {
       for (let i = 0; i < extensiones_permitidas.length && !permitida; i++) {
@@ -93,24 +83,26 @@ export class EditadoComponent {
     return permitida;
   }
 
-
   limpiarContenido() {
-    this.infoNoticia.titulo = "";
-    this.infoNoticia.subtitulo = "";
-    this.infoNoticia.contenido = "";
-    this.infoNoticia.imagen = "";
-    this.foto.nativeElement.value = ''
+    this.infoAudio.id = "";
+    this.infoAudio.nombre = "";
+    this.infoAudio.titulo = "";
+    this.infoAudio.letra = "";
+    this.infoAudio.cancion = "";
+    this.infoAudio.descarga = "";
+    this.audio.nativeElement.value = ''
   }
-  modificarNoticia() {
-    if (this.infoNoticia.titulo.trim().length === 0 || this.infoNoticia.contenido.trim().length === 0) {
+
+  editarAudio() {
+    if (this.infoAudio.titulo.trim().length === 0) {
       this.alert = "si";
     } else if (!this.correcto) {
       this.aviso = 3;
     } else {
-      this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
+      this.ConfigService.editarAudio(this.idModificado, this.infoAudio).subscribe({
         next: data => {
           if (data.success !== false) {
-            this.ContenidoService.editar(data.data);
+            this.ConfigService.editarCancion(data.data);
             this.limpiarContenido();
             this.aviso = 1;
           }
@@ -122,4 +114,3 @@ export class EditadoComponent {
     }
   }
 }
-
