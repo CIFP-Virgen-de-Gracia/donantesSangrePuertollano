@@ -22,6 +22,14 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true
       },
+      vKeyNewsletter: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      vKeyEmail: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
