@@ -91,12 +91,11 @@ export class AddContenidoComponent {
     } else {
       if (!this.comprobarExtension(this.noticia.imagen)) {
         this.aviso = 3;
-        console.log(this.aviso);
       } else {
         this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-          if (res !== "Error de registro") {
+          if (res.success !== false) {
             this.aviso = 1;
-            this.ContenidoService.agregar(res);
+            this.ContenidoService.agregar(res.data);
             this.limpiarContenido();
 
           } else {
