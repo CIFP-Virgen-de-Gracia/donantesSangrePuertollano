@@ -21,11 +21,10 @@ export class BorrarComponent {
     this.mensaje = 0;
   }
   borradoNoticia() {
-    console.log(this.idBorrado);
     this.ContenidoService.borrarNoticia(this.idBorrado).subscribe(
       {
         next: data => {
-          if (data !== "No se ha podido borrar") {
+          if (data.success !== false) {
             this.ContenidoService.borrar(this.idBorrado);
             this.mensaje = 1
           }
