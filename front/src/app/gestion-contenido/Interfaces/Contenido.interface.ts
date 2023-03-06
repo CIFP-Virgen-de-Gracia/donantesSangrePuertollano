@@ -1,18 +1,26 @@
-export interface Contenido{
-  titulo:string,
-  subtitulo:string,
-  contenido:string,
-  seccion:string,
-  imagen:any
+export interface Contenido {
+  titulo: string,
+  subtitulo: string,
+  contenido: string,
+  seccion: string,
+  imagen: any
 }
-export interface Noticia{
-  id:number
-  titulo:string,
-  subtitulo:string,
-  contenido:string,
-  seccion:string,
-  imagen:any
+export interface Response{
+  success: boolean,
+  data: Noticia[],
+  msg: string,
 }
-/*export interface Archivo{
-  archivo:File[]
-}*/
+export interface ResponseNoticia{
+  success: boolean,
+  data: Noticia,
+  msg: string,
+}
+export interface Noticia {
+  id: string,
+  titulo: string
+  subtitulo: string,
+  contenido: string,
+  seccion: string,
+  fecha: Date,
+  imagen: string
+}

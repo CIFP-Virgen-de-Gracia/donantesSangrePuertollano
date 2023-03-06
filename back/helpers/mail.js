@@ -7,13 +7,14 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_ACCOUNT,
         pass: process.env.EMAIL_PASSWORD
-    }
+    },
+    tls:{rejectUnauthorized:false}
 });
 
 //Mario
 const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
-    const cuerpoHtml = `Pincha en el <a href="http://${process.env.HOST}:${process.env.PORT}/api/${ruta}/${userId}/">link</a> para confirmar tu suscripción a nuestra newsletter`;
+    const cuerpoHtml = `Pincha en el <a href="http://${process.env.HOST}:${process.env.PORT}/api/${ruta}/${userId}/">link</a> para confirmar tu correo`;
 
     const asunto = 'Confirmación de cuenta de correo electrónico';
 
@@ -32,7 +33,6 @@ const mandarCorreoActivacion = (userId, destinatario, ruta) => {
 
 
 const mandarCorreo = (destinatario, contenido) => {
-    //TODO: TODO MAL
 
     mailOptions = {
         from: process.env.EMAIL_ACCOUNT,
@@ -41,7 +41,9 @@ const mandarCorreo = (destinatario, contenido) => {
         html: contenido.cuerpoHtml
     };
 
-    transporter.sendMail(mailOptions);
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) throw error;
+    });
 }
         
 module.exports = {
