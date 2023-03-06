@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       letra: {
-        type: Sequelize.STRING(100000),
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       createdAt: {

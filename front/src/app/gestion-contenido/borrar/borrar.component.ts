@@ -14,12 +14,17 @@ export class BorrarComponent {
     this.idBorrado = "";
   }
 
+
   limpiarIdBorrado() {
     this.idBorrado = "";
   }
+
+
   limpiarMensaje() {
     this.mensaje = 0;
   }
+
+
   borradoNoticia() {
     this.ContenidoService.borrarNoticia(this.idBorrado).subscribe(
       {
@@ -34,5 +39,4 @@ export class BorrarComponent {
         }
       });
   }
-
 }
