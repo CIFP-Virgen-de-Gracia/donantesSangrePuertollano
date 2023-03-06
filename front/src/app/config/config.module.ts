@@ -7,12 +7,20 @@ import { HermandadConfigComponent } from './hermandad-config/hermandad-config.co
 import { ContactoConfigComponent } from './contacto-config/contacto-config.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from '../shared/shared.module';
+import { HimnoConfigComponent } from './himno-config/himno-config.component';
+import { AddHimnoComponent } from './auxiliarHimno/add-himno/add-himno.component';
+import { EditHimnoComponent } from './auxiliarHimno/edit-himno/edit-himno.component';
+import { DeleteHimnoComponent } from './auxiliarHimno/delete-himno/delete-himno.component';
 
 @NgModule({
   declarations: [
     MainConfigComponent,
     HermandadConfigComponent,
-    ContactoConfigComponent
+    ContactoConfigComponent,
+    HimnoConfigComponent,
+    AddHimnoComponent,
+    EditHimnoComponent,
+    DeleteHimnoComponent,
   ],
   imports: [
     FormsModule,

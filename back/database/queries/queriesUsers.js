@@ -1,7 +1,9 @@
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const conexion = require('../../database/Conexion');
-const {Op} = require('sequelize');
+const { Op } = require('sequelize');
+const { getArrayCitas } = require('../../helpers/getRelaciones');
+// const { use } = require('../../routes/routes');
 const models = require('../../models/index.js');
 
 class QueriesUsers {
@@ -11,7 +13,8 @@ class QueriesUsers {
         this.conexion = conexion;
     }
 
-    //Mario
+
+//Mario
     getIdEmail = async(email) => {
         const id = await models.Email.findOne({
             attributes: ['id'],
@@ -23,11 +26,14 @@ class QueriesUsers {
             }
         });
 
+        console.log('asdfasdfasdf');
+        console.log(id);
+
         return id.dataValues;
     }
 
 
-    //Alicia
+//Alicia
     getEmail = async(email) => {
         
         const resp = await models.Email.findOne({
@@ -40,18 +46,20 @@ class QueriesUsers {
     }
 
 
-    //Mario
+//Mario
     getEmailById = async(id) => {
         this.sequelize.conectar();
 
         const resp = await models.Email.findByPk(id);
 
-        this.sequelize.desconectar();
+        console.log(id);
+        console.log(resp);
+
         return resp.dataValues;
     }
 
 
-    //Mario
+//Mario
     getUser = async(id) => {
         this.sequelize.conectar();
 
@@ -62,7 +70,7 @@ class QueriesUsers {
     }
 
 
-    //Mario
+//Mario
     getUserRoles = async(id) => { // CAMBIAR ROLESABILTIES.
         this.sequelize.conectar();
 
@@ -73,11 +81,18 @@ class QueriesUsers {
     }
 
 
-    //Mario
-    getUserLogin = async(email, passwd) => {
+//Mario
+    getUserCitas = async(id) => {
+        const user = await models.User.findByPk(id, {include: ['citasPendientes', 'citasPasadas']});
 
-        this.sequelize.conectar();
-        
+        user.dataValues.citas = getArrayCitas(user);
+
+        return user.dataValues;
+    }
+
+
+//Mario
+    getUserLogin = async(email, passwd) => {
         const id = await this.getIdEmail(email);
         console.log(id);
 
@@ -91,12 +106,11 @@ class QueriesUsers {
             include: 'RolUser'
         });
 
-        this.sequelize.desconectar();
         return user.dataValues;
     }
 
 
-    //Mario
+//Mario
     getAbilities = async(roles) =>  {
         try {
             this.sequelize.conectar();
@@ -110,7 +124,6 @@ class QueriesUsers {
                 }
             });
 
-            this.sequelize.desconectar();
             return rolesAbilities;
         }
         catch (err) {
@@ -162,7 +175,7 @@ class QueriesUsers {
     }
 
 
-    //Mario
+//Mario
     insertEmail = async(email) => {
         this.sequelize.conectar();
 
@@ -228,7 +241,7 @@ class QueriesUsers {
     }
 
 
-    //Alicia
+//Alicia
     updateVerificacionEmailNewsletter = async(id) => {
         try {
             this.sequelize.conectar();
@@ -264,7 +277,7 @@ class QueriesUsers {
     }
 
 
-    //Mario
+//Mario
     updateUserPasswd = async(id, nuevaPasswd) => {
         this.sequelize.conectar();
 
@@ -279,7 +292,7 @@ class QueriesUsers {
     }
 
 
-    //Mario
+//Mario
     updateCodRecPasswd = async(id, cod) => {
         let user = await models.User.findByPk(id);
         user.codRecPasswd = cod;
@@ -291,6 +304,18 @@ class QueriesUsers {
     }
 }
 
+
+//Mario
+    getCitasPendientesUser = async(id) => {
+        return await models.User.findByPk(id, {include: ['citasPendientes']});
+    }
+
+
+//Mario
+    getCitasPasadasUser = async(id) => {
+        return await models.User.findByPk(id, {include: ['citasPasadas']});
+    }
+    
 
 const queriesUsers = new QueriesUsers();
 
