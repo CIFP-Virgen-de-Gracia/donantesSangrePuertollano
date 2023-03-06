@@ -13,7 +13,7 @@
     </path>
   </svg>
 </div>
-<app-add-contenido></app-add-contenido>
+<app-add-contenido *ngIf= "estaRegistrado && puedeModificar"></app-add-contenido>
 <div class="container pb-5 pt-5" *ngFor="let noticia of resultado| paginate: { itemsPerPage: 3, currentPage: p }">
   <div class="row">
     <div class="col">
@@ -23,7 +23,7 @@
       <img *ngIf="noticia.imagen!==''" class="img-fluid mb-3" [src]=noticia.imagen>
       <div [innerHtml]="noticia.contenido">
       </div>
-     <div class="pt-5 pb-2 centrado">
+     <div *ngIf= "estaRegistrado && puedeModificar"class="pt-5 pb-2 centrado">
         <button
         id=A{{noticia.id}}
         (click)="obtenerId($event)"
@@ -45,4 +45,4 @@
 </pagination-controls>
 
 <app-borrar [idBorrado]="idBorrado"></app-borrar>
-<app-editado [idModificar]="idModificar" [infoNoticia]="info"></app-editado>
+<app-editado [idModificar]="idModificar" [infoNoticia]="info" [qho]="qho" ></app-editado>

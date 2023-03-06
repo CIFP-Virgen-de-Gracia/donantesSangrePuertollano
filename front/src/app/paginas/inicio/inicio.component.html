@@ -1,3 +1,19 @@
+<div *ngIf="this.citaPedida == 0" 
+  class="alert alert-success alert-dismissible position-fixed fade show ms-3" 
+    role="alert">
+  Tu cita ha sido registrada correctamente. Te hemos mandado un correo de confirmación.
+
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div *ngIf="this.citaPedida == 1" 
+  class="alert alert-danger alert-dismissible position-fixed fade show ms-3" 
+  role="alert">
+  Se ha producido un error al pedir tu cita. Por favor, prueba de nuevo más tarde.
+
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <main class="text-center">
   <div class="container">
     <div class="row lh-lg f-contrastete">

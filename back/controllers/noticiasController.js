@@ -2,61 +2,96 @@ const { response, request } = require('express');
 const queriesNoticias = require("../database/queries/queriesNoticias");
 const fs = require('fs');
 const path = require('path');
+const queriesUsers = require('../database/queries/queriesUsers');
+const correo = require('../helpers/mail');
 
-//Todo Isa
+//Isa
 const getListado = async (req, res = response) => {
-    queriesNoticias.getListado(req.params.seccion)
-        .then(noticia => {
-            if (noticia !== null) {
-                let not = [];
-                
-                noticia.forEach(n => {
-                    let data;
-                    let fecha = new Date(n.createdAt).toLocaleString();
-                    let parrafo = n.contenido.split("\n");
-
-                    if (n["Imagen"].length > 0) {
-                        data = {
-                            "id": n.id,
-                            "titulo": n.titulo,
-                            "subtitulo": n.subtitulo,
-                            "contenido": parrafo,
-                            "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"]
-                        }
-
-                    } else {
-                        data = {
-                            "id": n.id,
-                            "titulo": n.titulo,
-                            "subtitulo": n.subtitulo,
-                            "contenido": parrafo,
-                            "fecha": fecha,
-                            "imagen": ""
-                        }
+    queriesNoticias.getListado(req.params.seccion).then((noticia) => {
+        if (noticia !== null) {
+            let not = [];
+            noticia.forEach(n => {
+                let data;
+                let fecha = new Date(n.createdAt).toLocaleString();
+                if (n['Imagen'].length > 0) {
+                    data = {
+                        "id": n.id,
+                        "titulo": n.titulo,
+                        "subtitulo": n.subtitulo,
+                        "contenido": n.contenido,
+                        "seccion": n.seccion,
+                        "fecha": fecha,
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
                     }
-
-                    not.push(data);
-                });
-
-                res.status(200).json(not);
+                } else {
+                    data = {
+                        "id": n.id,
+                        "titulo": n.titulo,
+                        "subtitulo": n.subtitulo,
+                        "contenido": n.contenido,
+                        "seccion": n.seccion,
+                        "fecha": fecha,
+                        "imagen": ""
+                    }
+                }
+                not.push(data);
+            });
+            const respuesta = {
+                success: true,
+                data: not,
+                msg: 'Noticias encontradas'
             }
-        }).catch((err) => {
-            res.status(200).json("No encontrada");
-        });
+
+            res.status(200).json(respuesta);
+        }
+    }).catch((err) => {
+        console.log(err);
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'Noticias no encontradas'
+        }
+        res.status(200).json(respuesta);
+    });
 }
 
-
+//Isa
 const registrarNoticia = async (req, res = response) => {
+    const emails = await queriesUsers.getSuscritosNewsletter(); //Alicia
+    
     queriesNoticias.insertarNoticias(req).then((noticia) => {
-        res.status(200).json(noticia);
+        emails.map(e => correo.mandarCorreo(e.email, {
+                    asunto: '¡Hay una noticia nueva!',
+                    cuerpoHtml: `<p>${ noticia.fecha }</p>
+                                <h1>${ noticia.titulo }</h1>
+                                <h2>${ noticia.subtitulo }</h2>
+                                <div>${ noticia.contenido }</div><br><hr>
+                                <p><small>
+                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/">
+                                    Darse de baja
+                                </small></p>` 
+                    })
+                );//Alicia
+
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia registrada'
+        }
+        res.status(200).json(respuesta);
 
     }).catch((err) => {
-        res.status(203).json("Error de registro");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido registrar'
+        }
+        res.status(203).json(respuesta);
     });
 }
 
 
+//Isa
 const getNoticia = (req, res = response) => {
     queriesNoticias.getNoticia(req.body.id).then((noticia) => {
         if (noticia !== null) {
@@ -67,7 +102,7 @@ const getNoticia = (req, res = response) => {
                     "subtitulo": noticia.dataValues.subtitulo,
                     "contenido": noticia.dataValues.contenido,
                     "seccion": noticia.dataValues.seccion,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues["Imagen"][0]["id"]
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues.Imagen[0]["id"]
                 }
             } else {
                 data = {
@@ -79,36 +114,70 @@ const getNoticia = (req, res = response) => {
                     "imagen": ""
                 }
             }
-            res.status(200).json(data);
+            const respuesta = {
+                success: true,
+                data: data,
+                msg: 'Noticia encontrada'
+            }
+            res.status(200).json(respuesta);
         } else {
-            res.status(200).json("No encontrada");
+            const respuesta = {
+                success: false,
+                msg: 'No se ha encontrado'
+            }
+            res.status(200).json(respuesta);
         }
     }).catch((err) => {
-        res.status(200).json("No encontrada");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha encontrado'
+        }
+        res.status(200).json(respuesta);
     });
 }
 
 
+//Isa
 const borrarNoticia = (req, res = response) => {
     queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
-        res.status(200).json("La noticia ha sido borrada");
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia borrada'
+        }
+        res.status(200).json(respuesta);
 
     }).catch((err) => {
-        res.status(200).json("No se ha podido borrar");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido borrar'
+        }
+        res.status(200).json(respuesta);
     });
 }
 
-
+//Isa
 const modificarNoticia = (req, res = response) => {
     queriesNoticias.modificarNoticia(req).then((noticia) => {
-        res.status(200).json(noticia);
-
+        const respuesta = {
+            success: true,
+            data: noticia,
+            msg: 'Noticia editada'
+        }
+        res.status(200).json(respuesta);
     }).catch((err) => {
-        res.status(203).json("No se ha podido modificar");
+        const respuesta = {
+            success: false,
+            data: null,
+            msg: 'No se ha podido modificar'
+        }
+        res.status(203).json(respuesta);
     });
 }
 
-
+//Isa
 const mostrarImagen = (req, res = response) => {
     queriesNoticias.getImagen(req.params.id).then(imagen => {
         if (imagen) {
@@ -119,7 +188,7 @@ const mostrarImagen = (req, res = response) => {
             }
         }
     }).catch((err) => {
-        console.log("No se ha encontrado la foto");
+        res.status(200).json("No se ha encontrado");
     });
 }
 
