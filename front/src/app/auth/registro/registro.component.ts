@@ -33,20 +33,20 @@ export class RegistroComponent {
   ) {}
 
   ngOnInit() {
-    
+
     this.contraErronea = false;
     this.registradoExito = -1;
   }
 
   registro() {
 
+
     const nombre = this.registroForm.get('nombre')?.value + ' '
       + this.registroForm.get('ap1')?.value + ' '
       + this.registroForm.get('ap2')?.value;
 
     this.contraErronea = false;
-    // console.log(this.registroForm.get('passwd')?.value);
-    // console.log(this.registroForm.get('passwdRep')?.value);
+
     if (this.registroForm.get('passwd')?.value == this.registroForm.get('passwdRep')?.value) {
 
       const passwdHash = Md5.hashStr(this.registroForm.get('passwd')?.value);
@@ -56,7 +56,6 @@ export class RegistroComponent {
         nombre: nombre,
         passwd: passwdHash
       }).subscribe(resp => {
-
         console.log(resp);
         if (resp.success) {
           this.onFormValido.emit(0);

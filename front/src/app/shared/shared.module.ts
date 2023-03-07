@@ -7,7 +7,9 @@ import { FooterComponent } from './footer/footer.component';
 import { DirectivasModule } from './directivas/directivas.module';
 import { EmailFormularioComponent } from './newsletter/email-formulario/email-formulario.component';
 import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/newsletter-ventana.component';
-import { StickyTopDirective } from './directivas/sticky-top.directive';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ModalPedirCitaComponent } from './modal-pedir-cita/modal-pedir-cita.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,17 @@ import { StickyTopDirective } from './directivas/sticky-top.directive';
     CommonModule,
     RouterModule,
     DirectivasModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularEditorModule,
+    NgbModule
+  ],
+  entryComponents: [
+    ModalPedirCitaComponent
   ],
   exports: [
     MenuComponent,
     FooterComponent,
-    NewsletterVentanaComponent
+    NewsletterVentanaComponent,
   ]
 })
 

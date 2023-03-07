@@ -47,27 +47,25 @@ export const tiempoAnimacion = 250;
       ])
     ])
   ]
-})
+}) //Alicia
 export class NewsletterVentanaComponent {
-
-  @ViewChild('newsletter') newsletter!: ElementRef<HTMLDivElement>;
 
   mostrar: boolean = true;
   suscrito: boolean = false;
   titulo: string = '¡No te pierdas nada!';
   texto: string = 'Suscríbete a nuestra newsletter para estar al tanto de noticias y eventos.';
-  icono: string = 'fa-paper-plane';
 
+  //Alicia
   cerrar() {
     this.mostrar = false;
   }
 
+  //Alicia
   cambiarMensaje(event: boolean) {
     this.suscrito = true;
 
     this.titulo = '¡Gracias por apuntarte!';
     this.texto = 'Hemos enviado un enlace de verificación a tu correo ¡No olvides visitarlo para empezar a recibir notificaciones!';
-    this.icono = 'fa-envelope-circle-check';
 
     setTimeout(() => this.cerrar(), 5000);
   }

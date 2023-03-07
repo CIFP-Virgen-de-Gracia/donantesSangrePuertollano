@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
-import { Email } from '../../interfaces/email.interface';
+import { Email } from '../../interfaces/shared.interface';
 
 @Component({
   selector: 'app-email-formulario',
@@ -15,13 +15,14 @@ export class EmailFormularioComponent {
   emailForm!: FormGroup;
   mensaje: string = '';
   icono: string = '';
-
+  suscrito: boolean | undefined;
 
   constructor(
     private fb: FormBuilder,
     private sharedService: SharedService
   ) { }
 
+  //Alicia
   ngOnInit(): void {
     this.emailForm = this.fb.group({
       email: ['', Validators.compose([
@@ -31,6 +32,7 @@ export class EmailFormularioComponent {
     });
   }
 
+  //Alicia
   suscribirse() {
     if (this.emailForm.valid) {
 
@@ -39,18 +41,17 @@ export class EmailFormularioComponent {
       this.sharedService.suscripcionNewsletter(email)
         .subscribe(resp => {
           this.mensaje = resp.msg;
+          this.suscrito = resp.success;
 
           if (resp.success) {
-            this.icono = 'fa-circle-check';
             this.onSubmit.emit(true);
             return;
           }
         });
 
     } else {
+      this.suscrito = false;
       this.mensaje = 'Email no válido';
     }
-
-    this.icono = 'fa-triangle-exclamation';
   }
 }

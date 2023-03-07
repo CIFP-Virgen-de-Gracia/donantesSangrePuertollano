@@ -1,4 +1,4 @@
-const {response,request} = require('express');
+const { response, request } = require('express');
 const queriesUsers = require("../database/queries/queriesUsers");
 const generarJWT = require('../helpers/generarJWT');
 const correo = require('../helpers/mail');
@@ -6,14 +6,16 @@ const genPasswd = require('generate-password');
 const titleCase = require('title-case');
 const md5 = require('md5');
 const genCode = require('../helpers/genCode');
-const User = require('../models/User');
+const HTMLs = require('../helpers/archivosHtml');
+const models = require('../models/index.js');
+const userCan = require('../helpers/rolesAbilities');
+const { v4: uuidv4 } = require('uuid');
 
 
-
-//Todo Mario menos activarNewsletter
+// Mario
 const login = (req, res = response) => { // traer y comparar aquí o traer y volver a chocar con la db.
 
-    queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get habilities
+    queriesUsers.getUserLogin(req.body.email, req.body.passwd).then(user => { // get abilities
 
         const resp = {
             success: true,
@@ -39,22 +41,23 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 }
 
 
-const googleSignin = async(req, res = response) => {
+// Mario
+const googleSignin = async (req, res = response) => {
 
     const { id_token } = req.body;
 
     try {
-        const { correo, nombre, img } = await googleVerify( id_token );
+        const { correo, nombre, img } = await googleVerify(id_token);
 
-        const [email, creado] = await Email.findOrCreate({
-            where: {email: correo}
+        const [email, creado] = await models.Email.findOrCreate({
+            where: { email: correo }
         });
 
         let user = null;
-        user = (creado) 
+        user = (creado)
             ? await queriesUsers.insertUser(email.id, nombre)
             : await queriesUsers.getUser(email.id);
-        
+
         const resp = {
             success: true,
             data: {
@@ -78,63 +81,98 @@ const googleSignin = async(req, res = response) => {
     }
 }
 
-
+// Mario
 const register = async (req, res = response) => { // poner código
-
-
-    const emailUser = await queriesUsers.insertEmail(req.body.email);
-
-    console.log(emailUser.id);
-    queriesUsers.insertUser(emailUser.id, titleCase.titleCase(req.body.nombre), req.body.passwd).then(resp => {
-
-        correo.mandarCorreoActivacion(resp.id, req.body.email, 'activarCorreo');
+    const vKey = uuidv4();
+   
+    try {
+        const emailUser = await queriesUsers.insertEmail(vKey, req.body.email);
+        const resp = await queriesUsers.insertUser(emailUser.id, titleCase.titleCase(req.body.nombre), req.body.passwd);
+    
+        correo.mandarCorreoActivacion(vKey, resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
-    }).catch(err => { 
+    
+    } 
+    catch (err) {
 
         console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
 
-        res.status(200).json({success: false, msg: msg});
-    });
+        res.status(200).json({ success: false, msg: msg });
+    }
 }
 
 
+// Mario
 const activarCorreo = (req, res = response) => {
-    queriesUsers.updateVerificacionEmail(req.params.id)
+    queriesUsers.updateVerificacionEmail(req.params.id, req.params.vKey)
         .then(resp => {
+            if (resp) res.send(HTMLs.exitoVerificarEmail());
+            else res.send(HTMLs.error());
 
-            res.status(201).json({ success: true, resp: resp });
-    }).catch(err => {
-
-        res.status(200).json({ success: false, error: 'Se ha producido un error' });
-    });
+        }).catch(err => {
+            res.send(HTMLs.error());
+        });
 }
 
 
 // Alicia
 const activarNewsletter = (req, res = response) => {
-    const html = `<div style="font-family: Arial, Helvetica, sans-serif;">
-                    <h2 style="border-bottom: 0.3rem solid rgb(174, 17, 40);padding-bottom:.5rem;width:fit-content;">
-                        ¡Email verificado con éxito!
-                    </h2>
-                    <p>Recibirás una notificación por correo cada vez que publiquemos una noticia.</p>
-                </div>`;
+    queriesUsers.updateVerificacionEmailNewsletter(req.params.id, req.params.vKey)
+        .then(resp => { 
+            if (resp) res.send(HTMLs.exitoVerificarNewsletter());
+            else res.send(HTMLs.error());
 
-    queriesUsers.updateVerificacionEmailNewsletter(req.params.id)
-        .then(resp => {
-            res.send(html);
-            /* res.status(201).redirect(process.env.INDEX ); *//*  
-            res.status(201).json({ success: true, resp: resp }); */
         }).catch(err => {
-            res.status(200).json({ success: false, error: 'Se ha producido un error' });
+            res.send(HTMLs.error())
         });
 
 }
 
 
-const mandarEmailRecuperarPasswd = async(req, res = response) => {
+// Alicia
+const mandarEmailNewsletter = async (req, res = response) => {
+    const vKey = uuidv4();
+
+    try {
+
+        let resp = await queriesUsers.getEmail(req.body.email);
+
+        if (resp == null) resp = await queriesUsers.insertEmailNewsletter(vKey, req.body.email);
+        else resp = await queriesUsers.updateVKeyNewsletterEmail(vKey, resp.id);
+
+        if (resp.newsletterVerifiedAt != null) {
+            res.status(200).json({ success: false, msg: 'Ya estás suscrito' });
+            
+        } else {
+            correo.mandarCorreoActivacion(vKey, resp.id, req.body.email, 'activarNewsletter')
+            res.status(201).json({ success: true, msg: 'Enviado con éxito' });
+        } 
+
+    } catch (error) {
+        res.status(200).json({ success: false, msg: 'Se ha producido un error' });
+    }
+}
+
+
+// Alicia
+const desactivarNewsletter = (req, res = response) => {
+    queriesUsers.updateCancelarNewsletter(req.params.id)
+        .then(resp => {
+            if (resp) res.send(HTMLs.exitoBajaNewsletter());
+            else res.send(HTMLs.error());
+            
+        }).catch(err => {
+            res.send(HTMLs.error())
+        });
+
+}
+
+
+// Mario
+const mandarEmailRecuperarPasswd = async (req, res = response) => {
 
     try {
         // const emailUser = await queriesUsers.getEmailById(email); // req.params.id
@@ -146,12 +184,12 @@ const mandarEmailRecuperarPasswd = async(req, res = response) => {
                 Tu código: ${(cod)}.
             `
         }
-    
+
         correo.mandarCorreo(req.body.email, contenido);
 
         const emailUser = await queriesUsers.getIdEmail(req.body.email);
         const respUser = await queriesUsers.updateCodRecPasswd(emailUser.id, cod);
-    
+
         const resp = {
             success: true,
             id: respUser.user.id,
@@ -162,31 +200,32 @@ const mandarEmailRecuperarPasswd = async(req, res = response) => {
     }
     catch (err) {
 
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
+        res.status(200).json({ success: false, msg: 'se ha producido un error' });
     }
 }
 
 
-const recuperarPasswd = async(req, res = response) => {
-    
+// Mario
+const recuperarPasswd = async (req, res = response) => {
+
     try {
         const user = await queriesUsers.getUser(req.params.id);
-        
+
         let resp = null;
         console.log(user.codRecPasswd);
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);
-        
+
             const respUpdate = await queriesUsers.updateUserPasswd(req.params.id, nuevaPasswdHash); // req.params.id
-            
+
             const email = await queriesUsers.getEmailById(req.params.id);
             const contenido = {
                 asunto: 'Cambio de contraseña',
                 cuerpoHtml: `La nueva contraseña para tu cuenta: ${(nuevaPasswd)}.`
             }
             correo.mandarCorreo(email.email, contenido);
-            
+
             resp = {
                 success: true,
                 id: user.id,
@@ -202,14 +241,44 @@ const recuperarPasswd = async(req, res = response) => {
 
         res.status(200).json(resp);
     }
-    catch(err) {
+    catch (err) {
 
         console.log(err);
-        const resp = {success: false, msg: 'ha sucedido un error'};
+        const resp = { success: false, msg: 'ha sucedido un error' };
 
         res.status(200).json(resp);
     }
 }
+
+
+// Alicia
+const puedeModificar = async (req, res = response) => {
+    let resp = { success: false }; 
+    
+    try {
+        
+        const autorizado = await userCan(req, ['leer', 'editar', 'borrar']);
+        
+        if (autorizado) {
+            const user = queriesUsers.getUser(req.params.id);
+
+            resp = {
+                success: true,
+                data: { //TODO: Debería borrar esto?
+                    id: user.id,
+                    nombre: user.nombre,
+                    token: generarJWT(user.id),
+                }
+            }            
+        };
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
 
 
 module.exports = {
@@ -218,5 +287,8 @@ module.exports = {
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,
-    recuperarPasswd
+    recuperarPasswd,
+    puedeModificar,
+    desactivarNewsletter,
+    mandarEmailNewsletter
 }

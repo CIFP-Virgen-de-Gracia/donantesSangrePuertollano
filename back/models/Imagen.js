@@ -1,28 +1,30 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require('../database/ConexionSequelize');
-require('dotenv').config();
+'use strict';
+const { Model } = require('sequelize');
 
-const Noticias = require('../models/Noticias');
-
-//Isa
-const Imagen = sequelize.db.define("imagenes", {
-    idNoticia: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: false,
-        allowNull: false,
-
-    },
-    nombre: {
-        type: DataTypes.STRING,
-        allowNull: false
+module.exports = (sequelize, DataTypes) => {
+  class Imagen extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      Imagen.belongsTo(models.Noticia, {
+        foreignKey: 'idNoticia',
+        targetKey: 'id',
+        as: 'Noticia'
+      });
     }
-},
-    {
-        tableName: 'imagenes'
-    });
+  }
+  Imagen.init({
+    idNoticia: DataTypes.BIGINT,
+    nombre: DataTypes.STRING
+  }, {
+    sequelize,
+    tableName: 'imagenes',
+    modelName: 'Imagen',
+    timestamps: false,
+  });
 
-sequelize.sync();
-sequelize.desconectar();
-
-module.exports = Imagen;
+  return Imagen;
+}; 

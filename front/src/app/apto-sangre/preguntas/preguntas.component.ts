@@ -11,8 +11,8 @@ export class PreguntasComponent implements OnChanges{
   @Input() pregunta!: Pregunta;
   @Output() botonAparece = new EventEmitter();
   @ViewChild('imagen') imagen!: ElementRef;
-  @ViewChild('{{pregunta.nombre_img}}_si') radio_si!: ElementRef<HTMLInputElement>;
-  @ViewChild('{{pregunta.nombre_img}}_no') radio_no!: ElementRef<HTMLInputElement>;
+  @ViewChild('{{pregunta.titulo}}_si') radio_si!: ElementRef<HTMLInputElement>;
+  @ViewChild('{{pregunta.titulo}}_no') radio_no!: ElementRef<HTMLInputElement>;
 
   constructor(private renderer2: Renderer2){}
 
@@ -20,7 +20,6 @@ export class PreguntasComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges) {
     if(this.radio_si != null && this.radio_no != null){
       const imagen = this.imagen.nativeElement;
-      console.log(imagen);
       const radio_si = this.radio_si.nativeElement;
       const radio_no = this.radio_no.nativeElement;
       if(radio_si.checked == true){
@@ -35,8 +34,8 @@ export class PreguntasComponent implements OnChanges{
   dandoValor($event: any): void{
     const radio_si = this.radio_si.nativeElement;
     const radio_no = this.radio_no.nativeElement;
-    this.renderer2.setAttribute(radio_si,"value","Si");
-    this.renderer2.setAttribute(radio_no,"value","No");
+    this.renderer2.setAttribute(radio_si,"value", "1");
+    this.renderer2.setAttribute(radio_no,"value", "0");
     this.botonAparece.emit($event.target.value);
 
   }

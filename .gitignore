@@ -28,6 +28,14 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# ignore .angular/cache directory
+front/.angular/cache/*
+
+# allow .angular/cache subdirectories and files to be tracked
+!front/angular/cache/
+!front/angular/cache/**/
+!front/angular/cache/**/*.*
+
 # Miscellaneous
 front/.angular/cache
 front/.sass-cache/
@@ -41,8 +49,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+back/config/config.json
 front/node_modules
-.env
+back/.env
 .gitkeep
 zzzPruebasSucio.js
 

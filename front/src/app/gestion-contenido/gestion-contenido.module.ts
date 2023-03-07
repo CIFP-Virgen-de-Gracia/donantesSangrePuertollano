@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BorrarComponent } from './borrar/borrar.component';
 import { EditadoComponent } from './editado/editado.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { EditadoComponent } from './editado/editado.component';
     SharedModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    AngularEditorModule
   ],
   providers: [
     ContenidoService

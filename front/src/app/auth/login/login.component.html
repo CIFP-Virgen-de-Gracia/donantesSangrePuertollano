@@ -1,12 +1,12 @@
 <form (ngSubmit)="login()">
     <div *ngIf="this.erroneo" class="form-text errorLogin">
-        Usuario o constraseña incorrectos   
+        Usuario o constraseña incorrectos
     </div>
 
     <div class="email mb-3">
         <label class="form-label" for="email">Email</label><br>
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="form-control"
             name="email"
             placeholder="Introduce tu email"
@@ -16,7 +16,7 @@
 
     <div class="passwd mt-4">
         <label class="form-label" for="passwd">Constraseña</label><br>
-        <input 
+        <input
             type="password"
             class="form-control"
             name="passwd"
@@ -25,26 +25,26 @@
         >
         <div class="mt-2 mb-5 d-flex justify-content-end">
             <a
-                class="me-2 olvidoPasswd" 
+                class="me-2 olvidoPasswd"
                 (click)="irARecPasswd()">¿Olvidaste tu contraseña?</a>
         </div>
     </div>
 
-    
-    <div class="botonesLogin mb-3 d-flex justify-content-center">
-        <button type="submit" class="btn w-100 btnAceptar">Aceptar</button>
-    </div> 
-    
+
+    <div class="botonesLogin d-flex justify-content-center">
+        <button type="submit" class="btn-primario">Aceptar</button>
+    </div>
+
 </form>
 
-<div class="card-body w-100 p-0">
-    <div class="text-center mt-5 mb-3">¿Aún no te has registrado?</div>
+<div class="card-body w-100 p-0 d-flex justify-content-center mb-5">
+    <div class="text-center mt-5 ">¿Aún no te has registrado?</div>
+</div>
 
-    <div class="botonRegistro mb-2">
-        <button 
-        type="button" 
-        class="btn w-100 border-red"
+<div class="card-body w-100 p-0 d-flex justify-content-center">
+        <button
+        type="button"
+        class="btn btn-secundario"
         (click)="irARegistro()"
         >Registrarse</button>
-    </div>
 </div>
