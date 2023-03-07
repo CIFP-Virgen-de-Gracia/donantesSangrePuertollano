@@ -67,7 +67,7 @@ const registrarNoticia = async (req, res = response) => {
                                 <h2>${ noticia.subtitulo }</h2>
                                 <div>${ noticia.contenido }</div><br><hr>
                                 <p><small>
-                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/">
+                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/${e.vKeyNewsletter}">
                                     Darse de baja
                                 </small></p>` 
                     })
