@@ -47,7 +47,7 @@ export const tiempoAnimacion = 250;
       ])
     ])
   ]
-})
+}) //Alicia
 export class NewsletterVentanaComponent {
 
   mostrar: boolean = true;
@@ -55,10 +55,12 @@ export class NewsletterVentanaComponent {
   titulo: string = '¡No te pierdas nada!';
   texto: string = 'Suscríbete a nuestra newsletter para estar al tanto de noticias y eventos.';
 
+  //Alicia
   cerrar() {
     this.mostrar = false;
   }
 
+  //Alicia
   cambiarMensaje(event: boolean) {
     this.suscrito = true;
 

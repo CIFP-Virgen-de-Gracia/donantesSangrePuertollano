@@ -24,16 +24,20 @@
             && this.emailRecPasswdForm.get('email')?.touched"
     >Este campo es obligatorio</span>
 
-    <div class="card-body p-0 mt-5">
+    <div class="card-body w-100 p-0 mt-5 d-flex justify-content-center">
         <button 
-        type="submit"
-        class="btnAceptar w-100 mb-3 d-block"
-        [disabled]="emailRecPasswdForm.invalid">Aceptar</button>
+            type="submit"
+            class="btn-primario mb-3"
+            [disabled]="emailRecPasswdForm.invalid">Aceptar</button>
+    </div>
+
+    <div class="card-body w-100 p-0 mt-3 d-flex justify-content-center">
         <button
             type="button"
-            class="border-red w-100 d-block"
+            class="btn-secundariod-block"
             (click)="irAlLogin()">Cancelar</button>
     </div>
+    
 </form>
 
 
@@ -55,11 +59,11 @@
     <div class="card-body p-0 mt-5">
         <button 
         type="submit"
-        class="btnAceptar w-100 mb-3 d-block"
+        class="btn btn-primario mb-3"
         [disabled]="emailRecPasswdForm.invalid">Aceptar</button>
         <button
             type="button"
-            class="border-red w-100 d-block"
+            class="btn btn-secundario"
             (click)="irAlLogin()">Ir al login</button>
     </div>
 </form>

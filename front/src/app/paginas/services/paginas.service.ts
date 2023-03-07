@@ -15,7 +15,7 @@ export class PaginasService {
   constructor(private http: HttpClient) {
     this.canciones = [];
   }
-
+  //Alicia
   getIntegrantesCargo(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/api/getIntegrantesCargo`)
   }

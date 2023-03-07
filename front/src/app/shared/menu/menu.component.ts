@@ -30,8 +30,8 @@ export class MenuComponent implements OnInit {
 
 
   ngOnInit() {
-
     const user = localStorage.getItem('user');
+
     if (user) {
       this.estaRegistrado = true;
 
@@ -59,12 +59,12 @@ export class MenuComponent implements OnInit {
   }
 
   // async ensenarModalPedirCita() {
-    
+
   //   if(this.estaRegistrado) {
   //     const id = JSON.parse(localStorage.getItem('user')!).id
-      
+
   //     const resp = await lastValueFrom(this.citasService.compHaPedidoCita(id));
-      
+
   //     this.puedePedirCita = resp.success;
   //   }
 
@@ -75,14 +75,15 @@ export class MenuComponent implements OnInit {
 
   // ensenarModal() {
   //   if (!this.estaRegistrado) this.modal.open(ModalPedirCitaComponent);
-  //   else this.router.navigate(['/citas/pedircita']); 
+  //   else this.router.navigate(['/citas/pedircita']);
   // }
 
   cerrarSesion() {
     localStorage.removeItem('user');
     this.estaRegistrado = false;
+    this.puedeModificar = false;
     this.router.navigate(['']);
   }
 
-  
+
 }

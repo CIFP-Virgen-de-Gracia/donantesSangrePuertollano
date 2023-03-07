@@ -1,5 +1,4 @@
 const sequelize = require('../ConexionSequelize');
-const Galeria = require('../../models/Galeria');
 const fs = require("fs");
 const path = require('path');
 const fileUpload = require('express-fileupload');

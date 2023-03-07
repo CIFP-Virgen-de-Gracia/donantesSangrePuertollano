@@ -15,6 +15,7 @@ export class LaHermandadComponent implements OnInit {
 
   constructor(private SharedService: SharedService) { }
 
+  //Alicia
   ngOnInit() {
     this.SharedService.getIntegrantesCargo()
       .subscribe(resp => {
