@@ -37,7 +37,34 @@ const modificarPregunta = (req, res = response) => {
 }
 
 const borrarPregunta = (req, res = response) => {
+const {response, request} = require('express');
+const queriesAptoSangre = require('../database/queries/queriesAptoSangre');
+//Todo Alejandro
+const mostrarPreguntas = (req = request, res = response) => {
+    const conx = new queriesAptoSangre();
+    conx.getPreguntas()
+    .then( msg => {
+        res.status(200).json(msg);
+    });
+}
+
+const mostrarPregunta = (req = request, res = response) => {
+    const conx = new queriesAptoSangre();
+    conx.getPregunta(req.params.id)
+    .then( msg => {
+        res.status(200).json(msg);
+    });
+}
+
+const generarPregunta = (req = request, res = response) => {
+    const conx = new queriesAptoSangre();
+    conx.generarPregunta(req.body.enunciado, req.body.nombre_imagen, req.body.respuesta, req.body.solucion_problema)
+    .then( msg => {
+        res.status(201).json(msg);
+    });
+}
     
+
     queries_AptoSangre.eliminarPregunta(req.params.id).then( msg => {
         res.status(202).json(msg);
     }).catch((err) => {
@@ -51,4 +78,9 @@ module.exports = {
     generarPregunta,
     modificarPregunta,
     borrarPregunta
+}
+module.exports = {
+    mostrarPreguntas,
+    mostrarPregunta,
+    generarPregunta
 }
