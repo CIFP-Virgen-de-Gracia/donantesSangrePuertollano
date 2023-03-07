@@ -46,12 +46,8 @@ class QueriesUsers {
 
     //Mario
     getEmailById = async(id) => {
-        this.sequelize.conectar();
 
         const resp = await models.Email.findByPk(id);
-
-        console.log(id);
-        console.log(resp);
 
         return resp.dataValues;
     }

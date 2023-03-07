@@ -9,13 +9,13 @@ const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
 const { check } = require('express-validator');
 
-// Mario y Alicia
 
+// Mario y Alicia
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
 router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
-router.get('/puedeModificar/:id', auth.puedeModificar); //Alicia
+router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
 router.post('/suscripcionNewsletter', [
@@ -31,7 +31,12 @@ router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alic
 router.get('/getHistoria', contenido.getHistoria);
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
-router.put('/updateConfigHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateConfigHermandad);
+router.get('/getHorarios', contenido.getHorarios);
+router.get('/getTelefonos', contenido.getTelefonos);
+router.get('/getDirecciones', contenido.getDirecciones);
+router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
+router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
+
 
 
 // pedir cita routes

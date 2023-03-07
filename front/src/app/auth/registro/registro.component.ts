@@ -40,6 +40,7 @@ export class RegistroComponent {
 
   registro() {
 
+
     const nombre = this.registroForm.get('nombre')?.value + ' '
       + this.registroForm.get('ap1')?.value + ' '
       + this.registroForm.get('ap2')?.value;
@@ -55,7 +56,7 @@ export class RegistroComponent {
         nombre: nombre,
         passwd: passwdHash
       }).subscribe(resp => {
-
+        console.log(resp);
         if (resp.success) {
           this.onFormValido.emit(0);
         }

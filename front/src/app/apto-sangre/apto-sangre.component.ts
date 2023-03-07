@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Renderer2, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { Pregunta } from './interface/pregunta';
-import { ServicioService } from './servicio/servicio.service';
+import { aptosangreService } from './servicio/apto-sangre.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-apto-sangre',
@@ -11,13 +11,13 @@ export class AptoSangreComponent implements OnInit, AfterViewInit{
   hayHueco : boolean = true;
   contador : number = 0;
   respuestas : any[] = [];
-  constructor(private servicio: ServicioService, private renderer2: Renderer2, private router: Router){}
+  constructor(private apto_servicio: aptosangreService, private renderer2: Renderer2, private router: Router){}
   preguntas: Pregunta[] = [];
   preguntas_respuestas: any[] = [];
   @ViewChild('siguiente') boton_siguiente!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
-      this.servicio.getPreguntas().subscribe( pregunta => {this.preguntas = pregunta});
+      this.apto_servicio.getPreguntas().subscribe( pregunta => {this.preguntas = pregunta});
   }
 
   ngAfterViewInit(): void {
@@ -48,16 +48,15 @@ export class AptoSangreComponent implements OnInit, AfterViewInit{
         this.renderer2.setStyle(boton, 'visibility','hidden');
       }
       else{
-        console.log("Ha superado la maxima cantidad de preguntas");
         this.preguntas_respuestas = [this.preguntas.slice(0, this.contador + 1), (this.respuestas)]
-        this.servicio.preguntasEnviadas = this.preguntas_respuestas;
+        this.apto_servicio.preguntasEnviadas = this.preguntas_respuestas;
         this.router.navigate(['/resultado'], {skipLocationChange: true});
       }
     }
     else{
 
       this.preguntas_respuestas = [this.preguntas.slice(0, this.contador + 1), (this.respuestas)]
-      this.servicio.preguntasEnviadas = this.preguntas_respuestas;
+      this.apto_servicio.preguntasEnviadas = this.preguntas_respuestas;
       this.router.navigate(['/resultado'], {skipLocationChange: true});
     }
 

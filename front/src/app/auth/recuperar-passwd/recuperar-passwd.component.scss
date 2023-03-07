@@ -9,27 +9,5 @@ input {
 }
 
 button {
-    &.btnAceptar {
-        background-color: var(--color-secundario);
-        color: var(--bs-white);
-        // width: 10rem;
-
-        &:hover {
-            border: solid 1px var(--color-primario); 
-            background-color: var(--color-primario);
-        }
-    }
-    
-    &.border-red {    
-        border: solid 1px var(--color-secundario);  
-        color: var(--color-secundario);
-        // width: 10rem;
-
-        &:hover {
-            background-color: var(--color-contraste);
-            
-        }
-    }
-
-    border-radius: 2px;
+    width: 10rem;
 }

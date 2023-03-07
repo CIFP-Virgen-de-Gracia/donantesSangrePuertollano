@@ -1,11 +1,11 @@
 <header>
   <img class="banner" src="../../../assets/imagenes/banner.png">
 
-  <nav class="navbar navbar-expand-lg" appStickyTop>
+  <nav class="navbar navbar-expand-xl" appStickyTop>
 
     <a class="navbar-brand" href="#"><img src="../../../assets/imagenes/logo.png"></a>
 
-    <button class="navbar-toggler ms-auto me-3" type="button" data-bs-toggle="collapse"
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
       data-bs-target="#menu-horizontal" aria-controls="menu-horizontal" aria-expanded="false"
       aria-label="Toggle navigation">
       <i class="fa-solid fa-bars fs-2"></i>
@@ -20,8 +20,8 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item enlace" href="./donacion/sangre">Donación de sangre</a></li>
-            <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li>
-            <li><a class="dropdown-item enlace" href="./donación/medula">Donación de médula</a></li>
+            <!-- <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li>
+            <li><a class="dropdown-item enlace" href="./donación/medula">Donación de médula</a></li> -->
           </ul>
         </li>
 
@@ -63,7 +63,7 @@
 
     <div class="usuario-contenedor ms-5" *ngIf="estaRegistrado">
 
-      <i class="fa-solid fa-user-large fs-4 usuario dropdown-toggle" 
+      <i class="fa-solid fa-user-large fs-4 usuario dropdown-toggle"
         data-bs-toggle="dropdown" data-bs-target="dropdown-user"></i>
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">

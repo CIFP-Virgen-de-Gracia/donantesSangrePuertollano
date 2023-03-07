@@ -23,6 +23,27 @@ class QueriesContenidos {
     }
 
 
+    getHorarios = async () => {
+        const horarios = await models.Horario.findAll();
+
+        return horarios;
+    }
+
+
+    getTelefonos = async () => {
+        const telefonos = await models.Telefono.findAll();
+
+        return telefonos;
+    }
+
+
+    getDirecciones = async () => {
+        const direcciones = await models.Direccion.findAll();
+
+        return direcciones;
+    }
+
+
     getCargosJunta = async () => {
         const cargos = await models.CargoJunta.findAll();
 
@@ -55,7 +76,53 @@ class QueriesContenidos {
     }
 
 
+    insertHorario = async (horario) => {
+        try {
+            
+            this.sequelize.conectar();
+
+            const resp = await models.Horario.create({ 
+                dia: horario.dia,
+                hEntrada: horario.hEntrada,
+                hSalida: horario.hSalida,
+                createddAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    insertTelefono = async (tlfn) => {
+        
+        try {
+            
+            this.sequelize.conectar();
+
+            const resp = await models.Telefono.create({ 
+                numero: tlfn.numero,
+                extension: tlfn.extension,
+                createddAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
     updateHistoria = async (valor) => {
+        let resp = null;
+
         try {
             this.sequelize.conectar();
 
@@ -65,9 +132,13 @@ class QueriesContenidos {
                 }
             });
 
-            historia.update({ valor: valor })
-            const resp = await historia.save();
-
+            if (historia == null) {
+                resp = await models.Contenido.create({
+                    nombre: 'historia',
+                    valor: valor
+                });
+            } else resp = await historia.update({ valor: valor });
+            
             this.sequelize.desconectar();
             return resp;
 
@@ -82,8 +153,7 @@ class QueriesContenidos {
             this.sequelize.conectar();
 
             const int = await models.IntegranteJunta.findByPk(integrante.id);
-            int.update({ nombre: integrante.nombre });
-            const respInt = await int.save();
+            const respInt = await int.update({ nombre: integrante.nombre });
 
             this.sequelize.desconectar();
 
@@ -113,12 +183,115 @@ class QueriesContenidos {
                 }
             });
           
-            cargoInt.update({ idCargo: idCargo.id });
-            const respCargo = await cargoInt.save();
+            const respCargo = await cargoInt.update({ idCargo: idCargo.id });
             
             this.sequelize.desconectar();
 
             return respCargo;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    updateDireccion = async (direccion) => {
+        try {
+            this.sequelize.conectar();
+
+            const dir = await models.Direccion.findByPk(direccion.id);
+            const resp = await dir.update({ 
+                lugar: direccion.lugar,
+                calle: direccion.calle,
+                numero: direccion.numero,
+                provincia: direccion.provincia,
+                ciudad: direccion.ciudad,
+                cp: direccion.cp,
+                updatedAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    updateTelefono = async (telefono) => {
+        try {
+            this.sequelize.conectar();
+
+            const tlfn = await models.Telefono.findByPk(telefono.id);
+            const resp = await tlfn.update({ 
+                numero: telefono.numero,
+                extension: telefono.extension,
+                updatedAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    updateHorario = async (horario) => {
+        try {
+            this.sequelize.conectar();
+
+            const h = await models.Horario.findByPk(horario.id);
+            
+            const resp = await h.update({ 
+                hEntrada: horario.hEntrada,
+                hSalida: horario.hSalida,
+                updatedAt: new Date().toLocaleString()
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    deleteHorario = async (id) => {
+        try {
+            this.sequelize.conectar();
+            
+            const resp = await models.Horario.destroy({ 
+                where: { id: id }
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    deleteTelefono = async (id) => {
+        try {
+            this.sequelize.conectar();
+            
+            const resp = await models.Telefono.destroy({ 
+                where: { id: id }
+            });
+            
+            this.sequelize.desconectar();
+
+            return resp;
 
         } catch (err) {
             throw err;

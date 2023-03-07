@@ -11,6 +11,10 @@ import { HimnoConfigComponent } from './himno-config/himno-config.component';
 import { AddHimnoComponent } from './auxiliarHimno/add-himno/add-himno.component';
 import { EditHimnoComponent } from './auxiliarHimno/edit-himno/edit-himno.component';
 import { DeleteHimnoComponent } from './auxiliarHimno/delete-himno/delete-himno.component';
+import { TestConfigComponent } from './test-config/test-config.component';
+import { AniadirPreguntaComponent } from './test-config/aniadir-pregunta/aniadir-pregunta.component';
+import { ModificarPreguntaComponent } from './test-config/modificar-pregunta/modificar-pregunta.component';
+import { BorrarPreguntaComponent } from './test-config/borrar-pregunta/borrar-pregunta.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +25,10 @@ import { DeleteHimnoComponent } from './auxiliarHimno/delete-himno/delete-himno.
     AddHimnoComponent,
     EditHimnoComponent,
     DeleteHimnoComponent,
+    TestConfigComponent,
+    AniadirPreguntaComponent,
+    ModificarPreguntaComponent,
+    BorrarPreguntaComponent
   ],
   imports: [
     FormsModule,
