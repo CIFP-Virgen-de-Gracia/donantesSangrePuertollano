@@ -62,9 +62,26 @@ div.container-fluid {
                         border-color: var(--granate-oscuro);
                     }
     
-                    span.derechaTexto {
+                    span.derechaTextoGrande {
+                        display: block;
                         width: 6rem;
                         max-width: 6rem;
+                    }
+
+                    span.derechaTextoPequeno {
+                        display: none;
+                    }
+
+                    @media(max-width: 576px) {
+                        span.derechaTextoGrande {
+                            display: none;
+                        }
+    
+                        span.derechaTextoPequeno {
+                            display: block;
+                            width: 3rem;
+                            max-width: 3rem;
+                        }
                     }
     
                     span.derechaBoton {
@@ -72,34 +89,8 @@ div.container-fluid {
                         width: 6rem;
                         max-width: 6rem;
                     }
-    
                 }
             }
-            
-
-            button {
-                &.btnCancelar {
-                    background-color: var(--color-secundario);
-                    color: var(--bs-white);
-            
-                    &:hover {
-                        background-color: var(--color-primario);
-                    }
-                }
-                
-                &.border-red {    
-                    border: solid 1px var(--color-secundario);  
-                    color: var(--color-secundario);
-            
-                    &:hover {
-                        background-color: var(--color-contraste);
-                        
-                    }
-                }
-            
-                border-radius: 2px;
-            }
-
         }
     }
 }    

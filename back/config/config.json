@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "mario",
-    "password": "Chubaca2022",
+    "username": "root",
+    "password": "",
     "database": "donantes",
     "host": "127.0.0.1",
     "dialect": "mysql"

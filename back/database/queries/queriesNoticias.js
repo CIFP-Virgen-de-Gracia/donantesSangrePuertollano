@@ -52,7 +52,7 @@ class QueriesNoticias {
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
                     "fecha": fecha,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id,
                 }
             }
         } catch (err) {
@@ -95,7 +95,6 @@ class QueriesNoticias {
                     }
                 ],
             });
-        console.log(noticias);
         this.sequelize.desconectar();
         return noticias;
     }
@@ -103,7 +102,9 @@ class QueriesNoticias {
 
     getImagen = async (id) => {
         this.sequelize.conectar();
-        const imagen = await models.Imagen.findByPk(id);
+        const imagen = await models.Imagen.findOne({
+            where: { id: id }
+        });
         this.sequelize.desconectar();
         return imagen;
     }
@@ -148,7 +149,7 @@ class QueriesNoticias {
                             "subtitulo": resp.subtitulo,
                             "contenido": resp.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["id"]
                         }
                     } else {
                         data = {
@@ -169,7 +170,7 @@ class QueriesNoticias {
                     noticia.seccion = noticia.dataValues.seccion;
                     noticia.updatedAt = new Date();
                     await noticia.save();
-                    
+
                     if (noticia["Imagen"].length > 0) {
                         const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
                         if (fs.existsSync(pathImagen)) {
@@ -181,6 +182,15 @@ class QueriesNoticias {
                         noticia["Imagen"][0]["idNoticia"] = noticia.dataValues.id;
                         noticia["Imagen"][0]["nombre"] = nombre;
                         noticia["Imagen"][0].save();
+                        let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
+                        data = {
+                            "id": noticia.id,
+                            "titulo": noticia.titulo,
+                            "subtitulo": noticia.subtitulo,
+                            "contenido": noticia.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["id"]
+                        }
 
 
                     } else {
@@ -190,17 +200,15 @@ class QueriesNoticias {
                             idNoticia: noticia.dataValues.id,
                             nombre: nombre
                         });
-                    }
-
-                    let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
-
-                    data = {
-                        "id": noticia.id,
-                        "titulo": noticia.titulo,
-                        "subtitulo": noticia.subtitulo,
-                        "contenido": noticia.contenido,
-                        "fecha": fecha,
-                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.id
+                        let fecha = new Date(noticia.dataValues.createdAt).toLocaleString();
+                        data = {
+                            "id": noticia.id,
+                            "titulo": noticia.titulo,
+                            "subtitulo": noticia.subtitulo,
+                            "contenido": noticia.contenido,
+                            "fecha": fecha,
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id
+                        }
                     }
                 }
             }
@@ -208,7 +216,6 @@ class QueriesNoticias {
         } catch (err) {
             throw err;
         }
-        console.log(data);
         this.sequelize.desconectar();
         return data;
     }

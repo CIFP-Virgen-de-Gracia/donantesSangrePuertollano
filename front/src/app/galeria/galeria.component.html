@@ -1,19 +1,26 @@
 <div class="row w-100">
   <div class="row">
     <div class="col-12 text-center mt-5 mb-4">
-      <h1>Galeria: </h1>
+      <h1 class="titulo subrayado">Galeria: </h1>
     </div>
   </div>
   <div class="row d-flex justify-content-center align-items-center g-2 g-lg-3 w-100">
-
-    <div (click)="fotoSeleccionada($event)" class="col-md-4 col-sm-6 col-12 p-3 custom-control custom-checkbox image-checkbox text-center"
-    *ngFor="let imagen of this.galeria_imagenes | paginate: { itemsPerPage: 6, currentPage: p } ">
-      <label class="custom-control-label" for="{{imagen.id}}">
-        <img  class="img-fluid w-50" src="../../assets/imagenes/galeria/{{imagen.nombre}}">
-      </label>
-      <input type="checkbox" class="custom-control-input checkbox-inline" id="{{imagen.id}}" alt="{{imagen.nombre}}">
-    </div>
-
+    <ng-container *ngIf="this.galeria_imagenes.length > 0; else ningunMensaje">
+      <div (click)="fotoSeleccionada($event)" class="col-md-4 col-sm-6 col-12 p-3 custom-control custom-checkbox image-checkbox text-center"
+      *ngFor="let imagen of this.galeria_imagenes | paginate: { itemsPerPage: 6, currentPage: p } ">
+        <label class="custom-control-label" for="{{imagen.id}}">
+          <img  class="img-fluid w-50" src="../../assets/imagenes/galeria/{{imagen.nombre}}">
+        </label>
+        <input type="checkbox" class="custom-control-input checkbox-inline" id="{{imagen.id}}" alt="{{imagen.nombre}}">
+      </div>
+      <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente" class="text-center">
+      </pagination-controls>
+    </ng-container>
+    <ng-template #ningunMensaje>
+      <div class="col-12 text-center mb-3">
+        <h1>No hay ninguna imagen disponible</h1>
+      </div>
+    </ng-template>
     <!-- <div class="col-md-4 col-sm-6 col-12 p-3 custom-control custom-checkbox image-checkbox text-center">
       <label class="custom-control-label" for="1">
         <img class="img-fluid w-50 border border-3 border-dark rounded-3" src="../../assets/imagenes/apto_sangre/viaje.png">
@@ -53,11 +60,9 @@
       </label>
       <input type="checkbox" class="custom-control-input checkbox-inline" id="6">
     </div> -->
-    <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente" class="text-center">
 
-    </pagination-controls>
   </div>
-  <div class="row d-flex justify-content-evenly mb-3">
+  <div *ngIf="puedeModificar" class="row d-flex justify-content-evenly mb-3">
     <div class="col-md-6 col-12 text-center">
       <button #boton_Añadir class="btn btn-danger border-3 rounded-2 w-50 mb-2" data-bs-toggle="modal"
       data-bs-target="#modalSubirFoto">Subir foto</button>

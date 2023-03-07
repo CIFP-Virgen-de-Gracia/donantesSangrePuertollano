@@ -90,7 +90,6 @@ export class PedirCitaPacienteComponent {
       else {
 
         setTimeout(() => {
-
           this.sharedService.citaPedida.next(1);
         }, 1500);
       }

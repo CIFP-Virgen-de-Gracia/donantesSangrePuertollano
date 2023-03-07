@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -18,8 +18,15 @@ export class CitasService {
   constructor(private httpPedirCita: HttpClient) { }
 
   fetchHorasDisponibles(fecha: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+    
     return this.httpPedirCita.get<interfaces.HorarioCitasResponse>(this.pedirCitaUrl 
-      + '/gethorasdisponibles/' + fecha).pipe(tap(citas => this._citasReservadas = citas));
+      + '/gethorasdisponibles/' + fecha, header).pipe(tap(citas => this._citasReservadas = citas));
   }
 
   // fetchHorarioCitas() {
@@ -28,35 +35,77 @@ export class CitasService {
   // }
 
   insertCita(id: string, fecha: string, donacion: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.post<interfaces.SuccessMsgResponse>(this.pedirCitaUrl
-      + '/pedircita', {id: id, fecha: fecha, donacion: donacion});
+      + '/pedircita', {id: id, fecha: fecha, donacion: donacion}, header);
   }
 
 
   mandarCorreo(id:string, fecha: string, donacion: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.post<interfaces.SuccessMsgResponse>(this.pedirCitaUrl
-      + '/mandarcorreocita', {id: id, fecha: fecha, donacion: donacion});
+      + '/mandarcorreocita', {id: id, fecha: fecha, donacion: donacion}, header);
   }
 
 
   fetchCitaPendiente(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.get<interfaces.FetchCitasResponse>(this.pedirCitaUrl
-      + '/getcitapendienteuser/' + id).pipe(tap(resp => {this._citasPendientesUser = resp.citas;}));
+      + '/getcitapendienteuser/' + id, header).pipe(tap(resp => {this._citasPendientesUser = resp.citas;}));
   }
 
   
   fetchCitasPasadas(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.get<interfaces.FetchCitasResponse>(this.pedirCitaUrl
-      + '/getcitaspasadasuser/' + id).pipe(tap(resp => {this._citasPasadasUser = resp.citas;}));
+      + '/getcitaspasadasuser/' + id, header).pipe(tap(resp => {this._citasPasadasUser = resp.citas;}));
   }
 
   cancelarCita(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl
-      + '/cancelarcita/', {id: id});
+      + '/cancelarcita/', {id: id}, header);
   }
 
   compHaPedidoCita(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
     return this.httpPedirCita.get<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
-      '/yatienecita/' + id);
+      '/yatienecita/' + id, header);
   }
 }

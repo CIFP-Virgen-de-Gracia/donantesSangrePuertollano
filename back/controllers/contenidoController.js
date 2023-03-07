@@ -1,6 +1,7 @@
+const moment = require('moment');
 const { response, request } = require('express');
 const queriesContenidos = require('../database/queries/queriesContenidos');
-/* process.setMaxListeners(0); */
+
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
     queriesContenidos.getHistoria()
@@ -21,6 +22,80 @@ const getHistoria = async (req, res = response) => {
             }
 
             res.status(200).json(resp);
+        });
+}
+
+
+const getHorarios = (req, res = response) => {
+    queriesContenidos.getHorarios()
+        .then(horarios => {
+
+            horarios.map(h => {
+                h.hEntrada = moment(h.hEntrada, "HH:mm:ss").format('HH:mm');
+                h.hSalida = moment(h.hSalida, "HH:mm:ss").format('HH:mm');
+            })
+
+            const resp = {
+                success: true,
+                data: horarios,
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
+        });
+}
+
+
+const getTelefonos = (req, res = response) => {
+    queriesContenidos.getTelefonos()
+        .then(telefonos => {
+
+            const resp = {
+                success: true,
+                data: telefonos
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
+        });
+}
+
+
+const getDirecciones = (req, res = response) => {
+    queriesContenidos.getDirecciones()
+        .then(direcciones => {
+
+            const resp = {
+                success: true,
+                data: direcciones
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(err);
         });
 }
 
@@ -71,17 +146,51 @@ const getIntegrantesCargo = (req, res = response) => {
 }
 
 
-const updateConfigHermandad = async (req, res = response) => {
-
+const updateHermandad = async (req, res = response) => {
+    
     try {
         const historia = await queriesContenidos.updateHistoria(req.body.historia);
-        const nombres = Promise.all(req.body.junta.map(integrante => queriesContenidos.updateNombreIntegranteJunta(integrante)))
+        const nombres = await Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta));
         /* const junta = await Promise.all(req.body.junta.map(integrante => queriesContenidos.updateCargoIntegranteJunta(integrante)))
          */
 
+        //TODO: Preguntar a Inma si esto es correcto
         for await (const integrante of req.body.junta) {
             await queriesContenidos.updateCargoIntegranteJunta(integrante);
         }
+
+        const resp = {
+            success: true,
+            msg: 'Se han guardado los cambios',
+        }
+
+        res.status(201).json(resp);
+
+    } catch (err) {
+        console.log(err)
+        const resp = {
+            success: false,
+            msg: 'Se ha producido un error',
+        }
+
+        res.status(200).json(resp);
+    }
+}
+
+
+const updateContacto = async (req, res = response) => {
+    
+    try {
+        await Promise.all(
+            req.body.direcciones.map(queriesContenidos.updateDireccion),
+            req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t)),
+            req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)),
+        );
+
+        await Promise.all(
+            req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
+            req.body.horarios.borrar.map(queriesContenidos.deleteHorario)
+        );
 
         const resp = {
             success: true,
@@ -102,10 +211,13 @@ const updateConfigHermandad = async (req, res = response) => {
 }
 
 
-
 module.exports = {
     getHistoria,
+    getHorarios,
+    getTelefonos,
+    getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
-    updateConfigHermandad
+    updateHermandad,
+    updateContacto
 }

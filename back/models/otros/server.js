@@ -11,7 +11,7 @@ class Server {
         this.app = express();
         this.path = '/api/';
 
-        this.pathAptoSangre = "/test-apto";
+        this.pathAptoSangre = "/api/test-apto";
         this.pathNoticias='/api/noticias/';
         this.pathGaleria = "/api/galeria";
         this.pathMusica = "/api/musica";

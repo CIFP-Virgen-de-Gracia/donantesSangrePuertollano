@@ -32,28 +32,32 @@ export class ModalPedirCitaComponent {
 
   async openModal(){
 
-    // const user = localStorage.getItem('user');
+    this.modalService.dismissAll();
+    const user = localStorage.getItem('user');
 
 
-    // let id: string;
-    // if (user) {
-    //   this.registrado = true;
-    //   id = JSON.parse(user).id;
+    let id: string;
+    if (user) {
+      this.registrado = true;
+      id = JSON.parse(user).id;
 
-    //   const resp = await firstValueFrom(this.citasService.compHaPedidoCita(id));
+      const resp = await firstValueFrom(this.citasService.compHaPedidoCita(id));
       
-    //   this.puedePedirCita = resp.success;
-    // }
-    // else {
-    //   this.registrado = false;
-    // }
+      this.puedePedirCita = resp.success;
+    }
+    else {
+      this.registrado = false;
+    }
 
 
-    // if (!this.registrado || !this.puedePedirCita) {
-    //   this.modalService.open(this.content, { centered: true });
-    // }
-
-    this.modalService.open(this.content, { centered: true });
+    if (!this.registrado || !this.puedePedirCita) {
+      console.log('entra');
+      this.modalService.open(this.content, { centered: true });
+    }
+    else {
+      
+      this.router.navigate(['/citas/pedircita']);
+    }
   }
 
 	open(content: any) {

@@ -1,5 +1,6 @@
-import { Component, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Contenido, Noticia } from '../Interfaces/Contenido.interface';
+//Todo Isa
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import { Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
@@ -33,20 +34,23 @@ export class EditadoComponent {
 
   @Input() idModificar: string;
   @Input() infoNoticia: Noticia;
+  @Input() qho: string;
 
   @ViewChild('imagen') foto!: ElementRef<HTMLInputElement>;
 
   constructor(private ContenidoService: ContenidoService) {
+    this.qho = "no";
     this.res = "no";
     this.alert = "no";
     this.aviso = 0;
     this.correcto = true;
     this.idModificar = "";
     this.infoNoticia = {
-      id: 0,
+      id: "0",
       titulo: "",
       subtitulo: "",
       contenido: "",
+      fecha: new Date(),
       seccion: "",
       imagen: ""
     };
@@ -65,6 +69,7 @@ export class EditadoComponent {
   limpiarAlert() {
     this.alert = "no";
     this.aviso = 0;
+    this.qho = "no";
   }
   capturarFile(event: any) {
     const files = event.target.files[0];
@@ -105,8 +110,11 @@ export class EditadoComponent {
     } else {
       this.ContenidoService.editarNoticia(this.idModificar, this.infoNoticia).subscribe({
         next: data => {
-          if (data !== "No se ha podido modificar") {
-            this.ContenidoService.editar(this.idModificar, data);
+          console.log(data);
+          if (data.success !== false) {
+            console.log("entro2");
+            this.ContenidoService.editar(data.data);
+            console.log("continuo");
             this.limpiarContenido();
             this.aviso = 1;
           }

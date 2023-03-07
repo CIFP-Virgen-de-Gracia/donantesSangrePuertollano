@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Contenido } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
@@ -93,9 +94,9 @@ export class AddContenidoComponent {
         this.aviso = 3;
       } else {
         this.ContenidoService.añadirNoticia(this.noticia).subscribe((res) => {
-          if (res !== "Error de registro") {
+          if (res.success !== false) {
             this.aviso = 1;
-            this.ContenidoService.agregar(res);
+            this.ContenidoService.agregar(res.data);
             this.limpiarContenido();
 
           } else {

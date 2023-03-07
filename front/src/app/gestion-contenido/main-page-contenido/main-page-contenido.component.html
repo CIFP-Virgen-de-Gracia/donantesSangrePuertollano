@@ -1,5 +1,5 @@
 <router-outlet></router-outlet>
-<div class="container-fluid fondo-contraste pt-5">
+<div class="container-fluid f-contraste pt-5">
   <div class="row">
     <div class="col text-center">
       <h1 class="titulo subrayado">Noticias</h1>
@@ -13,7 +13,7 @@
     </path>
   </svg>
 </div>
-<app-add-contenido></app-add-contenido>
+<app-add-contenido *ngIf= "estaRegistrado && puedeModificar"></app-add-contenido>
 <div class="container pb-5 pt-5" *ngFor="let noticia of resultado| paginate: { itemsPerPage: 3, currentPage: p }">
   <div class="row">
     <div class="col">
@@ -23,18 +23,18 @@
       <img *ngIf="noticia.imagen!==''" class="img-fluid mb-3" [src]=noticia.imagen>
       <div [innerHtml]="noticia.contenido">
       </div>
-     <div class="pt-5 pb-2 centrado">
+     <div *ngIf= "estaRegistrado && puedeModificar"class="pt-5 pb-2 centrado">
         <button
         id=A{{noticia.id}}
         (click)="obtenerId($event)"
-        class="btn custom-btn btn-1 mb-5"
+        class="btn-secundario mb-5"
         data-bs-toggle="modal"
         data-bs-target="#modalConfirmacion">Borrar</button>
 
         <button
         (click)="obtenerNoticiaAEditar($event)"
         id=M{{noticia.id}}
-        class="btn custom-btn btn-1 ms-5 mb-5"
+        class="btn-secundario ms-5 mb-5"
         data-bs-toggle="modal"
         data-bs-target="#modalEditado">Modificar</button>
       </div>
@@ -45,4 +45,4 @@
 </pagination-controls>
 
 <app-borrar [idBorrado]="idBorrado"></app-borrar>
-<app-editado [idModificar]="idModificar" [infoNoticia]="info"></app-editado>
+<app-editado [idModificar]="idModificar" [infoNoticia]="info" [qho]="qho" ></app-editado>

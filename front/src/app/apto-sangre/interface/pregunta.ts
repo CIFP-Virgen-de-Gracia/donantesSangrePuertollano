@@ -1,8 +1,8 @@
 export interface Pregunta {
   id: number;
   enunciado: string;
-  nombre_pregunta: string;
+  titulo: string;
   nombre_img: string;
-  respuesta: string;
+  respuesta: number;
   solucion_problema: string;
 }
