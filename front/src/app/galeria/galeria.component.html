@@ -1,7 +1,7 @@
 <div class="row w-100">
   <div class="row">
     <div class="col-12 text-center mt-5 mb-4">
-      <h1 class="titulo subrayado">Galeria: </h1>
+      <h1 class="titulo subrayado">Galería</h1>
     </div>
   </div>
   <div class="row d-flex justify-content-center align-items-center g-2 g-lg-3 w-100">
@@ -18,7 +18,7 @@
     </ng-container>
     <ng-template #ningunMensaje>
       <div class="col-12 text-center mb-3">
-        <h1>No hay ninguna imagen disponible</h1>
+        <h2>No hay ninguna imagen disponible</h2>
       </div>
     </ng-template>
     <!-- <div class="col-md-4 col-sm-6 col-12 p-3 custom-control custom-checkbox image-checkbox text-center">
@@ -64,12 +64,12 @@
   </div>
   <div *ngIf="puedeModificar" class="row d-flex justify-content-evenly mb-3">
     <div class="col-md-6 col-12 text-center">
-      <button #boton_Añadir class="btn btn-danger border-3 rounded-2 w-50 mb-2" data-bs-toggle="modal"
+      <button #boton_Añadir class="btn-secundario w-50 mb-2" data-bs-toggle="modal"
       data-bs-target="#modalSubirFoto">Subir foto</button>
 
     </div>
     <div class="col-md-6 col-12 text-center">
-      <button #boton_Eliminar class="btn btn-danger border-3 rounded-2 w-50 mb-2" (click)="eliminandoFotos()">Eliminar fotos</button>
+      <button #boton_Eliminar class="btn-secundario w-50 mb-2" (click)="eliminandoFotos()">Eliminar fotos</button>
     </div>
   </div>
 </div>

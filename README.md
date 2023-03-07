@@ -3,14 +3,16 @@
 ### Pasos a seguir para instalar el proyecto.
 ## Back
 1. Crear una base de datos llamada "donantes".<br />
-2. Lanzar los insert del archivo proporcionado.
 
-3. En visual studio code ejecutar los comandos:
+
+2. En visual studio code ejecutar los comandos:
     3.1. cd <directorio_proyecto>/back
     3.2. npm install
     3.3. node app
 
 Las tablas se crearán al lanzar el servidor.
+
+3. Lanzar los insert del archivo proporcionado.
 
 ## Front
 En visual studio code ejecutar los comandos:
