@@ -100,3 +100,18 @@ export class MainPageContenidoComponent implements OnInit {
   }
 
 }
+
+  obtenerNoticiaAEditar(event: any) {
+    let id = event.target.id;
+    this.idModificar = id.slice(1);
+    this.ContenidoService.obtenerNoticia(this.idModificar).subscribe({
+      next: data => {
+        if (data !== "No encontrada") {
+          this.info = data;
+        }
+      },
+      error: error => {
+      }
+    });
+  }
+}
