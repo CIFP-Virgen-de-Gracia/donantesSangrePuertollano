@@ -18,19 +18,19 @@ div.container-fluid {
 
     div.card {
         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
-        width: 40vw;
+        // width: 40vw;
 
-        @media (max-width: 1200px) {
-            & {
-                width: 80vw;
-            }
-        }
+        // @media (max-width: 1200px) {
+        //     & {
+        //         width: 80vw;
+        //     }
+        // }
 
-        @media (max-width: 720px) {
-            & {
-                width: 100vw;
-            }
-        }
+        // @media (max-width: 720px) {
+        //     & {
+        //         width: 100vw;
+        //     }
+        // }
 
         
         div.card-header {

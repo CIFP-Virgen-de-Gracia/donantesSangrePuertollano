@@ -1,3 +1,4 @@
+//Todo Isa
 import { Component, Input } from '@angular/core';
 import { ContenidoService } from '../contenido.service';
 @Component({
@@ -7,22 +8,29 @@ import { ContenidoService } from '../contenido.service';
 })
 export class BorrarComponent {
 
-  @Input() idBorrado: string = "";
-  mensaje: number = 0;
-  constructor(private ContenidoService: ContenidoService) { }
+  @Input() idBorrado: string;
+  mensaje: number;
+  constructor(private ContenidoService: ContenidoService) {
+    this.mensaje = 0;
+    this.idBorrado = "";
+  }
+
 
   limpiarIdBorrado() {
     this.idBorrado = "";
   }
+
+
   limpiarMensaje() {
     this.mensaje = 0;
   }
+
+
   borradoNoticia() {
-    console.log(this.idBorrado);
     this.ContenidoService.borrarNoticia(this.idBorrado).subscribe(
       {
         next: data => {
-          if (data !== "No se ha podido borrar") {
+          if (data.success !== false) {
             this.ContenidoService.borrar(this.idBorrado);
             this.mensaje = 1
           }
@@ -32,5 +40,4 @@ export class BorrarComponent {
         }
       });
   }
-
 }
