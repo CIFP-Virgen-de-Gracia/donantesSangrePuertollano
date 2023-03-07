@@ -38,7 +38,7 @@ header {
     .dropdown-menu {
       border-radius: 0;
       box-shadow: 0 3px 4px rgba(0,0,0,.2);
-      margin-top: -2px;
+      margin-top: -4px;
       border: none;
 
       .enlace {
@@ -61,7 +61,7 @@ header {
       top: 1.5rem;
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 1200px) {
       .navbar-brand {
         padding-left: 2rem;
       }
@@ -90,6 +90,7 @@ header {
 
         .dropdown-menu {
           background-color: var(--color-secundario);
+          box-shadow: 0 3px 4px rgba(0,0,0,.2);
           margin-top: -2px;
           padding: 0;
           box-shadow: unset;

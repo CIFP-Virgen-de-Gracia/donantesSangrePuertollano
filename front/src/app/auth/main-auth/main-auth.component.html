@@ -1,4 +1,6 @@
-<div *ngIf="this.registradoExito == 0" class="alert alert-success alert-dismissible position-fixed fade show ms-3" role="alert">
+<div *ngIf="this.registradoExito == 0"
+ class="alert alert-success alert-dismissible position-fixed fade show ms-3"
+ role="alert">
     El registro se ha realizado correctamente. Te hemos mandado un correo de confirmación.
     Pincha en el enlace para poder acceder con tu cuenta.
     <a (click)="irAlLogin()" class="pe-auto"><strong>Ir al login</strong></a>.
@@ -31,6 +33,12 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
+<div *ngIf="this.registradoExito == 1" class="alert alert-danger alert-dismissible position-fixed fade show ms-3" role="alert">
+  Se ha producido un error en el registro.
+
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <div class="container-fluid d-flex justify-content-center align-content-center px-2 px-sm-5 py-5">
     <div class="row w-100">
         <div class="col-0 col-sm-1 col-lg-2"></div>
@@ -43,15 +51,15 @@
                     <h1 *ngIf="this.accion == 'recuperacion'">Recuperar contraseña</h1>
                 </div>
                 <div class="card-body px-4 px-sm-5 py-5">
-        
+
                     <app-login *ngIf="this.accion == 'login'"></app-login>
-                   
+
                     <app-registro *ngIf="this.accion == 'registro'"
                         (onFormValido)="showAlertRegistro($event)"></app-registro>
-                   
+
                         <app-recuperar-passwd *ngIf="this.accion == 'recuperacion'"
                         (onRecPasswd)="showAlertRecPasswd($event)"></app-recuperar-passwd>
-        
+
                     <div class="card-body w-100 p-0">
                         <!-- <div class="botonRegistro">
                             <button type="button" class="btn w-100 border border-black mt-4">sign up with google</button>

@@ -133,7 +133,7 @@ class QueriesUsers {
             this.sequelize.conectar();
 
             const emails = await models.Email.findAll({
-                attributes: ['id', 'email', 'newsletterVerifiedAt'],
+                attributes: ['id', 'email', 'newsletterVerifiedAt', 'vKeyNewsletter'],
                 where: {
                     newsletterVerifiedAt: {
                         [Op.ne]: null
