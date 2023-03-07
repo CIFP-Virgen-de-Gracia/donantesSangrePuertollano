@@ -31,5 +31,6 @@ export class AuthGuard implements CanActivate, CanMatch {
       else {
         return true;
       }
+
   }
 }

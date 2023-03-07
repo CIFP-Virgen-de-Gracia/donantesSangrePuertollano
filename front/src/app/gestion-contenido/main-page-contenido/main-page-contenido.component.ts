@@ -106,12 +106,22 @@ export class MainPageContenidoComponent implements OnInit {
     this.idModificar = id.slice(1);
     this.ContenidoService.obtenerNoticia(this.idModificar).subscribe({
       next: data => {
-        if (data !== "No encontrada") {
-          this.info = data;
+        if (data.success !==false) {
+          this.info = data.data;
         }
       },
       error: error => {
+        this.qho="si";
       }
     });
   }
+
+  comprobarPuedeModificar() {
+    if (this.estaRegistrado) {
+      this.AuthService.puedeModificar().subscribe(resp => {
+        this.puedeModificar = (resp) ? true : false;
+      });
+    }
+  }
+
 }
