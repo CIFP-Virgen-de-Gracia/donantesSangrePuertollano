@@ -15,6 +15,7 @@ class QueriesUsers {
 
 
     //Mario
+    //Mario
     getIdEmail = async(email) => {
         const id = await models.Email.findOne({
             attributes: ['id'],
