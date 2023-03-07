@@ -24,8 +24,8 @@ export class CitasService {
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
-    
-    return this.httpPedirCita.get<interfaces.HorarioCitasResponse>(this.pedirCitaUrl 
+
+    return this.httpPedirCita.get<interfaces.HorarioCitasResponse>(this.pedirCitaUrl
       + '/gethorasdisponibles/' + fecha, header).pipe(tap(citas => this._citasReservadas = citas));
   }
 
@@ -72,7 +72,7 @@ export class CitasService {
       + '/getcitapendienteuser/' + id, header).pipe(tap(resp => {this._citasPendientesUser = resp.citas;}));
   }
 
-  
+
   fetchCitasPasadas(id: string) {
     const header = {
       headers: new HttpHeaders({
@@ -105,7 +105,7 @@ export class CitasService {
       })
     };
 
-    return this.httpPedirCita.get<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+    return this.httpPedirCita.get<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
       '/yatienecita/' + id, header);
   }
 }

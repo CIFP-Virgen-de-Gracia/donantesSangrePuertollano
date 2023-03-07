@@ -32,10 +32,10 @@
                             <button *ngIf="!cita.cancelada; else elseCancelada" class="btn-primario px-3" (click)="cancelarCita($event)">Cancelar</button>
                             <ng-template #elseCancelada>
                               <span class="derechaTextoGrande text-center">cancelada</span>
-                              <span class="derechaTextoPequeno text-center">can.</span> 
+                              <span class="derechaTextoPequeno text-center">can.</span>
                             </ng-template>
                           </div>
-                        </div>                        
+                        </div>
                       </div>
                     </li>
                   </ng-template>
@@ -86,7 +86,7 @@
                               <span class="derechaTexto text-center">cancelada</span>
                             </ng-template>
                           </div>
-                        </div>                        
+                        </div>
                       </div>
                     </li>
                   </ng-template>
@@ -110,7 +110,7 @@
                           <span class="hora">{{ cita.hora }}</span>
                           <span class="donacion text-center">{{ cita.donacion }}</span>
                           <span class="derechaTexto text-center">asistida</span>
-                          <span class="derechaTextoPequeno text-center">asis.</span> 
+                          <span class="derechaTextoPequeno text-center">asis.</span>
                         </div>
                       </div>
                     </li>

@@ -83,7 +83,7 @@ export class PedirCitaPacienteComponent {
     this.pedirCitaHttpService.insertCita(id, fechaCita, tipoDonacion).subscribe(resp => {
       if (resp.success) {
 
-        setTimeout(() => {  
+        setTimeout(() => {
           this.sharedService.citaPedida.next(0);
         }, 1500);
       }

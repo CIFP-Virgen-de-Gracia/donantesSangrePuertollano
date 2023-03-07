@@ -20,7 +20,7 @@ div.container-fluid {
         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
         // width: 40vw;
 
-        
+
         div.card-header {
             background-color: var(--color-primario);
             font-family: var(--tipo-titulos);
@@ -39,21 +39,21 @@ div.container-fluid {
                 .tarjetaNoHay {
                     height: 5rem;
                 }
-    
+
                 .tarjeta {
                     height: 4rem;
                     border-radius: 2px;
                     background-color: var(--color-contraste);
                     // box-shadow: 2px 2px 2px 2px #888888;
-    
+
                     span.dia {
                         width: 6rem;
                     }
-    
+
                     span.hora {
                         width: 3rem;
                     }
-    
+
                     span.donacion {
                         width: 5.5rem;
                         max-width: 5.5rem;
@@ -61,7 +61,7 @@ div.container-fluid {
                         border-right: 1px solid;
                         border-color: var(--granate-oscuro);
                     }
-    
+
                     span.derechaTextoGrande {
                         display: block;
                         width: 6rem;
@@ -76,14 +76,14 @@ div.container-fluid {
                         span.derechaTextoGrande {
                             display: none;
                         }
-    
+
                         span.derechaTextoPequeno {
                             display: block;
                             width: 3rem;
                             max-width: 3rem;
                         }
                     }
-    
+
                     span.derechaBoton {
                         height: 100%;
                         width: 6rem;
@@ -93,5 +93,5 @@ div.container-fluid {
             }
         }
     }
-}    
+}
 

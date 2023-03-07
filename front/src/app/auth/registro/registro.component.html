@@ -1,11 +1,11 @@
 
 
 <form [formGroup]="registroForm" (ngSubmit)="registro()">
-    
+
     <div class="mb-2">
         <label class="form-label" for="nombre">Nombre</label><br>
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="form-control"
             name="nombre"
             placeholder="Introduce tu nombre"
@@ -19,8 +19,8 @@
 
     <div class="mt-4 mb-2">
         <label class="form-label" for="ap1">Primer apellido</label><br>
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="form-control"
             name="ap1"
             placeholder="Introduce tu primer apellido"
@@ -34,8 +34,8 @@
 
     <div class="mt-4 mb-2">
         <label class="form-label" for="ap2">Segundo apellido</label><br>
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="form-control"
             name="ap2"
             placeholder="Introduce tu segundo apellido"
@@ -47,11 +47,11 @@
         *ngIf="this.registroForm.get('ap2')?.invalid && this.registroForm.get('ap2')?.touched"
     >Este campo es obligatorio</span>
 
-    
+
     <div class="mt-4 mb-4">
         <label class="form-label" for="email">Email</label><br>
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="form-control"
             name="email"
             placeholder="Introduce tu email"
@@ -66,13 +66,13 @@
         class="form-text errorLogin mb-3"
         *ngIf="this.registroForm.get('email')?.errors?.['required'] && this.registroForm.get('email')?.touched"
     >Este campo es obligatorio</span>
-    
+
     <span *ngIf="this.contraErronea" class="form-text errorLogin mt-4 mb-2">
-        Las dos contraseñas deben coincidir.   
+        Las dos contraseñas deben coincidir.
     </span>
     <div class="passwd mt-2 mb-3">
         <label class="form-label" for="passwd">Constraseña</label><br>
-        <input 
+        <input
             type="password"
             class="form-control"
             name="passwd"
@@ -86,7 +86,7 @@
     >Este campo es obligatorio</span>
     <div class="passwd mt-4 mb-5">
         <label class="form-label" for="passwdRep">Repite la constraseña</label><br>
-        <input 
+        <input
             type="password"
             class="form-control"
             name="passwdRep"
@@ -98,10 +98,10 @@
         class="errorLogin"
         *ngIf="this.registroForm.get('passwdRep')?.invalid && this.registroForm.get('passwdRep')?.touched"
     >Este campo es obligatorio</span>
-    
+
     <div class="botonesLogin mb-3 d-flex justify-content-center">
         <button [disabled]="registroForm.invalid" type="submit" class="btn btn-primario">Aceptar</button>
-    </div> 
-    
+    </div>
+
 </form>
 
