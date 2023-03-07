@@ -18,7 +18,7 @@ export class RecuperarPasswdComponent {
   ) {}
 
   ngOnInit() {
-    
+
     this.emailRecPasswdEnviado = -1;
   }
 
