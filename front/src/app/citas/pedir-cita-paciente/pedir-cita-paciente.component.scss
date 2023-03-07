@@ -40,27 +40,7 @@ div.container-fluid {
             }
 
             button {
-                &.btnAceptar {
-                    background-color: var(--color-secundario);
-                    color: var(--bs-white);
-            
-                    &:hover {
-                        border: solid 1px var(--color-primario); 
-                        background-color: var(--color-primario);
-                    }
-                }
-                
-                &.border-red {    
-                    border: solid 1px var(--color-secundario);  
-                    color: var(--color-secundario);
-            
-                    &:hover {
-                        background-color: var(--color-contraste);
-                        
-                    }
-                }
-            
-                border-radius: 2px;
+               width: 10rem;
             }
         }
     }
