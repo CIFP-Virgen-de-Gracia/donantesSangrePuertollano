@@ -19,7 +19,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   horarios: Horario[] = [];
   hMostrar: HorarioMostrar[] = [];
   dSemana = [{ nombre: "Lunes", letra: "L" }, { nombre: "Martes", letra: "M" }, { nombre: "Miércoles", letra: "X" },
-  { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }];
+  { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }, { nombre: "Sábado", letra: "S" }];
 
   constructor(
     private ConfigService: ConfigService,
