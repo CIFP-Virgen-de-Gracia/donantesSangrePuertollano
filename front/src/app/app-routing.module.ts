@@ -8,6 +8,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 
 import { GaleriaComponent } from './galeria/galeria.component';
 import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
+import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
 const routes: Routes = [
   {
     path: '',
@@ -58,6 +59,11 @@ const routes: Routes = [
     path: 'aviso-legal',
     component: AvisoLegalComponent
   },
+  {
+    path: 'terminos-uso',
+    component: TerminosUsoComponent
+  },
+
   {
     path: '**',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
