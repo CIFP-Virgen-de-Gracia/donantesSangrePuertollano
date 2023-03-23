@@ -1,7 +1,7 @@
 <header>
-  <img class="banner" src="../../../assets/imagenes/banner.png">
+  <img class="banner" src="../../../assets/imagenes/banner.png" (load)="onBannerLoad()">
 
-  <nav class="navbar navbar-expand-xl" appStickyTop>
+  <nav #menu [class.fijo]="fijo" class="navbar navbar-expand-xl">
 
     <a class="navbar-brand" href="#"><img src="../../../assets/imagenes/logo.png"></a>
 
