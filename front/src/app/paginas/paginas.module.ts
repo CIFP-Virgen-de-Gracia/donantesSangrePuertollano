@@ -8,6 +8,7 @@ import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { HimnoComponent } from './himno/himno.component';
 import { AvisoLegalComponent } from './aviso-legal/aviso-legal.component';
 import { TerminosUsoComponent } from './terminos-uso/terminos-uso.component';
+import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TerminosUsoComponent } from './terminos-uso/terminos-uso.component';
     LaHermandadComponent,
     HimnoComponent,
     AvisoLegalComponent,
-    TerminosUsoComponent
+    TerminosUsoComponent,
+    PoliticasCookiesComponent
   ],
   imports: [
     CommonModule,

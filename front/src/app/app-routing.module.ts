@@ -9,6 +9,7 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
 import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
+import { PoliticasCookiesComponent } from './paginas/politicas-cookies/politicas-cookies.component';
 const routes: Routes = [
   {
     path: '',
@@ -63,7 +64,10 @@ const routes: Routes = [
     path: 'terminos-uso',
     component: TerminosUsoComponent
   },
-
+  {
+    path: 'politicas-cookies',
+    component: PoliticasCookiesComponent
+  },
   {
     path: '**',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
