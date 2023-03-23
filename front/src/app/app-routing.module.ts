@@ -7,6 +7,7 @@ import { ConfigGuard } from './auth/guards/config.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 
 import { GaleriaComponent } from './galeria/galeria.component';
+import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
 const routes: Routes = [
   {
     path: '',
@@ -52,6 +53,10 @@ const routes: Routes = [
     loadChildren: () => import('./citas/citas.module').then(m => m.PedirCitaModule),
     canMatch: [ AuthGuard ],
     canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'aviso-legal',
+    component: AvisoLegalComponent
   },
   {
     path: '**',
