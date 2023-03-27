@@ -182,25 +182,25 @@ const updateContacto = async (req, res = response) => {
     
     try {
         await Promise.all(
+            req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
+            req.body.horarios.borrar.map(queriesContenidos.deleteHorario)
+        );
+
+        await Promise.all(
             req.body.direcciones.map(queriesContenidos.updateDireccion),
             req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t)),
             req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)),
         );
 
-        await Promise.all(
-            req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
-            req.body.horarios.borrar.map(queriesContenidos.deleteHorario)
-        );
-
         const resp = {
             success: true,
-            msg: 'Se han guardado los cambios',
+            msg: 'Se han guardado los cambios'
         }
 
         res.status(201).json(resp);
 
     } catch (err) {
-
+        
         const resp = {
             success: false,
             msg: 'Se ha producido un error',

@@ -1,3 +1,4 @@
+
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,13 +18,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PedirCitaModule } from './citas/citas.module';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
-
-registerLocaleData(localeEs); 
 import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.module';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
 
+registerLocaleData(localeEs);
 
 @NgModule({
     declarations: [

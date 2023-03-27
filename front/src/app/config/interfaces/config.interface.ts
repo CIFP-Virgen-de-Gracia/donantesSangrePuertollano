@@ -40,7 +40,7 @@ export interface TelefonoGuardar {//Alicia
 
 export interface Dia {//Alicia
   id: number;
-  valor: string;
+  nombre: string;
   letra: string;
   seleccionado: boolean;
 }

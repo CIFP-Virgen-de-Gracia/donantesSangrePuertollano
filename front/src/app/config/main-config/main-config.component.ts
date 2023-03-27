@@ -22,7 +22,7 @@ export class MainConfigComponent {
       icono: "fa-headphones"
     },
     {
-      nombre : "test-apto",
+      nombre : "test apto",
       icono: "fa-vial"
     }
   ];

@@ -273,8 +273,7 @@ select {
   color: var(--color-granate);
 }
 
-.error-input {
-  border: 1px solid var(--color-secundario);
+input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
   background-color: rgb(255, 220, 231);
 }
 

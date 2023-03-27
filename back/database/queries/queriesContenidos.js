@@ -246,7 +246,7 @@ class QueriesContenidos {
             this.sequelize.conectar();
 
             const h = await models.Horario.findByPk(horario.id);
-            
+
             const resp = await h.update({ 
                 hEntrada: horario.hEntrada,
                 hSalida: horario.hSalida,
