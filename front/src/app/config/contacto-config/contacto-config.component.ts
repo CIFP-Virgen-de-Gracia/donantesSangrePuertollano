@@ -113,7 +113,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
     const horario = this.horarios.value[index];
 
     horario.dias.map((d: Dia) => { if (d.id != -1) this.hBorrar.push(d.id) });
-    this.horarios.removeAt(horario.id);
+    this.horarios.removeAt(index);
   }
 
 
@@ -185,7 +185,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   }
 
 
-  crearHorario(dias: FormArray, id: number = this.horarios.length) {
+  crearHorario(dias: FormArray, id: number = -1/* this.horarios.length */) {
     return this.fb.group({
       id: id,
       dias: dias,
@@ -195,7 +195,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   }
 
 
-  crearDia(nombre: String = '', letra: String = '', selecc: boolean = false) {
+  crearDia(nombre: String, letra: String, selecc: boolean) {
     return this.fb.group({
       id: [-1, Validators.required],
       nombre: [nombre],
