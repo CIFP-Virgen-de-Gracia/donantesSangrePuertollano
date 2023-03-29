@@ -49,7 +49,7 @@ const getHorarios = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -72,7 +72,7 @@ const getTelefonos = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -95,7 +95,7 @@ const getDirecciones = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -118,7 +118,7 @@ const getCargosJunta = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -141,7 +141,7 @@ const getIntegrantesCargo = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -151,8 +151,6 @@ const updateHermandad = async (req, res = response) => {
     try {
         const historia = await queriesContenidos.updateHistoria(req.body.historia);
         const nombres = await Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta));
-        /* const junta = await Promise.all(req.body.junta.map(integrante => queriesContenidos.updateCargoIntegranteJunta(integrante)))
-         */
 
         //TODO: Preguntar a Inma si esto es correcto
         for await (const integrante of req.body.junta) {
@@ -167,7 +165,7 @@ const updateHermandad = async (req, res = response) => {
         res.status(201).json(resp);
 
     } catch (err) {
-        console.log(err)
+        
         const resp = {
             success: false,
             msg: 'Se ha producido un error',
@@ -181,20 +179,25 @@ const updateHermandad = async (req, res = response) => {
 const updateContacto = async (req, res = response) => {
     
     try {
-        await Promise.all(
+        await Promise.all([
             req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
             req.body.horarios.borrar.map(queriesContenidos.deleteHorario)
-        );
+        ]);
 
-        await Promise.all(
-            req.body.direcciones.map(queriesContenidos.updateDireccion),
-            req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t)),
-            req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)),
-        );
-
+        const [dirs, tlfns, horarios] = await Promise.all([
+            Promise.all(req.body.direcciones.map(queriesContenidos.updateDireccion)),
+            Promise.all(req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t))),
+            Promise.all(req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)))
+        ]);
+       
         const resp = {
             success: true,
-            msg: 'Se han guardado los cambios'
+            msg: 'Se han guardado los cambios',
+            data: {
+                "dirs": dirs,
+                "tlfns": tlfns,
+                "horarios": horarios
+            }
         }
 
         res.status(201).json(resp);

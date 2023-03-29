@@ -29,9 +29,9 @@ const mismaHora = (): ValidatorFn => {
     let esIgual: boolean = false;
     for (let i = 0; i < value.length && !esIgual; i++) {
       let horario = value[i];
-      let h2 = value.find((h: Horario) => h.id != horario.id && h.hEntrada == horario.hEntrada && h.hSalida == horario.hSalida);
+      let horaRepetida = value.find((h: Horario) => h.id != horario.id && h.hEntrada == horario.hEntrada && h.hSalida == horario.hSalida);
 
-      if (h2) esIgual = true;
+      if (horaRepetida) esIgual = true;
     }
 
     return esIgual ? { mismaHora: true } : null;

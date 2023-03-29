@@ -1,10 +1,10 @@
 import { Time } from '@angular/common';
 import { Component } from '@angular/core';
-import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora, HorarioGuardar } from '../interfaces/config.interface';
 import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
+import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora } from '../interfaces/config.interface';
 
 @Component({
   selector: 'app-contacto-config',
@@ -13,7 +13,7 @@ import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validato
 })
 export class ContactoConfigComponent { //Todo hecho por Alicia
 
-  /* dias!: FormArray; */
+  timer: NodeJS.Timeout | undefined;
   contactoForm!: FormGroup;
   mensaje: String = '';
   actualizado!: boolean;
@@ -21,10 +21,11 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   tBorrar: number[] = [];
   direccionesData: Direccion[] = [];
   horariosData: Horario[] = [];
-  hMostrar: HorarioMostrar[] = [];
+  hMostrar!: HorarioMostrar[];
   hBorrar: number[] = [];
   dSemana = [{ nombre: "Lunes", letra: "L" }, { nombre: "Martes", letra: "M" }, { nombre: "Miércoles", letra: "X" },
   { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }, { nombre: "Sábado", letra: "S" }];
+
 
   constructor(
     private fb: FormBuilder,
@@ -54,15 +55,28 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
 
 
   ngOnInit() {
+    this.crearFormulario();
+
+    this.SharedService.getHorarios().subscribe(resp => {
+      if (resp.success) this.getHorarios(resp.data);
+    });
+
+    this.SharedService.getTelefonos().subscribe(resp => {
+      if (resp.success) this.getTlfns(resp.data);
+    });
+
+    this.SharedService.getDirecciones().subscribe(resp => {
+      if (resp.success) this.getDirs(resp.data);
+    });
+  }
+
+
+  crearFormulario() {
     this.contactoForm = this.fb.group({
       horarios: this.fb.array([], mismaHora()),
       telefonos: this.fb.array([]),
       direcciones: this.fb.array([])
     });
-
-    this.getHorarios();
-    this.getTlfns();
-    this.getDirs();
   }
 
 
@@ -74,19 +88,33 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
       this.ConfigService.updateContacto(datos.direcciones, tlfns, horarios)
-        .subscribe(resp => {
+        .subscribe({
+          next: (resp) => {
 
-          this.mensaje = resp.msg;
-          this.actualizado = (resp.success) ? true : false;
-         /*  window.location.reload() */
-          setTimeout(() => this.mensaje = '', 4000);
-        });
+            this.mensaje = resp.msg;
+            this.actualizado = (resp.success) ? true : false;
+
+            if (resp.success) {
+              this.crearFormulario();
+              this.getHorarios(resp.data.horarios);
+              this.getTlfns(resp.data.tlfns);
+              this.getDirs(resp.data.dirs);
+            }
+          },
+          error: (e) => {
+            this.mensaje = e.error.msg;
+            this.actualizado = false;
+          }
+        })
 
     } else {
 
       this.actualizado = false;
       this.mensaje = 'Datos no válidos';
     }
+
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.mensaje = '', 4000);
   }
 
 
@@ -146,6 +174,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
     let idDia: number | undefined;
     let selecc: boolean;
 
+    this.hMostrar = [];
     this.horariosData.forEach(horario => { // Recojo los distintos grupos de horas
       if (!horas.find(h => h.entrada == horario.hEntrada && h.salida == horario.hSalida))
         horas.push({ "entrada": horario.hEntrada, "salida": horario.hSalida });
@@ -185,7 +214,7 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   }
 
 
-  crearHorario(dias: FormArray, id: number = -1/* this.horarios.length */) {
+  crearHorario(dias: FormArray, id: number = -1) {
     return this.fb.group({
       id: id,
       dias: dias,
@@ -205,22 +234,18 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   }
 
 
-  getHorarios() {
+  getHorarios(datos: Horario[]) {
     let listaDias: FormArray;
 
-    this.SharedService.getHorarios().subscribe(resp => {
-      if (resp.success) {
-        this.horariosData = resp.data;
-        this.crearHorarioMostrar();
+    this.horariosData = datos;
+    this.crearHorarioMostrar();
 
-        for (let i = 0; i < this.hMostrar.length; i++) {
-          listaDias = this.crearSemana();
-          this.horarios.push(this.crearHorario(listaDias, i));
-        }
+    for (let i = 0; i < this.hMostrar.length; i++) {
+      listaDias = this.crearSemana();
+      this.horarios.push(this.crearHorario(listaDias, i));
+    }
 
-        this.horarios.patchValue(this.hMostrar);
-      }
-    });
+    this.horarios.patchValue(this.hMostrar);
   }
 
 
@@ -243,52 +268,41 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
       id: [-1, Validators.required],
       numero: ['', Validators.compose([
         Validators.required,
-        Validators.pattern("((\\(?\\+34|0034|34)\\)?[ -]?)?([0-9][ -]*){9}")
+        Validators.pattern("(\\(?(\\+34|0034|34)\\)?[ -]+)?([0-9][ -]*){9}")
       ])],
       extension: ['', Validators.pattern("[0-9]*")],
     })
   }
 
 
-  getTlfns() {
-    this.SharedService.getTelefonos().subscribe(resp => {
-      if (resp.success) {
-        this.telefonosData = resp.data;
+  getTlfns(datos: Telefono[]) {
+    this.telefonosData = datos;
 
-        for (let i = 0; i < this.telefonosData.length; i++) {
-          this.addTelefono();
-        }
+    for (let i = 0; i < this.telefonosData.length; i++) {
+      this.addTelefono();
+    }
 
-        this.telefonos.patchValue(this.telefonosData);
-      }
-    });
+    this.telefonos.patchValue(this.telefonosData);
   }
 
 
   //DIRECCIONES
-  getDirs() {
-    this.SharedService.getDirecciones().subscribe(resp => {
-      if (resp.success) {
-        this.direccionesData = resp.data;
+  getDirs(datos: Direccion[]) {
+    this.direccionesData = datos;
 
-        for (let i = 0; i < this.direccionesData.length; i++) {
-          this.direcciones.push(this.fb.group({
-            id: ['', Validators.required],
-            lugar: ['', Validators.required],
-            calle: ['', Validators.required],
-            numero: ['', Validators.min(0)],
-            ciudad: ['', Validators.required],
-            provincia: ['', Validators.required],
-            cp: ['', Validators.compose([
-              Validators.required,
-              Validators.pattern("[0-9]{5}")
-            ])]
-          }));
-        }
+    for (let i = 0; i < this.direccionesData.length; i++) {
+      this.direcciones.push(this.fb.group({
+        id: ['', Validators.required],
+        lugar: [''],
+        calle: [''],
+        numero: ['', Validators.min(0)],
+        ciudad: [''],
+        provincia: [''],
+        cp: ['', Validators.pattern("[0-9]{5}")]
+      }));
+    }
 
-        this.direcciones.patchValue(this.direccionesData);
-      }
-    });
+    this.direcciones.patchValue(this.direccionesData);
   }
 }
 
