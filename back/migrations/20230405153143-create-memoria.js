@@ -14,12 +14,10 @@ module.exports = {
         allowNull: false,
       },
       imagen: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.STRING
       },
       archivo: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
