@@ -4,6 +4,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { HimnoComponent } from './himno/himno.component';
+import { MemoriasComponent } from './memorias/memorias.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
     children: [
       { path: '', component: InicioComponent },
       { path: 'hermandad', component: LaHermandadComponent },
-      { path: 'himnos', component: HimnoComponent }
+      { path: 'himnos', component: HimnoComponent },
+      { path: 'memorias', component: MemoriasComponent }
     ]
   }
 ];
