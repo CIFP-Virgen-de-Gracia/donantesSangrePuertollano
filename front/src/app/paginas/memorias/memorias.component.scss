@@ -6,9 +6,39 @@ main {
     max-width: 100%;
     line-height: 2rem;
 
-    .titulo {
+    h1.titulo {
       padding-top: 5rem;
       margin: 0;
+    }
+
+    .memorias {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      row-gap: 5rem;
+      padding: 0 3rem;
+
+      @media (min-width: 576px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @media (min-width: 992px) {
+        padding: 0 7rem;
+      }
+
+      @media (min-width: 1400px) {
+        padding: 0 20rem;
+      }
+
+      .memoria {
+        h2 {
+          font-size: var(--letra-grande);
+          margin-top: 2rem;
+        }
+      }
     }
 /*
     &>div {

@@ -235,9 +235,14 @@ select {
   }
 }
 
+h1.titulo {
+  font-size: 1.9rem;
+}
+
 .titulo {
   font-family: var(--tipo-titulos);
   letter-spacing: 2px;
+  padding-bottom: 1rem;
 
   &.subrayado::after {
     content: "";
@@ -245,7 +250,7 @@ select {
     width: 6rem;
     max-width: 60%;
     border-bottom: 0.3rem solid var(--color-primario);
-    margin: 0 auto 1rem;
+    margin: 0 auto;
   }
 }
 
