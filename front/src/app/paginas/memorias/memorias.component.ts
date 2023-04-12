@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Memoria } from '../interfaces/paginas.interface';
+import { PaginasService } from '../services/paginas.service';
 
 @Component({
   selector: 'app-memorias',
@@ -7,4 +9,7 @@ import { Component } from '@angular/core';
 })
 export class MemoriasComponent {
 
+  listaMemorias: Memoria[] = [];
+
+  constructor(private PaginasService: PaginasService) { }
 }

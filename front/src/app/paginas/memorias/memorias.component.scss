@@ -36,21 +36,60 @@ main {
       .memoria {
         h2 {
           font-size: var(--letra-grande);
-          margin-top: 2rem;
+        }
+
+        img, &>div {
+          width: 70%;
+        }
+
+        i {
+          color: var(--color-primario);
+
+          &:hover {
+            color: var(--color-granate);
+          }
         }
       }
     }
-/*
-    &>div {
-      padding: 0 3rem;
-
-      @media (min-width: 576px) {
-        padding: 0 7rem;
-      }
-
-      @media (min-width: 1200px) {
-        padding: 0 20rem;
-      }
-    } */
   }
 }
+
+
+
+/* .memorias {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  row-gap: 5rem;
+  padding: 0 20%;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 3rem;
+    padding: 0 15%;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 10%;
+  }
+
+  @media (min-width: 992px) {
+    padding: 0 15%;
+  }
+
+  @media (min-width: 1400px) {
+    column-gap: 5rem;
+    padding: 0 20rem;
+  }
+
+  .memoria {
+    h2 {
+      font-size: var(--letra-grande);
+    }
+
+    img,
+    &>div {
+      width: 80%;
+    }
+  }
+} */

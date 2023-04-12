@@ -3,6 +3,7 @@ export interface ResponseAudio{
   data: Cancion[],
   msg: string,
 }
+
 export interface Cancion{
   id:string,
   nombre:string,
@@ -10,4 +11,16 @@ export interface Cancion{
   letra:string,
   cancion:string,
   descarga:string
+}
+
+export interface MemoriaResponse {
+  success: boolean,
+  memorias: Memoria[]
+}
+
+export interface Memoria {
+  id: number,
+  anio: number,
+  imagen: string,
+  archivo: string
 }
