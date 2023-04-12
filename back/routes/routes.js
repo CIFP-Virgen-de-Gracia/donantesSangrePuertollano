@@ -34,9 +34,9 @@ router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.get('/getHorarios', contenido.getHorarios);
 router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
+router.get('/getMemorias', contenido.getMemorias);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
-
 
 
 // pedir cita routes

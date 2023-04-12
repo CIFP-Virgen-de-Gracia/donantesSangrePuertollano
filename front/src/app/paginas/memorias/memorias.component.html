@@ -15,15 +15,21 @@
 
     <div class="memorias">
 
-      <ng-container *ngFor="let memoria of listaMemorias">
+      <ng-container *ngFor="let memoria of memorias">
 
-        <div class="memoria d-flex flex-column align-items-center">
-          <div class="d-flex mt-5 align-content-center justify-content-between">
-            <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
-            <i class="fa-solid fa-file-arrow-down"></i>
-          </div>
+        <div class="memoria d-flex flex-column align-items-center mt-5 ">
+          <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
           <img src="../../../assets/imagenes/memorias/{{ memoria.imagen }}.jpg">
+
+          <div class="iconos d-flex align-content-center justify-content-center mt-4">
+            <i class="fa-solid fa-file-arrow-down"></i>
+
+            <div class="d-flex align-content-center ms-auto">
+              <i class="fa-solid fa-pen me-3"></i>
+              <i class="fa-solid fa-trash"></i>
+            </div>
+          </div>
         </div>
 
       </ng-container>

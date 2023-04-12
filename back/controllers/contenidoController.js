@@ -49,7 +49,7 @@ const getHorarios = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -72,7 +72,7 @@ const getTelefonos = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -95,7 +95,7 @@ const getDirecciones = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -118,7 +118,7 @@ const getCargosJunta = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
         });
 }
 
@@ -141,7 +141,30 @@ const getIntegrantesCargo = (req, res = response) => {
                 msg: 'No hay registros',
             }
 
-            res.status(200).json(err);
+            res.status(200).json(resp);
+        });
+}
+
+
+const getMemorias = (req, res = response) => {
+    queriesContenidos.getMemorias()
+        .then(memorias => {
+            
+            const resp = {
+                success: true,
+                data: memorias
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+            console.log(err)
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(200).json(resp);
         });
 }
 
@@ -218,6 +241,7 @@ module.exports = {
     getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
+    getMemorias,
     updateHermandad,
     updateContacto
 }

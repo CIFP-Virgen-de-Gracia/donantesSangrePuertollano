@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Memoria } from '../interfaces/paginas.interface';
 import { PaginasService } from '../services/paginas.service';
 
@@ -7,9 +7,19 @@ import { PaginasService } from '../services/paginas.service';
   templateUrl: './memorias.component.html',
   styleUrls: ['./memorias.component.scss']
 })
-export class MemoriasComponent {
+export class MemoriasComponent implements OnInit {
 
-  listaMemorias: Memoria[] = [];
+  memorias: Memoria[] = [];
 
   constructor(private PaginasService: PaginasService) { }
+
+  ngOnInit() {
+    this.PaginasService.getMemorias()
+      .subscribe(resp => {
+
+        if (resp.success) {
+          this.memorias = resp.data;
+        }
+      });
+  }
 }

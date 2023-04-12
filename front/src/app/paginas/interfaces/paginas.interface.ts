@@ -15,7 +15,7 @@ export interface Cancion{
 
 export interface MemoriaResponse {
   success: boolean,
-  memorias: Memoria[]
+  data: Memoria[]
 }
 
 export interface Memoria {
