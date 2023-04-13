@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Cancion, MemoriaResponse, ResponseAudio} from '../interfaces/paginas.interface';
+import { BorrarResponse, Cancion, MemoriaResponse, ResponseAudio} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +18,24 @@ export class PaginasService {
 
 
   getIntegrantesCargo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`)
+    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`);
   }
 
 
   getMemorias(): Observable<MemoriaResponse> {
-    return this.http.get<MemoriaResponse>(`${this.baseUrl}/getMemorias`)
+    return this.http.get<MemoriaResponse>(`${this.baseUrl}/getMemorias`);
+  }
+
+
+  borrarMemoria(id: number): Observable<BorrarResponse> {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.http.get<BorrarResponse>(`${this.baseUrl}/borrarMemoria/${id}`, header);
   }
 
 

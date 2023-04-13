@@ -167,7 +167,6 @@ const desactivarNewsletter = (req, res = response) => {
         }).catch(err => {
             res.send(HTMLs.error())
         });
-
 }
 
 

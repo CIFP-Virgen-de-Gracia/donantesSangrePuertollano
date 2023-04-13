@@ -13,6 +13,12 @@ export interface Cancion{
   descarga:string
 }
 
+export interface BorrarResponse {
+  success: boolean,
+  msg: string,
+  data: number
+}
+
 export interface MemoriaResponse {
   success: boolean,
   data: Memoria[]

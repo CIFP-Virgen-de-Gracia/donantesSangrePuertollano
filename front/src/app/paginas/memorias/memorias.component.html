@@ -1,6 +1,21 @@
 <main>
   <div class="text-center container gx-0">
 
+    <div class="mensaje d-flex align-items-center justify-content-center"
+      [@entradaSalidaVentana]="codBorrar == -1"
+      *ngIf="codBorrar != -1">
+
+      <ng-container *ngIf="codBorrar == 0">
+        <i class="fa-solid fa-circle-check me-3"></i>
+        <p>Memoria eliminada con éxito</p>
+      </ng-container>
+
+      <ng-container *ngIf="codBorrar == 1">
+        <i class="fa-solid fa-triangle-exclamation me-3"></i>
+        <p>Error al eliminar la memoria</p>
+      </ng-container>
+    </div>
+
     <div>
       <div class="f-contraste">
         <h1 class="titulo subrayado">Memorias</h1>
@@ -15,9 +30,9 @@
 
     <div class="memorias">
 
-      <ng-container *ngFor="let memoria of memorias">
+      <ng-container *ngFor="let memoria of memorias; let i = index">
 
-        <div class="memoria d-flex flex-column align-items-center mt-5 ">
+        <div class="memoria d-flex flex-column align-items-center mt-5">
           <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
           <img src="../../../assets/imagenes/memorias/{{ memoria.imagen }}.jpg">
@@ -25,9 +40,9 @@
           <div class="iconos d-flex align-content-center justify-content-center mt-4">
             <i class="fa-solid fa-file-arrow-down"></i>
 
-            <div class="d-flex align-content-center ms-auto">
-              <i class="fa-solid fa-pen me-3"></i>
-              <i class="fa-solid fa-trash"></i>
+            <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
+              <i class="fa-solid fa-pen me-3" (click)="editarMemoria(i)"></i>
+              <i class="fa-solid fa-trash" (click)="borrarMemoria(i)"></i>
             </div>
           </div>
         </div>

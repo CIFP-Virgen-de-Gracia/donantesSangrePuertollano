@@ -158,7 +158,7 @@ const getMemorias = (req, res = response) => {
             res.status(200).json(resp);
 
         }).catch(err => {
-            console.log(err)
+            
             const resp = {
                 success: false,
                 msg: 'No hay registros',
@@ -190,7 +190,7 @@ const updateHermandad = async (req, res = response) => {
         res.status(201).json(resp);
 
     } catch (err) {
-        console.log(err)
+        
         const resp = {
             success: false,
             msg: 'Se ha producido un error',
@@ -234,6 +234,31 @@ const updateContacto = async (req, res = response) => {
 }
 
 
+const deleteMemoria = async(req, res = response) => {
+    queriesContenidos.deleteMemoria(req.params.id)
+        .then(memoria => {
+            
+            const resp = {
+                success: true,
+                msg: 'Memoria eliminada con éxito',
+                data: req.params.id
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+            
+            const resp = {
+                success: false,
+                msg: 'Error al eliminar la memoria',
+            }
+
+            res.status(200).json(resp);
+        });
+}
+
+
+
 module.exports = {
     getHistoria,
     getHorarios,
@@ -243,5 +268,6 @@ module.exports = {
     getIntegrantesCargo,
     getMemorias,
     updateHermandad,
-    updateContacto
+    updateContacto,
+    deleteMemoria
 }

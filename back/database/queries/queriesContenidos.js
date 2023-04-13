@@ -297,6 +297,21 @@ deleteTelefono = async (id) => {
 }
 
 
+deleteMemoria = async(id) => {
+    try {
+        const resp = await models.Memoria.destroy({
+            where: { id: id }
+        });
+
+        console.log(resp)
+        return resp;
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+
 
 module.exports = {
     getHistoria,
@@ -315,5 +330,6 @@ module.exports = {
     updateTelefono,
     updateHorario,
     deleteHorario,
-    deleteTelefono
+    deleteTelefono,
+    deleteMemoria
 };
