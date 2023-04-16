@@ -78,16 +78,12 @@ getMemorias = async () => {
 insertHorario = async (horario) => {
     try {
 
-        this.sequelize.conectar();
-
         const resp = await models.Horario.create({
             dia: horario.dia,
             hEntrada: horario.hEntrada,
             hSalida: horario.hSalida,
             createddAt: new Date().toLocaleString()
         });
-
-        this.sequelize.desconectar();
 
         return resp;
 
@@ -100,15 +96,11 @@ insertHorario = async (horario) => {
 insertTelefono = async (tlfn) => {
     try {
 
-        this.sequelize.conectar();
-
         const resp = await models.Telefono.create({
             numero: tlfn.numero,
             extension: tlfn.extension,
             createddAt: new Date().toLocaleString()
         });
-
-        this.sequelize.desconectar();
 
         return resp;
 
@@ -122,7 +114,6 @@ updateHistoria = async (valor) => {
     let resp = null;
 
     try {
-        this.sequelize.conectar();
 
         const historia = await models.Contenido.findOne({
             where: {
@@ -137,7 +128,6 @@ updateHistoria = async (valor) => {
             });
         } else resp = await historia.update({ valor: valor });
 
-        this.sequelize.desconectar();
         return resp;
 
     } catch (err) {
@@ -148,12 +138,9 @@ updateHistoria = async (valor) => {
 
 updateNombreIntegranteJunta = async (integrante) => {
     try {
-        this.sequelize.conectar();
 
         const int = await models.IntegranteJunta.findByPk(integrante.id);
         const respInt = await int.update({ nombre: integrante.nombre });
-
-        this.sequelize.desconectar();
 
         return respInt;
 
@@ -165,7 +152,6 @@ updateNombreIntegranteJunta = async (integrante) => {
 
 updateCargoIntegranteJunta = async (integrante) => {
     try {
-        this.sequelize.conectar();
 
         const idCargo = await models.CargoJunta.findOne({
             attributes: ['id'],
@@ -183,8 +169,6 @@ updateCargoIntegranteJunta = async (integrante) => {
 
         const respCargo = await cargoInt.update({ idCargo: idCargo.id });
 
-        this.sequelize.desconectar();
-
         return respCargo;
 
     } catch (err) {
@@ -195,7 +179,6 @@ updateCargoIntegranteJunta = async (integrante) => {
 
 updateDireccion = async (direccion) => {
     try {
-        this.sequelize.conectar();
 
         const dir = await models.Direccion.findByPk(direccion.id);
         const resp = await dir.update({
@@ -208,8 +191,6 @@ updateDireccion = async (direccion) => {
             updatedAt: new Date().toLocaleString()
         });
 
-        this.sequelize.desconectar();
-
         return resp;
 
     } catch (err) {
@@ -220,7 +201,6 @@ updateDireccion = async (direccion) => {
 
 updateTelefono = async (telefono) => {
     try {
-        this.sequelize.conectar();
 
         const tlfn = await models.Telefono.findByPk(telefono.id);
         const resp = await tlfn.update({
@@ -228,8 +208,6 @@ updateTelefono = async (telefono) => {
             extension: telefono.extension,
             updatedAt: new Date().toLocaleString()
         });
-
-        this.sequelize.desconectar();
 
         return resp;
 
@@ -241,17 +219,32 @@ updateTelefono = async (telefono) => {
 
 updateHorario = async (horario) => {
     try {
-        this.sequelize.conectar();
 
         const h = await models.Horario.findByPk(horario.id);
-
         const resp = await h.update({
             hEntrada: horario.hEntrada,
             hSalida: horario.hSalida,
             updatedAt: new Date().toLocaleString()
         });
 
-        this.sequelize.desconectar();
+        return resp;
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+updateMemoria = async (memoria) => {
+    try {
+
+        const mem = await models.Memoria.findByPk(memoria.id);
+        const resp = await mem.update({
+            anio: memoria.anio,
+            imagen: memoria.imagen,
+            documento: memoria.documento,
+            updatedAt: new Date().toLocaleString()
+        });
 
         return resp;
 
@@ -329,6 +322,7 @@ module.exports = {
     updateDireccion,
     updateTelefono,
     updateHorario,
+    updateMemoria,
     deleteHorario,
     deleteTelefono,
     deleteMemoria

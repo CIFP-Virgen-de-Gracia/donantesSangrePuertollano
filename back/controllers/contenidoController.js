@@ -1,6 +1,7 @@
 const moment = require('moment');
 const { response, request } = require('express');
 const queriesContenidos = require('../database/queries/queriesContenidos');
+const { subirArchivo } = require('../helpers/fileUpload');
 
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
@@ -234,6 +235,46 @@ const updateContacto = async (req, res = response) => {
 }
 
 
+const updateMemoria = async(req, res = response) => {
+    const extImgs = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'webp'];
+    const extDocs = ['pdf', 'odt', 'doc', 'docx'];
+    const promesas = [];
+    let img = null, doc = null;
+
+    if (req.files) {        
+        if (req.files.imagen) promesas.push(subirArchivo(req.files.imagen, extImgs, 'memorias/imagenes'));
+        if (req.files.documento) promesas.push(subirArchivo(req.files.documento, extDocs, 'memorias/documentos'));
+       
+        try {
+            [img, doc] = await Promise.all(promesas);
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    queriesContenidos.updateMemoria({ id: req.body.id, anio: req.body.anio, imagen: img, documento: doc })
+        .then(memoria => {
+            
+            const resp = {
+                success: true,
+                msg: 'Memoria editada con éxito',
+                data: memoria
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+            
+            const resp = {
+                success: false,
+                msg: 'Error al editar la memoria',
+            }
+
+            res.status(200).json(resp);
+        });
+}
+
+
 const deleteMemoria = async(req, res = response) => {
     queriesContenidos.deleteMemoria(req.params.id)
         .then(memoria => {
@@ -269,5 +310,6 @@ module.exports = {
     getMemorias,
     updateHermandad,
     updateContacto,
+    updateMemoria,
     deleteMemoria
 }

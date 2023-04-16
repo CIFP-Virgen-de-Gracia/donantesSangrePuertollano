@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Memoria.init({
     anio: DataTypes.INTEGER,
     imagen: DataTypes.STRING,
-    archivo: DataTypes.STRING
+    documento: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Memoria',

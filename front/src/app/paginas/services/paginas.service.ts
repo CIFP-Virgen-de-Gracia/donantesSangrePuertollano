@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BorrarResponse, Cancion, MemoriaResponse, ResponseAudio} from '../interfaces/paginas.interface';
+import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, UpdateMemResponse} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -22,20 +22,36 @@ export class PaginasService {
   }
 
 
-  getMemorias(): Observable<MemoriaResponse> {
-    return this.http.get<MemoriaResponse>(`${this.baseUrl}/getMemorias`);
+  getMemorias(): Observable<GetMemResponse> {
+    return this.http.get<GetMemResponse>(`${this.baseUrl}/getMemorias`);
   }
 
 
-  borrarMemoria(id: number): Observable<BorrarResponse> {
+  borrarMemoria(id: number): Observable<BorrarMemResponse> {
     const header = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'x-token': JSON.parse(localStorage.getItem('user')!).token
       })
     };
 
-    return this.http.get<BorrarResponse>(`${this.baseUrl}/borrarMemoria/${id}`, header);
+    return this.http.delete<BorrarMemResponse>(`${this.baseUrl}/deleteMemoria/${id}`, header);
+  }
+
+
+  updateMemoria(memoria: Memoria): Observable<UpdateMemResponse> {
+    const header = {
+      headers: new HttpHeaders({
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    const payload = new FormData();
+    payload.append('id', memoria.id.toString());
+    payload.append('anio', memoria.anio.toString());
+    payload.append('imagen', memoria.imagen);
+    payload.append('documento', memoria.documento);
+
+    return this.http.put<UpdateMemResponse>(`${this.baseUrl}/updateMemoria`, payload, header);
   }
 
 

@@ -16,7 +16,7 @@ module.exports = {
       imagen: {
         type: Sequelize.STRING
       },
-      archivo: {
+      documento: {
         type: Sequelize.STRING,
       },
       createdAt: {

@@ -19,7 +19,8 @@
   --color-granate: rgb(101, 4, 35);
   --color-granate-oscuro: rgb(41, 11, 37);
   --color-contraste: rgb(241, 238, 245);
-  --color-contraste-oscuro: rgb(201, 197, 207);
+  --color-contraste-medio: rgb(195, 190, 202);
+  --color-contraste-oscuro: rgb(135, 125, 149);
   --tipo-textos: texto;
   --tipo-titulos: titulos;
   --letra-pequena: .85rem;
@@ -63,10 +64,12 @@ body {
     }
   }
 
+
   // Botones - inputs
   input.inpt,
   .btn-primario,
-  .btn-secundario {
+  .btn-secundario,
+  .btn-terciario {
     border: none;
     outline: none;
   }
@@ -146,6 +149,7 @@ body {
   text-align: center;
   text-transform: uppercase;
   transition: 0.5s;
+  background-color: var(--bs-white);
 
   &:hover {
     color: var(--color-secundario);
@@ -183,6 +187,34 @@ body {
     border-right: 3px solid var(--color-secundario);
     transition: 0.5s;
     transition-delay: 0.5s;
+  }
+}
+
+
+button:disabled {
+  background-color: var(--color-contraste-medio) !important;
+  color: var(--bs-white);
+
+
+  &.btn-primario:hover {
+    background-color: var(--color-contraste-oscuro) !important;
+  }
+
+  &.btn-secundario:hover, &.btn-terciario:hover {
+    background-color: var(--color-contraste) !important;
+    color: var(--color-contraste-oscuro) !important;
+  }
+
+  &.btn-secundario {
+    &::before, &::after {
+      background-color: var(--color-contraste-oscuro) !important;
+    }
+  }
+
+  &.btn-terciario {
+    &::before, &::after {
+      border-color: var(--color-contraste-oscuro) !important;
+    }
   }
 }
 

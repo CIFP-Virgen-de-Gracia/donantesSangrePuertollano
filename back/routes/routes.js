@@ -37,7 +37,13 @@ router.get('/getDirecciones', contenido.getDirecciones);
 router.get('/getMemorias', contenido.getMemorias);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
-router.get('/borrarMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
+router.put('/updateMemoria', [ 
+    vJwt.validarJwt, 
+    midsUser.midAdmin, 
+    check('anio', 'El año es obligatorio').not().isEmpty(),
+    midsValidar.validarCampos 
+], contenido.updateMemoria);
+router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 
 
 // pedir cita routes

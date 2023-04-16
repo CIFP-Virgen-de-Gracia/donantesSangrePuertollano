@@ -13,13 +13,19 @@ export interface Cancion{
   descarga:string
 }
 
-export interface BorrarResponse {
+export interface BorrarMemResponse {
   success: boolean,
   msg: string,
   data: number
 }
 
-export interface MemoriaResponse {
+export interface UpdateMemResponse {
+  success: boolean,
+  msg: string,
+  data: Memoria
+}
+
+export interface GetMemResponse {
   success: boolean,
   data: Memoria[]
 }
@@ -27,6 +33,6 @@ export interface MemoriaResponse {
 export interface Memoria {
   id: number,
   anio: number,
-  imagen: string,
-  archivo: string
+  imagen: File,
+  documento: File
 }

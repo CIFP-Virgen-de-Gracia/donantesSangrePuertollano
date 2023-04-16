@@ -16,6 +16,10 @@ export class MemoriasComponent implements OnInit {
 
   timer: NodeJS.Timeout | undefined;
   codBorrar: number = -1;
+  codEditar: number = -1;
+  imagenValida: boolean = true;
+  documentoValido: boolean = true;
+  infoMemoriaEditar: Memoria;
   estaRegistrado: boolean = false;
   puedeModificar: boolean = false;
   memorias: Memoria[] = [];
@@ -23,7 +27,9 @@ export class MemoriasComponent implements OnInit {
   constructor(
     private PaginasService: PaginasService,
     private AuthService: AuthService
-  ) { }
+  ) {
+    this.infoMemoriaEditar = this.limpiarMemoria();
+  }
 
   ngOnInit() {
     const user = localStorage.getItem('user');
@@ -37,14 +43,55 @@ export class MemoriasComponent implements OnInit {
       .subscribe(resp => {
 
         if (resp.success) {
+          console.log(resp.data)
           this.memorias = resp.data;
         }
       });
   }
 
 
-  editarMemoria(id: number) {
+  get memoriaEditar() {
+    return this.infoMemoriaEditar;
+  }
 
+
+  setMemoriaEditar(index: number) {
+    this.infoMemoriaEditar = this.memorias[index];
+  }
+
+
+  onImgSeleccionada(event: Event) {
+    const permitidas = ['.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
+    const img = ((event.target as HTMLInputElement).files as FileList)[0];
+
+    if (this.comprobarExtension(img, permitidas)) this.infoMemoriaEditar.imagen = img;
+    else this.imagenValida = false;
+  }
+
+
+  onDocumentoSeleccionado(event: Event) {
+    const permitidas = ['.pdf', '.odt', '.doc', '.docx'];
+    const documento = ((event.target as HTMLInputElement).files as FileList)[0];
+
+    if (this.comprobarExtension(documento, permitidas)) this.infoMemoriaEditar.documento = documento;
+    else this.documentoValido = false;
+  }
+
+
+  comprobarExtension(file: File, permitidas: string[]) {
+    const extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
+
+    return (permitidas.includes(extension)) ? true : false;
+  }
+
+
+  editarMemoria() {
+    this.PaginasService.updateMemoria(this.infoMemoriaEditar)
+      .subscribe( resp => {
+        if (resp.success) console.log(resp)
+      })
+
+    /* this.infoMemoriaEditar = this.limpiarMemoria(); */
   }
 
 
@@ -63,6 +110,11 @@ export class MemoriasComponent implements OnInit {
         clearTimeout(this.timer);
         this.timer = setTimeout(() => this.codBorrar = -1, 4000);
       });
+  }
+
+
+  limpiarMemoria() {
+    return { id: -1, anio: -1, imagen: new File([""], ""),  documento: new File([""], "") };
   }
 
 

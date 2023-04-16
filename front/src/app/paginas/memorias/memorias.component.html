@@ -1,18 +1,24 @@
 <main>
   <div class="text-center container gx-0">
 
-    <div class="mensaje d-flex align-items-center justify-content-center"
-      [@entradaSalidaVentana]="codBorrar == -1"
-      *ngIf="codBorrar != -1">
+    <div class="mensaje"
+      [@entradaSalidaVentana]="codBorrar == -1 || codEditar == -1"
+      *ngIf="codBorrar != -1 || codEditar != -1">
 
-      <ng-container *ngIf="codBorrar == 0">
-        <i class="fa-solid fa-circle-check me-3"></i>
-        <p>Memoria eliminada con éxito</p>
+      <ng-container *ngIf="codBorrar == 0 || codEditar == 0">
+        <div class="mensaje-ok d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-circle-check me-3"></i>
+          <p *ngIf="codBorrar == 0">Memoria eliminada con éxito</p>
+          <p *ngIf="codEditar == 0">Memoria editada con éxito</p>
+        </div>
       </ng-container>
 
-      <ng-container *ngIf="codBorrar == 1">
-        <i class="fa-solid fa-triangle-exclamation me-3"></i>
-        <p>Error al eliminar la memoria</p>
+      <ng-container *ngIf="codBorrar == 1 || codEditar == 1">
+        <div class="mensaje-error d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-triangle-exclamation me-3"></i>
+          <p *ngIf="codBorrar == 1">Error al eliminar la memoria</p>
+          <p *ngIf="codEditar == 1">Error al editar la memoria</p>
+        </div>
       </ng-container>
     </div>
 
@@ -22,8 +28,7 @@
       </div>
 
       <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
-        <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1"
-          d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
+        <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1" d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
         </path>
       </svg>
     </div>
@@ -35,14 +40,21 @@
         <div class="memoria d-flex flex-column align-items-center mt-5">
           <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
-          <img src="../../../assets/imagenes/memorias/{{ memoria.imagen }}.jpg">
+          <img src="../../../assets/imagenes/memorias/{{ memoria.imagen != null ? memoria.imagen : 'default' }}.jpg">
 
           <div class="iconos d-flex align-content-center justify-content-center mt-4">
             <i class="fa-solid fa-file-arrow-down"></i>
 
             <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
-              <i class="fa-solid fa-pen me-3" (click)="editarMemoria(i)"></i>
-              <i class="fa-solid fa-trash" (click)="borrarMemoria(i)"></i>
+              <i class="fa-solid fa-pen me-3"
+                (click)="setMemoriaEditar(i)"
+                data-bs-toggle="modal"
+                data-bs-target="#editarMemoria">
+              </i>
+
+              <i class="fa-solid fa-trash"
+                (click)="borrarMemoria(i)">
+              </i>
             </div>
           </div>
         </div>
@@ -51,4 +63,93 @@
 
     </div>
   </div>
+
+ <!--  Modal -->
+  <div class="modal" id="editarMemoria"
+    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editarMemoriaLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editarMemoriaLabel">Editar memoria</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <form (ngSubmit)="editarForm.form.valid && editarMemoria()" novalidate #editarForm="ngForm">
+          <div class="modal-body">
+            <div class="mb-4">
+              <label for="anio">Año</label><br>
+
+              <input type="number"
+                #anio="ngModel"
+                name="anio"
+                class="form-control"
+                required
+                [(ngModel)]="memoriaEditar.anio"
+                [ngClass]="{'error-input' : anio.invalid && (anio.dirty || anio.touched)}"/>
+
+              <p class="mensaje-error" *ngIf="anio.invalid && (anio.dirty || anio.touched)">
+                El año es obligatorio
+              </p>
+            </div>
+
+
+            <div class="mb-4">
+              <label for="documento">Documento</label><br>
+
+              <input type="file"
+                name="documento"
+                class="form-control"
+                accept="application/pdf, application/odt, application/doc, application/docx"
+                (change)="onDocumentoSeleccionado($event)"
+                [ngClass]="{'error-input' : !documentoValido}"/>
+
+                <p class="mensaje-error" *ngIf="!documentoValido">
+                  Documento no válido. Los formatos admitidos son <b>pdf, odt, doc y docx</b>.
+                </p>
+            </div>
+
+
+            <div class="mb-4">
+              <label for="imagen">Imagen de la portada</label><br>
+              <input type="file"
+                #imagen
+                name="imagen"
+                class="form-control"
+                accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
+                (change)="onImgSeleccionada($event)"
+                [ngClass]="{'error-input' : !imagenValida}"/>
+
+              <p class="mensaje-error" *ngIf="!imagenValida">
+                Imagen no válida. Los formatos admitidos son <b>png, jpg, jpeg, gif, tiff, svg y webp</b>.
+              </p>
+            </div>
+
+            <div class="mb-4">
+              <p>Imagen actual</p>
+              <img [src]="memoriaEditar.imagen">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button"
+              class="btn-terciario"
+              data-bs-dismiss="modal"
+              aria-label="Cancelar edición">
+              Cancelar
+            </button>
+
+            <button type="submit"
+              class="btn-terciario ms-4"
+              aria-label="Guardar edición">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </main>
