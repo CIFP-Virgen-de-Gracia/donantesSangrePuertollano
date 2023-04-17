@@ -49,18 +49,25 @@ export class MenuComponent implements OnInit {
   }
 
 
-  onBannerLoad() {
+  getPosicionMenu() {
     let distMenuTop = this.menu.nativeElement.getBoundingClientRect().top;
     let scrollActual = window.scrollY;
 
     this.posicionMenuOriginal = distMenuTop + scrollActual;
   }
 
+
   @HostListener("window:scroll", ['$event'])
   handleScroll($event: Event) {
     const scrollActual = window.scrollY;
 
     this.fijo = scrollActual >= this.posicionMenuOriginal ? true : false;
+  }
+
+
+  @HostListener("window:resize", ['$event'])
+  handleResize($event: Event) {
+    this.getPosicionMenu();
   }
 
 
