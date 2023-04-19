@@ -43,7 +43,6 @@ class QueriesMusica {
         this.sequelize.conectar();
         try {
             let cancion = await models.Cancion.findByPk(req.body.id);
-            console.log(cancion);
             if (cancion) {
                 if (!req.files) {
                     cancion.id = cancion.id;

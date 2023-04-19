@@ -188,7 +188,8 @@ body {
 
 .botonAdd:hover,
 .botonCerrar:hover {
-  color: var(--color-secundario);
+  color: var(--bs-white);
+  background-color:var(--color-secundario);
   transition-delay: 0.5s;
 }
 

@@ -6,13 +6,15 @@ import { InicioComponent } from './inicio/inicio.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { HimnoComponent } from './himno/himno.component';
+import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-frecuentes.component';
 
 @NgModule({
   declarations: [
     InicioComponent,
     MainPageComponent,
     LaHermandadComponent,
-    HimnoComponent
+    HimnoComponent,
+    PreguntasFrecuentesComponent
   ],
   imports: [
     CommonModule,
