@@ -16,6 +16,9 @@
     background-color: var(--bs-dark);
   }
 }
+span.errorSpan {
+  color: var(--color-primario);
+}
 
 .centrado {
   display: flex;

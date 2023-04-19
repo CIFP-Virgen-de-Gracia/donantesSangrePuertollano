@@ -2,24 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('canciones', {
+    await queryInterface.createTable('Faqs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombre: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      pregunta: {
+        type: Sequelize.STRING(65000)
       },
-      titulo: {
-        type: Sequelize.STRING(1000),
-        allowNull: false,
-      },
-      letra: {
-        type: Sequelize.STRING(65000),
-        allowNull: true,
+      respuesta: {
+        type: Sequelize.STRING(65000)
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('canciones');
+    await queryInterface.dropTable('Faqs');
   }
 };

@@ -11,3 +11,14 @@ export interface Cancion{
   cancion:string,
   descarga:string
 }
+
+export interface ResponseFaqs{
+  success: boolean,
+  data: Faq[],
+  msg: string,
+}
+export interface Faq{
+  id:string,
+  pregunta:string,
+  respuesta:string,
+}

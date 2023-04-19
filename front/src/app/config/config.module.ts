@@ -15,6 +15,10 @@ import { TestConfigComponent } from './test-config/test-config.component';
 import { AniadirPreguntaComponent } from './test-config/aniadir-pregunta/aniadir-pregunta.component';
 import { ModificarPreguntaComponent } from './test-config/modificar-pregunta/modificar-pregunta.component';
 import { BorrarPreguntaComponent } from './test-config/borrar-pregunta/borrar-pregunta.component';
+import { FaqsConfigComponent } from './faqs-config/faqs-config.component';
+import { FaqsAddComponent } from './faqs-config/faqs-add/faqs-add.component';
+import { FaqsEditComponent } from './faqs-config/faqs-edit/faqs-edit.component';
+import { FaqsDeleteComponent } from './faqs-config/faqs-delete/faqs-delete.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,11 @@ import { BorrarPreguntaComponent } from './test-config/borrar-pregunta/borrar-pr
     TestConfigComponent,
     AniadirPreguntaComponent,
     ModificarPreguntaComponent,
-    BorrarPreguntaComponent
+    BorrarPreguntaComponent,
+    FaqsConfigComponent,
+    FaqsAddComponent,
+    FaqsEditComponent,
+    FaqsDeleteComponent
   ],
   imports: [
     FormsModule,
