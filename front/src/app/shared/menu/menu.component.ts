@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalPedirCitaComponent } from '../modal-pedir-cita/modal-pedir-cita.component';
@@ -15,9 +15,13 @@ import { PedirCitaModule } from 'src/app/citas/citas.module';
 })
 export class MenuComponent implements OnInit {
 
+  @ViewChild('menu') menu!: ElementRef<HTMLElement>;
+  fijo: boolean = false;
+  posicionMenuOriginal: number = 0;
   puedeModificar: boolean = false;
   estaRegistrado: boolean = false;
   puedePedirCita: boolean = true;
+
 
   constructor(
     private AuthService: AuthService,
@@ -26,7 +30,6 @@ export class MenuComponent implements OnInit {
     private modal: NgbModal,
     private citasService: CitasService
   ) { }
-
 
 
   ngOnInit() {
@@ -46,6 +49,28 @@ export class MenuComponent implements OnInit {
   }
 
 
+  getPosicionMenu() {
+    let distMenuTop = this.menu.nativeElement.getBoundingClientRect().top;
+    let scrollActual = window.scrollY;
+
+    this.posicionMenuOriginal = distMenuTop + scrollActual;
+  }
+
+
+  @HostListener("window:scroll", ['$event'])
+  handleScroll($event: Event) {
+    const scrollActual = window.scrollY;
+
+    this.fijo = scrollActual >= this.posicionMenuOriginal ? true : false;
+  }
+
+
+  @HostListener("window:resize", ['$event'])
+  handleResize($event: Event) {
+    this.getPosicionMenu();
+  }
+
+
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {
       this.AuthService.puedeModificar().subscribe(resp => {
@@ -53,6 +78,7 @@ export class MenuComponent implements OnInit {
       });
     }
   }
+
 
   async ensenarModal() {
     this.modal.open(ModalPedirCitaComponent);

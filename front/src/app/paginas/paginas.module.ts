@@ -7,6 +7,9 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
 import { HimnoComponent } from './himno/himno.component';
 import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-frecuentes.component';
+import { AvisoLegalComponent } from './aviso-legal/aviso-legal.component';
+import { TerminosUsoComponent } from './terminos-uso/terminos-uso.component';
+import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-f
     MainPageComponent,
     LaHermandadComponent,
     HimnoComponent,
-    PreguntasFrecuentesComponent
+    PreguntasFrecuentesComponent,
+    AvisoLegalComponent,
+    TerminosUsoComponent,
+    PoliticasCookiesComponent
   ],
   imports: [
     CommonModule,
