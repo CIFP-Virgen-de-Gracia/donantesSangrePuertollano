@@ -25,7 +25,7 @@ export class MainConfigComponent {
       nombre : "test-apto",
       icono: "fa-vial"
     },{
-      nombre : "faqs",
+      nombre : "faq",
       icono: "fa-circle-question"
     },
   ];
