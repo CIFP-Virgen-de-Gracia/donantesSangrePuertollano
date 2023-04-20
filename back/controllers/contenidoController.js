@@ -1,7 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const moment = require('moment');
 const { response, request } = require('express');
-const queriesContenidos = require('../database/queries/queriesContenidos');
 const { subirArchivo } = require('../helpers/fileUpload');
+const queriesContenidos = require('../database/queries/queriesContenidos');
 
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
@@ -151,6 +153,7 @@ const getMemorias = (req, res = response) => {
     queriesContenidos.getMemorias()
         .then(memorias => {
             
+            memorias.map(m => m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/" + m.imagen);
             const resp = {
                 success: true,
                 data: memorias
@@ -167,6 +170,15 @@ const getMemorias = (req, res = response) => {
 
             res.status(200).json(resp);
         });
+}
+
+
+const getImagen = async (req, res = response) => {
+    const pathImagen = path.join(__dirname, '../uploads/memorias/imagenes', req.params.nombre);
+
+    return fs.existsSync(pathImagen) 
+        ? res.sendFile(pathImagen) 
+        : res.sendFile(path.join(__dirname, '../uploads/memorias/imagenes/default.png'))
 }
 
 
@@ -241,61 +253,63 @@ const updateMemoria = async(req, res = response) => {
     const promesas = [];
     let img = null, doc = null;
 
-    if (req.files) {        
-        if (req.files.imagen) promesas.push(subirArchivo(req.files.imagen, extImgs, 'memorias/imagenes'));
-        if (req.files.documento) promesas.push(subirArchivo(req.files.documento, extDocs, 'memorias/documentos'));
+    try {
        
-        try {
+        if (req.files) {        
+            if (req.files.imagen) promesas.push(subirArchivo(req.files.imagen, extImgs, 'memorias/imagenes'));
+            if (req.files.documento) promesas.push(subirArchivo(req.files.documento, extDocs, 'memorias/documentos'));
+           
             [img, doc] = await Promise.all(promesas);
-        } catch (err) {
-            console.log(err)
         }
-    }
-
-    queriesContenidos.updateMemoria({ id: req.body.id, anio: req.body.anio, imagen: img, documento: doc })
-        .then(memoria => {
-            
-            const resp = {
-                success: true,
-                msg: 'Memoria editada con éxito',
-                data: memoria
-            }
-
-            res.status(200).json(resp);
-
-        }).catch(err => {
-            
-            const resp = {
-                success: false,
-                msg: 'Error al editar la memoria',
-            }
-
-            res.status(200).json(resp);
+    
+        const memoria = await queriesContenidos.updateMemoria({ 
+            id: req.body.id, 
+            anio: req.body.anio, 
+            imagen: img, 
+            documento: doc 
         });
+                
+        const resp = {
+            success: true,
+            msg: 'Memoria editada con éxito',
+            data: memoria
+        }
+    
+        res.status(200).json(resp);
+
+    } catch (err) { 
+        
+        const resp = {
+            success: false,
+            msg: 'Error al editar la memoria',
+        }
+
+        res.status(200).json(resp);
+    }
 }
 
 
 const deleteMemoria = async(req, res = response) => {
-    queriesContenidos.deleteMemoria(req.params.id)
-        .then(memoria => {
+    try {
+        await queriesContenidos.deleteMemoria(req.params.id);
+
+        const resp = {
+            success: true,
+            msg: 'Memoria eliminada con éxito',
+            data: req.params.id
+        }
+
+        res.status(200).json(resp);
+
+    } catch(err) {
             
-            const resp = {
-                success: true,
-                msg: 'Memoria eliminada con éxito',
-                data: req.params.id
-            }
+        const resp = {
+            success: false,
+            msg: 'Error al eliminar la memoria',
+        }
 
-            res.status(200).json(resp);
-
-        }).catch(err => {
-            
-            const resp = {
-                success: false,
-                msg: 'Error al eliminar la memoria',
-            }
-
-            res.status(200).json(resp);
-        });
+        res.status(200).json(resp);
+    }
 }
 
 
@@ -307,6 +321,7 @@ module.exports = {
     getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
+    getImagen,
     getMemorias,
     updateHermandad,
     updateContacto,

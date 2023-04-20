@@ -23,6 +23,7 @@ export class MemoriasComponent implements OnInit {
   estaRegistrado: boolean = false;
   puedeModificar: boolean = false;
   memorias: Memoria[] = [];
+  mostrarImagen: boolean = true;
 
   constructor(
     private PaginasService: PaginasService,
@@ -43,7 +44,6 @@ export class MemoriasComponent implements OnInit {
       .subscribe(resp => {
 
         if (resp.success) {
-          console.log(resp.data)
           this.memorias = resp.data;
         }
       });
@@ -57,6 +57,7 @@ export class MemoriasComponent implements OnInit {
 
   setMemoriaEditar(index: number) {
     this.infoMemoriaEditar = this.memorias[index];
+
   }
 
 
@@ -114,7 +115,7 @@ export class MemoriasComponent implements OnInit {
 
 
   limpiarMemoria() {
-    return { id: -1, anio: -1, imagen: new File([""], ""),  documento: new File([""], "") };
+    return { id: -1, anio: -1, imagen: "",  documento: "" };
   }
 
 

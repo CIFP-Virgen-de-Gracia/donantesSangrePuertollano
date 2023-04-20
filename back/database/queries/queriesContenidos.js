@@ -256,13 +256,10 @@ updateMemoria = async (memoria) => {
 
 deleteHorario = async (id) => {
     try {
-        this.sequelize.conectar();
 
         const resp = await models.Horario.destroy({
             where: { id: id }
         });
-
-        this.sequelize.desconectar();
 
         return resp;
 
@@ -274,13 +271,10 @@ deleteHorario = async (id) => {
 
 deleteTelefono = async (id) => {
     try {
-        this.sequelize.conectar();
 
         const resp = await models.Telefono.destroy({
             where: { id: id }
         });
-
-        this.sequelize.desconectar();
 
         return resp;
 
@@ -296,7 +290,20 @@ deleteMemoria = async(id) => {
             where: { id: id }
         });
 
-        console.log(resp)
+        return resp;
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+deleteImgMemoria = async (id) => {
+    try {
+
+        const mem = await models.Memoria.findByPk(id)
+        const resp = await mem.update({ imagen: null });
+
         return resp;
 
     } catch (err) {
@@ -325,5 +332,6 @@ module.exports = {
     updateMemoria,
     deleteHorario,
     deleteTelefono,
-    deleteMemoria
+    deleteMemoria,
+    deleteImgMemoria
 };

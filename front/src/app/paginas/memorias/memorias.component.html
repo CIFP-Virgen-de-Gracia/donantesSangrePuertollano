@@ -40,7 +40,7 @@
         <div class="memoria d-flex flex-column align-items-center mt-5">
           <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
-          <img src="../../../assets/imagenes/memorias/{{ memoria.imagen != null ? memoria.imagen : 'default' }}.jpg">
+          <img src="{{ memoria.imagen }}">
 
           <div class="iconos d-flex align-content-center justify-content-center mt-4">
             <i class="fa-solid fa-file-arrow-down"></i>
@@ -128,8 +128,10 @@
             </div>
 
             <div class="mb-4">
-              <p>Imagen actual</p>
-              <img [src]="memoriaEditar.imagen">
+
+                <p>Imagen actual</p>
+                <img class="imagen-actual" [src]="memoriaEditar.imagen">
+
             </div>
           </div>
 
