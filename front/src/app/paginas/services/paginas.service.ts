@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, UpdateMemResponse} from '../interfaces/paginas.interface';
+import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , UpdateMemResponse} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,11 @@ export class PaginasService {
 
   baseUrl = environment.baseUrl + '/api';
   private canciones: Cancion[];
+  private faqs: Faq[];
 
   constructor(private http: HttpClient) {
     this.canciones = [];
+    this.faqs = [];
   }
 
 
@@ -62,6 +64,17 @@ export class PaginasService {
 
   getListado(): Observable<ResponseAudio> {
     return this.http.get<ResponseAudio>(`${this.baseUrl}/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
+  }
+  //Para Pagina de Faqs
+  get resultFaqs() {
+    return [...this.faqs];
+  }
+  getListadoFaqs(): Observable<ResponseFaqs> {
+    return this.http.get<ResponseFaqs>(`${this.baseUrl}/api/faq/listado`).pipe(tap(resp => { if (resp.success !== false) { this.faqs = resp.data } }))
+  }
+  //Para Pagina de Faqs
+  get resultFaqs() {
+    return [...this.faqs];
   }
 }
 

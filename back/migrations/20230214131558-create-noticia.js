@@ -10,15 +10,15 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       titulo: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false
       },
       subtitulo: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: true
       },
       contenido: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(65000),
         allowNull: false
       },
       seccion: {

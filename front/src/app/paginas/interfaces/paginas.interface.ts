@@ -13,6 +13,17 @@ export interface Cancion{
   descarga:string
 }
 
+export interface ResponseFaqs{
+  success: boolean,
+  data: Faq[],
+  msg: string,
+}
+export interface Faq{
+  id:string,
+  pregunta:string,
+  respuesta:string,
+}
+
 export interface BorrarMemResponse {
   success: boolean,
   msg: string,

@@ -24,7 +24,10 @@ export class MainConfigComponent {
     {
       nombre : "test-apto",
       icono: "fa-vial"
-    }
+    },{
+      nombre : "faqs",
+      icono: "fa-circle-question"
+    },
   ];
 
   public elementoActivo = this.elementos.map(e => e.nombre).indexOf(this.router.url.split('/').pop()!);

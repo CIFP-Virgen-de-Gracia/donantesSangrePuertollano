@@ -1,9 +1,10 @@
 //Todo Isa
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Contenido, Noticia } from '../Interfaces/Contenido.interface';
+import { Component, OnInit } from '@angular/core';
+import { Noticia } from '../Interfaces/Contenido.interface';
 import { ContenidoService } from '../contenido.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-main-page-contenido',
@@ -20,7 +21,13 @@ export class MainPageContenidoComponent implements OnInit {
   mensaje: number;
   info: Noticia;
   p: number;
-  qho:string;
+  qho: string;
+
+  aviso: number;
+
+  filtroForm: FormGroup = new FormGroup({
+    titulo: new FormControl('', [Validators.required]),
+  });
 
   constructor(private ContenidoService: ContenidoService,
     private AuthService: AuthService,
@@ -28,7 +35,7 @@ export class MainPageContenidoComponent implements OnInit {
 
     this.idBorrado = "";
     this.p = 1;
-    this.qho="no";
+    this.qho = "no";
     this.idModificar = "";
     this.mensaje = 0;
     this.info = {
@@ -40,6 +47,8 @@ export class MainPageContenidoComponent implements OnInit {
       seccion: "",
       imagen: ""
     };
+    this.aviso = 0;
+
     const user = localStorage.getItem('user');
     if (user) {
       this.estaRegistrado = true;
@@ -55,7 +64,7 @@ export class MainPageContenidoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ContenidoService.getListado().subscribe((res) => {});
+    this.ContenidoService.getListado().subscribe((res) => { });
   }
 
 
@@ -81,12 +90,12 @@ export class MainPageContenidoComponent implements OnInit {
     this.idModificar = id.slice(1);
     this.ContenidoService.obtenerNoticia(this.idModificar).subscribe({
       next: data => {
-        if (data.success !==false) {
+        if (data.success !== false) {
           this.info = data.data;
         }
       },
       error: error => {
-        this.qho="si";
+        this.qho = "si";
       }
     });
   }
@@ -96,6 +105,18 @@ export class MainPageContenidoComponent implements OnInit {
       this.AuthService.puedeModificar().subscribe(resp => {
         this.puedeModificar = (resp) ? true : false;
       });
+    }
+  }
+  generarTodas() {
+    this.ContenidoService.generarTodas();
+  }
+  generarFiltro() {
+    this.ContenidoService.generarFiltro(this.filtroForm.get("titulo")?.value);
+    this.filtroForm.reset();
+    if (this.ContenidoService.resultado.length == 0) {
+      this.filtroForm.reset();
+      this.aviso = 1;
+      setTimeout(() => this.aviso = 0, 3000);
     }
   }
 

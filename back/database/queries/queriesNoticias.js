@@ -52,7 +52,7 @@ class QueriesNoticias {
                     "subtitulo": noticia.subtitulo,
                     "contenido": noticia.contenido,
                     "fecha": fecha,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id,
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.nombre,
                 }
             }
         } catch (err) {
@@ -100,7 +100,15 @@ class QueriesNoticias {
     }
 
 
-    getImagen = async (id) => {
+    getImagen = async (nombre) => {
+        this.sequelize.conectar();
+        const imagen = await models.Imagen.findOne({
+            where: { nombre: nombre }
+        });
+        this.sequelize.desconectar();
+        return imagen;
+    }
+    getImagenId = async (id) => {
         this.sequelize.conectar();
         const imagen = await models.Imagen.findOne({
             where: { id: id }
@@ -109,12 +117,10 @@ class QueriesNoticias {
         return imagen;
     }
 
-
     borrarImagen = async (id) => {
-        const imagen = await this.getImagen(id);
+        const imagen = await this.getImagenId(id);
         await imagen.destroy();
     }
-
 
     modificarNoticia = async (req) => {
         let data = "";
@@ -149,7 +155,7 @@ class QueriesNoticias {
                             "subtitulo": resp.subtitulo,
                             "contenido": resp.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["id"]
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["nombre"]
                         }
                     } else {
                         data = {
@@ -189,7 +195,7 @@ class QueriesNoticias {
                             "subtitulo": noticia.subtitulo,
                             "contenido": noticia.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["id"]
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia["Imagen"][0]["nombre"]
                         }
 
 
@@ -207,7 +213,7 @@ class QueriesNoticias {
                             "subtitulo": noticia.subtitulo,
                             "contenido": noticia.contenido,
                             "fecha": fecha,
-                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.id
+                            "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + imagen.nombre
                         }
                     }
                 }
@@ -232,14 +238,14 @@ class QueriesNoticias {
                 }
             ]
         });
-
+    
         if (!noticia) {
             this.sequelize.desconectar();
             throw error;
         }
 
-        if (noticia["Imagen"].length > 0) {
-            await this.borrarImagen(noticia["Imagen"][0].id);
+        if (noticia.dataValues.Imagen.length > 0) {
+            await this.borrarImagen(noticia.dataValues.Imagen[0].id);
 
             const pathImagen = path.join(__dirname, '../../uploads', "noticias", noticia["Imagen"][0]["nombre"]);
             if (fs.existsSync(pathImagen)) {
