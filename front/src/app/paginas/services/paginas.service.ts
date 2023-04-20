@@ -62,19 +62,19 @@ export class PaginasService {
     return [...this.canciones];
   }
 
+
   getListado(): Observable<ResponseAudio> {
     return this.http.get<ResponseAudio>(`${this.baseUrl}/musica/listado`).pipe(tap(resp => { if (resp.success !== false) { this.canciones = resp.data } }))
   }
+
   //Para Pagina de Faqs
   get resultFaqs() {
     return [...this.faqs];
   }
+
+
   getListadoFaqs(): Observable<ResponseFaqs> {
-    return this.http.get<ResponseFaqs>(`${this.baseUrl}/api/faq/listado`).pipe(tap(resp => { if (resp.success !== false) { this.faqs = resp.data } }))
-  }
-  //Para Pagina de Faqs
-  get resultFaqs() {
-    return [...this.faqs];
+    return this.http.get<ResponseFaqs>(`${this.baseUrl}/faq/listado`).pipe(tap(resp => { if (resp.success !== false) { this.faqs = resp.data } }))
   }
 }
 
