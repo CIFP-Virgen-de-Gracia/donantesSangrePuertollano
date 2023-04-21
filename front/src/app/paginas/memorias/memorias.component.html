@@ -99,12 +99,19 @@
             <div class="mb-4">
               <label for="documento">Documento</label><br>
 
-              <input type="file"
-                name="documento"
-                class="form-control"
-                accept="application/pdf, application/odt, application/doc, application/docx"
-                (change)="onDocumentoSeleccionado($event)"
-                [ngClass]="{'error-input' : !documentoValido}"/>
+              <div class="contenedor-inpt">
+                <input type="file"
+                  name="documento"
+                  id="inpt-doc"
+                  accept="application/pdf, application/odt, application/doc, application/docx"
+                  (change)="onDocumentoSeleccionado($event)"
+                  [ngClass]="{'error-input' : !documentoValido}"/>
+
+                  <label for="inpt-doc" class="nombre-archivo d-flex g-0">
+                    <span>Examinar</span>
+                    <span>{{ nombreDocMemEditar }}</span>
+                  </label>
+                </div>
 
                 <p class="mensaje-error" *ngIf="!documentoValido">
                   Documento no válido. Los formatos admitidos son <b>pdf, odt, doc y docx</b>.
@@ -114,24 +121,25 @@
 
             <div class="mb-4">
               <label for="imagen">Imagen de la portada</label><br>
-              <input type="file"
-                #imagen
-                name="imagen"
-                class="form-control"
-                accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
-                (change)="onImgSeleccionada($event)"
-                [ngClass]="{'error-input' : !imagenValida}"/>
+
+              <div class="contenedor-inpt">
+                <input #imagen
+                  type="file"
+                  name="imagen"
+                  id="inpt-img"
+                  accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
+                  (change)="onImgSeleccionada($event)"
+                  [ngClass]="{'error-input' : !imagenValida}"/>
+
+                  <label for="inpt-img" class="nombre-archivo d-flex g-0">
+                    <span>Examinar</span>
+                    <span>{{ nombreImgMemEditar }}</span>
+                  </label>
+              </div>
 
               <p class="mensaje-error" *ngIf="!imagenValida">
                 Imagen no válida. Los formatos admitidos son <b>png, jpg, jpeg, gif, tiff, svg y webp</b>.
               </p>
-            </div>
-
-            <div class="mb-4">
-
-                <p>Imagen actual</p>
-                <img class="imagen-actual" [src]="memoriaEditar.imagen">
-
             </div>
           </div>
 

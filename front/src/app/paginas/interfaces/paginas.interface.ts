@@ -44,6 +44,13 @@ export interface GetMemResponse {
 export interface Memoria {
   id: number,
   anio: number,
-  imagen: File | string,
-  documento: File | string
+  imagen: string,
+  documento: string
+}
+
+export interface MemoriaUpdate {
+  id: number,
+  anio: number,
+  imagen: File,
+  documento: File
 }

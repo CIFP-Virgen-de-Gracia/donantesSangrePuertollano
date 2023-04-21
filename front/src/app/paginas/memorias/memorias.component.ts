@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Memoria } from '../interfaces/paginas.interface';
+import { Memoria, MemoriaUpdate } from '../interfaces/paginas.interface';
 import { PaginasService } from '../services/paginas.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
@@ -19,11 +19,10 @@ export class MemoriasComponent implements OnInit {
   codEditar: number = -1;
   imagenValida: boolean = true;
   documentoValido: boolean = true;
-  infoMemoriaEditar: Memoria;
+  infoMemoriaEditar: MemoriaUpdate;
   estaRegistrado: boolean = false;
   puedeModificar: boolean = false;
   memorias: Memoria[] = [];
-  mostrarImagen: boolean = true;
 
   constructor(
     private PaginasService: PaginasService,
@@ -54,10 +53,23 @@ export class MemoriasComponent implements OnInit {
     return this.infoMemoriaEditar;
   }
 
+  get nombreImgMemEditar() {
+    return this.infoMemoriaEditar.imagen.name.substring(this.infoMemoriaEditar.imagen.name.lastIndexOf("/") + 1);
+  }
+
+  get nombreDocMemEditar() {
+    return this.infoMemoriaEditar.documento.name.substring(this.infoMemoriaEditar.documento.name.lastIndexOf("/") + 1);
+  }
 
   setMemoriaEditar(index: number) {
-    this.infoMemoriaEditar = this.memorias[index];
+    const memoria = this.memorias[index];
 
+    this.infoMemoriaEditar = {
+      id: memoria.id,
+      anio: memoria.anio,
+      imagen: new File([""], memoria.imagen),
+      documento: new File([""], memoria.documento)
+    }
   }
 
 
@@ -115,7 +127,7 @@ export class MemoriasComponent implements OnInit {
 
 
   limpiarMemoria() {
-    return { id: -1, anio: -1, imagen: "",  documento: "" };
+    return { id: -1, anio: -1, imagen: new File([""], ""), documento: new File([""], "") };
   }
 
 

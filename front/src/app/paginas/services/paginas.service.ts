@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , UpdateMemResponse} from '../interfaces/paginas.interface';
+import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , UpdateMemResponse, MemoriaUpdate} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class PaginasService {
   }
 
 
-  updateMemoria(memoria: Memoria): Observable<UpdateMemResponse> {
+  updateMemoria(memoria: MemoriaUpdate): Observable<UpdateMemResponse> {
     const header = {
       headers: new HttpHeaders({
         'x-token': JSON.parse(localStorage.getItem('user')!).token
