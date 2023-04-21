@@ -153,7 +153,15 @@ const getMemorias = (req, res = response) => {
     queriesContenidos.getMemorias()
         .then(memorias => {
             
-            memorias.map(m => m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/" + m.imagen);
+            memorias.forEach(m => {
+                const nombreImg = m.imagen != null 
+                    && fs.existsSync(path.join(__dirname, '../uploads/memorias/imagenes', m.imagen)) 
+                        ? m.imagen 
+                        : null
+                        
+                m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/" + nombreImg;
+            });
+
             const resp = {
                 success: true,
                 data: memorias

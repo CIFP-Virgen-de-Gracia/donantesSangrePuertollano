@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Memoria, MemoriaUpdate } from '../interfaces/paginas.interface';
 import { PaginasService } from '../services/paginas.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -14,6 +14,7 @@ export const tiempoAnimacion = 250;
 })
 export class MemoriasComponent implements OnInit {
 
+  @ViewChild('closeModal') closeModal!: ElementRef;
   timer: NodeJS.Timeout | undefined;
   codBorrar: number = -1;
   codEditar: number = -1;
@@ -53,15 +54,21 @@ export class MemoriasComponent implements OnInit {
     return this.infoMemoriaEditar;
   }
 
+
   get nombreImgMemEditar() {
-    return this.infoMemoriaEditar.imagen.name.substring(this.infoMemoriaEditar.imagen.name.lastIndexOf("/") + 1);
+    const nombre = this.infoMemoriaEditar.imagen.name.substring(this.infoMemoriaEditar.imagen.name.lastIndexOf("/") + 1);
+
+    return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
   }
+
 
   get nombreDocMemEditar() {
     return this.infoMemoriaEditar.documento.name.substring(this.infoMemoriaEditar.documento.name.lastIndexOf("/") + 1);
   }
 
+
   setMemoriaEditar(index: number) {
+    this.limpiarMemoria();
     const memoria = this.memorias[index];
 
     this.infoMemoriaEditar = {
@@ -101,10 +108,14 @@ export class MemoriasComponent implements OnInit {
   editarMemoria() {
     this.PaginasService.updateMemoria(this.infoMemoriaEditar)
       .subscribe( resp => {
-        if (resp.success) console.log(resp)
+        this.codEditar = resp.success ? 0 : 1;
+
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.codEditar = -1, 5000);
       })
 
-    /* this.infoMemoriaEditar = this.limpiarMemoria(); */
+    this.closeModal.nativeElement.click()
+    this.infoMemoriaEditar = this.limpiarMemoria();
   }
 
 
@@ -121,7 +132,7 @@ export class MemoriasComponent implements OnInit {
         }
 
         clearTimeout(this.timer);
-        this.timer = setTimeout(() => this.codBorrar = -1, 4000);
+        this.timer = setTimeout(() => this.codBorrar = -1, 5000);
       });
   }
 

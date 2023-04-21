@@ -74,7 +74,7 @@
 
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="editarMemoriaLabel">Editar memoria</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
         <form (ngSubmit)="editarForm.form.valid && editarMemoria()" novalidate #editarForm="ngForm">
@@ -87,11 +87,15 @@
                 name="anio"
                 class="form-control"
                 required
+                min="1"
                 [(ngModel)]="memoriaEditar.anio"
                 [ngClass]="{'error-input' : anio.invalid && (anio.dirty || anio.touched)}"/>
 
-              <p class="mensaje-error" *ngIf="anio.invalid && (anio.dirty || anio.touched)">
+              <p class="mensaje-error" *ngIf="anio.errors?.['required'] && (anio.dirty || anio.touched)">
                 El año es obligatorio
+              </p>
+              <p class="mensaje-error" *ngIf="anio.errors?.['min'] && (anio.dirty || anio.touched)">
+                El año no puede ser negativo
               </p>
             </div>
 
