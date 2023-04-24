@@ -30,7 +30,7 @@ export interface BorrarMemResponse {
   data: number
 }
 
-export interface UpdateMemResponse {
+export interface AddUpdateMemResponse {
   success: boolean,
   msg: string,
   data: Memoria
@@ -48,9 +48,9 @@ export interface Memoria {
   documento: string
 }
 
-export interface MemoriaUpdate {
+export interface MemoriaAddUpdate {
   id: number,
   anio: number,
-  imagen: File,
-  documento: File
+  imagen?: File | null,
+  documento?: File | null
 }

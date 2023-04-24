@@ -69,7 +69,7 @@ getCargoIntegrantes = async () => {
 
 
 getMemorias = async () => {
-    const memorias = await models.Memoria.findAll();
+    const memorias = await models.Memoria.findAll({ order: [['anio', 'ASC']] });
     
     return memorias;
 }
@@ -235,16 +235,28 @@ updateHorario = async (horario) => {
 }
 
 
-updateMemoria = async (memoria) => {
+addOrUpdateMemoria = async (memoria) => {
     try {
 
-        const mem = await models.Memoria.findByPk(memoria.id);
-        const resp = await mem.update({
-            anio: memoria.anio,
-            imagen: memoria.imagen,
-            documento: memoria.documento,
-            updatedAt: new Date().toLocaleString()
+        const [mem, creada] = await models.Memoria.findOrCreate({
+            where: { id: memoria.id },
+            defaults: {
+                id: null,
+                anio: memoria.anio,
+                imagen: memoria.imagen,
+                documento: memoria.documento,
+                updatedAt: new Date().toLocaleString()
+            }
         });
+        
+        const resp = creada 
+            ? mem 
+            : await mem.update({
+                anio: memoria.anio,
+                imagen: memoria.imagen == null ? mem.imagen : memoria.imagen,
+                documento: memoria.documento == null ? mem.documento : memoria.documento,
+                updatedAt: new Date().toLocaleString()
+            });
 
         return resp;
 
@@ -329,7 +341,7 @@ module.exports = {
     updateDireccion,
     updateTelefono,
     updateHorario,
-    updateMemoria,
+    addOrUpdateMemoria,
     deleteHorario,
     deleteTelefono,
     deleteMemoria,

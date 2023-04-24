@@ -1,29 +1,27 @@
 <main>
-  <div class="text-center container gx-0">
+  <div class="container gx-0">
 
     <div class="mensaje"
-      [@entradaSalidaVentana]="codBorrar == -1 || codEditar == -1"
-      *ngIf="codBorrar != -1 || codEditar != -1">
+      [@entradaSalidaVentana]="codAccion == -1"
+      *ngIf="codAccion != -1">
 
-      <ng-container *ngIf="codBorrar == 0 || codEditar == 0">
+      <ng-container *ngIf="codAccion == 0">
         <div class="mensaje-ok d-flex align-items-center justify-content-center">
           <i class="fa-solid fa-circle-check me-3"></i>
-          <p *ngIf="codBorrar == 0">Memoria eliminada con éxito</p>
-          <p *ngIf="codEditar == 0">Memoria editada con éxito</p>
+          <p *ngIf="codAccion == 0">Éxito al {{ accion }} la memoria</p>
         </div>
       </ng-container>
 
-      <ng-container *ngIf="codBorrar == 1 || codEditar == 1">
+      <ng-container *ngIf="codAccion == 1">
         <div class="mensaje-error d-flex align-items-center justify-content-center">
           <i class="fa-solid fa-triangle-exclamation me-3"></i>
-          <p *ngIf="codBorrar == 1">Error al eliminar la memoria</p>
-          <p *ngIf="codEditar == 1">Error al editar la memoria</p>
+          <p *ngIf="codAccion == 1">Error al {{ accion }} la memoria</p>
         </div>
       </ng-container>
     </div>
 
     <div>
-      <div class="f-contraste">
+      <div class="f-contraste text-center">
         <h1 class="titulo subrayado">Memorias</h1>
       </div>
 
@@ -33,51 +31,72 @@
       </svg>
     </div>
 
-    <div class="memorias">
 
-      <ng-container *ngFor="let memoria of memorias; let i = index">
+    <div class="contenido">
+      <div class="contenedor-btns" *ngIf="puedeModificar">
+        <button class="btn-secundario mt-3"
+          data-bs-toggle="modal"
+          data-bs-target="#addOrUpdateMemoria"
+          (click)="accion='añadir'"
+          (click)="limpiarMemoria()">
+          Añadir memoria
+        </button>
+      </div>
 
-        <div class="memoria d-flex flex-column align-items-center mt-5">
-          <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
+      <div class="memorias">
 
-          <img src="{{ memoria.imagen }}">
+        <ng-container *ngFor="let memoria of memorias; let i = index">
 
-          <div class="iconos d-flex align-content-center justify-content-center mt-4">
-            <i class="fa-solid fa-file-arrow-down"></i>
+          <div class="memoria d-flex flex-column align-items-center mt-5">
+            <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
-            <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
-              <i class="fa-solid fa-pen me-3"
-                (click)="setMemoriaEditar(i)"
-                data-bs-toggle="modal"
-                data-bs-target="#editarMemoria">
-              </i>
 
-              <i class="fa-solid fa-trash"
-                (click)="borrarMemoria(i)">
-              </i>
+            <a *ngIf="memoria.documento; else templateElse"
+              (click)="irA(memoria.documento)">
+              <img src="{{ memoria.imagen }}">
+            </a>
+
+            <ng-template #templateElse>
+              <img src="{{ memoria.imagen }}">
+            </ng-template>
+
+            <div class="iconos d-flex align-content-center justify-content-center mt-4">
+              <i class="fa-solid fa-file-arrow-down"></i>
+
+              <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
+                <i class="fa-solid fa-pen me-3"
+                  (click)="setInfoMemoria(i)"
+                  (click)="accion='editar'"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addOrUpdateMemoria">
+                </i>
+
+                <i class="fa-solid fa-trash"
+                  (click)="borrarMemoria(i)"
+                  (click)="accion='borrar'">
+                </i>
+              </div>
             </div>
           </div>
-        </div>
-
-      </ng-container>
-
+        </ng-container>
+      </div>
     </div>
   </div>
 
  <!--  Modal -->
-  <div class="modal" id="editarMemoria"
-    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editarMemoriaLabel"
+  <div class="modal" id="addOrUpdateMemoria"
+    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addOrUpdateMemoriaLabel"
     aria-hidden="true">
 
     <div class="modal-dialog">
       <div class="modal-content">
 
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="editarMemoriaLabel">Editar memoria</h1>
+          <h1 class="modal-title fs-5" id="addOrUpdateMemoriaLabel">{{ accion | titlecase }} memoria</h1>
           <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
-        <form (ngSubmit)="editarForm.form.valid && editarMemoria()" novalidate #editarForm="ngForm">
+        <form (ngSubmit)="editarForm.form.valid && addOrUpdateMemoria()" novalidate #editarForm="ngForm">
           <div class="modal-body">
             <div class="mb-4">
               <label for="anio">Año</label><br>
@@ -86,17 +105,25 @@
                 #anio="ngModel"
                 name="anio"
                 class="form-control"
+                pattern="[0-9]{4}"
                 required
                 min="1"
-                [(ngModel)]="memoriaEditar.anio"
+                [(ngModel)]="infoMemoria.anio"
                 [ngClass]="{'error-input' : anio.invalid && (anio.dirty || anio.touched)}"/>
 
-              <p class="mensaje-error" *ngIf="anio.errors?.['required'] && (anio.dirty || anio.touched)">
-                El año es obligatorio
-              </p>
-              <p class="mensaje-error" *ngIf="anio.errors?.['min'] && (anio.dirty || anio.touched)">
-                El año no puede ser negativo
-              </p>
+              <div *ngIf="anio.dirty || anio.touched">
+                <p class="mensaje-error" *ngIf="anio.errors?.['pattern']">
+                  El año debe ser un número de 4 cifras.
+                </p>
+
+                <p class="mensaje-error" *ngIf="anio.errors?.['required']">
+                  Debes introducir un número.
+                </p>
+
+                <p class="mensaje-error" *ngIf="anio.errors?.['min']">
+                  El año no puede ser negativo.
+                </p>
+              </div>
             </div>
 
 
@@ -107,14 +134,15 @@
                 <input type="file"
                   name="documento"
                   id="inpt-doc"
+                  class="form-control"
                   accept="application/pdf, application/odt, application/doc, application/docx"
                   (change)="onDocumentoSeleccionado($event)"
                   [ngClass]="{'error-input' : !documentoValido}"/>
 
-                  <label for="inpt-doc" class="nombre-archivo d-flex g-0">
+                 <!--  <label for="inpt-doc" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
-                    <span>{{ nombreDocMemEditar }}</span>
-                  </label>
+                    <span>{{ nombreDocMemoria }}</span>
+                  </label> -->
                 </div>
 
                 <p class="mensaje-error" *ngIf="!documentoValido">
@@ -127,18 +155,18 @@
               <label for="imagen">Imagen de la portada</label><br>
 
               <div class="contenedor-inpt">
-                <input #imagen
-                  type="file"
+                <input type="file"
                   name="imagen"
                   id="inpt-img"
+                  class="form-control"
                   accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
                   (change)="onImgSeleccionada($event)"
                   [ngClass]="{'error-input' : !imagenValida}"/>
 
-                  <label for="inpt-img" class="nombre-archivo d-flex g-0">
+                  <!-- <label for="inpt-img" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
-                    <span>{{ nombreImgMemEditar }}</span>
-                  </label>
+                    <span>{{ nombreImgMemoria }}</span>
+                  </label> -->
               </div>
 
               <p class="mensaje-error" *ngIf="!imagenValida">

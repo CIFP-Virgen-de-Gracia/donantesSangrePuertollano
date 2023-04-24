@@ -39,59 +39,69 @@ main {
       margin: 0;
     }
 
-    .memorias {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      row-gap: 4rem;
+    .contenido {
       padding: 0 4rem;
 
+      .memorias {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        row-gap: 4rem;
+
+        .memoria {
+          background-color: var(--color-contraste);
+          padding: 2rem 2.5rem;
+          border-radius: 2px;
+          box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.2);
+
+          &,
+          img {
+            border-radius: 2px;
+          }
+
+          img,
+          .iconos {
+            width: 100%;
+          }
+
+          h2 {
+            font-size: var(--letra-grande);
+          }
+
+          i {
+            font-size: var(--letra-grande);
+            color: var(--color-primario);
+
+            &:hover {
+              color: var(--color-granate);
+            }
+          }
+        }
+      }
+
       @media (min-width: 576px) {
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 5rem;
+        .memorias {
+          grid-template-columns: repeat(2, 1fr);
+          column-gap: 5rem;
+        }
       }
 
       @media (min-width: 768px) {
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 3rem;
+        .memorias {
+          grid-template-columns: repeat(3, 1fr);
+          column-gap: 3rem
+        };
       }
 
       @media (min-width: 992px) {
         padding: 0 7rem;
-        column-gap: 5rem;
+
+        .memorias {
+          column-gap: 5rem;
+        }
       }
 
       @media (min-width: 1400px) {
         padding: 0 17rem;
-      }
-
-      .memoria {
-        background-color: var(--color-contraste);
-        padding: 2rem 2.5rem;
-        border-radius: 2px;
-        box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.2);
-
-        &,
-        img {
-          border-radius: 2px;
-        }
-
-        img,
-        .iconos {
-          width: 100%;
-        }
-
-        h2 {
-          font-size: var(--letra-grande);
-        }
-
-        i {
-          font-size: var(--letra-grande);
-          color: var(--color-primario);
-
-          &:hover {
-            color: var(--color-granate);
-          }
-        }
       }
     }
   }
@@ -111,7 +121,7 @@ main {
         padding: 0.375rem 0.75rem;
       }
 
-      .contenedor-inpt {
+      /* .contenedor-inpt {
         position: relative;
 
         input[type='file'] { // Esconde el input por defecto.
@@ -152,7 +162,7 @@ main {
             background-color: var(--color-contraste-medio);
           }
         }
-      }
+      } */
     }
   }
 }

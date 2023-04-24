@@ -157,9 +157,14 @@ const getMemorias = (req, res = response) => {
                 const nombreImg = m.imagen != null 
                     && fs.existsSync(path.join(__dirname, '../uploads/memorias/imagenes', m.imagen)) 
                         ? m.imagen 
-                        : null
-                        
-                m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/" + nombreImg;
+                        : null;
+
+                m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/img/" + nombreImg; 
+                
+                m.documento = m.documento != null 
+                    && fs.existsSync(path.join(__dirname, '../uploads/memorias/documentos', m.documento)) 
+                        ? process.env.URL_PETICION + process.env.PORT + "/api/upload/doc/" + m.documento 
+                        : null;
             });
 
             const resp = {
@@ -186,6 +191,15 @@ const getImagen = async (req, res = response) => {
 
     return fs.existsSync(pathImagen) 
         ? res.sendFile(pathImagen) 
+        : res.sendFile(path.join(__dirname, '../uploads/memorias/imagenes/default.png'))
+}
+
+
+const getDocumento = async (req, res = response) => {
+    const pathDoc = path.join(__dirname, '../uploads/memorias/documentos', req.params.nombre);
+
+    return fs.existsSync(pathDoc) 
+        ? res.sendFile(pathDoc) 
         : res.sendFile(path.join(__dirname, '../uploads/memorias/imagenes/default.png'))
 }
 
@@ -255,32 +269,29 @@ const updateContacto = async (req, res = response) => {
 }
 
 
-const updateMemoria = async(req, res = response) => {
+const addOrUpdateMemoria = async(req, res = response) => {
     const extImgs = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'webp'];
     const extDocs = ['pdf', 'odt', 'doc', 'docx'];
-    const promesas = [];
-    let img = null, doc = null;
-
-    try {
-       
-        if (req.files) {        
-            if (req.files.imagen) promesas.push(subirArchivo(req.files.imagen, extImgs, 'memorias/imagenes'));
-            if (req.files.documento) promesas.push(subirArchivo(req.files.documento, extDocs, 'memorias/documentos'));
-           
-            [img, doc] = await Promise.all(promesas);
-        }
     
-        const memoria = await queriesContenidos.updateMemoria({ 
-            id: req.body.id, 
-            anio: req.body.anio, 
-            imagen: img, 
-            documento: doc 
-        });
-                
+    try {
+        const memoria = { id: req.body.id, anio: req.body.anio }
+
+        if (req.files) {  
+            memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, 'memorias/imagenes');
+            memoria.documento = await comprobarArchivo(req.files.documento, extDocs, 'memorias/documentos');
+        }
+
+        const memResp = await queriesContenidos.addOrUpdateMemoria(memoria);
+         
+        memResp.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/img/" + memResp.imagen;
+        memResp.documento = memResp.documento != null 
+            ? process.env.URL_PETICION + process.env.PORT + "/api/upload/doc/" + memResp.documento
+            : null; 
+
         const resp = {
             success: true,
-            msg: 'Memoria editada con éxito',
-            data: memoria
+            msg: 'Memoria guardada con éxito',
+            data: memResp
         }
     
         res.status(200).json(resp);
@@ -289,10 +300,20 @@ const updateMemoria = async(req, res = response) => {
         
         const resp = {
             success: false,
-            msg: 'Error al editar la memoria',
+            msg: 'Error al guardar la memoria',
         }
 
         res.status(200).json(resp);
+    }
+}
+
+
+const comprobarArchivo = async(archivo, extensiones, carpeta) => {
+    if (archivo) {
+        if (archivo.size != 0) return await subirArchivo(archivo, extensiones, carpeta);
+
+    } else {
+        return null;
     }
 }
 
@@ -330,9 +351,10 @@ module.exports = {
     getCargosJunta,
     getIntegrantesCargo,
     getImagen,
+    getDocumento,
     getMemorias,
     updateHermandad,
     updateContacto,
-    updateMemoria,
+    addOrUpdateMemoria,
     deleteMemoria
 }

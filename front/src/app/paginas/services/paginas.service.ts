@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , UpdateMemResponse, MemoriaUpdate} from '../interfaces/paginas.interface';
+import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , AddUpdateMemResponse, MemoriaAddUpdate} from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class PaginasService {
   }
 
 
-  updateMemoria(memoria: MemoriaUpdate): Observable<UpdateMemResponse> {
+  addOrUpdateMemoria(memoria: MemoriaAddUpdate): Observable<AddUpdateMemResponse> {
     const header = {
       headers: new HttpHeaders({
         'x-token': JSON.parse(localStorage.getItem('user')!).token
@@ -50,10 +50,10 @@ export class PaginasService {
     const payload = new FormData();
     payload.append('id', memoria.id.toString());
     payload.append('anio', memoria.anio.toString());
-    payload.append('imagen', memoria.imagen);
-    payload.append('documento', memoria.documento);
+    if (memoria.imagen) payload.append('imagen', memoria.imagen);
+    if (memoria.documento) payload.append('documento', memoria.documento);
 
-    return this.http.put<UpdateMemResponse>(`${this.baseUrl}/updateMemoria`, payload, header);
+    return this.http.put<AddUpdateMemResponse>(`${this.baseUrl}/addOrUpdateMemoria`, payload, header);
   }
 
 

@@ -35,15 +35,16 @@ router.get('/getHorarios', contenido.getHorarios);
 router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
 router.get('/getMemorias', contenido.getMemorias);
-router.get('/upload/:nombre', contenido.getImagen);
+router.get('/upload/img/:nombre', contenido.getImagen);
+router.get('/upload/doc/:nombre', contenido.getDocumento);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
-router.put('/updateMemoria', [ 
+router.put('/addOrUpdateMemoria', [ 
     vJwt.validarJwt, 
     midsUser.midAdmin, 
     check('anio', 'El año es obligatorio').not().isEmpty(),
     midsValidar.validarCampos 
-], contenido.updateMemoria);
+], contenido.addOrUpdateMemoria);
 router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 
 

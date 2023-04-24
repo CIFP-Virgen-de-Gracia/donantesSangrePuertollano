@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Memoria, MemoriaUpdate } from '../interfaces/paginas.interface';
+import { Memoria, MemoriaAddUpdate } from '../interfaces/paginas.interface';
 import { PaginasService } from '../services/paginas.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
@@ -16,20 +16,20 @@ export class MemoriasComponent implements OnInit {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
   timer: NodeJS.Timeout | undefined;
-  codBorrar: number = -1;
-  codEditar: number = -1;
+  codAccion: number = -1;
+  accion: string = '';
   imagenValida: boolean = true;
   documentoValido: boolean = true;
-  infoMemoriaEditar: MemoriaUpdate;
   estaRegistrado: boolean = false;
   puedeModificar: boolean = false;
+  infoMemoria!: MemoriaAddUpdate;
   memorias: Memoria[] = [];
 
   constructor(
     private PaginasService: PaginasService,
     private AuthService: AuthService
   ) {
-    this.infoMemoriaEditar = this.limpiarMemoria();
+    this.limpiarMemoria();
   }
 
   ngOnInit() {
@@ -45,37 +45,42 @@ export class MemoriasComponent implements OnInit {
 
         if (resp.success) {
           this.memorias = resp.data;
+          console.log(this.memorias)
         }
       });
   }
 
 
-  get memoriaEditar() {
-    return this.infoMemoriaEditar;
+/*   get nombreImgMemoria() {
+    //const nombre = this.infoMemoria.imagen.name.substring(this.infoMemoria.imagen.name.lastIndexOf("/") + 1);
+
+    //return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
+
+
+    return this.infoMemoria.imagen == null
+      ? 'No se ha seleccionado ningún archivo.'
+      : this.infoMemoria.imagen.name.substring(this.infoMemoria.imagen.name.lastIndexOf("/") + 1)
   }
 
 
-  get nombreImgMemEditar() {
-    const nombre = this.infoMemoriaEditar.imagen.name.substring(this.infoMemoriaEditar.imagen.name.lastIndexOf("/") + 1);
+  get nombreDocMemoria() {
+    //const nombre = this.infoMemoria.documento.name.substring(this.infoMemoria.documento.name.lastIndexOf("/") + 1);
 
-    return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
-  }
+    //return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
+
+    return this.infoMemoria.documento == null
+      ? 'No se ha seleccionado ningún archivo.'
+      : this.infoMemoria.documento.name.substring(this.infoMemoria.documento.name.lastIndexOf("/") + 1);
+  } */
 
 
-  get nombreDocMemEditar() {
-    return this.infoMemoriaEditar.documento.name.substring(this.infoMemoriaEditar.documento.name.lastIndexOf("/") + 1);
-  }
-
-
-  setMemoriaEditar(index: number) {
+  setInfoMemoria(index: number) {
     this.limpiarMemoria();
     const memoria = this.memorias[index];
 
-    this.infoMemoriaEditar = {
+    this.infoMemoria = {
       id: memoria.id,
-      anio: memoria.anio,
-      imagen: new File([""], memoria.imagen),
-      documento: new File([""], memoria.documento)
+      anio: memoria.anio
     }
   }
 
@@ -84,7 +89,7 @@ export class MemoriasComponent implements OnInit {
     const permitidas = ['.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
     const img = ((event.target as HTMLInputElement).files as FileList)[0];
 
-    if (this.comprobarExtension(img, permitidas)) this.infoMemoriaEditar.imagen = img;
+    if (this.comprobarExtension(img, permitidas)) this.infoMemoria.imagen = img;
     else this.imagenValida = false;
   }
 
@@ -93,7 +98,7 @@ export class MemoriasComponent implements OnInit {
     const permitidas = ['.pdf', '.odt', '.doc', '.docx'];
     const documento = ((event.target as HTMLInputElement).files as FileList)[0];
 
-    if (this.comprobarExtension(documento, permitidas)) this.infoMemoriaEditar.documento = documento;
+    if (this.comprobarExtension(documento, permitidas)) this.infoMemoria.documento = documento;
     else this.documentoValido = false;
   }
 
@@ -105,17 +110,24 @@ export class MemoriasComponent implements OnInit {
   }
 
 
-  editarMemoria() {
-    this.PaginasService.updateMemoria(this.infoMemoriaEditar)
+  addOrUpdateMemoria() {
+    this.PaginasService.addOrUpdateMemoria(this.infoMemoria)
       .subscribe( resp => {
-        this.codEditar = resp.success ? 0 : 1;
 
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => this.codEditar = -1, 5000);
+        if (resp.success) {
+          this.codAccion = 0;
+          let index = this.memorias.findIndex(m => m.id == resp.data.id);
+
+          if (index == -1) this.memorias.push(resp.data)
+          else this.memorias[index] = resp.data;
+
+        } else this.codAccion = 1;
+
+        this.setTimer(4000);
       })
 
-    this.closeModal.nativeElement.click()
-    this.infoMemoriaEditar = this.limpiarMemoria();
+    this.closeModal.nativeElement.click();
+    this.limpiarMemoria();
   }
 
 
@@ -125,20 +137,30 @@ export class MemoriasComponent implements OnInit {
 
         if (resp.success) {
           this.memorias.splice(index, 1);
-          this.codBorrar = 0;
+          this.codAccion = 0;
 
         } else {
-          this.codBorrar = 1;
+          this.codAccion = 1;
         }
 
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => this.codBorrar = -1, 5000);
+        this.setTimer(4000);
       });
   }
 
 
   limpiarMemoria() {
-    return { id: -1, anio: -1, imagen: new File([""], ""), documento: new File([""], "") };
+    this.infoMemoria = { id: -1, anio: new Date().getFullYear(), imagen: null, documento: null };
+  }
+
+
+  setTimer(tiempo: number) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
+  }
+
+
+  irA(url: string){
+    if (url != null) window.open(url, "_blank");
   }
 
 
