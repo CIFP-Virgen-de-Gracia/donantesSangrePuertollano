@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const models = require('../../models/index.js');
 
-
 //Alicia
 getHistoria = async () => {
     const historia = await models.Contenido.findOne({
@@ -65,6 +64,13 @@ getCargoIntegrantes = async () => {
     });
 
     return cargosIntegrantes;
+}
+
+
+getMemoria = async (id) => {
+    const memoria = await models.Memoria.findByPk(id);
+    
+    return memoria;
 }
 
 
@@ -332,6 +338,7 @@ module.exports = {
     getDirecciones,
     getCargosJunta,
     getCargoIntegrantes,
+    getMemoria,
     getMemorias,
     insertHorario,
     insertTelefono,

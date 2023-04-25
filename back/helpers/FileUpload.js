@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');  //Este paquete nos permitirá crear un archivo con nombre único.
 //Todo Isa
@@ -26,6 +27,17 @@ const subirArchivo = (file, extensionesValidas = ['png', 'jpg', 'jpeg', 'gif', '
     });
 }
 
+//Alicia
+const borrarArchivo = (carpeta, archivo) => {
+    const pathArchivo = path.join(__dirname, '../uploads', carpeta, archivo);
+
+    if (fs.existsSync(pathArchivo))  
+        fs.unlinkSync(pathArchivo);
+}
+
+
+
 module.exports = {
-    subirArchivo
+    subirArchivo,
+    borrarArchivo
 };

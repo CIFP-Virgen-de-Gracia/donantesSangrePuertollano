@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const { response, request } = require('express');
-const { subirArchivo } = require('../helpers/fileUpload');
+const { subirArchivo, borrarArchivo } = require('../helpers/FileUpload');
 const queriesContenidos = require('../database/queries/queriesContenidos');
 
 //Todo Alicia
@@ -320,18 +320,27 @@ const comprobarArchivo = async(archivo, extensiones, carpeta) => {
 
 const deleteMemoria = async(req, res = response) => {
     try {
-        await queriesContenidos.deleteMemoria(req.params.id);
 
-        const resp = {
-            success: true,
-            msg: 'Memoria eliminada con éxito',
-            data: req.params.id
+        const mem = await queriesContenidos.getMemoria(req.params.id);
+        let resp = await queriesContenidos.deleteMemoria(req.params.id);
+
+        if (resp == 0) throw error;
+        else {
+            
+            if (mem.imagen) borrarArchivo("memorias/imagenes", mem.imagen);
+            if (mem.documento) borrarArchivo("memorias/documentos", mem.documento);
+
+            resp = {
+                success: true,
+                msg: 'Memoria eliminada con éxito',
+                data: req.params.id
+            }
+
+            res.status(200).json(resp);
         }
 
-        res.status(200).json(resp);
-
     } catch(err) {
-            
+
         const resp = {
             success: false,
             msg: 'Error al eliminar la memoria',
