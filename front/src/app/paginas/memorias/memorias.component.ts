@@ -3,8 +3,8 @@ import { Memoria, MemoriaAddUpdate } from '../interfaces/paginas.interface';
 import { PaginasService } from '../services/paginas.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
+import { saveAs } from 'file-saver';
 
-export const tiempoAnimacion = 250;
 
 @Component({
   selector: 'app-memorias',
@@ -15,8 +15,12 @@ export const tiempoAnimacion = 250;
 export class MemoriasComponent implements OnInit {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('inptImg') inptImg!: ElementRef;
+  @ViewChild('inptDoc') inptDoc!: ElementRef;
+
   timer: NodeJS.Timeout | undefined;
   codAccion: number = -1;
+  codDescarga: number = -1;
   accion: string = '';
   imagenValida: boolean = true;
   documentoValido: boolean = true;
@@ -45,7 +49,6 @@ export class MemoriasComponent implements OnInit {
 
         if (resp.success) {
           this.memorias = resp.data;
-          console.log(this.memorias)
         }
       });
   }
@@ -75,9 +78,9 @@ export class MemoriasComponent implements OnInit {
 
 
   setInfoMemoria(index: number) {
-    this.limpiarMemoria();
     const memoria = this.memorias[index];
 
+    this.limpiarMemoria();
     this.infoMemoria = {
       id: memoria.id,
       anio: memoria.anio
@@ -148,8 +151,26 @@ export class MemoriasComponent implements OnInit {
   }
 
 
+  descargarArchivo(archivo: string) {
+    const nombre = archivo.substring(archivo.lastIndexOf("/") + 1);
+
+    this.PaginasService.descargarArchivo(nombre)
+      .subscribe({
+        next: resp => {
+          saveAs(resp, nombre);
+        },
+        error: error => {
+          this.accion = 'descargar';
+          this.codAccion = 1;
+        }
+      });
+  }
+
+
   limpiarMemoria() {
     this.infoMemoria = { id: -1, anio: new Date().getFullYear(), imagen: null, documento: null };
+    if (this.inptImg) this.inptImg.nativeElement.value = '';
+    if (this.inptDoc) this.inptDoc.nativeElement.value = '';
   }
 
 
@@ -172,3 +193,4 @@ export class MemoriasComponent implements OnInit {
     }
   }
 }
+

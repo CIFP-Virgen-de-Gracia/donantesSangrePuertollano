@@ -31,7 +31,6 @@
       </svg>
     </div>
 
-
     <div class="contenido">
       <div class="contenedor-btns" *ngIf="puedeModificar">
         <button class="btn-secundario mt-3"
@@ -50,7 +49,6 @@
           <div class="memoria d-flex flex-column align-items-center mt-5">
             <h2 class="titulo">Memoria {{ memoria.anio }}</h2>
 
-
             <a *ngIf="memoria.documento; else templateElse"
               (click)="irA(memoria.documento)">
               <img src="{{ memoria.imagen }}">
@@ -61,7 +59,10 @@
             </ng-template>
 
             <div class="iconos d-flex align-content-center justify-content-center mt-4">
-              <i class="fa-solid fa-file-arrow-down"></i>
+              <i *ngIf="memoria.documento"
+                class="fa-solid fa-file-arrow-down"
+                (click)="descargarArchivo(memoria.documento)">
+              </i>
 
               <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
                 <i class="fa-solid fa-pen me-3"
@@ -132,6 +133,7 @@
 
               <div class="contenedor-inpt">
                 <input type="file"
+                  #inptImg
                   name="documento"
                   id="inpt-doc"
                   class="form-control"
@@ -156,6 +158,7 @@
 
               <div class="contenedor-inpt">
                 <input type="file"
+                  #inptDoc
                   name="imagen"
                   id="inpt-img"
                   class="form-control"

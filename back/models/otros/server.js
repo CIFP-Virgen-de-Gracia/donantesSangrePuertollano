@@ -16,6 +16,7 @@ class Server {
         this.pathGaleria = "/api/galeria";
         this.pathMusica = "/api/musica";
         this.pathFaq = "/api/faq";
+        
         //Middlewares
         this.middlewares();
 
@@ -32,6 +33,7 @@ class Server {
             tempFileDir: '/tmp/',
             createParentPath: true
         }));
+        this.app.use(express.static("../../uploads/"));
     }
 
     routes() {

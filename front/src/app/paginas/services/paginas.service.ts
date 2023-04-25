@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { BorrarMemResponse, Cancion, GetMemResponse, Memoria, ResponseAudio, Faq, ResponseFaqs , AddUpdateMemResponse, MemoriaAddUpdate} from '../interfaces/paginas.interface';
+import { BorrarMemResponse, Cancion, GetMemResponse, ResponseAudio, Faq, ResponseFaqs , AddUpdateMemResponse, MemoriaAddUpdate } from '../interfaces/paginas.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +54,11 @@ export class PaginasService {
     if (memoria.documento) payload.append('documento', memoria.documento);
 
     return this.http.put<AddUpdateMemResponse>(`${this.baseUrl}/addOrUpdateMemoria`, payload, header);
+  }
+
+
+  descargarArchivo(archivo: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/download/${archivo}`, { responseType: 'blob' });
   }
 
 

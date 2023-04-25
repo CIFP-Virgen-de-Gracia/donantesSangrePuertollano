@@ -4,6 +4,7 @@ const moment = require('moment');
 const { response, request } = require('express');
 const { subirArchivo, borrarArchivo } = require('../helpers/FileUpload');
 const queriesContenidos = require('../database/queries/queriesContenidos');
+const urlUploadMemorias = "../uploads/memorias/";
 
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
@@ -155,14 +156,14 @@ const getMemorias = (req, res = response) => {
             
             memorias.forEach(m => {
                 const nombreImg = m.imagen != null 
-                    && fs.existsSync(path.join(__dirname, '../uploads/memorias/imagenes', m.imagen)) 
+                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, 'imagenes', m.imagen)) 
                         ? m.imagen 
                         : null;
 
                 m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/img/" + nombreImg; 
                 
                 m.documento = m.documento != null 
-                    && fs.existsSync(path.join(__dirname, '../uploads/memorias/documentos', m.documento)) 
+                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, 'documentos', m.documento)) 
                         ? process.env.URL_PETICION + process.env.PORT + "/api/upload/doc/" + m.documento 
                         : null;
             });
@@ -187,20 +188,30 @@ const getMemorias = (req, res = response) => {
 
 
 const getImagen = async (req, res = response) => {
-    const pathImagen = path.join(__dirname, '../uploads/memorias/imagenes', req.params.nombre);
+    const pathImagen = path.join(__dirname, urlUploadMemorias, 'imagenes', req.params.nombre);
 
     return fs.existsSync(pathImagen) 
         ? res.sendFile(pathImagen) 
-        : res.sendFile(path.join(__dirname, '../uploads/memorias/imagenes/default.png'))
+        : res.sendFile(path.join(__dirname, urlUploadMemorias, 'imagenes/default.png'))
 }
 
 
 const getDocumento = async (req, res = response) => {
-    const pathDoc = path.join(__dirname, '../uploads/memorias/documentos', req.params.nombre);
+    const pathDoc = path.join(__dirname, urlUploadMemorias, 'documentos', req.params.nombre);
 
     return fs.existsSync(pathDoc) 
         ? res.sendFile(pathDoc) 
-        : res.sendFile(path.join(__dirname, '../uploads/memorias/imagenes/default.png'))
+        : res.sendFile(path.join(__dirname, urlUploadMemorias, 'imagenes/default.png'))
+}
+
+
+const descargarDocumento = async (req, res = response) => {
+    const pathName = path.join(__dirname, urlUploadMemorias, 'documentos', req.params.nombre);
+
+    if (!fs.existsSync(pathName)) 
+        return res.status(404).json({ msg: 'No existe el archivo' });
+    
+    return res.download(pathName);
 }
 
 
@@ -361,6 +372,7 @@ module.exports = {
     getIntegrantesCargo,
     getImagen,
     getDocumento,
+    descargarDocumento,
     getMemorias,
     updateHermandad,
     updateContacto,

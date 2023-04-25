@@ -35,8 +35,9 @@ router.get('/getHorarios', contenido.getHorarios);
 router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
 router.get('/getMemorias', contenido.getMemorias);
-router.get('/upload/img/:nombre', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.getImagen);
-router.get('/upload/doc/:nombre', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.getDocumento);
+router.get('/upload/img/:nombre', contenido.getImagen);
+router.get('/upload/doc/:nombre', contenido.getDocumento);
+router.get('/download/:nombre', contenido.descargarDocumento);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateContacto);
 router.put('/addOrUpdateMemoria', [ 
