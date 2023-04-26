@@ -52,6 +52,8 @@ export class PaginasService {
     payload.append('anio', memoria.anio.toString());
     if (memoria.imagen) payload.append('imagen', memoria.imagen);
     if (memoria.documento) payload.append('documento', memoria.documento);
+    if (memoria.imgBorrar) payload.append('imgBorrar', memoria.imgBorrar);
+    if (memoria.docBorrar) payload.append('docBorrar', memoria.docBorrar);
 
     return this.http.put<AddUpdateMemResponse>(`${this.baseUrl}/addOrUpdateMemoria`, payload, header);
   }

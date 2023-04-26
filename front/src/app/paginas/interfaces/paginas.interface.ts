@@ -52,5 +52,7 @@ export interface MemoriaAddUpdate {
   id: number,
   anio: number,
   imagen?: File | null,
-  documento?: File | null
+  documento?: File | null,
+  imgBorrar?: string,
+  docBorrar?: string
 }

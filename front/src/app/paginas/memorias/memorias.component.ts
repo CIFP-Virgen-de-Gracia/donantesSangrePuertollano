@@ -54,36 +54,15 @@ export class MemoriasComponent implements OnInit {
   }
 
 
-/*   get nombreImgMemoria() {
-    //const nombre = this.infoMemoria.imagen.name.substring(this.infoMemoria.imagen.name.lastIndexOf("/") + 1);
-
-    //return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
-
-
-    return this.infoMemoria.imagen == null
-      ? 'No se ha seleccionado ningún archivo.'
-      : this.infoMemoria.imagen.name.substring(this.infoMemoria.imagen.name.lastIndexOf("/") + 1)
-  }
-
-
-  get nombreDocMemoria() {
-    //const nombre = this.infoMemoria.documento.name.substring(this.infoMemoria.documento.name.lastIndexOf("/") + 1);
-
-    //return nombre == 'null' ? 'No se ha seleccionado ningún archivo.' : nombre;
-
-    return this.infoMemoria.documento == null
-      ? 'No se ha seleccionado ningún archivo.'
-      : this.infoMemoria.documento.name.substring(this.infoMemoria.documento.name.lastIndexOf("/") + 1);
-  } */
-
-
   setInfoMemoria(index: number) {
     const memoria = this.memorias[index];
 
     this.limpiarMemoria();
     this.infoMemoria = {
       id: memoria.id,
-      anio: memoria.anio
+      anio: memoria.anio,
+      imagen: new File([""], memoria.imagen),
+      documento: new File([""], memoria.documento)
     }
   }
 
@@ -92,8 +71,16 @@ export class MemoriasComponent implements OnInit {
     const permitidas = ['.png', '.jpg', '.jpeg', '.gif', '.tiff', '.svg', '.webp'];
     const img = ((event.target as HTMLInputElement).files as FileList)[0];
 
-    if (this.comprobarExtension(img, permitidas)) this.infoMemoria.imagen = img;
-    else this.imagenValida = false;
+    if (this.comprobarExtension(img, permitidas)) {
+      if (this.infoMemoria.imagen) {
+
+        const nombre = this.infoMemoria.imagen.name;
+        this.infoMemoria.imgBorrar = nombre.substring(nombre.lastIndexOf("/") + 1);
+      }
+
+      this.infoMemoria.imagen = img;
+
+    } else this.imagenValida = false;
   }
 
 
@@ -101,8 +88,16 @@ export class MemoriasComponent implements OnInit {
     const permitidas = ['.pdf', '.odt', '.doc', '.docx'];
     const documento = ((event.target as HTMLInputElement).files as FileList)[0];
 
-    if (this.comprobarExtension(documento, permitidas)) this.infoMemoria.documento = documento;
-    else this.documentoValido = false;
+    if (this.comprobarExtension(documento, permitidas)) {
+      if (this.infoMemoria.documento) {
+
+        const nombre = this.infoMemoria.documento.name;
+        this.infoMemoria.docBorrar = nombre.substring(nombre.lastIndexOf("/") + 1);
+      }
+
+      this.infoMemoria.documento = documento;
+
+    } else this.documentoValido = false;
   }
 
 

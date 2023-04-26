@@ -4,7 +4,11 @@ const moment = require('moment');
 const { response, request } = require('express');
 const { subirArchivo, borrarArchivo } = require('../helpers/FileUpload');
 const queriesContenidos = require('../database/queries/queriesContenidos');
-const urlUploadMemorias = "../uploads/memorias/";
+const urlApiUpload = '/api/upload/';
+const urlUploadMemorias = '../uploads/memorias/';
+const carpetaMems = 'memorias';
+const carpetaImgs = 'imagenes';
+const carpetaDocs = 'documentos';
 
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
@@ -156,15 +160,15 @@ const getMemorias = (req, res = response) => {
             
             memorias.forEach(m => {
                 const nombreImg = m.imagen != null 
-                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, 'imagenes', m.imagen)) 
+                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaImgs, m.imagen)) 
                         ? m.imagen 
                         : null;
 
-                m.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/img/" + nombreImg; 
+                m.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${nombreImg}`; 
                 
                 m.documento = m.documento != null 
-                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, 'documentos', m.documento)) 
-                        ? process.env.URL_PETICION + process.env.PORT + "/api/upload/doc/" + m.documento 
+                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaDocs, m.documento)) 
+                        ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${m.documento}` 
                         : null;
             });
 
@@ -188,25 +192,25 @@ const getMemorias = (req, res = response) => {
 
 
 const getImagen = async (req, res = response) => {
-    const pathImagen = path.join(__dirname, urlUploadMemorias, 'imagenes', req.params.nombre);
+    const pathImagen = path.join(__dirname, urlUploadMemorias, carpetaImgs, req.params.nombre);
 
     return fs.existsSync(pathImagen) 
         ? res.sendFile(pathImagen) 
-        : res.sendFile(path.join(__dirname, urlUploadMemorias, 'imagenes/default.png'))
+        : res.sendFile(path.join(__dirname, urlUploadMemorias, `${carpetaImgs}/default.png`))
 }
 
 
 const getDocumento = async (req, res = response) => {
-    const pathDoc = path.join(__dirname, urlUploadMemorias, 'documentos', req.params.nombre);
+    const pathDoc = path.join(__dirname, urlUploadMemorias, carpetaDocs, req.params.nombre);
 
     return fs.existsSync(pathDoc) 
         ? res.sendFile(pathDoc) 
-        : res.sendFile(path.join(__dirname, urlUploadMemorias, 'imagenes/default.png'))
+        : res.sendFile(path.join(__dirname, urlUploadMemorias, `${carpetaImgs}/default.png`))
 }
 
 
 const descargarDocumento = async (req, res = response) => {
-    const pathName = path.join(__dirname, urlUploadMemorias, 'documentos', req.params.nombre);
+    const pathName = path.join(__dirname, urlUploadMemorias, carpetaDocs, req.params.nombre);
 
     if (!fs.existsSync(pathName)) 
         return res.status(404).json({ msg: 'No existe el archivo' });
@@ -285,18 +289,21 @@ const addOrUpdateMemoria = async(req, res = response) => {
     const extDocs = ['pdf', 'odt', 'doc', 'docx'];
     
     try {
-        const memoria = { id: req.body.id, anio: req.body.anio }
+        const memoria = { id: req.body.id, anio: req.body.anio };
+
+        if (req.body.imgBorrar) borrarArchivo(`${carpetaMems}/${carpetaImgs}`, req.body.imgBorrar);
+        if (req.body.docBorrar) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, req.body.docBorrar);
 
         if (req.files) {  
-            memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, 'memorias/imagenes');
-            memoria.documento = await comprobarArchivo(req.files.documento, extDocs, 'memorias/documentos');
+            memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, `${carpetaMems}/${carpetaImgs}`);
+            memoria.documento = await comprobarArchivo(req.files.documento, extDocs, `${carpetaMems}/${carpetaDocs}`);
         }
 
         const memResp = await queriesContenidos.addOrUpdateMemoria(memoria);
-         
-        memResp.imagen = process.env.URL_PETICION + process.env.PORT + "/api/upload/img/" + memResp.imagen;
+        
+        memResp.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${memResp.imagen}`;
         memResp.documento = memResp.documento != null 
-            ? process.env.URL_PETICION + process.env.PORT + "/api/upload/doc/" + memResp.documento
+            ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${memResp.documento}`
             : null; 
 
         const resp = {
@@ -320,12 +327,9 @@ const addOrUpdateMemoria = async(req, res = response) => {
 
 
 const comprobarArchivo = async(archivo, extensiones, carpeta) => {
-    if (archivo) {
-        if (archivo.size != 0) return await subirArchivo(archivo, extensiones, carpeta);
-
-    } else {
-        return null;
-    }
+    return (archivo && archivo.size != 0)
+        ? await subirArchivo(archivo, extensiones, carpeta)
+        : null;
 }
 
 
@@ -338,8 +342,8 @@ const deleteMemoria = async(req, res = response) => {
         if (resp == 0) throw error;
         else {
             
-            if (mem.imagen) borrarArchivo("memorias/imagenes", mem.imagen);
-            if (mem.documento) borrarArchivo("memorias/documentos", mem.documento);
+            if (mem.imagen) borrarArchivo(`${carpetaMems}/${carpetaImgs}`, mem.imagen);
+            if (mem.documento) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, mem.documento);
 
             resp = {
                 success: true,
