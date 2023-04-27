@@ -87,8 +87,7 @@ insertHorario = async (horario) => {
         const resp = await models.Horario.create({
             dia: horario.dia,
             hEntrada: horario.hEntrada,
-            hSalida: horario.hSalida,
-            createddAt: new Date().toLocaleString()
+            hSalida: horario.hSalida
         });
 
         return resp;
@@ -104,8 +103,25 @@ insertTelefono = async (tlfn) => {
 
         const resp = await models.Telefono.create({
             numero: tlfn.numero,
-            extension: tlfn.extension,
-            createddAt: new Date().toLocaleString()
+            extension: tlfn.extension
+        });
+
+        return resp;
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+insertMemoria = async() => {
+    try {
+
+        const resp = await models.Memoria.create({
+            id: null,
+            anio: memoria.anio,
+            imagen: memoria.imagen,
+            documento: memoria.documento
         });
 
         return resp;
@@ -193,8 +209,7 @@ updateDireccion = async (direccion) => {
             numero: direccion.numero,
             provincia: direccion.provincia,
             ciudad: direccion.ciudad,
-            cp: direccion.cp,
-            updatedAt: new Date().toLocaleString()
+            cp: direccion.cp
         });
 
         return resp;
@@ -211,8 +226,7 @@ updateTelefono = async (telefono) => {
         const tlfn = await models.Telefono.findByPk(telefono.id);
         const resp = await tlfn.update({
             numero: telefono.numero,
-            extension: telefono.extension,
-            updatedAt: new Date().toLocaleString()
+            extension: telefono.extension
         });
 
         return resp;
@@ -229,8 +243,7 @@ updateHorario = async (horario) => {
         const h = await models.Horario.findByPk(horario.id);
         const resp = await h.update({
             hEntrada: horario.hEntrada,
-            hSalida: horario.hSalida,
-            updatedAt: new Date().toLocaleString()
+            hSalida: horario.hSalida
         });
 
         return resp;
@@ -250,18 +263,16 @@ addOrUpdateMemoria = async (memoria) => {
                 id: null,
                 anio: memoria.anio,
                 imagen: memoria.imagen,
-                documento: memoria.documento,
-                updatedAt: new Date().toLocaleString()
+                documento: memoria.documento
             }
         });
-        
+
         const resp = creada 
             ? mem 
             : await mem.update({
                 anio: memoria.anio,
-                imagen: memoria.imagen == null ? mem.imagen : memoria.imagen,
-                documento: memoria.documento == null ? mem.documento : memoria.documento,
-                updatedAt: new Date().toLocaleString()
+                imagen: memoria.imagen ? memoria.imagen : null,
+                documento: memoria.documento ? memoria.documento : null,
             });
 
         return resp;
@@ -342,6 +353,7 @@ module.exports = {
     getMemorias,
     insertHorario,
     insertTelefono,
+    insertMemoria,
     updateHistoria,
     updateNombreIntegranteJunta,
     updateCargoIntegranteJunta,

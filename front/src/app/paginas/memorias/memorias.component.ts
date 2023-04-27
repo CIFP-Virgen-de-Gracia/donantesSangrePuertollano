@@ -15,17 +15,17 @@ import { saveAs } from 'file-saver';
 export class MemoriasComponent implements OnInit {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
-  @ViewChild('inptImg') inptImg!: ElementRef;
-  @ViewChild('inptDoc') inptDoc!: ElementRef;
 
   timer: NodeJS.Timeout | undefined;
-  codAccion: number = -1;
-  codDescarga: number = -1;
-  accion: string = '';
-  imagenValida: boolean = true;
-  documentoValido: boolean = true;
   estaRegistrado: boolean = false;
   puedeModificar: boolean = false;
+  imagenError: boolean = true;
+  documentoError: boolean = true;
+  codAccion: number = -1;
+  codDescarga: number = -1;
+  imgNoValida = 'null';
+  accion: string = '';
+  acciones = ['añadir', 'editar', 'borrar'];
   infoMemoria!: MemoriaAddUpdate;
   memorias: Memoria[] = [];
 
@@ -35,6 +35,7 @@ export class MemoriasComponent implements OnInit {
   ) {
     this.limpiarMemoria();
   }
+
 
   ngOnInit() {
     const user = localStorage.getItem('user');
@@ -54,16 +55,35 @@ export class MemoriasComponent implements OnInit {
   }
 
 
+  get nombreImgMemoria() {
+    let resp = 'No se ha seleccionado ninguna imagen.';
+
+    if (this.infoMemoria.imagen) {
+      const nombre = this.getNombre(this.infoMemoria.imagen.name);
+
+      if (nombre != this.imgNoValida) resp = nombre;
+    }
+
+    return resp;
+  }
+
+
+  get nombreDocMemoria() {
+    let resp = 'No se ha seleccionado ningún archivo.';
+
+    if (this.infoMemoria.documento)
+      resp = this.getNombre(this.infoMemoria.documento.name);
+
+    return resp;
+  }
+
+
   setInfoMemoria(index: number) {
     const memoria = this.memorias[index];
 
-    this.limpiarMemoria();
-    this.infoMemoria = {
-      id: memoria.id,
-      anio: memoria.anio,
-      imagen: new File([""], memoria.imagen),
-      documento: new File([""], memoria.documento)
-    }
+    this.infoMemoria = { id: memoria.id, anio: memoria.anio };
+    if (this.getNombre(memoria.imagen) != this.imgNoValida) this.infoMemoria.imagen = new File([""], memoria.imagen);
+    if (memoria.documento) this.infoMemoria.documento = new File([""], memoria.documento);
   }
 
 
@@ -72,15 +92,12 @@ export class MemoriasComponent implements OnInit {
     const img = ((event.target as HTMLInputElement).files as FileList)[0];
 
     if (this.comprobarExtension(img, permitidas)) {
-      if (this.infoMemoria.imagen) {
-
-        const nombre = this.infoMemoria.imagen.name;
-        this.infoMemoria.imgBorrar = nombre.substring(nombre.lastIndexOf("/") + 1);
-      }
+      if (this.infoMemoria.imagen && !this.infoMemoria.imgBorrar && this.accion == this.acciones[1])
+        this.infoMemoria.imgBorrar = this.getNombre(this.infoMemoria.imagen.name);
 
       this.infoMemoria.imagen = img;
 
-    } else this.imagenValida = false;
+    } else this.imagenError = false;
   }
 
 
@@ -89,15 +106,12 @@ export class MemoriasComponent implements OnInit {
     const documento = ((event.target as HTMLInputElement).files as FileList)[0];
 
     if (this.comprobarExtension(documento, permitidas)) {
-      if (this.infoMemoria.documento) {
-
-        const nombre = this.infoMemoria.documento.name;
-        this.infoMemoria.docBorrar = nombre.substring(nombre.lastIndexOf("/") + 1);
-      }
+      if (this.infoMemoria.documento && !this.infoMemoria.docBorrar && this.accion == this.acciones[1])
+        this.infoMemoria.docBorrar = this.getNombre(this.infoMemoria.documento.name);
 
       this.infoMemoria.documento = documento;
 
-    } else this.documentoValido = false;
+    } else this.documentoError = false;
   }
 
 
@@ -105,6 +119,26 @@ export class MemoriasComponent implements OnInit {
     const extension = (file.name.substring(file.name.lastIndexOf("."))).toLowerCase();
 
     return (permitidas.includes(extension)) ? true : false;
+  }
+
+
+  eliminarImg() {
+    if (this.infoMemoria.imagen) {
+      if (this.accion == this.acciones[1] && !this.infoMemoria.imgBorrar)
+        this.infoMemoria.imgBorrar = this.getNombre(this.infoMemoria.imagen.name);
+
+      delete this.infoMemoria.imagen;
+    }
+  }
+
+
+  eliminarDoc() {
+    if (this.infoMemoria.documento) {
+      if (this.accion == this.acciones[1] && !this.infoMemoria.docBorrar)
+        this.infoMemoria.docBorrar = this.getNombre(this.infoMemoria.documento.name);
+
+      delete this.infoMemoria.documento;
+    }
   }
 
 
@@ -122,10 +156,9 @@ export class MemoriasComponent implements OnInit {
         } else this.codAccion = 1;
 
         this.setTimer(4000);
+        this.closeModal.nativeElement.click();
+        this.limpiarMemoria();
       })
-
-    this.closeModal.nativeElement.click();
-    this.limpiarMemoria();
   }
 
 
@@ -163,9 +196,12 @@ export class MemoriasComponent implements OnInit {
 
 
   limpiarMemoria() {
-    this.infoMemoria = { id: -1, anio: new Date().getFullYear(), imagen: null, documento: null };
-    if (this.inptImg) this.inptImg.nativeElement.value = '';
-    if (this.inptDoc) this.inptDoc.nativeElement.value = '';
+    this.infoMemoria = { id: -1, anio: new Date().getFullYear() };
+  }
+
+
+  getNombre(nombre: string) {
+    return nombre.substring(nombre.lastIndexOf("/") + 1);
   }
 
 

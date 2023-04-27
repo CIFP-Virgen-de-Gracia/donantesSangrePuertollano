@@ -159,14 +159,13 @@ const getMemorias = (req, res = response) => {
         .then(memorias => {
             
             memorias.forEach(m => {
-                const nombreImg = m.imagen != null 
+                const nombreImg = m.imagen
                     && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaImgs, m.imagen)) 
                         ? m.imagen 
                         : null;
 
                 m.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${nombreImg}`; 
-                
-                m.documento = m.documento != null 
+                m.documento = m.documento
                     && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaDocs, m.documento)) 
                         ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${m.documento}` 
                         : null;
@@ -295,14 +294,19 @@ const addOrUpdateMemoria = async(req, res = response) => {
         if (req.body.docBorrar) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, req.body.docBorrar);
 
         if (req.files) {  
-            memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, `${carpetaMems}/${carpetaImgs}`);
-            memoria.documento = await comprobarArchivo(req.files.documento, extDocs, `${carpetaMems}/${carpetaDocs}`);
+            if (req.files.imagen) memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, `${carpetaMems}/${carpetaImgs}`);
+            if (req.files.documento) memoria.documento = await comprobarArchivo(req.files.documento, extDocs, `${carpetaMems}/${carpetaDocs}`);
         }
-
+       
         const memResp = await queriesContenidos.addOrUpdateMemoria(memoria);
-        
-        memResp.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${memResp.imagen}`;
-        memResp.documento = memResp.documento != null 
+
+        const nombreImg = memResp.imagen
+            && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaImgs, memResp.imagen)) 
+                ? memResp.imagen 
+                : null;
+
+        memResp.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${nombreImg}`;
+        memResp.documento = memResp.documento
             ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${memResp.documento}`
             : null; 
 
@@ -327,9 +331,9 @@ const addOrUpdateMemoria = async(req, res = response) => {
 
 
 const comprobarArchivo = async(archivo, extensiones, carpeta) => {
-    return (archivo && archivo.size != 0)
+    return (archivo.size != 0)
         ? await subirArchivo(archivo, extensiones, carpeta)
-        : null;
+        : archivo.name;
 }
 
 
@@ -340,8 +344,7 @@ const deleteMemoria = async(req, res = response) => {
         let resp = await queriesContenidos.deleteMemoria(req.params.id);
 
         if (resp == 0) throw error;
-        else {
-            
+        else { 
             if (mem.imagen) borrarArchivo(`${carpetaMems}/${carpetaImgs}`, mem.imagen);
             if (mem.documento) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, mem.documento);
 

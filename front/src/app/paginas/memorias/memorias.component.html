@@ -36,7 +36,7 @@
         <button class="btn-secundario mt-3"
           data-bs-toggle="modal"
           data-bs-target="#addOrUpdateMemoria"
-          (click)="accion='añadir'"
+          (click)="accion=acciones[0]"
           (click)="limpiarMemoria()">
           Añadir memoria
         </button>
@@ -67,14 +67,14 @@
               <div class="d-flex align-content-center ms-auto" *ngIf="puedeModificar">
                 <i class="fa-solid fa-pen me-3"
                   (click)="setInfoMemoria(i)"
-                  (click)="accion='editar'"
+                  (click)="accion=acciones[1]"
                   data-bs-toggle="modal"
                   data-bs-target="#addOrUpdateMemoria">
                 </i>
 
-                <i class="fa-solid fa-trash"
+                <i class="fa-solid fa-trash-can"
                   (click)="borrarMemoria(i)"
-                  (click)="accion='borrar'">
+                  (click)="accion=acciones[2]">
                 </i>
               </div>
             </div>
@@ -85,9 +85,8 @@
   </div>
 
  <!--  Modal -->
-  <div class="modal" id="addOrUpdateMemoria"
-    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addOrUpdateMemoriaLabel"
-    aria-hidden="true">
+  <div class="modal" id="addOrUpdateMemoria" tabindex="-1" aria-hidden="true"
+    aria-labelledby="addOrUpdateMemoriaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
 
     <div class="modal-dialog">
       <div class="modal-content">
@@ -131,23 +130,28 @@
             <div class="mb-4">
               <label for="documento">Documento</label><br>
 
-              <div class="contenedor-inpt">
+              <div class="contenedor-inpt d-flex align-items-center">
                 <input type="file"
-                  #inptImg
                   name="documento"
                   id="inpt-doc"
                   class="form-control"
                   accept="application/pdf, application/odt, application/doc, application/docx"
                   (change)="onDocumentoSeleccionado($event)"
-                  [ngClass]="{'error-input' : !documentoValido}"/>
+                  [ngClass]="{'error-input' : !documentoError}"/>
 
-                 <!--  <label for="inpt-doc" class="nombre-archivo d-flex g-0">
+                  <label for="inpt-doc" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
                     <span>{{ nombreDocMemoria }}</span>
-                  </label> -->
+                  </label>
+
+                  <div class="eliminar-archivo ms-2" [ngClass]="{'oculto' : !infoMemoria.documento}">
+                    <i class="fa-solid fa-xmark" (click)="eliminarDoc()"></i>
+                    <span class="tt">Elimina el documento de esta memoria</span>
+                  </div>
+
                 </div>
 
-                <p class="mensaje-error" *ngIf="!documentoValido">
+                <p class="mensaje-error" *ngIf="!documentoError">
                   Documento no válido. Los formatos admitidos son <b>pdf, odt, doc y docx</b>.
                 </p>
             </div>
@@ -156,23 +160,27 @@
             <div class="mb-4">
               <label for="imagen">Imagen de la portada</label><br>
 
-              <div class="contenedor-inpt">
+              <div class="contenedor-inpt d-flex align-items-center">
                 <input type="file"
-                  #inptDoc
                   name="imagen"
                   id="inpt-img"
                   class="form-control"
                   accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
                   (change)="onImgSeleccionada($event)"
-                  [ngClass]="{'error-input' : !imagenValida}"/>
+                  [ngClass]="{'error-input' : !imagenError}"/>
 
-                  <!-- <label for="inpt-img" class="nombre-archivo d-flex g-0">
+                  <label for="inpt-img" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
                     <span>{{ nombreImgMemoria }}</span>
-                  </label> -->
+                  </label>
+
+                  <div class="eliminar-archivo ms-2" [ngClass]="{'oculto' : !infoMemoria.imagen}">
+                    <i class="fa-solid fa-xmark" (click)="eliminarImg()"></i>
+                    <span class="tt">Elimina la imagen de esta memoria</span>
+                  </div>
               </div>
 
-              <p class="mensaje-error" *ngIf="!imagenValida">
+              <p class="mensaje-error" *ngIf="!imagenError">
                 Imagen no válida. Los formatos admitidos son <b>png, jpg, jpeg, gif, tiff, svg y webp</b>.
               </p>
             </div>
@@ -196,5 +204,4 @@
       </div>
     </div>
   </div>
-
 </main>
