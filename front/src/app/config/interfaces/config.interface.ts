@@ -97,3 +97,23 @@ export interface Cancion { //Isa
   cancion: any,
   descarga: string
 }
+export interface ResponseFaqs{
+  success: boolean,
+  data: Faq[],
+  msg: string,
+}
+export interface ResponseFaq{
+  success: boolean,
+  data: Faq,
+  msg: string,
+}
+export interface Faq{
+  id:string,
+  pregunta:string,
+  respuesta:string,
+}
+
+export interface Check{
+  id:string,
+  marcado:boolean,
+}

@@ -34,6 +34,10 @@ router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
 router.get('/getHorarios', contenido.getHorarios);
 router.get('/getTelefonos', contenido.getTelefonos);
 router.get('/getDirecciones', contenido.getDirecciones);
+router.get('/getMemorias', contenido.getMemorias);
+router.get('/upload/img/:nombre', contenido.getImagen);
+router.get('/upload/doc/:nombre', contenido.getDocumento);
+router.get('/download/:nombre', contenido.descargarDocumento);
 router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ 
     vJwt.validarJwt, 
@@ -48,7 +52,13 @@ router.put('/updateContacto', [
     check('direcciones.*.cp', 'Código postal no válido').matches(/^[0-9]{5}$/),
     midsValidar.validarCampos,
 ], contenido.updateContacto);
-
+router.put('/addOrUpdateMemoria', [ 
+    vJwt.validarJwt, 
+    midsUser.midAdmin, 
+    check('anio', 'El año es obligatorio').not().isEmpty(),
+    midsValidar.validarCampos 
+], contenido.addOrUpdateMemoria);
+router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 
 
 // pedir cita routes

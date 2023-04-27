@@ -27,6 +27,7 @@ export class BorrarComponent {
 
 
   borradoNoticia() {
+    console.log("entro");
     this.ContenidoService.borrarNoticia(this.idBorrado).subscribe(
       {
         next: data => {
