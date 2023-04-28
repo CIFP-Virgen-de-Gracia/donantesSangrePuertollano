@@ -40,13 +40,13 @@ export class DeleteHimnoComponent {
       {
         next: data => {
           if (data.success !== false) {
-            console.log(data);
+
             this.ConfigService.borrarHimnoTodos();
             this.mensaje = 3
           }
         },
         error: error => {
-          console.log(error);
+
           this.mensaje = 4;
         }
       });

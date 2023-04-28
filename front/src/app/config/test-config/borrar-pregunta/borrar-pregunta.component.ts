@@ -102,7 +102,6 @@ export class BorrarPreguntaComponent {
     else{
       this.config_Service.borrarPregunta(selector.value).subscribe((res) => {
         this.loading = false;
-        console.log('Respuesta del servidor', res);
         this.renderer2.setProperty(selector, "selectedIndex", 0);
         this.mostrar = false;
         this.recargarPreguntas.emit();

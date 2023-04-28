@@ -10,7 +10,7 @@ const registrarFaq = async (req, res = response) => {
             msg: 'Registrada'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(203).json({
             success: false,
             data: null,
@@ -27,7 +27,7 @@ const actualizarFaq = async (req, res = response) => {
             msg: 'Faq modificado'
         });
     }).catch((err) => {
-        console.log(err)
+   
         res.status(203).json({
             success: false,
             data: null,
@@ -58,7 +58,7 @@ const getFaq = async (req, res = response) => {
             });
         }
     }).catch((err) => {
-        console.log(err);
+    
         res.status(203).json({
             success: false,
             data: null,
@@ -74,7 +74,7 @@ const borrarFaq = async (req, res = response) => {
             msg: 'Faq borrado'
         });
     }).catch((err) => {
-        console.log(err);
+     
         res.status(200).json({
             success: false,
             data: null,
@@ -90,7 +90,7 @@ const borrarTodo = async (req, res = response) => {
             msg: 'Todos los faqs han sido eliminados'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(200).json({
             success: false,
             data: null,
@@ -136,7 +136,7 @@ const borrarSeleccionado = async (req, res = response) => {
             msg: 'Todos los faqs seleccionados han sido eliminados'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(200).json({
             success: false,
             data: null,

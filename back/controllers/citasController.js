@@ -14,7 +14,6 @@ const { QueryInterface } = require('sequelize');
 const pedirCita = async(req, res = response) => {
     try {
 
-        console.log(req.body.fecha);
         if (metodosFecha.horaEsMayor(req.body.fecha, moment().format('YYYY-MM-DD HH:mm:ss')) 
                 && metodosFecha.horaValida(req.body.fecha)) {
                     const cita = {
@@ -37,7 +36,6 @@ const pedirCita = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }

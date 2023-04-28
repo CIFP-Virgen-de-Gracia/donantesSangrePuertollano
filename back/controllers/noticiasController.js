@@ -45,7 +45,7 @@ const getListado = async (req, res = response) => {
             res.status(200).json(respuesta);
         }
     }).catch((err) => {
-        console.log(err);
+    
         const respuesta = {
             success: false,
             data: null,
@@ -140,7 +140,7 @@ const getNoticia = (req, res = response) => {
 
 //Isa
 const borrarNoticia = (req, res = response) => {
-    console.log(req.body.id);
+  
     queriesNoticias.borrarNoticia(req.body.id).then((noticia) => {
         const respuesta = {
             success: true,

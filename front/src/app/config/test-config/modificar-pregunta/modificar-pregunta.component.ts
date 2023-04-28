@@ -176,7 +176,6 @@ export class ModificarPreguntaComponent{
         this.loading = true;
         this.config_Service.modificarPregunta(this.pregunta.id, this.pregunta).subscribe((res) => {
           this.loading = false;
-          console.log('Respuesta del servidor', res);
           this.qhp = 1;
           this.recargarPreguntas.emit();
 
@@ -185,7 +184,6 @@ export class ModificarPreguntaComponent{
       }
       catch(e){
         this.qhp = 2;
-        console.log(e)
       }
     }
   }
