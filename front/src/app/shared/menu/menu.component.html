@@ -1,7 +1,7 @@
 <header>
-  <img class="banner" src="../../../assets/imagenes/banner.png" (load)="getPosicionMenu()">
+  <img #banner class="banner" src="../../../assets/imagenes/banner.png" (load)="posicionarMenu()">
 
-  <nav #menu [class.fijo]="fijo" class="navbar navbar-expand-xl">
+  <nav [class.fijo]="fijo" class="navbar navbar-expand-xl">
 
     <a class="navbar-brand" href="#"><img src="../../../assets/imagenes/logo.png"></a>
 

@@ -15,9 +15,9 @@ import { PedirCitaModule } from 'src/app/citas/citas.module';
 })
 export class MenuComponent implements OnInit {
 
-  @ViewChild('menu') menu!: ElementRef<HTMLElement>;
+  @ViewChild('banner') banner!: ElementRef<HTMLElement>;
+
   fijo: boolean = false;
-  posicionMenuOriginal: number = 0;
   puedeModificar: boolean = false;
   estaRegistrado: boolean = false;
   puedePedirCita: boolean = true;
@@ -49,26 +49,24 @@ export class MenuComponent implements OnInit {
   }
 
 
-  getPosicionMenu() {
-    let distMenuTop = this.menu.nativeElement.getBoundingClientRect().top;
-    let scrollActual = window.scrollY;
+  posicionarMenu() {
+    const altBanner = this.banner.nativeElement.offsetHeight;
+    const scrollActual = window.scrollY;
 
-    this.posicionMenuOriginal = distMenuTop + scrollActual;
+    this.fijo = (scrollActual >= altBanner) ? true : false;
   }
 
 
   @HostListener("window:scroll", ['$event'])
   handleScroll($event: Event) {
-    const scrollActual = window.scrollY;
-
-    this.fijo = scrollActual >= this.posicionMenuOriginal ? true : false;
+    this.posicionarMenu();
   }
 
 
-  @HostListener("window:resize", ['$event'])
+ /*  @HostListener("window:resize", ['$event'])
   handleResize($event: Event) {
-    this.getPosicionMenu();
-  }
+
+  } */
 
 
   comprobarPuedeModificar() {
