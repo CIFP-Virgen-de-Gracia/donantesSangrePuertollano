@@ -1,0 +1,76 @@
+<div class="container-fluid f-contraste pt-5">
+  <div class="row">
+    <div class="col text-center">
+      <h1 class="titulo subrayado">Chat para dudas</h1>
+    </div>
+  </div>
+</div>
+<div>
+  <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+    <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1"
+      d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
+    </path>
+  </svg>
+</div>
+
+<section>
+  <ng-template #noRegistrado>
+    <h4 class="titulo text-center mb-5">Por favor, para acceder al chat debes estar registrado y tener iniciada la
+      sesión</h4>
+  </ng-template>
+  <div class="container" *ngIf="estaRegistrado; else noRegistrado">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="container">
+          <div class="row">
+            <div class=" col container chatContainer scroll mb-3 shadow-lg bg-white">
+              <div class="row pt-2">
+                <ul class="col cardChat mt-3 ps-3 list-group">
+                  <li class="mb-2 mt-2 pe-1" *ngFor="let m of Mensajes">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row">
+                          <p class="col-6 text-start"><strong>{{m.nombre}}</strong></p>
+                          <p class="col-6 text-end">{{m.fecha}}, {{m.hora}}</p>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text">{{m.mensaje}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <form class="col" [formGroup]="chatForm" (ngSubmit)="sendData('message')">
+              <div class="row">
+                <input formControlName="comentario" type="text" name="comentario" class="form-control col-8 mb-3" placeholder="Escribe tu duda" />
+                <div class="col-4 d-flex justify-content-end">
+                  <button type="submit" class="btn-secundario">Enviar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="container ">
+          <div class="shadow-lg p-4 mb-2 bg-white">
+            <h3 class="titulo border-bottom">Usuarios conectados</h3>
+            <div *ngFor="let usuario of Conectados" class="card m-3">
+              <div class="card-body fondoCard">
+                <p><strong>{{usuario.nombre}}</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</section>

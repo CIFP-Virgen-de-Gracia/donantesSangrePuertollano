@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { conexion, sequelize } = require('../../database/Conexion');
 const fileupload = require("express-fileupload");
+const { startSocketServer } = require('./socket-server');
 
 //Mario
 class Server {
@@ -16,11 +17,12 @@ class Server {
         this.pathGaleria = "/api/galeria";
         this.pathMusica = "/api/musica";
         this.pathFaq = "/api/faq";
+        this.pathChat = "/api/chat";
         //Middlewares
         this.middlewares();
 
         this.routes();
-
+        
     }
 
     middlewares() {
@@ -32,6 +34,7 @@ class Server {
             tempFileDir: '/tmp/',
             createParentPath: true
         }));
+      
     }
 
     routes() {
@@ -42,14 +45,17 @@ class Server {
         this.app.use(this.pathNoticias, require('../../routes/noticiasRoutes'));
         this.app.use(this.pathMusica, require('../../routes/cancionRoutes'));
         this.app.use(this.pathFaq, require('../../routes/faqs-routes'));
+        this.app.use(this.pathChat, require('../../routes/chat-routes'));
 
     }
 
+    
     listen() {
         this.app.listen(process.env.PORT, () => {
             console.log(`Servidor escuchando en: ${process.env.PORT}`);
         })
     }
 }
+startSocketServer() // Inicia el servidor de Socket.io
 
 module.exports = Server;

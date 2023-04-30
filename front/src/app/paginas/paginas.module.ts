@@ -10,6 +10,8 @@ import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-f
 import { AvisoLegalComponent } from './aviso-legal/aviso-legal.component';
 import { TerminosUsoComponent } from './terminos-uso/terminos-uso.component';
 import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies.component';
+import { ChatComponent } from './chat/chat.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,15 @@ import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies
     PreguntasFrecuentesComponent,
     AvisoLegalComponent,
     TerminosUsoComponent,
-    PoliticasCookiesComponent
+    PoliticasCookiesComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     PaginasRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     MainPageComponent
