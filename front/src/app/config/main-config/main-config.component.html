@@ -11,7 +11,7 @@
           [class.activo]="i == elementoActivo"
           (click) = "elementoActivo = i">
           <i class="fa-solid {{ e.icono }}"></i>
-          <span class="oculto">{{ e.nombre | titlecase }}</span>
+          <span class="oculto">{{ getNombre(e.nombre) | titlecase }}</span>
         </li>
       </ul>
     </div>
