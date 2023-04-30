@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { ResponseComentario,Mensaje } from '../interfaces/paginas.interface';
+import { ResponseComentario,Mensaje,UserConectado } from '../interfaces/paginas.interface';
 import { Socket } from 'ngx-socket-io';
 import { ChatService } from './chat.service';
 import { environment } from 'src/environment/environment';
@@ -12,24 +12,52 @@ export class WebSocketService extends Socket {
   @Output() outEven: EventEmitter<any> = new EventEmitter();
 
   constructor(private ChatService: ChatService) {
+    let datos:any="";
+    if (localStorage.getItem('user') != null) {
+      datos = JSON.parse(localStorage.getItem('user') || "");
+    }
     super({
       url: environment.baseSocket,
       options: {
         query: {
-          payload: localStorage.getItem('user')
+          payload: datos.nombre
         }
       }
 
     })
+
+    this.ioSocket.on('connect', () => {
+      if (localStorage.getItem('user') != null) {
+        let datos = JSON.parse(localStorage.getItem('user') || "");
+        let u: UserConectado = {
+          nombre: datos.nombre,
+          id: datos.id
+        }
+        this.ChatService.agregarConectado(u);
+
+    }});
+
+    // Evento de desconexión
+    this.ioSocket.on('disconnect', () => {
+      console.log('Desconectado del servidor');
+      if (localStorage.getItem('user') != null) {
+        let datos = JSON.parse(localStorage.getItem('user') || "");
+        let u: UserConectado = {
+          nombre: datos.nombre,
+          id: datos.id
+        }
+      this.ChatService.borrarConectado(u);
+    }});
     this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res))
+
   }
+
 
   emitEvent = (event = 'enviar-mensaje', payload = {}) => {
     this.ioSocket.emit('enviar-mensaje', {
       payload
     }, (respuesta: ResponseComentario) => {
       if (respuesta.success) {
-        console.log(respuesta.data)
         let m: Mensaje = {
           "nombre": respuesta.data.nombre,
           "mensaje": respuesta.data.mensaje,
@@ -37,8 +65,7 @@ export class WebSocketService extends Socket {
           "fecha": respuesta.data.fecha,
           "hora": respuesta.data.hora,
         }
-        console.log(m);
-        this.ChatService.addMensaje(m);
+        this.ChatService.agregarMensaje(m);
       }
     });
   }

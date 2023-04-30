@@ -6,8 +6,15 @@
 }
 .chatContainer{
 height: 50rem;
-background-image:linear-gradient(to right, var(--color-primario),var(--color-granate),var(--color-primario)); ;
-
+border-radius: 10px;
 }
-
+.borderRojo{
+ border-bottom-color:var(--color-granate) ;
+}
+.letraColor{
+color:var(--color-secundario);
+}
+span.errorSpan {
+  color: var(--color-primario);
+}
 

@@ -1,44 +1,48 @@
+//Isa
 const queriesChat = require("../database/queries/queries-chat");
-const socketController = (socket) => {
-    const id_handshake = socket.id;
-    console.log(id_handshake)
+
+const connectedUsers = [];
+
+const conectado = (socket) => {
     let { payload } = socket.handshake.query;
     console.log(payload);
-    if (payload != null) {
-        console.log("Cliente conectado: ", socket.id); //Estos 'id' son muy volátiles y no es muy correcto usarlos para nada especial. Luego se asociarán los clientes a salas y eso es lo más correcto, gestionarlo en las salas.
+    connectedUsers.push(payload);
+    console.log(connectedUsers);
+};
 
-        socket.on('disconnect', () => {
-            console.log("Cliente desconectado", socket.id);
+const desconectado = (socket) => {
+    console.log('Usuario desconectado');
+    let { payload } = socket.handshake.query;
+    const index = connectedUsers.indexOf(payload);
+    if (index !== -1) {
+        connectedUsers.splice(index, 1);
+    }
+    console.log(connectedUsers);
+};
+
+const enviarMensaje = (socket, data, callback) => {
+    if (connectedUsers.includes(data["payload"]["nombreUser"])) {
+        queriesChat.addMensaje(data["payload"]).then((respuesta) => {
+            callback(respuesta);
+            socket.broadcast.emit('enviar-mensaje', respuesta.data);
+        }).catch((error) => {
+            console.error('Error al agregar el mensaje:', error);
         });
+    } else {
+        socket.emit('error', { message: 'El usuario no está conectado' });
+    }
+};
+const socketController = (socket) => {
+    conectado(socket);
 
-        //Con esto el servidor escucha al cliente que le envíe este evento: 'enviar-mensaje'.
-        // socket.on('enviar-mensaje', (payload) => {
-        //     console.log(payload);
+    socket.on('disconnect', () => {
+        desconectado(socket);
+    });
 
-        //     //Con lo siguiente, el servidor envía el mensaje a los clientes.
-        //     this.io.emit('recibir-mensaje', payload);
-        // });
-
-        //Si queremos que el cliente que envío la petición reciba información de retroalimentación, sería así:
-        socket.on('enviar-mensaje', (payload, callback) => {
-            console.log(callback);
-            queriesChat.addMensaje(payload["payload"]).then((respuesta) => {
-                console.log(respuesta);
-                callback(respuesta);
-                socket.broadcast.emit('recibir-mensaje', payload);
-              }).catch((error) => {
-                console.error('Error al agregar el mensaje:', error);
-              });
-            });
-
-
-        /*let repuesta=chatController.addMensaje(payload["payload"]);
-        callback(payload["payload"]);
-        //Con lo siguiente, el servidor envía el mensaje a los clientes.
-        socket.broadcast.emit('recibir-mensaje', payload);*/
-    }; //podría servir para que el cliente reciba alguna confirmación de mensaje recibido. Esto aprovecha el canal de comunicación creado en la petición para enviarle la confirmación.
-}
-
+    socket.on('enviar-mensaje', (data, callback) => {
+        enviarMensaje(socket, data, callback);
+    });
+};
 
 
 module.exports = {

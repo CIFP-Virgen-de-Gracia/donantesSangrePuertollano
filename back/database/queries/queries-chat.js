@@ -1,3 +1,4 @@
+//Isa
 const sequelize = require('../ConexionSequelize');
 const models = require('../../models/index.js');
 const moment = require('moment');
@@ -20,15 +21,16 @@ class QueriesChat {
                     let hora = "";
                     hora = moment(m.dataValues.createdAt, 'HH:mm').format('HH:mm');
                     fecha = new Date(m.dataValues.createdAt).toLocaleDateString();
+                    //Se deja creado por si da problemas con la hora.
                     /*
-                                        let fechaDb = new Date(m.dataValues.createdAt);
-                                        fechaDb.setHours(fechaDb.getHours() + 2);
+                    let fechaDb = new Date(m.dataValues.createdAt);
+                    fechaDb.setHours(fechaDb.getHours() + 2);
                     
-                                        if (!metodosFecha.comprobarHoraFecha(fechaDb, m.dataValues.createdAt)) {
-                                            hora = moment(m.dataValues.createdAt, 'HH:mm').subtract(2, 'hour').format('HH:mm');
-                                        } else {
-                                            hora = moment(m.dataValues.createdAt, 'HH:mm').format('HH:mm');
-                                        }
+                    if (!metodosFecha.comprobarHoraFecha(fechaDb, m.dataValues.createdAt)) {
+                        hora = moment(m.dataValues.createdAt, 'HH:mm').subtract(2, 'hour').format('HH:mm');
+                    } else {
+                        hora = moment(m.dataValues.createdAt, 'HH:mm').format('HH:mm');
+                    }
                     */
                     data = {
                         "id": m.dataValues.id,
