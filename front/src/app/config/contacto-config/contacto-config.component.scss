@@ -7,7 +7,7 @@
 .direcciones {
 
   i {
-    color: var(--color-contraste-oscuro);
+    color: var(--color-contraste-medio);
 
     &:hover {
       color: var(--color-primario);
@@ -106,6 +106,13 @@
 }
 
 
+@media (max-width: 576px) {
+  .horarios .horario .dia:not(:last-of-type) label {
+    margin-right: 1rem;
+  }
+}
+
+
 @media (max-width: 768px) {
   .direcciones .direccion {
     grid-template-columns: 1fr;
@@ -140,11 +147,16 @@
 @media (max-width: 1200px) {
 
   .horarios .horario {
-    .horas, .horas>div, .dias {
+
+    .horas,
+    .horas>div,
+    .dias {
       width: 100%;
     }
 
-    .horas, .dias, .inpt {
+    .horas,
+    .dias,
+    .inpt {
       text-align: center;
     }
 

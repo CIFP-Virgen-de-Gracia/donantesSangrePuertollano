@@ -256,7 +256,6 @@ export class ConfigService {
   }
 
   generarChecks() {
-    console.log(this.faqs);
     if(this.aux==0){
       for (let index = 0; index < this.faqs.length; index++) {
         this.checks.push({ id: this.faqs[index]["id"], marcado: false });

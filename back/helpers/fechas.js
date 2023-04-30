@@ -50,7 +50,7 @@ const horaValida = async(fecha) => {
     
     let valida = false;
     horasDisp.forEach(horaDisp => {
-        console.log(horaDisp);
+     
         if (horaDisp == hora) {
             valida = true;
             return // Opto por el return porque es un bucle muy sencillo.

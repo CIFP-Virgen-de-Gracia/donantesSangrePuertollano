@@ -1,7 +1,7 @@
 const sequelize = require('../ConexionSequelize');
 const models = require('../../models/index.js');
 const fileUpload = require('express-fileupload');
-const File = require('../../helpers/FileUpload');
+const File = require('../../helpers/fileUpload');
 const assets = require('../../helpers/irAssets');
 const path = require('path');
 const fs = require("fs");
@@ -61,7 +61,7 @@ class queriesAptoSangre {
                 }
 
             } else {
-                const imagen = await File.subirArchivo(req.files, undefined, 'apto_sangre');
+                const imagen = await File.subirArchivo(req.files.archivo, undefined, 'apto_sangre');
                 assets.copiarAssests('apto_sangre', 'apto_sangre', imagen);
                 let pregunta = await models.Pregunta.create({
                     enunciado: req.body.enunciado,
@@ -130,7 +130,7 @@ class queriesAptoSangre {
                         fs.unlinkSync(pathImagen);
                     }
 
-                    const nombre_img = await File.subirArchivo(req.files, undefined, 'apto_sangre');
+                    const nombre_img = await File.subirArchivo(req.files.archivo, undefined, 'apto_sangre');
                     assets.copiarAssests('apto_sangre', 'apto_sangre', nombre_img);
 
 

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const controlador = require('../controllers/faqs-controllers');
+const controlador = require('../controllers/faqController');
 const mid = require("../middlewares/userMiddlewares");
 const vJwt = require('../middlewares/validarJwt');
 

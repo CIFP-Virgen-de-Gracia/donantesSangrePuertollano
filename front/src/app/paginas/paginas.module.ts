@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PaginasRoutingModule } from './paginas-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -12,6 +13,7 @@ import { TerminosUsoComponent } from './terminos-uso/terminos-uso.component';
 import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies.component';
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MemoriasComponent } from './memorias/memorias.component';
 
 @NgModule({
   declarations: [
@@ -23,11 +25,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AvisoLegalComponent,
     TerminosUsoComponent,
     PoliticasCookiesComponent,
-    ChatComponent
+    ChatComponent,
+    MemoriasComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule,
     PaginasRoutingModule,
     FormsModule,
     ReactiveFormsModule,

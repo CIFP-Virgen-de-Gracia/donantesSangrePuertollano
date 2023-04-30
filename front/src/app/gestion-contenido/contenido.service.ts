@@ -41,8 +41,6 @@ export class ContenidoService {
     this.aux=this.noticias;
   }
   borrarNoticia(id: string): Observable<ResponseNoticia> {
-    console.log("dentro de borrar");
-    console.log(id);
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

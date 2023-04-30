@@ -12,7 +12,7 @@ const registrarCancion = async (req, res = response) => {
             msg: 'Registrada'
         });
     }).catch((err) => {
-        console.log(err);
+        
         res.status(203).json({
             success: false,
             data: null,
@@ -35,7 +35,7 @@ const descargar = async (req, res = response) => {
             });
         }
     }).catch((err) => {
-        console.log(err)
+  
         res.status(203).json({
             success: false,
             data: null,
@@ -51,7 +51,7 @@ const editarCancion = async (req, res = response) => {
             msg: 'Audio modificado'
         });
     }).catch((err) => {
-        console.log(err)
+       
         res.status(203).json({
             success: false,
             data: null,
@@ -61,9 +61,9 @@ const editarCancion = async (req, res = response) => {
 }
 
 const obtenerCancion = async (req, res = response) => {
-    console.log(req.params.id);
+
     queriesMusica.getCancion(req.params.id).then((cancion) => {
-        console.log(cancion);
+      
         if (cancion) {
             const pathMusic = path.join(__dirname, '../uploads', 'musica', cancion.nombre);
             if (fs.existsSync(pathMusic)) {
@@ -77,7 +77,7 @@ const obtenerCancion = async (req, res = response) => {
             });
         }
     }).catch((err) => {
-        console.log(err);
+    
         res.status(203).json({
             success: false,
             data: null,
@@ -106,7 +106,7 @@ const getCancion = async (req, res = response) => {
             res.status(203).json("No encontrada");
         }
     }).catch((err) => {
-        console.log(err);
+      
         res.status(203).json({
             success: false,
             data: null,
@@ -122,7 +122,7 @@ const borrarCancion = async (req, res = response) => {
             msg: 'Audio borrado'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(200).json({
             success: false,
             data: null,
@@ -138,7 +138,7 @@ const borrarTodo = async (req, res = response) => {
             msg: 'Todos los audios han sido eliminados'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(200).json({
             success: false,
             data: null,

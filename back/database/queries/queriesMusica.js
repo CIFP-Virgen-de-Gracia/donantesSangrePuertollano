@@ -1,7 +1,7 @@
 const sequelize = require('../ConexionSequelize');
 const path = require("path");
 const fs = require("fs");
-const File = require('../../helpers/FileUpload');
+const File = require('../../helpers/fileUpload');
 const models = require('../../models/index.js');
 
 //Todo Isa
@@ -15,7 +15,7 @@ class QueriesMusica {
         this.sequelize.conectar();
         try {
             if (req.files) {
-                const nombre = await File.subirArchivo(req.files, ["mp3", "mp4"], 'musica');
+                const nombre = await File.subirArchivo(req.files.archivo, ["mp3", "mp4"], 'musica');
                 let cancion = await models.Cancion.create({
                     nombre: nombre,
                     titulo: req.body.titulo,
@@ -67,7 +67,7 @@ class QueriesMusica {
                     if (fs.existsSync(pathMusic)) {
                         fs.unlinkSync(pathMusic);
                     }
-                    const nombre = await File.subirArchivo(req.files, ["mp3", "mp4"], 'musica');
+                    const nombre = await File.subirArchivo(req.files.archivo, ["mp3", "mp4"], 'musica');
 
                     cancion.id = cancion.id;
                     cancion.nombre = nombre;

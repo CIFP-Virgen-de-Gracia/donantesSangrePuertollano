@@ -105,12 +105,12 @@ class QueriesFaqs {
     }
 
     borrarSeleccionado = async (ids) => {
-        console.log(ids);
+        
         this.sequelize.conectar();
         let eliminados = [];
         try {
             for (let index = 0; index < ids.length; index++) {
-                console.log("entro");
+              
                 let faq = await models.Faq.findByPk(ids[index]);
                 if (!faq) {
                     this.sequelize.desconectar();

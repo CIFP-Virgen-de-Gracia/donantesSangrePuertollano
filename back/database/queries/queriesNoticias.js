@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../ConexionSequelize');
 const path = require("path");
 const fs = require("fs");
-const File = require('../../helpers/FileUpload');
+const File = require('../../helpers/fileUpload');
 const models = require('../../models/index.js');
 
 
@@ -37,7 +37,7 @@ class QueriesNoticias {
                 }
 
             } else {
-                const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                const nombre = await File.subirArchivo(req.files.archivo, undefined, 'noticias');
 
                 let imagen = await models.Imagen.create({
                     idNoticia: noticia.id,
@@ -182,7 +182,7 @@ class QueriesNoticias {
                         if (fs.existsSync(pathImagen)) {
                             fs.unlinkSync(pathImagen);
                         }
-                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                        const nombre = await File.subirArchivo(req.files.archivo, undefined, 'noticias');
 
 
                         noticia["Imagen"][0]["idNoticia"] = noticia.dataValues.id;
@@ -200,7 +200,7 @@ class QueriesNoticias {
 
 
                     } else {
-                        const nombre = await File.subirArchivo(req.files, undefined, 'noticias');
+                        const nombre = await File.subirArchivo(req.files.archivo, undefined, 'noticias');
 
                         let imagen = await models.Imagen.create({
                             idNoticia: noticia.dataValues.id,

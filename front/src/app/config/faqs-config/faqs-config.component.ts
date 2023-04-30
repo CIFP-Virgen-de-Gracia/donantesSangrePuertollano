@@ -38,21 +38,16 @@ export class FaqsConfigComponent {
     let id = event.target.id;
     this.idEditado = id.slice(1);
     this.faqEditar=this.ConfigService.obtenerFaq(this.idEditado);
-    console.log(this.faqEditar);
-
   }
   faqSeleccionado(event: any): void {
     if (event.target.checked) {
       this.listaFaq.push(event.target.id);
-      console.log(this.listaFaq);
-      console.log(event.target.id);
-     this.ConfigService.marcarCheck(event.target.id);
+      this.ConfigService.marcarCheck(event.target.id);
     }
     else {
       let i = this.listaFaq.indexOf(event.target.id);
       this.listaFaq.splice(i, 1);
-      console.log(this.listaFaq);
-     this.ConfigService.desmarcarCheck(event.target.id);
+      this.ConfigService.desmarcarCheck(event.target.id);
     }
   }
 }

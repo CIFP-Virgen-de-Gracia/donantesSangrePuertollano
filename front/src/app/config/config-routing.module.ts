@@ -16,7 +16,7 @@ const routes: Routes = [
       { path: 'contacto', component: ContactoConfigComponent },
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},
-      { path: 'faqs', component: FaqsConfigComponent },
+      { path: 'faq', component: FaqsConfigComponent },
       { path: '**', redirectTo: 'hermandad' }
     ]
   }

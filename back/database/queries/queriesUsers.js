@@ -89,7 +89,6 @@ class QueriesUsers {
     //Mario
     getUserLogin = async(email, passwd) => {
         const id = await this.getIdEmail(email);
-        console.log(id);
 
         const user = await models.User.findOne({
             attributes: ['id', 'nombre'],

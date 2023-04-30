@@ -34,17 +34,17 @@ class Server {
             tempFileDir: '/tmp/',
             createParentPath: true
         }));
-      
+        this.app.use(express.static("../../uploads/"));
     }
 
     routes() {
 
         this.app.use(this.pathAptoSangre, require('../../routes/aptoSangreRoutes'));
-        this.app.use(this.pathGaleria, require('../../routes/galeria_Routes'));
+        this.app.use(this.pathGaleria, require('../../routes/galeriaRoutes'));
         this.app.use(this.path, require('../../routes/routes'));
         this.app.use(this.pathNoticias, require('../../routes/noticiasRoutes'));
         this.app.use(this.pathMusica, require('../../routes/cancionRoutes'));
-        this.app.use(this.pathFaq, require('../../routes/faqs-routes'));
+        this.app.use(this.pathFaq, require('../../routes/faqRoutes'));
         this.app.use(this.pathChat, require('../../routes/chat-routes'));
 
     }
