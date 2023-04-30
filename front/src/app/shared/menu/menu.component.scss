@@ -7,9 +7,19 @@ header {
     top:0;
   }
 
+
   nav {
     background-color: var(--color-primario);
     z-index: 100;
+
+    i {
+      font-size: 1.5rem;
+      padding: 0.7rem 0 0.7rem 0;
+
+      &.fa-bars {
+        font-size: 1.8rem;
+      }
+    }
 
     img {
       width: 45px;
@@ -21,7 +31,7 @@ header {
 
     .navbar-toggler {
       border: none;
-      padding: 0 5rem 0 0;
+      padding-right: 6.5rem;
 
       &:focus {
         box-shadow: none;
@@ -32,11 +42,11 @@ header {
     .nav-link {
       color: var(--bs-white);
       padding: 0;
-    }
 
-    /* .dropdown:hover .dropdown-menu {
-      display: block;
-    } */
+      &.dropdown-toggle::after {
+        border-width: 0.4em 0.4em 0 0.4em;
+      }
+    }
 
     .dropdown-menu {
       border-radius: 0;
@@ -60,13 +70,13 @@ header {
 
     .usuario-contenedor {
       position: absolute;
-      right: 2rem;
-      top: 1.5rem;
+      right: 3rem;
+      top: .85rem;
     }
 
     @media (max-width: 1200px) {
       .navbar-brand {
-        padding-left: 2rem;
+        padding-left: 3rem;
       }
 
       .navbar-collapse {

@@ -3,7 +3,7 @@
 <div class="row mt-3 gx-0">
   <div class="col-12 table-responsive ">
     <table class="table table-hover overflow-auto table-bordered m-auto text-center">
-      <thead class="table-dark">
+      <thead>
         <tr>
           <th scope="col">Titulo</th>
           <th scope="col">Enunciado</th>
@@ -17,7 +17,7 @@
           let i = index">
           <tr scope="row">
             <th class="align-middle">
-              {{pregunta.titulo}}
+              {{pregunta.titulo | titlecase}}
             </th>
             <td class="align-middle">
               {{pregunta.enunciado}}
@@ -44,14 +44,16 @@
 </div>
 <div class="row d-flex justify-content-center align-items-center mt-4 mb-3">
   <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
-    <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#añadirPregunta">Añadir Pregunta</button>
+    <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#borrarPregunta">Eliminar Pregunta</button>
   </div>
+
   <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
     <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#modificarPregunta">Modificar
       Pregunta</button>
   </div>
+
   <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
-    <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#borrarPregunta">Eliminar Pregunta</button>
+    <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#añadirPregunta">Añadir Pregunta</button>
   </div>
 </div>
 

@@ -3,12 +3,15 @@
 
   <nav [class.fijo]="fijo" class="navbar navbar-expand-xl">
 
-    <a class="navbar-brand" href="#"><img src="../../../assets/imagenes/logo.png"></a>
+    <a class="navbar-brand d-flex" href="#">
+      <i class="fa-solid fa-house align-self-center "></i>
+      <!-- <img src="../../../assets/imagenes/logo.png"> -->
+    </a>
 
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
       data-bs-target="#menu-horizontal" aria-controls="menu-horizontal" aria-expanded="false"
       aria-label="Toggle navigation">
-      <i class="fa-solid fa-bars fs-2"></i>
+      <i class="fa-solid fa-bars"></i>
     </button>
 
     <div class="collapse navbar-collapse text-center" id="menu-horizontal">
@@ -61,9 +64,9 @@
     </div>
 
 
-    <div class="usuario-contenedor ms-5" *ngIf="estaRegistrado">
+    <div class="usuario-contenedor" *ngIf="estaRegistrado">
 
-      <i class="fa-solid fa-user-large fs-4 usuario dropdown-toggle"
+      <i class="fa-solid fa-user-large usuario dropdown-toggle"
         data-bs-toggle="dropdown" data-bs-target="dropdown-user"></i>
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
