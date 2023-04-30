@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.RolUser, {as: 'RolUser', foreignKey: 'idUser'});
+      User.hasMany(models.Chat, {as: 'Chat', foreignKey: 'idUser', targetKey: 'id'});
     }
   }
   User.init({
