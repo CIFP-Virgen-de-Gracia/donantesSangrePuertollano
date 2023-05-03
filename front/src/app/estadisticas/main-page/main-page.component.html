@@ -1,0 +1,133 @@
+<main>
+  <div class="container gx-0">
+
+    <div>
+      <div class="f-contraste text-center">
+        <h1 class="titulo subrayado">Estadísticas</h1>
+      </div>
+
+      <!--  <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+        <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1" d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
+        </path>
+      </svg> -->
+    </div>
+
+    <div class="contenido">
+
+      <div class="resumen">
+        <h2 class="titulo">Resumen</h2>
+        <p>Todas las estadísticas de todos los tiempos.</p>
+
+        <div></div>
+      </div>
+
+      <div class="tiempo mt-5">
+        <h2 class="titulo">Número de donaciones</h2>
+
+        <div class="row gx-0 contenedor">
+          <div class="menu-horizontal col-3 accordion">
+
+            <div class="accordion-item">
+              <div class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#rangoTiempo"
+                aria-expanded="true"
+                aria-controls="rangoTiempo">
+                Rango de tiempo
+              </div>
+
+              <div id="rangoTiempo" class="accordion-collapse collapse show">
+                <div class="">
+                  <input type="radio" id="mensuales" name="tiempo" value="mensuales">
+                  <label for="mensuales" class="me-3">Mensuales</label>
+
+                  <select id="anios">
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                  </select>
+                </div>
+
+                <div>
+                  <input type="radio" id="anuales" name="tiempo" value="anuales">
+                  <label for="anuales">Anuales</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#tipoDonacion"
+                aria-expanded="true"
+                aria-controls="tipoDonacion">
+                Tipo de donación
+              </div>
+
+              <div id="tipoDonacion" class="accordion-collapse collapse show">
+                <input type="checkbox" id="sangre" name="sangre" value="sangre">
+                <label for="sangre">Sangre</label><br>
+                <input type="checkbox" id="plasma" name="plasma" value="plasma">
+                <label for="plasma">Plasma</label><br>
+                <input type="checkbox" id="medula" name="medula" value="medula">
+                <label for="medula">Médula</label><br>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#grupoSan"
+                aria-expanded="true"
+                aria-controls="grupoSan">
+                Grupo sanguíneo
+              </div>
+
+              <div id="grupoSan" class="accordion-collapse collapse show">
+                <input type="checkbox" id="0+" name="0+" value="0+">
+                <label for="0+">0+</label><br>
+                <input type="checkbox" id="0-" name="0-" value="0-">
+                <label for="0-">0-</label><br>
+                <input type="checkbox" id="A+" name="A+" value="A+">
+                <label for="A+">A+</label><br>
+                <input type="checkbox" id="A-" name="A-" value="A-">
+                <label for="A-">A-</label><br>
+                <input type="checkbox" id="B+" name="B+" value="B+">
+                <label for="B+">B+</label><br>
+                <input type="checkbox" id="B-" name="B-" value="B-">
+                <label for="B-">B-</label><br>
+                <input type="checkbox" id="AB+" name="AB+" value="AB+">
+                <label for="AB+">AB+</label><br>
+                <input type="checkbox" id="AB-" name="AB-" value="AB-">
+                <label for="AB-">AB-</label><br>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-button"
+                data-bs-toggle="collapse"
+                data-bs-target="#genero"
+                aria-expanded="true"
+                aria-controls="genero">
+                Género
+              </div>
+
+              <div id="genero" class="accordion-collapse collapse show">
+                <input type="checkbox" id="hombres" name="hombres" value="hombres">
+                <label for="hombres">Hombres</label><br>
+                <input type="checkbox" id="mujeres" name="mujeres" value="mujeres">
+                <label for="mujeres">Mujeres</label><br>
+              </div>
+            </div>
+          </div>
+
+          <div class="grafico col-9">
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>

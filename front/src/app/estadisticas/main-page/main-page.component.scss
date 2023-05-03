@@ -1,0 +1,93 @@
+main {
+  background-color: var(--color-contraste);
+
+  .container {
+    margin: 0;
+    max-width: 100%;
+    line-height: 2rem;
+
+    h1.titulo {
+      padding-top: 5rem;
+      margin: 0;
+    }
+
+    h2.titulo {
+      font-size: 1.7rem;
+      padding-bottom: .3rem;
+    }
+
+    .contenido {
+      padding: 5rem 1.5rem 10rem;
+
+      .contenedor {
+        margin-top: 2rem;
+        background-color: var(--bs-white);
+        border-radius: 2px;
+        box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
+        /*  display: grid;
+        grid-template-columns: 3fr 9fr;
+        gap: 3rem; */
+
+        .menu-horizontal {
+          border-radius: 2px 0 0 2px;
+          border-right: 1.5px solid var(--color-contraste-medio);
+
+
+          * {
+            border-radius: 0;
+            border: unset;
+          }
+
+          .accordion-item {
+            &:first-of-type,
+            &:first-of-type .accordion-button:first-of-type {
+              border-radius: 2px 0 0 0;
+            }
+
+            &:not(:last-of-type) .accordion-button {
+              border-bottom: 1px solid var(--bs-white);
+            }
+
+            &>div {
+              padding: .7rem 1.5rem;
+            }
+
+            .accordion-button {
+              background-color: var(--color-primario);
+              color: var(--bs-white);
+              border: unset;
+
+              &::after {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+              }
+            }
+
+            input {
+              margin-right: .5rem;
+            }
+
+            select {
+              padding: .2rem .5rem;
+              background-color: var(--bs-white);
+
+              &:hover {
+                background-color: var(--color-contraste);
+              }
+            }
+          }
+
+          .grafico {
+            padding: 1rem 3rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  main .container .contenido {
+    padding: 5rem 5rem 10rem;
+  }
+}
+

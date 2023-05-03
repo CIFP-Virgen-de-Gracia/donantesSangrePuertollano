@@ -13,7 +13,6 @@ import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemoriasComponent } from './memorias/memorias.component';
-import { EstadisticasComponent } from './estadisticas/estadisticas.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { EstadisticasComponent } from './estadisticas/estadisticas.component';
     TerminosUsoComponent,
     PoliticasCookiesComponent,
     ChatComponent,
-    MemoriasComponent,
-    EstadisticasComponent
+    MemoriasComponent
   ],
   imports: [
     CommonModule,

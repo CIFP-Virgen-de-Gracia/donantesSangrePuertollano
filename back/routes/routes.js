@@ -7,8 +7,9 @@ const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
 const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
+const stats = require('../controllers/statsController');
 const { check } = require('express-validator');
-const { mismaHora, diaSeleccionado } = require('../helpers/validators/contacto-validators');
+const { mismaHora } = require('../helpers/validators/contacto-validators');
 
 // Mario y Alicia
 // auth routes
@@ -72,5 +73,6 @@ router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser]
 router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser],citas.yaHaPedidoUnaCita);
 
 
+// Estadísticas routes
 
 module.exports = router;
