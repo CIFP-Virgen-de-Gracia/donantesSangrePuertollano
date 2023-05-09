@@ -1,7 +1,7 @@
 const sequelize = require('../ConexionSequelize');
 const conexion = require('../Conexion');
 const moment = require('moment');
-const {Op, DATE} = require('sequelize');
+const {Op, DATE, Sequelize} = require('sequelize');
 const models = require('../../models/index.js');
 
 
@@ -164,6 +164,30 @@ const updateCitaPasadaAsistida = async(id, asistida) => {
 }
 
 
+const getCitasAsistidas = async() => {
+    const resp = await models.Cita.findAll({
+        where: { asistida: true },
+        include: [{
+            model: models.User,
+            attributes: [],
+            as: 'CitaUser'
+        }],
+        attributes: ['fecha', 'donacion', [Sequelize.col('CitaUser.grupoSanguineo'), 'grupo'], 
+                    [Sequelize.col('CitaUser.genero'), 'genero']]
+    });
+    
+    return resp;
+}
+
+
+const getTiposDonacion = async() => {  
+/* SELECT DISTINCT donacion FROM citas */
+    const resp = await models.Cita.findAll({
+        attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('donacion')) ,'donacion']]
+    });
+    
+    return resp;
+}
 module.exports = {
     getCitasFechaHora,
     getHorarioCitas,
@@ -175,5 +199,7 @@ module.exports = {
     // getCitasPendientes,
     insertCita,
     cancelarCita,
-    updateCitaPasadaAsistida
+    updateCitaPasadaAsistida,
+    getCitasAsistidas,
+    getTiposDonacion
 };

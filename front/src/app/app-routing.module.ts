@@ -9,7 +9,6 @@ import { GaleriaComponent } from './galeria/galeria.component';
 import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
 import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
 import { PoliticasCookiesComponent } from './paginas/politicas-cookies/politicas-cookies.component';
-import { MainPageComponent } from './estadisticas/main-page/main-page.component';
 
 
 const routes: Routes = [
@@ -70,8 +69,8 @@ const routes: Routes = [
     component: PoliticasCookiesComponent
   },
   {
-    path: 'estadisticas',
-    component: MainPageComponent
+    path: 'stats',
+    loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule),
   },
   {
     path: '**',

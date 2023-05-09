@@ -13,6 +13,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      grupoSanguineo: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      genero: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       passwd: {
         type: Sequelize.STRING,
         allowNull: false

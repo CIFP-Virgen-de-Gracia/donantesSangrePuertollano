@@ -37,19 +37,19 @@
               </div>
 
               <div id="rangoTiempo" class="accordion-collapse collapse show">
-                <div class="">
+                <div (click)="cambiarMensuales()">
                   <input type="radio" id="mensuales" name="tiempo" value="mensuales">
                   <label for="mensuales" class="me-3">Mensuales</label>
 
                   <select id="anios">
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
+                    <option *ngFor="let anio of anios; let last = last"
+                    value="anio"
+                    [selected]="last">
+                    {{ anio }}</option>
                   </select>
                 </div>
 
-                <div>
+                <div (click)="cambiarAnuales()">
                   <input type="radio" id="anuales" name="tiempo" value="anuales">
                   <label for="anuales">Anuales</label>
                 </div>
@@ -66,12 +66,22 @@
               </div>
 
               <div id="tipoDonacion" class="accordion-collapse collapse show">
-                <input type="checkbox" id="sangre" name="sangre" value="sangre">
+                <ng-container *ngFor="let donacion of tiposDonacion">
+                  <input (change)="cambiarDonacion($event)"
+                    type="checkbox"
+                    id="donacion"
+                    name="donacion"
+                    value="donacion">
+                  <label for="donacion">{{ donacion | titlecase }}</label><br>
+                </ng-container>
+                <!-- <input (change)="cambiarDonacion($event)" type="checkbox" id="sangre" name="sangre" value="sangre">
                 <label for="sangre">Sangre</label><br>
-                <input type="checkbox" id="plasma" name="plasma" value="plasma">
+
+                <input (change)="cambiarDonacion($event)" type="checkbox" id="plasma" name="plasma" value="plasma">
                 <label for="plasma">Plasma</label><br>
-                <input type="checkbox" id="medula" name="medula" value="medula">
-                <label for="medula">Médula</label><br>
+
+                <input (change)="cambiarDonacion($event)" type="checkbox" id="medula" name="medula" value="medula">
+                <label for="medula">Médula</label><br> -->
               </div>
             </div>
 
@@ -85,22 +95,10 @@
               </div>
 
               <div id="grupoSan" class="accordion-collapse collapse show">
-                <input type="checkbox" id="0+" name="0+" value="0+">
-                <label for="0+">0+</label><br>
-                <input type="checkbox" id="0-" name="0-" value="0-">
-                <label for="0-">0-</label><br>
-                <input type="checkbox" id="A+" name="A+" value="A+">
-                <label for="A+">A+</label><br>
-                <input type="checkbox" id="A-" name="A-" value="A-">
-                <label for="A-">A-</label><br>
-                <input type="checkbox" id="B+" name="B+" value="B+">
-                <label for="B+">B+</label><br>
-                <input type="checkbox" id="B-" name="B-" value="B-">
-                <label for="B-">B-</label><br>
-                <input type="checkbox" id="AB+" name="AB+" value="AB+">
-                <label for="AB+">AB+</label><br>
-                <input type="checkbox" id="AB-" name="AB-" value="AB-">
-                <label for="AB-">AB-</label><br>
+                <ng-container *ngFor="let grupo of gruposSang">
+                  <input type="checkbox" id="grupo" name="grupo" value="grupo">
+                  <label for="grupo">{{ grupo }}</label><br>
+                </ng-container>
               </div>
             </div>
 
@@ -114,16 +112,19 @@
               </div>
 
               <div id="genero" class="accordion-collapse collapse show">
-                <input type="checkbox" id="hombres" name="hombres" value="hombres">
-                <label for="hombres">Hombres</label><br>
-                <input type="checkbox" id="mujeres" name="mujeres" value="mujeres">
-                <label for="mujeres">Mujeres</label><br>
+                <ng-container *ngFor="let genero of generos">
+                  <input type="checkbox"
+                    id="genero"
+                    name="genero"
+                    value="genero">
+                  <label for="genero">{{ genero | titlecase }}</label><br>
+                </ng-container>
               </div>
             </div>
           </div>
 
           <div class="grafico col-9">
-
+            <canvas id="grafico">{{grafico}}</canvas>
           </div>
         </div>
       </div>
