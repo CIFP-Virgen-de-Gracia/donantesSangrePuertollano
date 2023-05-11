@@ -28,7 +28,7 @@
                   Mensuales
                   <select #donTiposSelect (change)="activoDonTipos = 0"
                     (change)="cambiarAnioDonTipos(donTiposSelect.value)">
-                    <option *ngFor="let anio of anios; let first = first" [selected]="first">{{ anio }}</option>
+                    <option *ngFor="let anio of aniosDonaciones; let first = first" [selected]="first">{{ anio }}</option>
                   </select>
                 </label>
               </li>
@@ -58,7 +58,7 @@
           <div class="contenedor gx-0 row">
             <div class="menu-horizontal col-3">
               <ul>
-                <li *ngFor="let anio of anios; let i = index" [class.activo]="i == activoGrupSang">
+                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGrupSang">
                   <input type="radio" id="gs{{anio}}" value="anuales"
                     (click) = "activoGrupSang = i" (click) = "cambiarAnioGrupSang(i)" >
 
@@ -82,7 +82,7 @@
           <div class="contenedor gx-0 row">
             <div class="menu-horizontal col-3">
               <ul>
-                <li *ngFor="let anio of anios; let i = index" [class.activo]="i == activoGeneros">
+                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGeneros">
                   <input type="radio" id="g{{anio}}" value="anuales"
                     (click) = "activoGeneros = i" (click) = "cambiarAnioGeneros(i)">
 
@@ -113,7 +113,7 @@
                   Mensuales
                   <select #numAltasSelect (change)="activoNumAltas = 0"
                     (change)="cambiarAnioNumAltas(numAltasSelect.value)">
-                    <option *ngFor="let anio of anios; let first = first" [selected]="first">{{ anio }}</option>
+                    <option *ngFor="let anio of aniosAltas; let first = first" [selected]="first">{{ anio }}</option>
                   </select>
                 </label>
               </li>

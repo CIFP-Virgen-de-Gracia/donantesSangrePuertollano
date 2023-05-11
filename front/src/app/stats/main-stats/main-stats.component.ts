@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StatsService } from '../services/stats.service';
-import { Donacion, StatMostrar } from '../interfaces/stats.interface';
+import { Alta, AltaMostrar, Donacion, DonacionMostrar } from '../interfaces/stats.interface';
 import { Chart, ChartDataset, registerables } from 'chart.js';
 import * as moment from 'moment';
 moment.locale('es');
@@ -13,16 +13,19 @@ moment.locale('es');
 export class MainStatsComponent implements OnInit {
 
   donacionesResp: Donacion[] = [];
-  statsMostrar: StatMostrar[] = [];
+  donacionesMostrar: DonacionMostrar[] = [];
+  altasResp: Alta[] = [];
+  altasMostrar: AltaMostrar[] = [];
   meses: string[] = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-  anios: string[] = [];
+  aniosAltas: string[] = [];
+  aniosDonaciones: string[] = [];
   tiposDonacion: string[] = [];
   generos: string[] = [];
   gSanguineos: (string | undefined)[] = [];
   datasetsMensDonTipos: ChartDataset<"bar">[] = [];
   datasetsAnualDonTipos: ChartDataset<"bar">[] = [];
-  datasetsMensNumAltas: ChartDataset<"bar">[] = [];
-  datasetsAnualNumAltas: ChartDataset<"bar">[] = [];
+  datasetsMensNumAltas: number[] = [];
+  datasetsAnualNumAltas: number[] = [];
   datasetAnualGrpSang: { anio: string, datos: number[] }[] = [];
   datasetAnualGenero: { anio: string, datos: number[] }[] = [];
   activoDonTipos: number = 0;
@@ -62,16 +65,26 @@ export class MainStatsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.StatsService.getAltas().subscribe(resp => {
+      if (resp.success) {
+        this.altasResp = resp.data;
+        this.crearAltasMostrar();
+
+        this.aniosAltas = this.getAnios(this.altasMostrar);
+        this.crearGrafNumAltas();
+      }
+    });
+
     this.StatsService.getDonaciones().subscribe(resp => {
       if (resp.success) {
 
         this.donacionesResp = resp.data;
-        this.crearStatsMostrar();
+        this.crearDonacionesMostrar();
 
         this.tiposDonacion = this.getDonaciones();
         this.generos = this.getGeneros();
         this.gSanguineos = this.getGrpSanguineos();
-        this.anios = this.getAnios();
+        this.aniosDonaciones = this.getAnios(this.donacionesMostrar);
 
         /* this.graficos.push (
           this.crearGrafDonTipos(),
@@ -84,16 +97,11 @@ export class MainStatsComponent implements OnInit {
         this.crearGrafDonGenero();
       }
     });
-
-    this.StatsService.getNumAltas().subscribe(resp => {
-      this.crearGrafNumAltas();
-      /* this.graficos.push(this.crearGrafNumAltas()); */
-    });
   }
 
 
   crearGrafDonTipos() {
-    this.crearDatasetsMensDonTipos(this.anios[0]);
+    this.crearDatasetsMensDonTipos(this.aniosDonaciones[0]);
 
     this.grafDonTipos = new Chart('grafDonTipos', {
       type: 'bar',
@@ -106,22 +114,23 @@ export class MainStatsComponent implements OnInit {
 
 
   crearGrafNumAltas() {
-    return {
-      id: 'grafNumAltas', grafico: new Chart('grafNumAltas', {
-        type: 'line',
-        data: {
-          labels: this.meses,
-          datasets: [{
-            data: [2, 5, 35, 6, 1, 0, 25, 32, 1, 63, 12, 3]
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { display: false }
-          }
+    this.crearDatasetsMensNumAltas(this.aniosAltas[0]);
+
+    this.grafNumAltas = new Chart('grafNumAltas', {
+      type: 'line',
+      data: {
+        labels: this.meses,
+        datasets: [{
+          label: 'Altas',
+          data: this.datasetsMensNumAltas
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
         }
-      })
-    }
+      }
+    })
   }
 
 
@@ -132,7 +141,7 @@ export class MainStatsComponent implements OnInit {
         labels: this.gSanguineos,
         datasets: [{
           label: 'Número de donaciones',
-          data: this.crearDatasetAnualGrpSang(this.anios[0]),
+          data: this.crearDatasetAnualGrpSang(this.aniosDonaciones[0]),
           hoverOffset: 4
         }]
       }
@@ -147,7 +156,7 @@ export class MainStatsComponent implements OnInit {
         labels: this.generos,
         datasets: [{
           label: 'Número de donaciones',
-          data: this.crearDatasetAnualGenero(this.anios[0]),
+          data: this.crearDatasetAnualGenero(this.aniosDonaciones[0]),
           hoverOffset: 4
         }]
       }
@@ -160,7 +169,7 @@ export class MainStatsComponent implements OnInit {
 
     if (!dataset) {
       dataset = [];
-      const donAnio = this.statsMostrar.filter(stat => stat.anio == anio);
+      const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
       this.gSanguineos.forEach(grupo => {
         dataset!.push(donAnio.filter(stat => stat.gSanguineo == grupo).length);
@@ -178,7 +187,7 @@ export class MainStatsComponent implements OnInit {
 
     if (!dataset) {
       dataset = [];
-      const donAnio = this.statsMostrar.filter(stat => stat.anio == anio);
+      const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
       this.generos.forEach(genero => {
         dataset!.push(donAnio.filter(stat => stat.genero == genero).length);
@@ -193,7 +202,7 @@ export class MainStatsComponent implements OnInit {
 
   crearDatasetsMensDonTipos(anio: string) {
     this.datasetsMensDonTipos = [];
-    const donacionesAnioSelecc = this.statsMostrar.filter(stat => stat.anio == anio);
+    const donacionesAnioSelecc = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
     this.tiposDonacion.forEach(tipoDonacion => {
       const numDonacionesMes: number[] = [];
@@ -206,25 +215,52 @@ export class MainStatsComponent implements OnInit {
 
 
   crearDatasetsMensNumAltas(anio: string) {
+    this.datasetsMensNumAltas = [];
+    const altasAnioSelecc = this.altasMostrar.filter(alta => alta.anio == anio);
+
+    this.meses.forEach(mes => {
+      this.datasetsMensNumAltas.push(altasAnioSelecc.filter(alta => alta.mes == mes).length);
+    });
+  }
+
+
+  crearDatasetsAnualNumAltas() {
+    this.aniosAltas.forEach(anio => {
+      this.datasetsAnualNumAltas.push(this.altasMostrar.filter(alta => alta.anio == anio).length);
+    });
   }
 
 
   crearDatasetsAnualDonTipos() {
     this.tiposDonacion.forEach(tipoDonacion => {
       const numDonacionesAnio: number[] = [];
-      const donaciones = this.statsMostrar.filter(stat => stat.donacion == tipoDonacion);
+      const donaciones = this.donacionesMostrar.filter(stat => stat.donacion == tipoDonacion);
 
-      this.anios.forEach(anio => numDonacionesAnio.push(donaciones.filter(s => s.anio == anio).length));
+      this.aniosDonaciones.forEach(anio => numDonacionesAnio.push(donaciones.filter(s => s.anio == anio).length));
       this.datasetsAnualDonTipos.push({ label: tipoDonacion, data: numDonacionesAnio });
     });
   }
 
 
-  crearStatsMostrar() {
+  crearAltasMostrar() {
+    this.altasResp.forEach(alta => {
+      const fechaCompleta = "YYYY-MM-DD HH:mm:ss";
+
+      const altaMostrar: AltaMostrar = {
+        anio: moment(alta.fecha, fechaCompleta).format('YYYY'),
+        mes: moment(alta.fecha, fechaCompleta).format('MMMM')
+      };
+
+      this.altasMostrar.push(altaMostrar);
+    });
+  }
+
+
+  crearDonacionesMostrar() {
     this.donacionesResp.forEach(don => {
       const fechaCompleta = "YYYY-MM-DD HH:mm:ss";
 
-      const donacion: StatMostrar = {
+      const donacion: DonacionMostrar = {
         donacion: don.donacion,
         anio: moment(don.fecha, fechaCompleta).format('YYYY'),
         mes: moment(don.fecha, fechaCompleta).format('MMMM'),
@@ -233,13 +269,12 @@ export class MainStatsComponent implements OnInit {
 
       if (don.gSanguineo) donacion.gSanguineo = don.gSanguineo;
 
-      this.statsMostrar.push(donacion);
+      this.donacionesMostrar.push(donacion);
     });
   }
 
 
   activarDatosMensDonTipos() {
-    console.log('mensuales')
     if (this.grafDonTipos) {
       this.grafDonTipos.data.labels = this.meses;
       this.grafDonTipos.data.datasets = this.datasetsMensDonTipos;
@@ -253,7 +288,7 @@ export class MainStatsComponent implements OnInit {
     if (this.grafDonTipos) {
       if (this.datasetsAnualDonTipos.length == 0) this.crearDatasetsAnualDonTipos();
 
-      this.grafDonTipos.data.labels = this.anios;
+      this.grafDonTipos.data.labels = this.aniosDonaciones;
       this.grafDonTipos.data.datasets = this.datasetsAnualDonTipos;
 
       this.grafDonTipos.update();
@@ -262,12 +297,23 @@ export class MainStatsComponent implements OnInit {
 
 
   activarDatosMensNumAltas() {
+    if (this.grafNumAltas) {
+      this.grafNumAltas.data.labels = this.meses;
+      this.grafNumAltas.data.datasets[0].data = this.datasetsMensNumAltas;
 
+      this.grafNumAltas.update();
+    }
   }
 
 
   activarDatosAnualesNumAltas() {
+    if (this.grafNumAltas) {
+      if (this.datasetsAnualNumAltas.length == 0) this.crearDatasetsAnualNumAltas();
 
+      this.grafNumAltas.data.labels = this.aniosAltas;
+      this.grafNumAltas.data.datasets[0].data = this.datasetsAnualNumAltas;
+      this.grafNumAltas.update();
+    }
   }
 
 
@@ -290,7 +336,7 @@ export class MainStatsComponent implements OnInit {
 
   cambiarAnioGrupSang(index: number) {
     if (this.grafDonGrpSang) {
-      this.grafDonGrpSang.data.datasets[0].data = this.crearDatasetAnualGrpSang(this.anios[index]);
+      this.grafDonGrpSang.data.datasets[0].data = this.crearDatasetAnualGrpSang(this.aniosDonaciones[index]);
       this.grafDonGrpSang.update();
     }
   }
@@ -298,30 +344,30 @@ export class MainStatsComponent implements OnInit {
 
   cambiarAnioGeneros(index: number) {
     if (this.grafDonGenero) {
-      this.grafDonGenero.data.datasets[0].data = this.crearDatasetAnualGenero(this.anios[index]);
+      this.grafDonGenero.data.datasets[0].data = this.crearDatasetAnualGenero(this.aniosDonaciones[index]);
       this.grafDonGenero.update();
     }
   }
 
 
   getDonaciones() {
-    return [...new Set(this.statsMostrar.map(stat => stat.donacion))];
+    return [...new Set(this.donacionesMostrar.map(stat => stat.donacion))];
   }
 
 
   getGeneros() {
-    return [...new Set(this.statsMostrar.map(stat => stat.genero))];
+    return [...new Set(this.donacionesMostrar.map(stat => stat.genero))];
   }
 
 
   getGrpSanguineos() {
-    let grupos = [...new Set(this.statsMostrar.map(stat => stat.gSanguineo))].sort();
+    let grupos = [...new Set(this.donacionesMostrar.map(stat => stat.gSanguineo))].sort();
 
     return grupos.filter(grp => grp != undefined);
   }
 
 
-  getAnios() {
-    return [...new Set(this.statsMostrar.map(stat => stat.anio))];
+  getAnios(datos: any[]) {
+    return [...new Set(datos.map(d => d.anio))];
   }
 }

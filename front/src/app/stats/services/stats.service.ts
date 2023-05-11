@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { DonacionResponse, numAltasResponse } from '../interfaces/stats.interface';
+import { DonacionResponse, AltaResponse } from '../interfaces/stats.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ export class StatsService {
   }
 
 
-  getNumAltas(): Observable<numAltasResponse> {
-    return this.http.get<numAltasResponse>(this.url+ '/getNumAltas');
+  getAltas(): Observable<AltaResponse> {
+    return this.http.get<AltaResponse>(this.url+ '/getAltas');
   }
 
 

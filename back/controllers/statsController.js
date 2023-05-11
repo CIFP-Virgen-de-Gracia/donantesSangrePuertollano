@@ -1,6 +1,6 @@
 const { response, request } = require('express');
 const queriesDonaciones = require('../database/queries/queriesDonaciones');
-
+const queriesAltas = require('../database/queries/queriesAltas');
 
 const getDonaciones = async(req, res = response) => {
     queriesDonaciones.getDonaciones()
@@ -26,17 +26,13 @@ const getDonaciones = async(req, res = response) => {
 
 
 
-const getNumAltas = async(req, res = response) => {
-    res.status(200).json({
-        success: true,
-        data: 435
-    });
-    /* queriesDonaciones.getDonaciones()
-        .then(citas => {
+const getAltas = async(req, res = response) => {
+    queriesAltas.getAltas()
+        .then(altas => {
 
             const resp = {
                 success: true,
-                data: citas
+                data: altas
             }
 
             res.status(200).json(resp);
@@ -49,7 +45,7 @@ const getNumAltas = async(req, res = response) => {
             }
 
             res.status(203).json(resp);
-        }); */
+        });
 }
 
 
@@ -77,6 +73,6 @@ const getTiposDonacion = async(req, res = response) => {
 
 module.exports = {
     getDonaciones,
-    getNumAltas,
+    getAltas,
     getTiposDonacion
 }

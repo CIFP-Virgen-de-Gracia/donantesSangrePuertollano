@@ -1,4 +1,4 @@
-export interface StatMostrar {
+export interface DonacionMostrar {
   donacion: string,
   anio: string,
   mes: string,
@@ -20,8 +20,18 @@ export interface DonacionResponse {
   data: Donacion[];
 }
 
-export interface numAltasResponse {
+export interface AltaMostrar {
+  anio: string,
+  mes: string
+}
+
+export interface Alta {
+  id: number,
+  fecha: string
+}
+
+export interface AltaResponse {
   success: boolean;
-  data: number[];
+  data: Alta[];
 }
 
