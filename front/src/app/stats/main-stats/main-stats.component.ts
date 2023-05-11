@@ -32,7 +32,6 @@ export class MainStatsComponent implements OnInit {
   activoNumAltas: number = 0;
   activoGrupSang: number = 0;
   activoGeneros: number = 0;
-  /* graficos: { id: string, grafico: Chart<any> }[] = []; */
   grafDonTipos?: Chart;
   grafNumAltas?: Chart;
   grafDonGrpSang?: Chart<"pie">;
@@ -42,26 +41,6 @@ export class MainStatsComponent implements OnInit {
   constructor(private StatsService: StatsService) {
     Chart.register(...registerables);
   }
-
-
-  /* get grafDonTipos() {
-    return this.graficos.find(g => g.id == 'grafDonTipos');
-  }
-
-
-  get grafDonGrpSang() {
-    return this.graficos.find(g => g.id == 'grafDonGrpSang');
-  }
-
-
-  get grafDonGenero() {
-    return this.graficos.find(g => g.id == 'grafDonGenero');
-  }
-
-
-  get grafNumAltas() {
-    return this.graficos.find(g => g.id == 'grafNumAltas');
-  } */
 
 
   ngOnInit() {
@@ -85,12 +64,6 @@ export class MainStatsComponent implements OnInit {
         this.generos = this.getGeneros();
         this.gSanguineos = this.getGrpSanguineos();
         this.aniosDonaciones = this.getAnios(this.donacionesMostrar);
-
-        /* this.graficos.push (
-          this.crearGrafDonTipos(),
-          this.crearGrafDonGrpSang(),
-          this.crearGrafDonGenero()
-        ); */
 
         this.crearGrafDonTipos();
         this.crearGrafDonGrpSang();

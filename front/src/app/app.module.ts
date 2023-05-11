@@ -22,6 +22,7 @@ import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.modul
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
+import { RegistrarDatosComponent } from './stats/registrar-datos/registrar-datos.component';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -30,6 +31,7 @@ registerLocaleData(localeEs);
         AptoSangreComponent,
         GaleriaComponent,
         GaleriaComponent,
+        RegistrarDatosComponent,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'es-es' }

@@ -39,13 +39,17 @@ header {
       }
     }
 
-    .nav-link {
-      color: var(--bs-white);
-      padding: 0;
+    .nav-item {
+      margin-right: 2.5rem;
 
-      &.dropdown-toggle::after {
-        border-width: 0.4em 0.4em 0 0.4em;
-        vertical-align: .1rem;
+      .nav-link {
+        color: var(--bs-white);
+        padding: 0;
+
+        &.dropdown-toggle::after {
+          border-width: 0.4em 0.4em 0 0.4em;
+          vertical-align: .1rem;
+        }
       }
     }
 
@@ -84,20 +88,24 @@ header {
         margin-top: .5rem;
         border-top: 1px solid var(--bs-white);
 
-        .enlace {
-          &::before {
-            width: 8px;
-            height: 100%;
-            top: 0;
-            background-color: var(--bs-white);
-            transform: scaleY(0);
-          }
+        .nav-item {
+          margin-right: 0;
 
-          &:hover {
-            background-color: var(--color-granate);
-
+          .enlace {
             &::before {
-              transform: scaleY(1);
+              width: 8px;
+              height: 100%;
+              top: 0;
+              background-color: var(--bs-white);
+              transform: scaleY(0);
+            }
+
+            &:hover {
+              background-color: var(--color-granate);
+
+              &::before {
+                transform: scaleY(1);
+              }
             }
           }
         }

@@ -28,15 +28,15 @@
           </ul>
         </li>
 
-        <li class="nav-item me-xl-5">
+        <li class="nav-item">
           <a class="nav-link enlace" href="./aviso">¿Puedo donar?</a>
         </li>
 
-        <li class="nav-item me-xl-5">
+        <li class="nav-item">
           <a class="nav-link enlace" href="./noticias">Noticias</a>
         </li>
 
-        <li class="nav-item me-xl-5">
+        <li class="nav-item">
           <a class="nav-link enlace" href="./galeria">Galería</a>
         </li>
 
@@ -44,7 +44,7 @@
           <a class="nav-link enlace" href="#">Galería</a>
         </li> -->
 
-        <li class="nav-item me-xl-5">
+        <li class="nav-item">
           <a class="nav-link enlace" (click)="ensenarModal()">Pedir cita</a>
         </li>
 
@@ -52,11 +52,15 @@
           <a class="nav-link enlace" href="#">Contacto</a>
         </li> -->
 
-        <li class="nav-item me-xl-5" *ngIf="puedeModificar">
+        <li class="nav-item" *ngIf="puedeModificar">
           <a class="nav-link enlace" href="./configuracion/hermandad">Modificar contenidos</a>
         </li>
 
-        <li class="nav-item me-xl-5" *ngIf="!estaRegistrado">
+        <li class="nav-item" *ngIf="puedeModificar">
+          <a class="nav-link enlace" href="./stats/registrar-datos">Registrar datos</a>
+        </li>
+
+        <li class="nav-item" *ngIf="!estaRegistrado">
           <a class="nav-link enlace" href="./auth/login/">Iniciar sesión</a>
         </li>
       </ul>
