@@ -3,17 +3,25 @@ export interface StatMostrar {
   anio: string,
   mes: string,
   genero: string,
-  grupo: string,
+  gSanguineo?: string,
 }
 
-export interface Stat {
+export interface Donacion {
+  id: number,
+  nDonante: number,
+  gSanguineo: string,
   donacion: string,
   fecha: string,
-  genero: string,
-  grupo: string
+  genero: string
 }
 
-export interface StatResponse {
+export interface DonacionResponse {
   success: boolean;
-  data: Stat[];
+  data: Donacion[];
 }
+
+export interface numAltasResponse {
+  success: boolean;
+  data: number[];
+}
+

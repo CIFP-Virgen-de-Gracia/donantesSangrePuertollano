@@ -3,30 +3,26 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Cita extends Model {
+  class Donacion extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Cita.belongsTo(models.User, {
-        foreignKey: 'userId',
-        targetKey: 'id',
-        as: 'CitaUser'
-      });
+      // define association here
     }
   }
-  Cita.init({
-    userId: DataTypes.INTEGER,
+  Donacion.init({
+    nDonante: DataTypes.BIGINT,
+    gSanguineo: DataTypes.STRING(3),
+    donacion: DataTypes.ENUM('sangre', 'plasma', 'organos', 'médula'),
     fecha: DataTypes.DATE,
-    donacion: DataTypes.ENUM('sangre', 'plasma'),
-    cancelada: DataTypes.TINYINT,
-    haDonado: DataTypes.TINYINT
+    genero: DataTypes.STRING
   }, {
     sequelize,
-    tableName: 'citas',
-    modelName: 'Cita',
+    modelName: 'Donacion',
+    tableName: 'donaciones'
   });
-  return Cita;
+  return Donacion;
 };

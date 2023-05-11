@@ -105,7 +105,7 @@ const getCitaPendienteUser = async(id) => {
 
 const getCitasPasadasUser = async(id) => {
     const citasUser = await models.Cita.findAll({
-        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
+        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'haDonado'],
         where: {
             userId: id,
             fecha: {
@@ -153,10 +153,10 @@ const cancelarCita = async(idCita) => {
 // }
 
 
-const updateCitaPasadaAsistida = async(id, asistida) => {
+const updateCitaPasadaAsistida = async(id, haDonado) => {
     let cita = await models.Cita.findByPk(id);
 
-    cita.update({asistida: asistida});
+    cita.update({haDonado: haDonado});
 
     const resp = cita.save();
 
@@ -164,30 +164,7 @@ const updateCitaPasadaAsistida = async(id, asistida) => {
 }
 
 
-const getCitasAsistidas = async() => {
-    const resp = await models.Cita.findAll({
-        where: { asistida: true },
-        include: [{
-            model: models.User,
-            attributes: [],
-            as: 'CitaUser'
-        }],
-        attributes: ['fecha', 'donacion', [Sequelize.col('CitaUser.grupoSanguineo'), 'grupo'], 
-                    [Sequelize.col('CitaUser.genero'), 'genero']]
-    });
-    
-    return resp;
-}
 
-
-const getTiposDonacion = async() => {  
-/* SELECT DISTINCT donacion FROM citas */
-    const resp = await models.Cita.findAll({
-        attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('donacion')) ,'donacion']]
-    });
-    
-    return resp;
-}
 module.exports = {
     getCitasFechaHora,
     getHorarioCitas,
@@ -199,7 +176,5 @@ module.exports = {
     // getCitasPendientes,
     insertCita,
     cancelarCita,
-    updateCitaPasadaAsistida,
-    getCitasAsistidas,
-    getTiposDonacion
+    updateCitaPasadaAsistida
 };

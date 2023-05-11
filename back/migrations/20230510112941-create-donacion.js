@@ -2,35 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('citas', {
+    await queryInterface.createTable('donaciones', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.BIGINT
+      },
+      nDonante: {
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        autoIncrement: false,
-        allowNull: false
+      gSanguineo: {
+        type: Sequelize.STRING(3),
+      },
+      donacion: {
+        type: Sequelize.ENUM('sangre', 'plasma', 'organos', 'médula'),
+        allowNull: false,
       },
       fecha: {
         type: Sequelize.DATE,
-        allowNull: false
-      },
-      donacion: {
-        type: Sequelize.ENUM('sangre', 'plasma'),
-        allowNull: false
-      },
-      cancelada: {
-        type: Sequelize.TINYINT,
         allowNull: false,
-        defaultValue: false
       },
-      haDonado: {
-        type: Sequelize.TINYINT,
-        allowNull: false,
-        defaultValue: false
+      genero: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('citas');
+    await queryInterface.dropTable('donaciones');
   }
 };

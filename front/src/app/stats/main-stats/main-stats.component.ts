@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StatsService } from '../services/stats.service';
-import { Stat, StatMostrar } from '../interfaces/stats.interface';
+import { Donacion, StatMostrar } from '../interfaces/stats.interface';
 import { Chart, ChartDataset, registerables } from 'chart.js';
 import * as moment from 'moment';
 moment.locale('es');
@@ -12,144 +12,316 @@ moment.locale('es');
 })
 export class MainStatsComponent implements OnInit {
 
-  statsResp: Stat[] = [];
+  donacionesResp: Donacion[] = [];
   statsMostrar: StatMostrar[] = [];
-  grafico?: Chart;
   meses: string[] = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-  anios: string [] = [];
+  anios: string[] = [];
   tiposDonacion: string[] = [];
   generos: string[] = [];
-  gruposSang: string[] = [];
-  datasetsMensuales: ChartDataset<"bar">[] = [];
-  datasetsAnuales: ChartDataset<"bar">[] = [];
+  gSanguineos: (string | undefined)[] = [];
+  datasetsMensDonTipos: ChartDataset<"bar">[] = [];
+  datasetsAnualDonTipos: ChartDataset<"bar">[] = [];
+  datasetsMensNumAltas: ChartDataset<"bar">[] = [];
+  datasetsAnualNumAltas: ChartDataset<"bar">[] = [];
+  datasetAnualGrpSang: { anio: string, datos: number[] }[] = [];
+  datasetAnualGenero: { anio: string, datos: number[] }[] = [];
+  activoDonTipos: number = 0;
+  activoNumAltas: number = 0;
+  activoGrupSang: number = 0;
+  activoGeneros: number = 0;
+  /* graficos: { id: string, grafico: Chart<any> }[] = []; */
+  grafDonTipos?: Chart;
+  grafNumAltas?: Chart;
+  grafDonGrpSang?: Chart<"pie">;
+  grafDonGenero?: Chart<"pie">;
+
 
   constructor(private StatsService: StatsService) {
     Chart.register(...registerables);
   }
 
 
+  /* get grafDonTipos() {
+    return this.graficos.find(g => g.id == 'grafDonTipos');
+  }
+
+
+  get grafDonGrpSang() {
+    return this.graficos.find(g => g.id == 'grafDonGrpSang');
+  }
+
+
+  get grafDonGenero() {
+    return this.graficos.find(g => g.id == 'grafDonGenero');
+  }
+
+
+  get grafNumAltas() {
+    return this.graficos.find(g => g.id == 'grafNumAltas');
+  } */
+
+
   ngOnInit() {
-    console.time('Execution Time 1');
-    this.StatsService.getDonaciones()
-    .subscribe(resp => {
+    this.StatsService.getDonaciones().subscribe(resp => {
       if (resp.success) {
 
-        this.statsResp = resp.data;
-
+        this.donacionesResp = resp.data;
         this.crearStatsMostrar();
 
         this.tiposDonacion = this.getDonaciones();
         this.generos = this.getGeneros();
-        this.gruposSang = this.getGruposSang();
+        this.gSanguineos = this.getGrpSanguineos();
         this.anios = this.getAnios();
 
-        this.crearDatasets();
-        this.grafico = new Chart('grafico', {
-          type: 'bar',
-          data: {
-            labels: this.meses,
-            datasets: this.datasetsMensuales
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
+        /* this.graficos.push (
+          this.crearGrafDonTipos(),
+          this.crearGrafDonGrpSang(),
+          this.crearGrafDonGenero()
+        ); */
+
+        this.crearGrafDonTipos();
+        this.crearGrafDonGrpSang();
+        this.crearGrafDonGenero();
       }
     });
-    console.timeEnd('Execution Time 1');
 
-    //~2-4ms más lento
-   /*  console.time('Execution Time 2');
-    this.StatsService.getDonaciones()
-      .subscribe(resp => {
-        if (resp.success) {
+    this.StatsService.getNumAltas().subscribe(resp => {
+      this.crearGrafNumAltas();
+      /* this.graficos.push(this.crearGrafNumAltas()); */
+    });
+  }
 
-          this.statsResp = resp.data;
+
+  crearGrafDonTipos() {
+    this.crearDatasetsMensDonTipos(this.anios[0]);
+
+    this.grafDonTipos = new Chart('grafDonTipos', {
+      type: 'bar',
+      data: {
+        labels: this.meses,
+        datasets: this.datasetsMensDonTipos
+      }
+    });
+  }
+
+
+  crearGrafNumAltas() {
+    return {
+      id: 'grafNumAltas', grafico: new Chart('grafNumAltas', {
+        type: 'line',
+        data: {
+          labels: this.meses,
+          datasets: [{
+            data: [2, 5, 35, 6, 1, 0, 25, 32, 1, 63, 12, 3]
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { display: false }
+          }
         }
+      })
+    }
+  }
+
+
+  crearGrafDonGrpSang() {
+    this.grafDonGrpSang = new Chart('grafDonGrpSang', {
+      type: 'pie',
+      data: {
+        labels: this.gSanguineos,
+        datasets: [{
+          label: 'Número de donaciones',
+          data: this.crearDatasetAnualGrpSang(this.anios[0]),
+          hoverOffset: 4
+        }]
+      }
+    });
+  }
+
+
+  crearGrafDonGenero() {
+    this.grafDonGenero = new Chart('grafDonGenero', {
+      type: 'pie',
+      data: {
+        labels: this.generos,
+        datasets: [{
+          label: 'Número de donaciones',
+          data: this.crearDatasetAnualGenero(this.anios[0]),
+          hoverOffset: 4
+        }]
+      }
+    });
+  }
+
+
+  crearDatasetAnualGrpSang(anio: string) {
+    let dataset = this.datasetAnualGrpSang.find(d => d.anio == anio)?.datos;
+
+    if (!dataset) {
+      dataset = [];
+      const donAnio = this.statsMostrar.filter(stat => stat.anio == anio);
+
+      this.gSanguineos.forEach(grupo => {
+        dataset!.push(donAnio.filter(stat => stat.gSanguineo == grupo).length);
       });
 
-    this.StatsService.getTiposDonacion()
-      .subscribe(resp => {
-        if (resp.succes) console.log(resp.data)
-      })
-    console.timeEnd('Execution Time 2'); */
+      this.datasetAnualGrpSang.push({ anio: anio, datos: dataset });
+    }
+
+    return dataset;
   }
 
 
-  getDonaciones() {
-    return [...new Set( this.statsMostrar.map(stat => stat.donacion)) ];
+  crearDatasetAnualGenero(anio: string) {
+    let dataset = this.datasetAnualGenero.find(d => d.anio == anio)?.datos;
+
+    if (!dataset) {
+      dataset = [];
+      const donAnio = this.statsMostrar.filter(stat => stat.anio == anio);
+
+      this.generos.forEach(genero => {
+        dataset!.push(donAnio.filter(stat => stat.genero == genero).length);
+      });
+
+      this.datasetAnualGenero.push({ anio: anio, datos: dataset });
+    }
+
+    return dataset;
   }
 
 
-  getGeneros() {
-    return [...new Set( this.statsMostrar.map(stat => stat.genero)) ];
+  crearDatasetsMensDonTipos(anio: string) {
+    this.datasetsMensDonTipos = [];
+    const donacionesAnioSelecc = this.statsMostrar.filter(stat => stat.anio == anio);
+
+    this.tiposDonacion.forEach(tipoDonacion => {
+      const numDonacionesMes: number[] = [];
+      const donaciones = donacionesAnioSelecc.filter(stat => stat.donacion == tipoDonacion);
+
+      this.meses.forEach(mes => numDonacionesMes.push(donaciones.filter(s => s.mes == mes).length));
+      this.datasetsMensDonTipos.push({ label: tipoDonacion, data: numDonacionesMes });
+    });
   }
 
 
-  getGruposSang() {
-    return [...new Set( this.statsMostrar.map(stat => stat.grupo)) ];
+  crearDatasetsMensNumAltas(anio: string) {
   }
 
 
-  getAnios() {
-    return [...new Set( this.statsMostrar.map(stat => stat.anio)) ];
+  crearDatasetsAnualDonTipos() {
+    this.tiposDonacion.forEach(tipoDonacion => {
+      const numDonacionesAnio: number[] = [];
+      const donaciones = this.statsMostrar.filter(stat => stat.donacion == tipoDonacion);
+
+      this.anios.forEach(anio => numDonacionesAnio.push(donaciones.filter(s => s.anio == anio).length));
+      this.datasetsAnualDonTipos.push({ label: tipoDonacion, data: numDonacionesAnio });
+    });
   }
 
 
   crearStatsMostrar() {
-    this.statsResp.forEach(stat => {
+    this.donacionesResp.forEach(don => {
       const fechaCompleta = "YYYY-MM-DD HH:mm:ss";
 
-      this.statsMostrar.push({
-        donacion: stat.donacion,
-        anio: moment(stat.fecha, fechaCompleta).format('YYYY'),
-        mes: moment(stat.fecha, fechaCompleta).format('MMMM'),
-        genero: stat.genero,
-        grupo: stat.grupo,
-      });
+      const donacion: StatMostrar = {
+        donacion: don.donacion,
+        anio: moment(don.fecha, fechaCompleta).format('YYYY'),
+        mes: moment(don.fecha, fechaCompleta).format('MMMM'),
+        genero: don.genero
+      };
+
+      if (don.gSanguineo) donacion.gSanguineo = don.gSanguineo;
+
+      this.statsMostrar.push(donacion);
     });
   }
 
 
-  crearDatasets() {
-    this.tiposDonacion.forEach(tipoDonacion => {
-      const numDonacionesMes: number[] = [];
-      const numDonacionesAnio: number[] = [];
+  activarDatosMensDonTipos() {
+    console.log('mensuales')
+    if (this.grafDonTipos) {
+      this.grafDonTipos.data.labels = this.meses;
+      this.grafDonTipos.data.datasets = this.datasetsMensDonTipos;
 
-      const donaciones = this.statsMostrar.filter(stat => stat.donacion == tipoDonacion);
-
-      this.meses.forEach(mes => numDonacionesMes.push(donaciones.filter(s => s.mes == mes).length));
-      this.anios.forEach(anio => numDonacionesAnio.push(donaciones.filter(s => s.anio == anio).length));
-
-      this.datasetsMensuales.push({ label : tipoDonacion, data: numDonacionesMes });
-      this.datasetsAnuales.push({ label : tipoDonacion, data: numDonacionesAnio });
-    });
-  }
-
-
-  cambiarDonacion(event: Event) {/*
-    console.log(event.target) */
-  }
-
-
-  cambiarAnuales() {
-    if (this.grafico) {
-      this.grafico.data.labels = this.anios;
-      this.grafico.data.datasets = this.datasetsAnuales;
-      this.grafico.update();
+      this.grafDonTipos.update();
     }
   }
 
 
-  cambiarMensuales() {
-    if (this.grafico) {
-      this.grafico.data.labels = this.meses;
-      this.grafico.data.datasets = this.datasetsMensuales;
-      this.grafico.update();
+  activarDatosAnualesDonTipos() {
+    if (this.grafDonTipos) {
+      if (this.datasetsAnualDonTipos.length == 0) this.crearDatasetsAnualDonTipos();
+
+      this.grafDonTipos.data.labels = this.anios;
+      this.grafDonTipos.data.datasets = this.datasetsAnualDonTipos;
+
+      this.grafDonTipos.update();
     }
+  }
+
+
+  activarDatosMensNumAltas() {
+
+  }
+
+
+  activarDatosAnualesNumAltas() {
+
+  }
+
+
+  cambiarAnioNumAltas(anio: string) {
+    if (this.grafNumAltas) {
+      this.crearDatasetsMensNumAltas(anio);
+      this.activarDatosMensNumAltas();
+    }
+  }
+
+
+  cambiarAnioDonTipos(anio: string) {
+    console.log('cambiar anio')
+    if (this.grafDonTipos) {
+      this.crearDatasetsMensDonTipos(anio);
+      this.activarDatosMensDonTipos();
+    }
+  }
+
+
+  cambiarAnioGrupSang(index: number) {
+    if (this.grafDonGrpSang) {
+      this.grafDonGrpSang.data.datasets[0].data = this.crearDatasetAnualGrpSang(this.anios[index]);
+      this.grafDonGrpSang.update();
+    }
+  }
+
+
+  cambiarAnioGeneros(index: number) {
+    if (this.grafDonGenero) {
+      this.grafDonGenero.data.datasets[0].data = this.crearDatasetAnualGenero(this.anios[index]);
+      this.grafDonGenero.update();
+    }
+  }
+
+
+  getDonaciones() {
+    return [...new Set(this.statsMostrar.map(stat => stat.donacion))];
+  }
+
+
+  getGeneros() {
+    return [...new Set(this.statsMostrar.map(stat => stat.genero))];
+  }
+
+
+  getGrpSanguineos() {
+    let grupos = [...new Set(this.statsMostrar.map(stat => stat.gSanguineo))].sort();
+
+    return grupos.filter(grp => grp != undefined);
+  }
+
+
+  getAnios() {
+    return [...new Set(this.statsMostrar.map(stat => stat.anio))];
   }
 }

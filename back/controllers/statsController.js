@@ -1,12 +1,9 @@
-const moment = require('moment');
 const { response, request } = require('express');
-const metodosFecha = require('../helpers/fechas');
-const sequelize = require('../database/ConexionSequelize');
-const queriesCitas = require('../database/queries/queriesCitas');
+const queriesDonaciones = require('../database/queries/queriesDonaciones');
 
 
 const getDonaciones = async(req, res = response) => {
-    queriesCitas.getCitasAsistidas()
+    queriesDonaciones.getDonaciones()
         .then(citas => {
 
             const resp = {
@@ -28,8 +25,36 @@ const getDonaciones = async(req, res = response) => {
 }
 
 
+
+const getNumAltas = async(req, res = response) => {
+    res.status(200).json({
+        success: true,
+        data: 435
+    });
+    /* queriesDonaciones.getDonaciones()
+        .then(citas => {
+
+            const resp = {
+                success: true,
+                data: citas
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+            
+            const resp = {
+                success: false,
+                msg: 'No hay registros',
+            }
+
+            res.status(203).json(resp);
+        }); */
+}
+
+
 const getTiposDonacion = async(req, res = response) => {
-    queriesCitas.getTiposDonacion()
+    queriesDonaciones.getTiposDonacion()
         .then(donaciones => {
 
             const resp = {
@@ -52,5 +77,6 @@ const getTiposDonacion = async(req, res = response) => {
 
 module.exports = {
     getDonaciones,
+    getNumAltas,
     getTiposDonacion
 }

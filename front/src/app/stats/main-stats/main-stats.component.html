@@ -13,122 +13,125 @@
     </div>
 
     <div class="contenido">
+      <div class="pt-4 pb-5 tipos">
+        <h2 class="titulo">Donaciones por tipo</h2>
+        <p>En este gráfico puedes ver el número total de donaciones de plasma, sangre, médula y órganos.</p>
 
-      <div class="resumen">
-        <h2 class="titulo">Resumen</h2>
-        <p>Todas las estadísticas de todos los tiempos.</p>
+        <div class="contenedor gx-0 row flex-column flex-md-row">
+          <div class="menu-horizontal col-12 col-md-3">
+            <ul class="row gx-0">
+              <li class="col-6 col-md-12" [ngClass]="{ activo : activoDonTipos == 0 }">
+                <input type="radio" id="don-mensuales" value="mensuales"
+                  (click)="activoDonTipos = 0" (click)="activarDatosMensDonTipos()">
 
-        <div></div>
-      </div>
-
-      <div class="tiempo mt-5">
-        <h2 class="titulo">Número de donaciones</h2>
-
-        <div class="row gx-0 contenedor">
-          <div class="menu-horizontal col-3 accordion">
-
-            <div class="accordion-item">
-              <div class="accordion-button"
-                data-bs-toggle="collapse"
-                data-bs-target="#rangoTiempo"
-                aria-expanded="true"
-                aria-controls="rangoTiempo">
-                Rango de tiempo
-              </div>
-
-              <div id="rangoTiempo" class="accordion-collapse collapse show">
-                <div (click)="cambiarMensuales()">
-                  <input type="radio" id="mensuales" name="tiempo" value="mensuales">
-                  <label for="mensuales" class="me-3">Mensuales</label>
-
-                  <select id="anios">
-                    <option *ngFor="let anio of anios; let last = last"
-                    value="anio"
-                    [selected]="last">
-                    {{ anio }}</option>
+                  <label for="don-mensuales">
+                  Mensuales
+                  <select #donTiposSelect (change)="activoDonTipos = 0"
+                    (change)="cambiarAnioDonTipos(donTiposSelect.value)">
+                    <option *ngFor="let anio of anios; let first = first" [selected]="first">{{ anio }}</option>
                   </select>
-                </div>
+                </label>
+              </li>
 
-                <div (click)="cambiarAnuales()">
-                  <input type="radio" id="anuales" name="tiempo" value="anuales">
-                  <label for="anuales">Anuales</label>
-                </div>
-              </div>
-            </div>
+              <li class="col-6 col-md-12" [ngClass]="{ activo : activoDonTipos == 1 }">
+                <input type="radio" id="don-anuales" value="anuales"
+                  (click)="activoDonTipos = 1" (click)="activarDatosAnualesDonTipos()">
 
-            <div class="accordion-item">
-              <div class="accordion-button"
-                data-bs-toggle="collapse"
-                data-bs-target="#tipoDonacion"
-                aria-expanded="true"
-                aria-controls="tipoDonacion">
-                Tipo de donación
-              </div>
-
-              <div id="tipoDonacion" class="accordion-collapse collapse show">
-                <ng-container *ngFor="let donacion of tiposDonacion">
-                  <input (change)="cambiarDonacion($event)"
-                    type="checkbox"
-                    id="donacion"
-                    name="donacion"
-                    value="donacion">
-                  <label for="donacion">{{ donacion | titlecase }}</label><br>
-                </ng-container>
-                <!-- <input (change)="cambiarDonacion($event)" type="checkbox" id="sangre" name="sangre" value="sangre">
-                <label for="sangre">Sangre</label><br>
-
-                <input (change)="cambiarDonacion($event)" type="checkbox" id="plasma" name="plasma" value="plasma">
-                <label for="plasma">Plasma</label><br>
-
-                <input (change)="cambiarDonacion($event)" type="checkbox" id="medula" name="medula" value="medula">
-                <label for="medula">Médula</label><br> -->
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <div class="accordion-button"
-                data-bs-toggle="collapse"
-                data-bs-target="#grupoSan"
-                aria-expanded="true"
-                aria-controls="grupoSan">
-                Grupo sanguíneo
-              </div>
-
-              <div id="grupoSan" class="accordion-collapse collapse show">
-                <ng-container *ngFor="let grupo of gruposSang">
-                  <input type="checkbox" id="grupo" name="grupo" value="grupo">
-                  <label for="grupo">{{ grupo }}</label><br>
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="accordion-item">
-              <div class="accordion-button"
-                data-bs-toggle="collapse"
-                data-bs-target="#genero"
-                aria-expanded="true"
-                aria-controls="genero">
-                Género
-              </div>
-
-              <div id="genero" class="accordion-collapse collapse show">
-                <ng-container *ngFor="let genero of generos">
-                  <input type="checkbox"
-                    id="genero"
-                    name="genero"
-                    value="genero">
-                  <label for="genero">{{ genero | titlecase }}</label><br>
-                </ng-container>
-              </div>
-            </div>
+                <label for="don-anuales">Anuales</label>
+              </li>
+            </ul>
           </div>
 
-          <div class="grafico col-9">
-            <canvas id="grafico">{{grafico}}</canvas>
+          <div class="grafico col-12 col-md-9">
+            <canvas id="grafDonTipos">{{ grafDonTipos }}</canvas>
           </div>
         </div>
       </div>
 
+      <div class="row gx-0">
+        <div class="pt-4 pb-5 col-12 col-lg-6 pe-lg-4 grp-sang">
+          <div class="contenedor-titulo">
+            <h2 class="titulo">Donaciones por grupo sanguíneo</h2>
+            <p>Número total de donaciones del año seleccionado agrupadas por grupo sanguíneo.</p>
+          </div>
+
+          <div class="contenedor gx-0 row">
+            <div class="menu-horizontal col-3">
+              <ul>
+                <li *ngFor="let anio of anios; let i = index" [class.activo]="i == activoGrupSang">
+                  <input type="radio" id="gs{{anio}}" value="anuales"
+                    (click) = "activoGrupSang = i" (click) = "cambiarAnioGrupSang(i)" >
+
+                  <label for="gs{{anio}}">{{ anio }}</label>
+                </li>
+              </ul>
+            </div>
+
+            <div class="grafico col-9">
+              <canvas id="grafDonGrpSang">{{ grafDonGrpSang }}</canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 pb-5 col-12 col-lg-6 ps-lg-4 generos">
+          <div class="contenedor-titulo">
+            <h2 class="titulo">Donaciones por género</h2>
+            <p>Número total de donaciones del año seleccionado agrupadas por género.</p>
+          </div>
+
+          <div class="contenedor gx-0 row">
+            <div class="menu-horizontal col-3">
+              <ul>
+                <li *ngFor="let anio of anios; let i = index" [class.activo]="i == activoGeneros">
+                  <input type="radio" id="g{{anio}}" value="anuales"
+                    (click) = "activoGeneros = i" (click) = "cambiarAnioGeneros(i)">
+
+                  <label for="g{{anio}}">{{ anio }}</label>
+                </li>
+              </ul>
+            </div>
+
+            <div class="grafico col-9">
+              <canvas id="grafDonGenero">{{ grafDonGenero }}</canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 pb-5 altas">
+        <h2 class="titulo">Número de altas</h2>
+        <p>En este gráfico puedes ver el número total de altas del año seleccionado.</p>
+
+        <div class="contenedor gx-0 row flex-column flex-md-row">
+          <div class="menu-horizontal col-12 col-md-3">
+            <ul class="row gx-0">
+              <li class="col-6 col-md-12" [ngClass]="{ activo : activoNumAltas == 0 }">
+                <input type="radio" id="altas-mensuales" value="mensuales"
+                    (click)="activoNumAltas = 0" (click)="activarDatosMensNumAltas()">
+
+                <label for="altas-mensuales">
+                  Mensuales
+                  <select #numAltasSelect (change)="activoNumAltas = 0"
+                    (change)="cambiarAnioNumAltas(numAltasSelect.value)">
+                    <option *ngFor="let anio of anios; let first = first" [selected]="first">{{ anio }}</option>
+                  </select>
+                </label>
+              </li>
+
+              <li class="col-6 col-md-12" [ngClass]="{ activo : activoNumAltas == 1 }">
+                <input type="radio" id="altas-anuales" value="anuales"
+                    (click)="activoNumAltas = 1" (click)="activarDatosAnualesNumAltas()">
+
+                <label for="altas-anuales">Anuales</label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="grafico col-9">
+            <canvas id="grafNumAltas">{{ grafNumAltas }}</canvas>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>

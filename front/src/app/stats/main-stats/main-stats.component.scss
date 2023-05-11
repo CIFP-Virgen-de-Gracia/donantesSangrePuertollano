@@ -17,68 +17,138 @@ main {
     }
 
     .contenido {
-      padding: 5rem 1.5rem 10rem;
+      padding: 5rem 1rem;
 
-      .contenedor {
-        margin-top: 2rem;
-        background-color: var(--bs-white);
-        border-radius: 2px;
-        box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
-        /*  display: grid;
-        grid-template-columns: 3fr 9fr;
-        gap: 3rem; */
+      .generos,
+      .grp-sang {
 
-        .menu-horizontal {
-          border-radius: 2px 0 0 2px;
+        .contenedor .menu-horizontal {
           border-right: 1.5px solid var(--color-contraste-medio);
 
+          li {
+            border-left: 10px solid var(--bs-white);
+
+            &.activo {
+              border-color: var(--color-granate);
+
+              &,
+              select {
+                color: var(--bs-white);
+                background-color: var(--color-primario);
+              }
+            }
+          }
+        }
+      }
+
+      .tipos,
+      .altas {
+        .contenedor {
+          padding-top: 0;
+
+          .menu-horizontal li {
+            background-color: var(--color-contraste);
+            padding-left: 1.5rem;
+
+            &.activo,
+            &.activo select {
+              background-color: var(--bs-white);
+            }
+
+            select {
+              background-color: var(--color-contraste);
+            }
+          }
+        }
+      }
+
+      .contenedor {
+        padding: 1rem 0;
+        margin-top: 2rem;
+        border-radius: 2px;
+        background-color: var(--bs-white);
+        box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
+
+        .grafico {
+          padding: 1.5rem;
+        }
+
+        .menu-horizontal {
+          li {
+            padding: 1rem .5rem;
+
+            label {
+              width: 100%;
+            }
+
+            * {
+              cursor: pointer;
+            }
+
+            select {
+              padding: .2rem 0 .2rem .4rem;
+              background-color: var(--bs-white);
+            }
+          }
 
           * {
             border-radius: 0;
             border: unset;
           }
 
-          .accordion-item {
-            &:first-of-type,
-            &:first-of-type .accordion-button:first-of-type {
-              border-radius: 2px 0 0 0;
-            }
+          input {
+            position: absolute;
+            visibility: hidden;
+          }
+        }
+      }
+    }
+  }
+}
 
-            &:not(:last-of-type) .accordion-button {
-              border-bottom: 1px solid var(--bs-white);
-            }
+@media (min-width: 576px) {
+  main .container .contenido {
 
-            &>div {
-              padding: .7rem 1.5rem;
-            }
+    .generos,
+    .grp-sang {
+      .contenedor .grafico {
+        padding: 1.5rem 4rem;
+      }
+    }
+  }
+}
 
-            .accordion-button {
-              background-color: var(--color-primario);
-              color: var(--bs-white);
-              border: unset;
+@media (min-width: 768px) {
+  main .container .contenido {
+    padding: 5rem 1.5rem;
 
-              &::after {
-                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    .tipos,
+    .altas {
+      .contenedor {
+        padding-top: 1rem;
+
+        .menu-horizontal {
+          border-right: 1.5px solid var(--color-contraste-medio);
+
+          li {
+            padding-left: .5rem;
+            background-color: unset;
+            border-left: 10px solid var(--bs-white);
+
+            &.activo {
+              border-color: var(--color-granate);
+
+              &,
+              select {
+                color: var(--bs-white);
+                background-color: var(--color-primario);
               }
-            }
-
-            input {
-              margin-right: .5rem;
             }
 
             select {
-              padding: .2rem .5rem;
               background-color: var(--bs-white);
-
-              &:hover {
-                background-color: var(--color-contraste);
-              }
             }
           }
-        }
-
-        .grafico {
-          padding: 3rem;
         }
       }
     }
@@ -87,7 +157,34 @@ main {
 
 @media (min-width: 992px) {
   main .container .contenido {
-    padding: 5rem 5rem 10rem;
+
+    .generos,
+    .grp-sang {
+      .contenedor-titulo p {
+        min-height: 65px;
+      }
+
+      .contenedor {
+        margin-top: 1rem;
+
+        .grafico {
+          padding: 1.5rem;
+        }
+      }
+    }
+
+    .tipos,
+    .altas {
+      .contenedor .grafico {
+        padding: 1.5rem 3rem;
+      }
+    }
+
   }
 }
 
+@media (min-width: 1200px) {
+  main .container .contenido {
+    padding: 5rem;
+  }
+}
