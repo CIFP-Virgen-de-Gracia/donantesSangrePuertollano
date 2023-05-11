@@ -22,9 +22,9 @@ export class MainStatsComponent implements OnInit {
   tiposDonacion: string[] = [];
   generos: string[] = [];
   gSanguineos: (string | undefined)[] = [];
-  datasetsMensDonTipos: ChartDataset<"bar">[] = [];
+  datasetsMensDonTipos: { anio: string, datos: ChartDataset<"bar">[] }[] = [];
   datasetsAnualDonTipos: ChartDataset<"bar">[] = [];
-  datasetsMensNumAltas: number[] = [];
+  datasetsMensNumAltas: { anio: string, datos: number[] }[] = [];
   datasetsAnualNumAltas: number[] = [];
   datasetAnualGrpSang: { anio: string, datos: number[] }[] = [];
   datasetAnualGenero: { anio: string, datos: number[] }[] = [];
@@ -101,20 +101,20 @@ export class MainStatsComponent implements OnInit {
 
 
   crearGrafDonTipos() {
-    this.crearDatasetsMensDonTipos(this.aniosDonaciones[0]);
+    const dataset = this.crearDatasetsMensDonTipos(this.aniosDonaciones[0]);
 
     this.grafDonTipos = new Chart('grafDonTipos', {
       type: 'bar',
       data: {
         labels: this.meses,
-        datasets: this.datasetsMensDonTipos
+        datasets: dataset.datos
       }
     });
   }
 
 
   crearGrafNumAltas() {
-    this.crearDatasetsMensNumAltas(this.aniosAltas[0]);
+    const dataset = this.crearDatasetsMensNumAltas(this.aniosAltas[0]);
 
     this.grafNumAltas = new Chart('grafNumAltas', {
       type: 'line',
@@ -122,7 +122,7 @@ export class MainStatsComponent implements OnInit {
         labels: this.meses,
         datasets: [{
           label: 'Altas',
-          data: this.datasetsMensNumAltas
+          data: dataset!.datos
         }]
       },
       options: {
@@ -135,13 +135,15 @@ export class MainStatsComponent implements OnInit {
 
 
   crearGrafDonGrpSang() {
+    const dataset = this.crearDatasetAnualGrpSang(this.aniosDonaciones[0]);
+
     this.grafDonGrpSang = new Chart('grafDonGrpSang', {
       type: 'pie',
       data: {
         labels: this.gSanguineos,
         datasets: [{
           label: 'Número de donaciones',
-          data: this.crearDatasetAnualGrpSang(this.aniosDonaciones[0]),
+          data: dataset.datos,
           hoverOffset: 4
         }]
       }
@@ -150,13 +152,15 @@ export class MainStatsComponent implements OnInit {
 
 
   crearGrafDonGenero() {
+    const dataset = this.crearDatasetAnualGenero(this.aniosDonaciones[0]);
+
     this.grafDonGenero = new Chart('grafDonGenero', {
       type: 'pie',
       data: {
         labels: this.generos,
         datasets: [{
           label: 'Número de donaciones',
-          data: this.crearDatasetAnualGenero(this.aniosDonaciones[0]),
+          data: dataset.datos,
           hoverOffset: 4
         }]
       }
@@ -165,43 +169,35 @@ export class MainStatsComponent implements OnInit {
 
 
   crearDatasetAnualGrpSang(anio: string) {
-    let dataset = this.datasetAnualGrpSang.find(d => d.anio == anio)?.datos;
+    const dataset: { anio: string, datos: number[] } = { anio: anio, datos: [] };
+    const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
-    if (!dataset) {
-      dataset = [];
-      const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
+    this.gSanguineos.forEach(grupo => {
+      dataset.datos.push(donAnio.filter(stat => stat.gSanguineo == grupo).length);
+    });
 
-      this.gSanguineos.forEach(grupo => {
-        dataset!.push(donAnio.filter(stat => stat.gSanguineo == grupo).length);
-      });
-
-      this.datasetAnualGrpSang.push({ anio: anio, datos: dataset });
-    }
+    this.datasetAnualGrpSang.push(dataset);
 
     return dataset;
   }
 
 
   crearDatasetAnualGenero(anio: string) {
-    let dataset = this.datasetAnualGenero.find(d => d.anio == anio)?.datos;
+    const dataset: { anio: string, datos: number[] } = { anio: anio, datos: [] };
+    const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
-    if (!dataset) {
-      dataset = [];
-      const donAnio = this.donacionesMostrar.filter(stat => stat.anio == anio);
+    this.generos.forEach(genero => {
+      dataset.datos.push(donAnio.filter(stat => stat.genero == genero).length);
+    });
 
-      this.generos.forEach(genero => {
-        dataset!.push(donAnio.filter(stat => stat.genero == genero).length);
-      });
-
-      this.datasetAnualGenero.push({ anio: anio, datos: dataset });
-    }
+    this.datasetAnualGenero.push(dataset);
 
     return dataset;
   }
 
 
   crearDatasetsMensDonTipos(anio: string) {
-    this.datasetsMensDonTipos = [];
+    const dataset: { anio: string, datos: ChartDataset<"bar">[] } = { anio: anio, datos: [] };
     const donacionesAnioSelecc = this.donacionesMostrar.filter(stat => stat.anio == anio);
 
     this.tiposDonacion.forEach(tipoDonacion => {
@@ -209,18 +205,26 @@ export class MainStatsComponent implements OnInit {
       const donaciones = donacionesAnioSelecc.filter(stat => stat.donacion == tipoDonacion);
 
       this.meses.forEach(mes => numDonacionesMes.push(donaciones.filter(s => s.mes == mes).length));
-      this.datasetsMensDonTipos.push({ label: tipoDonacion, data: numDonacionesMes });
+      dataset.datos.push({ label: tipoDonacion, data: numDonacionesMes });
     });
+
+    this.datasetsMensDonTipos.push(dataset);
+
+    return dataset;
   }
 
 
   crearDatasetsMensNumAltas(anio: string) {
-    this.datasetsMensNumAltas = [];
+    const dataset: { anio: string, datos: number[] } = { anio: anio, datos: [] };
     const altasAnioSelecc = this.altasMostrar.filter(alta => alta.anio == anio);
 
     this.meses.forEach(mes => {
-      this.datasetsMensNumAltas.push(altasAnioSelecc.filter(alta => alta.mes == mes).length);
+      dataset.datos.push(altasAnioSelecc.filter(alta => alta.mes == mes).length);
     });
+
+    this.datasetsMensNumAltas.push(dataset);
+
+    return dataset;
   }
 
 
@@ -274,10 +278,14 @@ export class MainStatsComponent implements OnInit {
   }
 
 
-  activarDatosMensDonTipos() {
+  activarDatosMensDonTipos(anio: string) {
     if (this.grafDonTipos) {
+      let dataset = this.datasetsMensDonTipos.find(ds => ds.anio == anio);
+
+      if (!dataset) dataset = this.crearDatasetsMensDonTipos(anio);
+
       this.grafDonTipos.data.labels = this.meses;
-      this.grafDonTipos.data.datasets = this.datasetsMensDonTipos;
+      this.grafDonTipos.data.datasets = dataset.datos;
 
       this.grafDonTipos.update();
     }
@@ -296,10 +304,14 @@ export class MainStatsComponent implements OnInit {
   }
 
 
-  activarDatosMensNumAltas() {
+  activarDatosMensNumAltas(anio: string) {
     if (this.grafNumAltas) {
+      let dataset = this.datasetsMensNumAltas.find(ds => ds.anio == anio);
+
+      if (!dataset) dataset = this.crearDatasetsMensNumAltas(anio);
+
       this.grafNumAltas.data.labels = this.meses;
-      this.grafNumAltas.data.datasets[0].data = this.datasetsMensNumAltas;
+      this.grafNumAltas.data.datasets[0].data = dataset.datos;
 
       this.grafNumAltas.update();
     }
@@ -312,31 +324,20 @@ export class MainStatsComponent implements OnInit {
 
       this.grafNumAltas.data.labels = this.aniosAltas;
       this.grafNumAltas.data.datasets[0].data = this.datasetsAnualNumAltas;
+
       this.grafNumAltas.update();
-    }
-  }
-
-
-  cambiarAnioNumAltas(anio: string) {
-    if (this.grafNumAltas) {
-      this.crearDatasetsMensNumAltas(anio);
-      this.activarDatosMensNumAltas();
-    }
-  }
-
-
-  cambiarAnioDonTipos(anio: string) {
-    console.log('cambiar anio')
-    if (this.grafDonTipos) {
-      this.crearDatasetsMensDonTipos(anio);
-      this.activarDatosMensDonTipos();
     }
   }
 
 
   cambiarAnioGrupSang(index: number) {
     if (this.grafDonGrpSang) {
-      this.grafDonGrpSang.data.datasets[0].data = this.crearDatasetAnualGrpSang(this.aniosDonaciones[index]);
+      const anio = this.aniosDonaciones[index];
+      let dataset = this.datasetAnualGrpSang.find(d => d.anio == anio);
+
+      if (!dataset) dataset = this.crearDatasetAnualGrpSang(anio);
+
+      this.grafDonGrpSang.data.datasets[0].data = dataset.datos;
       this.grafDonGrpSang.update();
     }
   }
@@ -344,7 +345,12 @@ export class MainStatsComponent implements OnInit {
 
   cambiarAnioGeneros(index: number) {
     if (this.grafDonGenero) {
-      this.grafDonGenero.data.datasets[0].data = this.crearDatasetAnualGenero(this.aniosDonaciones[index]);
+      const anio = this.aniosDonaciones[index];
+      let dataset = this.datasetAnualGenero.find(d => d.anio == anio);
+
+      if (!dataset) dataset = this.crearDatasetAnualGenero(anio);
+
+      this.grafDonGenero.data.datasets[0].data = dataset.datos;
       this.grafDonGenero.update();
     }
   }
@@ -356,13 +362,13 @@ export class MainStatsComponent implements OnInit {
 
 
   getGeneros() {
-    return [...new Set(this.donacionesMostrar.map(stat => stat.genero))];
+    const generos = [...new Set(this.donacionesMostrar.map(stat => stat.genero))];
+    return generos.filter(gen => gen != undefined);
   }
 
 
   getGrpSanguineos() {
-    let grupos = [...new Set(this.donacionesMostrar.map(stat => stat.gSanguineo))].sort();
-
+    const grupos = [...new Set(this.donacionesMostrar.map(stat => stat.gSanguineo))].sort();
     return grupos.filter(grp => grp != undefined);
   }
 
