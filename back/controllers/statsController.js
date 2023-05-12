@@ -50,6 +50,7 @@ const getAltas = async(req, res = response) => {
 
 
 const insertDonacion = async(req, res = response) => { 
+    console.log(req.body)
     queriesDonaciones.insertDonacion(req.body)
         .then(donacion => {
 

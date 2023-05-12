@@ -18,7 +18,7 @@ export class RegistrarDonacionesComponent {
   registrada: boolean = false;
   tipoDonacion: string;
   gSanguineo: string;
-  nDonante: string;
+  nDonante?: number;
   genero: string;
   mensaje: string;
 
@@ -27,7 +27,6 @@ export class RegistrarDonacionesComponent {
     this.tipoDonacion = this.tiposDonacion[0];
     this.gSanguineo = this.grpsSanguineos[0];
     this.genero = this.generos[0];
-    this.nDonante = '';
     this.mensaje = '';
   }
 
@@ -37,7 +36,7 @@ export class RegistrarDonacionesComponent {
 
       const payload = form.value;
       payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
-      console.log(payload.fecha)
+
       this.StatsService.insertDonacion(payload)
         .subscribe(resp => {
           if (resp.success) this.registrada = true;

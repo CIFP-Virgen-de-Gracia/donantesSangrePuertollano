@@ -10,13 +10,12 @@ import { DonacionResponse, AltaResponse, MsgResponse } from '../interfaces/stats
 export class StatsService {
 
   private url = `${environment.baseUrl}/api/stats`;
-  header = {
-    headers: new HttpHeaders({
-      'x-token': JSON.parse(localStorage.getItem('user')!).token
-    })
-  };
+  header;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const user = localStorage.getItem('user');
+    if (user) this.header = { headers: new HttpHeaders({ 'x-token': JSON.parse(user).token }) };
+  }
 
 
   getDonaciones(): Observable<DonacionResponse> {
@@ -30,7 +29,7 @@ export class StatsService {
 
 
   insertDonacion(payload: FormData): Observable<MsgResponse> {
-    return this.http.post<MsgResponse>(this.url+ '/insertDonacion', payload);
+    return this.http.post<MsgResponse>(this.url+ '/insertDonacion', payload, this.header);
   }
 
 
