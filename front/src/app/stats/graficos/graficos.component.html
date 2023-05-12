@@ -1,24 +1,13 @@
-<main>
-  <div class="container gx-0">
-
-    <div>
-      <div class="f-contraste text-center">
-        <h1 class="titulo subrayado">Estadísticas</h1>
-      </div>
-
-      <!--  <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
-        <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1" d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
-        </path>
-      </svg> -->
-    </div>
+<main class="f-contraste">
+    <h1 class="titulo subrayado text-center">Estadísticas</h1>
 
     <div class="contenido">
-      <div class="pt-4 pb-5 tipos">
+      <div class="pb-5 tipos">
         <h2 class="titulo">Donaciones por tipo</h2>
         <p>En este gráfico puedes ver el número total de donaciones de plasma, sangre, médula y órganos.</p>
 
         <div class="contenedor gx-0 row flex-column flex-md-row">
-          <div class="menu-horizontal col-12 col-md-3">
+          <div class="menu-vertical col-12 col-md-3">
             <ul class="row gx-0">
               <li class="col-6 col-md-12" [ngClass]="{ activo : activoDonTipos == 0 }">
                 <input type="radio" id="don-mensuales" value="mensuales"
@@ -56,7 +45,7 @@
           </div>
 
           <div class="contenedor gx-0 row">
-            <div class="menu-horizontal col-3">
+            <div class="menu-vertical col-3">
               <ul>
                 <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGrupSang">
                   <input type="radio" id="gs{{anio}}" value="anuales"
@@ -80,7 +69,7 @@
           </div>
 
           <div class="contenedor gx-0 row">
-            <div class="menu-horizontal col-3">
+            <div class="menu-vertical col-3">
               <ul>
                 <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGeneros">
                   <input type="radio" id="g{{anio}}" value="anuales"
@@ -103,7 +92,7 @@
         <p>En este gráfico puedes ver el número total de altas del año seleccionado.</p>
 
         <div class="contenedor gx-0 row flex-column flex-md-row">
-          <div class="menu-horizontal col-12 col-md-3">
+          <div class="menu-vertical col-12 col-md-3">
             <ul class="row gx-0">
               <li class="col-6 col-md-12" [ngClass]="{ activo : activoNumAltas == 0 }">
                 <input type="radio" id="altas-mensuales" value="mensuales"
@@ -133,5 +122,5 @@
         </div>
       </div>
     </div>
-  </div>
+
 </main>

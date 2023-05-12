@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Routes, RouterModule, Router } from '@angular/router';
-import { MainStatsComponent } from './main-stats/main-stats.component';
-import { RegistrarDatosComponent } from './registrar-datos/registrar-datos.component';
+import { Routes, RouterModule } from '@angular/router';
+import { GraficosComponent } from './graficos/graficos.component';
+import { RegistrarDatosComponent } from './registrar-datos-main/registrar-datos-main.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: MainStatsComponent},
+      { path: '', component: GraficosComponent },
       { path: 'registrar-datos', component: RegistrarDatosComponent},
     ]
   }

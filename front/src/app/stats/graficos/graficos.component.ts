@@ -6,11 +6,11 @@ import * as moment from 'moment';
 moment.locale('es');
 
 @Component({
-  selector: 'app-main-stats',
-  templateUrl: './main-stats.component.html',
-  styleUrls: ['./main-stats.component.scss']
+  selector: 'app-graficos',
+  templateUrl: './graficos.component.html',
+  styleUrls: ['./graficos.component.scss']
 })
-export class MainStatsComponent implements OnInit {
+export class GraficosComponent implements OnInit {
 
   donacionesResp: Donacion[] = [];
   donacionesMostrar: DonacionMostrar[] = [];

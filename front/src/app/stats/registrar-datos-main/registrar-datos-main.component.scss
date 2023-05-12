@@ -1,16 +1,14 @@
 main {
-  padding: 5rem 1.5rem;
-  background-color: var(--color-contraste);
-
-  h2 {
-    text-align: center;
-  }
+  padding: 5rem 1rem;
+  margin: 0;
+  max-width: 100%;
+  line-height: 2rem;
 
   .contenedor {
-    margin-top: 2rem;
     padding: 1rem 0;
-    background-color: var(--bs-white);
+    margin-top: 5rem;
     border-radius: 2px;
+    background-color: var(--bs-white);
     box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
 
     .menu-vertical {
@@ -33,17 +31,21 @@ main {
       }
     }
 
-    .config {
-      padding: 1rem 1.5rem;
+    .contenido {
+      padding: 2rem 3rem;
     }
   }
 }
 
+@media (min-width: 576px) {
+
+}
 
 @media (min-width: 768px) {
-  main .contenedor {
+  main {
+    padding: 5rem 1.5rem;
 
-    .menu-vertical li {
+    .contenedor .menu-vertical li {
       padding: 1rem 1.5rem;
 
       li {
@@ -58,17 +60,16 @@ main {
         margin-right: .5rem;
       }
     }
-
-    .config {
-      padding: 1rem 3rem;
-    }
   }
 }
 
-
 @media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
   main {
-    padding: 5rem;
+    padding: 7rem;
   }
 }
 
