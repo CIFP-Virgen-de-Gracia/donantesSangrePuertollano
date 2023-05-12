@@ -22,11 +22,6 @@ input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
     margin-top: 2.5rem;
   }
 
-  .inpt,
-  .f-rojo {
-    padding: .5rem;
-  }
-
   .horario,
   .telefono {
     &:not(:first-of-type) {

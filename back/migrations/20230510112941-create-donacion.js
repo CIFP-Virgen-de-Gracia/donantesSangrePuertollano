@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       nDonante: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       gSanguineo: {
         type: Sequelize.STRING(3),

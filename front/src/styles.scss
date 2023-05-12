@@ -50,7 +50,7 @@ body {
 
   footer,
   nav {
-    box-shadow:  0 5px 15px .1px rgba(55, 55, 55, 0.2);
+    box-shadow: 0 5px 15px .1px rgba(55, 55, 55, 0.2);
 
     a,
     i,
@@ -65,8 +65,15 @@ body {
   }
 
 
-  // Botones - inputs
+  // Botones - inputs - select
+  select {
+    option {
+      font-family: arial !important;
+    }
+  }
+
   input.inpt,
+  select.inpt,
   .btn-primario,
   .btn-secundario,
   .btn-terciario {
@@ -74,8 +81,9 @@ body {
     outline: none;
   }
 
-  input.inpt {
-    padding: 0 .5rem;
+  input.inpt,
+  select.inpt {
+    padding: .5rem;
 
     &:hover,
     &:focus {
@@ -200,29 +208,26 @@ button:disabled {
     background-color: var(--color-contraste-oscuro) !important;
   }
 
-  &.btn-secundario:hover, &.btn-terciario:hover {
+  &.btn-secundario:hover,
+  &.btn-terciario:hover {
     background-color: var(--color-contraste) !important;
     color: var(--color-contraste-oscuro) !important;
   }
 
   &.btn-secundario {
-    &::before, &::after {
+
+    &::before,
+    &::after {
       background-color: var(--color-contraste-oscuro) !important;
     }
   }
 
   &.btn-terciario {
-    &::before, &::after {
+
+    &::before,
+    &::after {
       border-color: var(--color-contraste-oscuro) !important;
     }
-  }
-}
-
-
-// Select
-select {
-  option {
-    font-family: arial !important;
   }
 }
 
@@ -288,6 +293,7 @@ h1.titulo {
 .f-rojo {
   background-color: var(--color-primario);
   color: var(--bs-white);
+  padding: .5rem;
 }
 
 .mensaje-error,
@@ -311,5 +317,25 @@ h1.titulo {
   div:not(:first-of-type) {
     padding-top: 1.5rem !important;
     text-align: unset;
+  }
+}
+
+
+//Calendario
+.calendario {
+  ngb-datepicker {
+    width: 100%;
+    border-radius: 0 0 2px 2px;
+
+    .ngb-dp-months {
+      .ngb-dp-month {
+        width: 100% !important;
+
+        .ngb-dp-week {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
   }
 }

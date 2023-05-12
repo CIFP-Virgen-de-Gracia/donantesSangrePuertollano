@@ -6,7 +6,7 @@ main {
 
   .contenedor {
     padding: 1rem 0;
-    margin-top: 5rem;
+    margin-top: 4rem;
     border-radius: 2px;
     background-color: var(--bs-white);
     box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
@@ -32,18 +32,16 @@ main {
     }
 
     .contenido {
-      padding: 2rem 3rem;
+      padding: 2rem 1.5rem;
     }
   }
 }
 
-@media (min-width: 576px) {
-
-}
+@media (min-width: 576px) {}
 
 @media (min-width: 768px) {
   main {
-    padding: 5rem 1.5rem;
+    padding: 5rem 2rem;
 
     .contenedor .menu-vertical li {
       padding: 1rem 1.5rem;
@@ -64,12 +62,13 @@ main {
 }
 
 @media (min-width: 992px) {
-
+  main .contenedor .contenido {
+    padding: 1rem 3rem;
+  }
 }
 
 @media (min-width: 1200px) {
   main {
-    padding: 7rem;
+    padding: 5rem;
   }
 }
-

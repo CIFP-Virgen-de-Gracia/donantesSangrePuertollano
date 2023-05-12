@@ -3,7 +3,7 @@
 
   <div class="contenedor row gx-0">
 
-    <div class="menu-vertical col-3">
+    <div class="menu-vertical col-2 col-md-3">
       <ul>
         <li *ngFor="let e of elementos; let i = index"
           [class.activo]="i == elementoActivo"
@@ -15,7 +15,7 @@
       </ul>
     </div>
 
-    <div class="col-9 contenido">
+    <div class="col-10 col-md-9 contenido">
       <app-registrar-donaciones *ngIf="elementoActivo == 0"></app-registrar-donaciones>
 
       <app-registrar-altas *ngIf="elementoActivo == 1"></app-registrar-altas>

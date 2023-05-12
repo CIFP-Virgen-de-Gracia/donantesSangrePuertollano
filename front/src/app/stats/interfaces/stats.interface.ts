@@ -35,3 +35,8 @@ export interface AltaResponse {
   data: Alta[];
 }
 
+export interface MsgResponse {
+  success: boolean;
+  msg: string;
+}
+

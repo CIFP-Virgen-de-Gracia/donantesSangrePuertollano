@@ -49,6 +49,29 @@ const getAltas = async(req, res = response) => {
 }
 
 
+const insertDonacion = async(req, res = response) => { 
+    queriesDonaciones.insertDonacion(req.body)
+        .then(donacion => {
+
+            const resp = {
+                success: true,
+                msg: 'Donación registrada con éxito'
+            }
+
+            res.status(200).json(resp);
+
+        }).catch(err => {
+            
+            const resp = {
+                success: false,
+                msg: 'Se ha producido un error',
+            }
+
+            res.status(200).json(resp);
+        });
+}
+
+
 const getTiposDonacion = async(req, res = response) => {
     queriesDonaciones.getTiposDonacion()
         .then(donaciones => {
@@ -74,5 +97,6 @@ const getTiposDonacion = async(req, res = response) => {
 module.exports = {
     getDonaciones,
     getAltas,
+    insertDonacion,
     getTiposDonacion
 }

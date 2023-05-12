@@ -76,6 +76,7 @@ router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser],citas.y
 // Estadísticas routes
 router.get('/stats/getDonaciones/', stats.getDonaciones);
 router.get('/stats/getAltas/', stats.getAltas);
+router.post('/stats/insertDonacion/', stats.insertDonacion);
 router.get('/stats/getTiposDonacion/', stats.getTiposDonacion);
 
 

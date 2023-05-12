@@ -1,35 +1,59 @@
-<h2 class="titulo">Registrar donaciones</h2>
+<form #donacionForm="ngForm" (ngSubmit)="onSubmit(donacionForm)" novalidate class="pb-4">
 
-<form>
+  <div class="btns mensajes d-flex justify-content-between mb-3">
+    <div [ngClass]="registrada ? 'mensaje-ok' : 'mensaje-error'" class="d-flex align-items-center">
 
-  <label>Tipo de donación</label>
-  <select>
-    <option>Sangre</option>
-    <option>Plasma</option>
-    <option>Médula</option>
-    <option>Órganos</option>
-  </select>
+      <i [ngClass]="registrada ? 'fa-circle-check' : 'fa-triangle-exclamation'"
+        *ngIf="mensaje" class="fa-solid icono-peq me-2">
+      </i>
 
-  <label>Grupo sanguíneo</label>
-  <select>
-    <option>A+</option>
-    <option>A-</option>
-    <option>B+</option>
-    <option>B-</option>
-  </select>
+      <div>{{ mensaje }}</div>
+    </div>
 
-  <label>Fecha</label>
-  <app-date-picker></app-date-picker>
+    <button type="submit" class="btn-primario">Registrar donación</button>
+  </div>
 
-  <label>Número de donante</label>
-  <input type="text">
+  <h2 class="titulo">Registrar donaciones</h2>
 
-  <label>Género</label>
-  <select>
-    <option>Hombre</option>
-    <option>Mujer</option>
-  </select>
+  <div class="row gx-0">
 
-  <button type="submit" class="btn-primario">Registrar donación</button>
+    <div class="calendario col-12 col-md-6 col-lg-5 pe-md-3 pe-xl-4">
+      <label for="calendario" class="f-rojo">Fecha</label>
+      <app-date-picker id="calendario" (onNuevaFecha)="setDia($event)"></app-date-picker>
+    </div>
 
+    <div class="col-12 col-md-6 col-lg-7 ps-md-3 ps-xl-4 d-flex flex-column justify-content-between">
+      <div class="tipo-donacion contenedor row gx-0">
+        <label for="tipo-donacion" class="f-rojo col-7">Tipo de donación</label>
+
+        <select id="tipo-donacion" class="inpt tipo-donacion col-5"
+          [(ngModel)]="tipoDonacion" name="tipoDonacion">
+          <option *ngFor="let td of tiposDonacion" [ngValue]="td">{{ td | titlecase }}</option>
+        </select>
+      </div>
+
+      <div class="grp-sang contenedor row gx-0" *ngIf="tipoDonacion == 'sangre'">
+        <label for="grp-sang" class="f-rojo col-7">Grupo sanguíneo</label>
+
+        <select id="grp-sang" class="inpt col-5"
+          [(ngModel)]="gSanguineo" name="gSanguineo">
+          <option *ngFor="let grp of grpsSanguineos" [ngValue]="grp">{{ grp }}</option>
+        </select>
+      </div>
+
+      <div class="num-donante contenedor row gx-0">
+        <label for="num-donante" class="f-rojo col-7">Número donante</label>
+        <input type="text" id="num-donante" class="inpt col-5"
+          [(ngModel)]="nDonante" name="nDonante">
+      </div>
+
+      <div class="genero contenedor row gx-0">
+        <label for="genero" class="f-rojo col-7">Género</label>
+        <select id="genero" class="inpt col-5"
+          [(ngModel)]="genero" name="genero">
+          <option *ngFor="let gen of generos" [ngValue]="gen">{{ gen | titlecase }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </form>

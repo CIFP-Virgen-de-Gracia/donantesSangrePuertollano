@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { DonacionResponse, AltaResponse } from '../interfaces/stats.interface';
+import { DonacionResponse, AltaResponse, MsgResponse } from '../interfaces/stats.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,11 @@ import { DonacionResponse, AltaResponse } from '../interfaces/stats.interface';
 export class StatsService {
 
   private url = `${environment.baseUrl}/api/stats`;
-
+  header = {
+    headers: new HttpHeaders({
+      'x-token': JSON.parse(localStorage.getItem('user')!).token
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -22,6 +26,11 @@ export class StatsService {
 
   getAltas(): Observable<AltaResponse> {
     return this.http.get<AltaResponse>(this.url+ '/getAltas');
+  }
+
+
+  insertDonacion(payload: FormData): Observable<MsgResponse> {
+    return this.http.post<MsgResponse>(this.url+ '/insertDonacion', payload);
   }
 
 
