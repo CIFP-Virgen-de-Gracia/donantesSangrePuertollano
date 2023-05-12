@@ -23,6 +23,7 @@ export class ModalPedirCitaComponent {
   constructor(
     private modalService: NgbModal,
     private citasService: CitasService,
+  
     private router: Router) {}
 
 

@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const Cita = require('./Cita');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -10,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.RolUser, {as: 'RolUser', foreignKey: 'idUser'});
+      User.hasMany(models.Cita, {as: 'citas', foreignKey: 'userId'});
     }
   }
   User.init({

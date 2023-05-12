@@ -41,13 +41,22 @@ router.put('/updateContacto', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.
 
 // pedir cita routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);
+router.get('/citas/gethorascitas',[vJwt.validarJwt, midsUser.midAdmin], citas.getHorasCitas);
 router.post('/citas/pedircita', [vJwt.validarJwt, midsCitas.yaHaPedidoUnaCita, midsCitas.hayCapacidad, midsUser.midUser], citas.pedirCita);
 router.put('/citas/cancelarcita/', [vJwt.validarJwt, midsUser.midUser], citas.cancelarCita);
 router.get('/citas/usernotienecita/:id', [vJwt.validarJwt, midsUser.midUser], citas.userNoTieneCita);
-router.get('/citas/hayhuecohora/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.hayHuecoHora);
-router.get('/citas/getcitapendienteuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitaPendienteUser);
-router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser],citas.getCitasPasadasUser);
-router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser],citas.yaHaPedidoUnaCita);
+router.get('/citas/hayhuecohora/:fecha', [vJwt.validarJwt, midsUser.midUser], citas.hayHuecoHora);
+router.get('/citas/getcitapendienteuser/:id', [vJwt.validarJwt, midsUser.midUser], citas.getCitaPendienteUser);
+router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser], citas.getCitasPasadasUser);
+router.get('/citas/getcitaspendientes', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPendientes);
+router.get('/citas/getcitaspasadas', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPasadas);
+router.put('/citas/aplazarcita', [vJwt.validarJwt, midsUser.midAdmin],citas.updateFechaCita);
+router.put('/citas/updateasistencia',[vJwt.validarJwt, midsUser.midAdmin], citas.confirmarAsistencia);
+router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser], citas.yaHaPedidoUnaCita);
+
+router.put('/citas/updatenumpersonascita', [vJwt.validarJwt, midsUser.midAdmin], citas.modNumPersonaCita);
+router.post('/citas/inserthoracita', [vJwt.validarJwt, midsUser.midAdmin], citas.insertHoraCita);
+router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin], citas.deleteHoraCita);
 
 
 

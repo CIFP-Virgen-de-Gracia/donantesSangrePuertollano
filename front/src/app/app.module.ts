@@ -30,7 +30,7 @@ import { ConfigRoutingModule } from './config/config-routing.module';
         AppComponent,
         AptoSangreComponent,
         GaleriaComponent,
-        GaleriaComponent,
+        GaleriaComponent
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'es-es' }
@@ -43,7 +43,7 @@ import { ConfigRoutingModule } from './config/config-routing.module';
         PaginasModule,
         SharedModule,
         GestionContenidoModule,
-        NoticiasRoutingModule,
+        NoticiasRoutingModule, 
         HttpClientModule,
         BrowserAnimationsModule,
         AuthModule,
