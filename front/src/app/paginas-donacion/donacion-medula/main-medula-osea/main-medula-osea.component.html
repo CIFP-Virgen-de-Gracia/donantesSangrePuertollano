@@ -1,0 +1,52 @@
+<div class="container-fluid f-contraste pt-5">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1 class="titulo subrayado">Donantes de medula</h1>
+    </div>
+  </div>
+</div>
+<div>
+  <svg _ngcontent-ncw-c20="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
+    <path _ngcontent-ncw-c20="" fill="#f1eef5" fill-opacity="1"
+      d="M0,50L380,150L960,80L1950,128L1440,0L960,0L480,0L0,0Z">
+    </path>
+  </svg>
+</div>
+
+<main>
+  <div class="contenedor row">
+    <nav class="navbar navbar-expand-md">
+      <div class="col-12 col-md-3 cabeceraMenu">
+        <ul class="navbar-brand titulo_Movil">
+          <li class="nav-item"
+           *ngFor="let e of elementos; let i = index">
+              <h3 *ngIf="i == elementoActivo">{{ e.nombre | titlecase }}</h3>
+          </li>
+        </ul>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+        data-bs-target="#menu-medula-Osea" aria-controls="menu-medula-Osea" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars fs-2"></i>
+        </button>
+
+      </div>
+      <div class="col-12 col-md-3 menu-horizontal g-0 collapse navbar-collapse text-center" id="menu-medula-Osea">
+        <ul class="">
+          <li *ngFor="let e of elementos; let i = index"
+            routerLink="./{{ e.enlace }}"
+            [class.activo]="i == elementoActivo"
+            (click) = "elementoActivo = i">
+            <i class="fa-solid {{ e.icono }}" data-toggle="tooltip" data-placement="left" title="{{e.nombre}}"></i>
+            <span>{{ e.nombre | titlecase }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-9 config">
+        <router-outlet></router-outlet>
+      </div>
+
+    </nav>
+
+  </div>
+</main>

@@ -1,0 +1,93 @@
+
+
+
+
+.contenedor {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  background-color: var(--bs-white);
+  border-radius: 2px;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, .2);
+
+  .cabeceraMenu{
+    display: none;
+    padding: 1rem;
+    button{
+      border: none;
+    }
+    border-bottom: 1px solid black;
+  }
+
+
+  .menu-horizontal {
+    border-right: 1.5px solid var(--color-contraste-oscuro);
+
+    li {
+      padding: 1rem .7rem;
+      width: 100%;
+      border-left: 10px solid var(--bs-white);
+
+      span {
+        display: inline-block;
+        margin-left: 1rem;
+      }
+
+      &.activo {
+        background-color: var(--color-primario);
+        color: var(--bs-white);
+        border-color: var(--color-granate);
+      }
+    }
+  }
+
+  .config {
+    padding: 1rem 1.5rem;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+main .contenedor {
+
+  .menu-horizontal li {
+    padding: 1rem 1.5rem;
+
+    li {
+      padding: 1rem;
+    }
+
+    span {
+      margin-left: 0;
+    }
+
+    i {
+      margin-right: .5rem;
+    }
+  }
+
+  .config {
+    padding: 1rem 3rem;
+  }
+}
+}
+
+
+@media (min-width: 992px) {
+  main {
+    padding: 5rem 5rem 10rem;
+  }
+}
+
+@media(max-width: 768px) {
+  main .contenedor{
+    .cabeceraMenu{
+      display: flex;
+      ul.navbar-brand.titulo_Movil{
+        span.oculto {
+          display: block;
+        }
+      }
+    }
+  }
+}
