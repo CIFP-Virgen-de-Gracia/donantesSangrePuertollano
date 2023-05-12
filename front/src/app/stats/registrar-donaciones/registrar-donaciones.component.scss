@@ -19,6 +19,9 @@ select.inpt {
   background-color: var(--bs-white);
 }
 
+p.mensaje-error {
+  line-height: 1.5rem;
+}
 
 @media (min-width: 768px) {
   div.calendario, div.contenedor:not(:last-of-type) {

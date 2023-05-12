@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 const queriesDonaciones = require('../database/queries/queriesDonaciones');
 const queriesAltas = require('../database/queries/queriesAltas');
+const moment = require('moment');
 
 const getDonaciones = async(req, res = response) => {
     queriesDonaciones.getDonaciones()
@@ -50,7 +51,8 @@ const getAltas = async(req, res = response) => {
 
 
 const insertDonacion = async(req, res = response) => { 
-    console.log(req.body)
+    req.body.fecha = moment(req.body.fecha, 'YYYY-MM-DD').add(2, 'hour');
+
     queriesDonaciones.insertDonacion(req.body)
         .then(donacion => {
 
@@ -70,6 +72,36 @@ const insertDonacion = async(req, res = response) => {
 
             res.status(200).json(resp);
         });
+}
+
+
+const insertAltas = async(req, res = response) => { 
+    req.body.fecha = moment(req.body.fecha, 'YYYY-MM-DD').add(2, 'hour');
+    const promesas = [];
+
+    for (let i = 0; i < req.body.altas; i++) {
+        promesas.push(() => queriesAltas.insertAltas(req.body));
+    }
+
+    try {
+        const promesasResp = await Promise.all(promesas.map(p => p()));
+
+        const resp = {
+            success: true,
+            msg: 'Altas registradas con éxito'
+        }
+
+        res.status(200).json(resp);
+
+    } catch(err) {
+            
+        const resp = {
+            success: false,
+            msg: 'Se ha producido un error',
+        }
+
+        res.status(200).json(resp);
+    }    
 }
 
 
@@ -99,5 +131,6 @@ module.exports = {
     getDonaciones,
     getAltas,
     insertDonacion,
+    insertAltas,
     getTiposDonacion
 }

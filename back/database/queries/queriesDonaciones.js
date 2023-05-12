@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 const models = require('../../models/index.js');
-const moment = require('moment');
 
 const getDonaciones = async() => {
     const resp = await models.Donacion.findAll({
@@ -29,7 +28,7 @@ const insertDonacion = async(donacion) => {
             gSanguineo: donacion.gSanguineo,
             donacion: donacion.tipoDonacion,
             genero: donacion.genero,
-            fecha: moment(donacion.fecha, 'YYYY-MM-DD').add(2, 'hour')
+            fecha: donacion.fecha
         });
 
         return resp;

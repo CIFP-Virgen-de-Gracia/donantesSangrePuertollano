@@ -21,6 +21,7 @@ export class RegistrarDonacionesComponent {
   nDonante?: number;
   genero: string;
   mensaje: string;
+  errorFecha?: boolean;
 
 
   constructor(private StatsService: StatsService) {
@@ -37,25 +38,19 @@ export class RegistrarDonacionesComponent {
       const payload = form.value;
       payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      this.StatsService.insertDonacion(payload)
+      this.StatsService.insertAltas(payload)
         .subscribe(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;
 
           this.mensaje = resp.msg;
-
+          this.errorFecha = false;
         });
 
-    } else {
-      this.mensaje = 'Debes seleccionar una fecha.';
-    }
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => this.mensaje = '', 4000);
 
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.mensaje = '', 4000);
-  }
-
-
-  formatFecha(fecha: NgbDateStruct) {
+    } else this.errorFecha = true;
   }
 
 

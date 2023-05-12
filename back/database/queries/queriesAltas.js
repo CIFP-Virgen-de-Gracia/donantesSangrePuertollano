@@ -10,6 +10,24 @@ const getAltas = async() => {
 }
 
 
+const insertAltas = async(alta) => { 
+    try {
+
+        const resp = await models.Alta.create({
+            id: null,
+            fecha: alta.fecha
+        });
+
+        return resp;
+
+    } catch (err) {
+        
+        throw err;
+    }
+}
+
+
 module.exports = {
-    getAltas
+    getAltas,
+    insertAltas
 };

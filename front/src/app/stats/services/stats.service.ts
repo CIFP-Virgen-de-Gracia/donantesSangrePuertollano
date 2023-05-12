@@ -33,6 +33,10 @@ export class StatsService {
   }
 
 
+  insertAltas(payload: FormData): Observable<MsgResponse> {
+    return this.http.post<MsgResponse>(this.url+ '/insertAltas', payload, this.header);
+  }
+
   getTiposDonacion(): Observable<any> {
     return this.http.get<any>(this.url+ '/getTiposDonacion');
   }
