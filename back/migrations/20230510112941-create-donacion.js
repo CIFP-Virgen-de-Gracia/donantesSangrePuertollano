@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING(3),
       },
       donacion: {
-        type: Sequelize.ENUM('sangre', 'plasma', 'organos', 'médula'),
+        type: Sequelize.ENUM('sangre', 'plasma', 'órganos', 'médula'),
         allowNull: false,
       },
       fecha: {

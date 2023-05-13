@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Donacion.init({
     nDonante: DataTypes.BIGINT,
     gSanguineo: DataTypes.STRING(3),
-    donacion: DataTypes.ENUM('sangre', 'plasma', 'organos', 'médula'),
+    donacion: DataTypes.ENUM('sangre', 'plasma', 'órganos', 'médula'),
     fecha: DataTypes.DATE,
     genero: DataTypes.STRING
   }, {
