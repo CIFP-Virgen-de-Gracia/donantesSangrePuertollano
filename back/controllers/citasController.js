@@ -7,6 +7,7 @@ const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
 const metodosFecha = require('../helpers/fechas');
 const { QueryInterface } = require('sequelize');
+const qrCode=require('qrcode');
 
 //TODO: hacer una tabla de parametrización en db en principio para el n de pacientes que pueden atender en una misma hora
 

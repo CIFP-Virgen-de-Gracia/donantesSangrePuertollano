@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { ResponseComentario,Mensaje,UserConectado } from '../interfaces/paginas.interface';
+import { ResponseComentario, Mensaje, ResponseListaConectados } from '../interfaces/paginas.interface';
 import { Socket } from 'ngx-socket-io';
 import { ChatService } from './chat.service';
 import { environment } from 'src/environment/environment';
@@ -10,9 +10,10 @@ import { environment } from 'src/environment/environment';
 export class WebSocketService extends Socket {
 
   @Output() outEven: EventEmitter<any> = new EventEmitter();
+  @Output() usuariosConectados: EventEmitter<string[]> = new EventEmitter();
 
   constructor(private ChatService: ChatService) {
-    let datos:any="";
+    let datos: any = "";
     if (localStorage.getItem('user') != null) {
       datos = JSON.parse(localStorage.getItem('user') || "");
     }
@@ -24,35 +25,33 @@ export class WebSocketService extends Socket {
         }
       }
 
-    })
-
-    this.ioSocket.on('connect', () => {
-      if (localStorage.getItem('user') != null) {
-        let datos = JSON.parse(localStorage.getItem('user') || "");
-        let u: UserConectado = {
-          nombre: datos.nombre,
-          id: datos.id
-        }
-        this.ChatService.agregarConectado(u);
-
-    }});
-
-    // Evento de desconexión
-    this.ioSocket.on('disconnect', () => {
-      console.log('Desconectado del servidor');
-      if (localStorage.getItem('user') != null) {
-        let datos = JSON.parse(localStorage.getItem('user') || "");
-        let u: UserConectado = {
-          nombre: datos.nombre,
-          id: datos.id
-        }
-      this.ChatService.borrarConectado(u);
-    }});
-    this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res))
+    });
+    this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res));
+    this.ioSocket.on('usuario-conectado', (usuarios: string[]) => this.usuariosConectados.emit(usuarios));
 
   }
 
-
+  emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
+    console.log("evento inicio");
+    this.ioSocket.emit('iniciarSesion', {
+      payload
+    }, (respuesta: ResponseListaConectados) => {
+      if (respuesta.success) {
+        console.log(respuesta);
+        this.ChatService.setListaConectados(respuesta.data);
+      }
+    });
+  }
+  emitEventLista = (event = 'lista', payload = {}) => {
+    this.ioSocket.emit('lista', {
+      payload
+    }, (respuesta: ResponseListaConectados) => {
+      if (respuesta.success) {
+        console.log(respuesta);
+        this.ChatService.setListaConectados(respuesta.data);
+      }
+    });
+  }
   emitEvent = (event = 'enviar-mensaje', payload = {}) => {
     this.ioSocket.emit('enviar-mensaje', {
       payload
@@ -66,6 +65,15 @@ export class WebSocketService extends Socket {
           "hora": respuesta.data.hora,
         }
         this.ChatService.agregarMensaje(m);
+      }
+    });
+  }
+  emitEventDesconectar = (event = 'logout', payload = {}) => {
+    this.ioSocket.emit('logout', {
+      payload
+    }, (respuesta: ResponseListaConectados) => {
+      if (respuesta.success) {
+        this.ChatService.setListaConectados(respuesta.data);
       }
     });
   }
