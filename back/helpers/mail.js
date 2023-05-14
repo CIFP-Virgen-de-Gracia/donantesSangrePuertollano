@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { v4: uuidv4 } = require('uuid'); 
 const nodemailer = require('nodemailer');
-
+const fs = require('fs');
 //Mario
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -45,9 +45,29 @@ const mandarCorreo = (destinatario, contenido) => {
         if (error) throw error;
     });
 }
-        
+//Isa
+const mandarCorreoAttachment = (destinatario, contenido,qrPath) => {
+    const qr = fs.readFileSync(qrPath);
+    mailOptions = {
+        from: process.env.EMAIL_ACCOUNT,
+        to: destinatario,
+        subject: contenido.asunto,
+        html: contenido.cuerpoHtml,
+        attachments: [
+            {
+              filename: 'citaQr.png',
+              content: qr
+            }
+          ]
+    };
+
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) throw error;
+    });
+}     
 module.exports = {
     mandarCorreoActivacion,
-    mandarCorreo
+    mandarCorreo,
+    mandarCorreoAttachment
 }
 
