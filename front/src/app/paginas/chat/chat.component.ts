@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebSocketService } from '../services/web-socket.service';
 import { ChatService } from '../services/chat.service';
-import { Mensaje, UserConectado } from '../interfaces/paginas.interface';
+import { Mensaje } from '../interfaces/paginas.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -14,11 +14,11 @@ export class ChatComponent {
   chatForm: FormGroup = new FormGroup({
     comentario: new FormControl('', [Validators.required]),
   });
-  aviso:number;
+  aviso: number;
 
   constructor(protected socketService: WebSocketService, private ChatService: ChatService) {
+
     socketService.outEven.subscribe(res => {
-      console.log(res);
       let m: Mensaje = {
         "nombre": res.nombre,
         "mensaje": res.mensaje,
@@ -27,9 +27,13 @@ export class ChatComponent {
         "hora": res.hora,
       }
       ChatService.agregarMensaje(m);
-    })
+    });
+    socketService.usuariosConectados.subscribe(res => {
+      this.ChatService.setListaConectados(res);
+    });
+    this.socketService.emitEventLista('lista');
     this.estaRegistrado = false;
-    this.aviso=0;
+    this.aviso = 0;
   }
 
   ngOnInit() {
@@ -39,8 +43,6 @@ export class ChatComponent {
     }
   }
 
-  /*Esta por arreglar porque no funciona bien la visualizacion de los usuarios conectados
-   y tengo que ver que falla por lo que para el siguiente sprint lo arreglo */
   get Conectados() {
     return this.ChatService.resultConectados;
 
@@ -51,10 +53,10 @@ export class ChatComponent {
 
   sendData = (event: any) => {
     if (this.chatForm.get("comentario")?.value == null) {
-      this.aviso=1;
+      this.aviso = 1;
       setTimeout(() => this.aviso = 0, 3000);
     } else if (this.chatForm.get("comentario")!.value.trim() == "") {
-      this.aviso=1;
+      this.aviso = 1;
       setTimeout(() => this.aviso = 0, 3000);
     } else {
       let datos = JSON.parse(localStorage.getItem('user') || "");

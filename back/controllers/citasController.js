@@ -7,6 +7,8 @@ const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
 const metodosFecha = require('../helpers/fechas');
 const { QueryInterface } = require('sequelize');
+const qr = require('../helpers/qr-code');
+const fs = require('fs');
 
 //TODO: hacer una tabla de parametrización en db en principio para el n de pacientes que pueden atender en una misma hora
 
@@ -24,7 +26,7 @@ const pedirCita = async(req, res = response) => {
             
                     const resp = await queriesCitas.insertCita(cita);
             
-                    mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion);
+                    mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion, resp.id);
                     
                     res.status(200).json({success: true, msg: 'cita insertada con éxito'});
             }
@@ -165,11 +167,12 @@ const yaHaPedidoUnaCita = async(req, res = response) => {
 }
 
 
-const mandarCorreoFechaCita = async(id, fecha, donacion) => {
+const mandarCorreoFechaCita = async(id, fecha, donacion, idCita) => {
 
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
-
+    let imagenQr = await qr.generarQr(id,idCita); 
+    console.log(imagenQr);
     let contenido = {};
 
     contenido.asunto = 'Recordatorio de tu cita.';
@@ -177,11 +180,17 @@ const mandarCorreoFechaCita = async(id, fecha, donacion) => {
     contenido.cuerpoHtml = `
         Hola. Recuerda que el día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
         <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar <strong>${(donacion)}</strong>.
+        Se le ha adjuntado un código qr que debera mostrar cuando sea atendido para confirmar su asistencia a la cita.
     `;
 
 
     const correo = await queriesUsers.getEmailById(id);
-    const resp = email.mandarCorreo(correo.email, contenido);
+    const resp = email.mandarCorreoAttachment(correo.email, contenido,imagenQr);
+
+   //Elimino la imagen generada para evitar que surjan problemas de rendimiento y almacenamiento
+    if (fs.existsSync(imagenQr)){
+        fs.unlinkSync(imagenQr);
+    }
 }
 
 

@@ -41,5 +41,5 @@ const borrarMensajes = async (req, res = response) => {
 
 module.exports = {
     Listado,
-    borrarMensajes
+    borrarMensajes,
 }

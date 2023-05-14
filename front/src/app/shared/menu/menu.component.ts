@@ -7,6 +7,7 @@ import { SharedService } from '../services/shared.service';
 import { CitasService } from 'src/app/citas/services/citas.service';
 import { lastValueFrom } from 'rxjs';
 import { PedirCitaModule } from 'src/app/citas/citas.module';
+import { WebSocketService } from '../../paginas/services/web-socket.service';
 
 @Component({
   selector: 'app-menu',
@@ -28,7 +29,8 @@ export class MenuComponent implements OnInit {
     private SharedService: SharedService,
     private router: Router,
     private modal: NgbModal,
-    private citasService: CitasService
+    private citasService: CitasService,
+    private WebSocketService:WebSocketService
   ) { }
 
 
@@ -103,6 +105,8 @@ export class MenuComponent implements OnInit {
   // }
 
   cerrarSesion() {
+    let datos = JSON.parse(localStorage.getItem('user') || "");
+    this.WebSocketService.emitEventDesconectar('logout',datos.nombre);
     localStorage.removeItem('user');
     this.estaRegistrado = false;
     this.puedeModificar = false;
