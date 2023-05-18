@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
     DatePickerComponent,
     NgbModule,
     FormsModule
-  ],
+  ], 
   entryComponents: [
     ModalAplazarCitaComponent
   ]

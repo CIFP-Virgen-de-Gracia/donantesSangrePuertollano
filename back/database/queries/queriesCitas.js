@@ -173,6 +173,16 @@ const getCitasPendientes = async() => {
 }
 
 
+const getCitasPendientesRec = async() => {
+    const citas = await conexion.query('SELECT citas.fecha, citas.donacion, emails.id, emails.email FROM citas '
+        + 'JOIN emails on citas.userId = emails.id WHERE citas.cancelada <> 1 '
+        + 'AND fecha > DATE(NOW())'
+    );
+
+    return citas;
+}
+
+
 const getCitasPasadas = async() => {
     return await models.Cita.findAll({
         attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
@@ -286,6 +296,7 @@ module.exports = {
     getCitasPasadasUser,
     getCitasPasadas,
     getCitasPendientes,
+    getCitasPendientesRec,
     insertCita,
     cancelarCita,
     updateFechaCitaPendiente,
@@ -296,5 +307,4 @@ module.exports = {
     getHorarioDia
 };
 
-getHorarioCitas('2023-05-24');
-// getHorarioDia('m').then(console.log);
+// getCitasPendientesRec().then(console.log);

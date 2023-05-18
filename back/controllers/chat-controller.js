@@ -1,14 +1,19 @@
 //Isa
 const queriesChat = require("../database/queries/queries-chat");
+const queriesCitas = require('../database/queries/queriesCitas');
 
 const connectedUsers = [];
+
 
 const conectado = (socket) => {
     let { payload } = socket.handshake.query;
     console.log(payload);
     connectedUsers.push(payload);
     console.log(connectedUsers);
+
+    mandarCorreoRecordatorio();
 };
+
 
 const desconectado = (socket) => {
     console.log('Usuario desconectado');
@@ -19,6 +24,7 @@ const desconectado = (socket) => {
     }
     console.log(connectedUsers);
 };
+
 
 const enviarMensaje = (socket, data, callback) => {
     if (connectedUsers.includes(data["payload"]["nombreUser"])) {
@@ -32,6 +38,8 @@ const enviarMensaje = (socket, data, callback) => {
         socket.emit('error', { message: 'El usuario no está conectado' });
     }
 };
+
+
 const socketController = (socket) => {
     conectado(socket);
 

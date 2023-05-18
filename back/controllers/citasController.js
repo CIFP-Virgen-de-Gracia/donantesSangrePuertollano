@@ -210,6 +210,30 @@ const yaHaPedidoUnaCita = async(req, res = response) => {
 }
 
 
+const recordarCitaTresDias = async() => {
+    const citas = await queriesCitas.getCitasPendientesRec();
+
+    const hoy = new Date();
+    const tresDiasMas = new Date();
+    tresDiasMas.setDate(hoy.getDate() + 3);
+
+    let diffTime = 0;
+    let diffHours = 0;
+    citas.forEach(cita => {
+        const fCita = new Date(cita.fecha);
+
+        diffTime = Math.abs(tresDiasMas - fCita);
+        diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+        if (diffHours => 0 && diffHours < 24) {
+
+            const fec = fCita.getFullYear() + '-' + fCita.getMonth() + '-' + fCita.getDate() + ' ' 
+                + fCita.getHours() + ':' + fCita.getMinutes() + ':' + fCita.getSeconds()
+            mandarCorreoFechaCita(cita.id, fec, cita.donacion);
+        }
+    });
+}
+
+
 const mandarCorreoFechaCita = async(id, fecha, donacion) => {
 
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
@@ -252,11 +276,8 @@ const mandarCorreoModFechaCita = async(id, fechaAnterior, fechaActual, donacion)
         <strong>${(metodosFecha.colocarHora(fechas.horaAnterior))}</strong>.
     `;
 
-    console.log()
-
     const correo = await queriesUsers.getEmailById(id);
     const resp = email.mandarCorreo(correo.email, contenido);
-
 }
 
 
@@ -358,6 +379,7 @@ module.exports = {
     getCitasPasadasUser,
     getCitasPendientes,
     getCitasPasadas,
+    recordarCitaTresDias,
     cancelarCita,
     pedirCita,
     // getCitasReservadas,
@@ -373,3 +395,5 @@ module.exports = {
     insertHoraCita,
     deleteHoraCita
 }
+
+recordarCitaTresDias().then(console.log('asdf'));
