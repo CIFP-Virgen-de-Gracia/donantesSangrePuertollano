@@ -243,7 +243,6 @@ const recuperarPasswd = async (req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         const resp = { success: false, msg: 'ha sucedido un error' };
 
         res.status(200).json(resp);

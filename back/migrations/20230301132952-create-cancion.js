@@ -14,11 +14,11 @@ module.exports = {
         allowNull: false,
       },
       titulo: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false,
       },
       letra: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(65000),
         allowNull: true,
       },
       createdAt: {

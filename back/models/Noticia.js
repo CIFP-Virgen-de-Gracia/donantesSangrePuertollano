@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   Noticia.init({
     titulo: DataTypes.STRING,
     subtitulo: DataTypes.STRING,
-    contenido: DataTypes.STRING(100000),
+    contenido: DataTypes.STRING(65000),
     seccion: DataTypes.STRING
   }, {
     sequelize,

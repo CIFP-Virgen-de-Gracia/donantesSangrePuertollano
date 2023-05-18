@@ -1,6 +1,6 @@
 <div class="row w-100">
   <div class="col-12 text-center mt-5 mb-4">
-    <h1 class="titulo subrayado">Resultado: </h1>
+    <h1 class="titulo subrayado">Resultado</h1>
   </div>
 </div>
 <div class="row d-flex justify-content-center g-2 g-lg-3 w-100">
@@ -21,7 +21,7 @@
 <div class="row w-100" *ngIf="apto_servicio.preguntasEnviadas[0][apto_servicio.preguntasEnviadas[0].length - 1].respuesta == apto_servicio.preguntasEnviadas[1][apto_servicio.preguntasEnviadas[1].length - 1]
 ; else mensajeRecomendado">
   <div class="col-12 text-center mb-2">
-        <a href="#"><button class="btn btn-secundario border-0 rounded-pill w-25 mb-2">Pedir Cita</button></a>
+        <a href="#"><button class="btn-secundario border-0 w-25 mb-2">Pedir Cita</button></a>
   </div>
 </div>
 <ng-template #mensajeRecomendado>
@@ -30,7 +30,7 @@
       <p>{{apto_servicio.preguntasEnviadas[0][apto_servicio.preguntasEnviadas[0].length - 1].solucion_problema}}</p>
     </div>
     <div class="col-12 text-center mb-2">
-      <a href="#"><button class="btn btn-secundario border-0 rounded-pill w-50 mb-2">Ir a la pagina principal</button></a>
+      <a href="#"><button class="btn-secundario border-0 w-50 mb-2">Ir a la pagina principal</button></a>
     </div>
   </div>
 </ng-template>

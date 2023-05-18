@@ -21,7 +21,7 @@ const getListado = async (req, res = response) => {
                         "contenido": n.contenido,
                         "seccion": n.seccion,
                         "fecha": fecha,
-                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["id"],
+                        "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + n["Imagen"][0]["nombre"],
                     }
                 } else {
                     data = {
@@ -45,7 +45,7 @@ const getListado = async (req, res = response) => {
             res.status(200).json(respuesta);
         }
     }).catch((err) => {
-        console.log(err);
+    
         const respuesta = {
             success: false,
             data: null,
@@ -67,7 +67,7 @@ const registrarNoticia = async (req, res = response) => {
                                 <h2>${ noticia.subtitulo }</h2>
                                 <div>${ noticia.contenido }</div><br><hr>
                                 <p><small>
-                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/">
+                                    <a href="${ process.env.URL_PETICION + process.env.PORT}/api/desactivarNewsletter/${e.id}/${e.vKeyNewsletter}">
                                     Darse de baja
                                 </small></p>` 
                     })
@@ -102,7 +102,7 @@ const getNoticia = (req, res = response) => {
                     "subtitulo": noticia.dataValues.subtitulo,
                     "contenido": noticia.dataValues.contenido,
                     "seccion": noticia.dataValues.seccion,
-                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues.Imagen[0]["id"]
+                    "imagen": process.env.URL_PETICION + process.env.PORT + "/api/noticias/upload/" + noticia.dataValues.Imagen[0]["nombre"]
                 }
             } else {
                 data = {
@@ -140,7 +140,8 @@ const getNoticia = (req, res = response) => {
 
 //Isa
 const borrarNoticia = (req, res = response) => {
-    queriesNoticias.borrarNoticia(req.params.id).then((noticia) => {
+  
+    queriesNoticias.borrarNoticia(req.body.id).then((noticia) => {
         const respuesta = {
             success: true,
             data: noticia,
@@ -179,7 +180,7 @@ const modificarNoticia = (req, res = response) => {
 
 //Isa
 const mostrarImagen = (req, res = response) => {
-    queriesNoticias.getImagen(req.params.id).then(imagen => {
+    queriesNoticias.getImagen(req.params.nombre).then(imagen => {
         if (imagen) {
             const pathImagen = path.join(__dirname, '../uploads', 'noticias', imagen.nombre);
 

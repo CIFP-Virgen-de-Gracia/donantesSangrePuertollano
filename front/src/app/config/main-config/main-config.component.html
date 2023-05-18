@@ -1,6 +1,6 @@
 <main>
 
-  <h2 class="titulo subrayado">Contenidos de la página</h2>
+  <h1 class="titulo subrayado text-center">Contenidos de la página</h1>
 
   <div class="contenedor row">
 
@@ -11,7 +11,7 @@
           [class.activo]="i == elementoActivo"
           (click) = "elementoActivo = i">
           <i class="fa-solid {{ e.icono }}"></i>
-          <span class="oculto">{{ e.nombre | titlecase }}</span>
+          <span class="oculto">{{ getNombre(e.nombre) | titlecase }}</span>
         </li>
       </ul>
     </div>

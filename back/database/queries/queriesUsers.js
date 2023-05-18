@@ -89,7 +89,6 @@ class QueriesUsers {
     //Mario
     getUserLogin = async(email, passwd) => {
         const id = await this.getIdEmail(email);
-        console.log(id);
 
         const user = await models.User.findOne({
             attributes: ['id', 'nombre'],
@@ -133,7 +132,7 @@ class QueriesUsers {
             this.sequelize.conectar();
 
             const emails = await models.Email.findAll({
-                attributes: ['id', 'email', 'newsletterVerifiedAt'],
+                attributes: ['id', 'email', 'newsletterVerifiedAt', 'vKeyNewsletter'],
                 where: {
                     newsletterVerifiedAt: {
                         [Op.ne]: null

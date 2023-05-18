@@ -1,12 +1,25 @@
 header {
   .banner {
-    height: 150px;
+    height: fit-content;
     width: 100%;
+    z-index: 90;
+    position: relative;
+    top:0;
   }
+
 
   nav {
     background-color: var(--color-primario);
     z-index: 100;
+
+    i {
+      font-size: 1.5rem;
+      padding: 0.7rem 0 0.7rem 0;
+
+      &.fa-bars {
+        font-size: 1.8rem;
+      }
+    }
 
     img {
       width: 45px;
@@ -18,7 +31,7 @@ header {
 
     .navbar-toggler {
       border: none;
-      padding: 0 5rem 0 0;
+      padding-right: 6.5rem;
 
       &:focus {
         box-shadow: none;
@@ -29,16 +42,17 @@ header {
     .nav-link {
       color: var(--bs-white);
       padding: 0;
-    }
 
-    /* .dropdown:hover .dropdown-menu {
-      display: block;
-    } */
+      &.dropdown-toggle::after {
+        border-width: 0.4em 0.4em 0 0.4em;
+        vertical-align: .1rem;
+      }
+    }
 
     .dropdown-menu {
       border-radius: 0;
       box-shadow: 0 3px 4px rgba(0,0,0,.2);
-      margin-top: -2px;
+      margin-top: -4px;
       border: none;
 
       .enlace {
@@ -57,13 +71,13 @@ header {
 
     .usuario-contenedor {
       position: absolute;
-      right: 2rem;
-      top: 1.5rem;
+      right: 3rem;
+      top: .85rem;
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 1200px) {
       .navbar-brand {
-        padding-left: 2rem;
+        padding-left: 3rem;
       }
 
       .navbar-collapse {
@@ -90,6 +104,7 @@ header {
 
         .dropdown-menu {
           background-color: var(--color-secundario);
+          box-shadow: 0 3px 4px rgba(0,0,0,.2);
           margin-top: -2px;
           padding: 0;
           box-shadow: unset;

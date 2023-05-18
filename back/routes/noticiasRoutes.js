@@ -8,8 +8,8 @@ const vJwt = require('../middlewares/validarJwt');
 router.post('/get', [vJwt.validarJwt, mid.midAdmin], controlador.getNoticia);
 router.get('/:seccion', controlador.getListado);
 router.post('/registrar', [vJwt.validarJwt, mid.midAdmin], controlador.registrarNoticia);
-router.delete('/borrar/:id', [vJwt.validarJwt, mid.midAdmin], controlador.borrarNoticia);
-router.get('/upload/:id', controlador.mostrarImagen);
+router.delete('/borrar', [vJwt.validarJwt, mid.midAdmin], controlador.borrarNoticia);
+router.get('/upload/:nombre', controlador.mostrarImagen);
 router.put('/modificar', [vJwt.validarJwt, mid.midAdmin], controlador.modificarNoticia);
 
 module.exports = router;

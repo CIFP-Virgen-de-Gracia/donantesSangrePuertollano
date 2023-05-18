@@ -5,8 +5,12 @@ import { ResultadoComponent } from './apto-sangre/resultado/resultado.component'
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
 import { ConfigGuard } from './auth/guards/config.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
-
 import { GaleriaComponent } from './galeria/galeria.component';
+import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
+import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
+import { PoliticasCookiesComponent } from './paginas/politicas-cookies/politicas-cookies.component';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -52,6 +56,18 @@ const routes: Routes = [
     loadChildren: () => import('./citas/citas.module').then(m => m.PedirCitaModule),
     canMatch: [ AuthGuard ],
     canActivate: [ AuthGuard ]
+  },
+  {
+    path: 'aviso-legal',
+    component: AvisoLegalComponent
+  },
+  {
+    path: 'terminos-uso',
+    component: TerminosUsoComponent
+  },
+  {
+    path: 'politicas-cookies',
+    component: PoliticasCookiesComponent
   },
   {
     path: '**',

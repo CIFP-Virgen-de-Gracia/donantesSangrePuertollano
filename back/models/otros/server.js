@@ -1,8 +1,9 @@
 const express = require('express');
 // const body_parser = require('body-parser');
 const cors = require('cors');
-const {conexion, sequelize} = require('../../database/Conexion');
+const { conexion, sequelize } = require('../../database/Conexion');
 const fileupload = require("express-fileupload");
+const { startSocketServer } = require('./socket-server');
 
 //Mario
 class Server {
@@ -12,42 +13,49 @@ class Server {
         this.path = '/api/';
 
         this.pathAptoSangre = "/api/test-apto";
-        this.pathNoticias='/api/noticias/';
+        this.pathNoticias = '/api/noticias/';
         this.pathGaleria = "/api/galeria";
         this.pathMusica = "/api/musica";
+        this.pathFaq = "/api/faq";
+        this.pathChat = "/api/chat";
         //Middlewares
         this.middlewares();
 
         this.routes();
-
+        
     }
-    
+
     middlewares() {
-        this.app.use(cors({origin: '*'}));
+        this.app.use(cors({ origin: '*' }));
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(fileupload({
-            useTempFiles : true,
-            tempFileDir : '/tmp/',
-            createParentPath: true 
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true
         }));
+        this.app.use(express.static("../../uploads/"));
     }
 
-    routes(){
+    routes() {
 
         this.app.use(this.pathAptoSangre, require('../../routes/aptoSangreRoutes'));
-        this.app.use(this.pathGaleria, require ('../../routes/galeria_Routes'));
+        this.app.use(this.pathGaleria, require('../../routes/galeriaRoutes'));
         this.app.use(this.path, require('../../routes/routes'));
-        this.app.use(this.pathNoticias , require('../../routes/noticiasRoutes'));
-        this.app.use(this.pathMusica , require('../../routes/cancionRoutes'));
+        this.app.use(this.pathNoticias, require('../../routes/noticiasRoutes'));
+        this.app.use(this.pathMusica, require('../../routes/cancionRoutes'));
+        this.app.use(this.pathFaq, require('../../routes/faqRoutes'));
+        this.app.use(this.pathChat, require('../../routes/chat-routes'));
 
     }
 
+    
     listen() {
         this.app.listen(process.env.PORT, () => {
             console.log(`Servidor escuchando en: ${process.env.PORT}`);
         })
     }
 }
+startSocketServer() // Inicia el servidor de Socket.io
 
 module.exports = Server;

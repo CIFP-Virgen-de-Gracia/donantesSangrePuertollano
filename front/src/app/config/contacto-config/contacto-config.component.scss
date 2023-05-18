@@ -1,3 +1,7 @@
+input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
+  background-color: rgb(255, 220, 231);
+}
+
 .botones {
   margin-bottom: 1rem;
 }
@@ -10,7 +14,7 @@
     color: var(--color-contraste-oscuro);
 
     &:hover {
-      color: var(--color-primario);
+      color: var(--color-granate);
     }
   }
 
@@ -106,6 +110,13 @@
 }
 
 
+@media (max-width: 576px) {
+  .horarios .horario .dia:not(:last-of-type) label {
+    margin-right: 1rem;
+  }
+}
+
+
 @media (max-width: 768px) {
   .direcciones .direccion {
     grid-template-columns: 1fr;
@@ -140,11 +151,16 @@
 @media (max-width: 1200px) {
 
   .horarios .horario {
-    .horas, .horas>div, .dias {
+
+    .horas,
+    .horas>div,
+    .dias {
       width: 100%;
     }
 
-    .horas, .dias, .inpt {
+    .horas,
+    .dias,
+    .inpt {
       text-align: center;
     }
 
