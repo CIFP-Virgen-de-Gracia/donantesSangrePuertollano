@@ -1,7 +1,7 @@
 const sequelize = require('../ConexionSequelize');
 const conexion = require('../Conexion');
 const moment = require('moment');
-const {Op, DATE} = require('sequelize');
+const {Op, DATE, Sequelize} = require('sequelize');
 const models = require('../../models/index.js');
 
 
@@ -145,7 +145,7 @@ const getCitaPendienteUser = async(id) => {
 
 const getCitasPasadasUser = async(id) => {
     const citasUser = await models.Cita.findAll({
-        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
+        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'haDonado'],
         where: {
             userId: id,
             fecha: {
@@ -236,10 +236,10 @@ const updateFechaCitaPendiente = async(id, fecha) => {
 }
 
 
-const updateCitaPasadaAsistida = async(id, asistida) => {
+const updateCitaPasadaAsistida = async(id, haDonado) => {
     let cita = await models.Cita.findByPk(id);
 
-    cita.update({asistida: asistida});
+    cita.update({haDonado: haDonado});
 
     const resp = cita.save();
 
@@ -306,5 +306,3 @@ module.exports = {
     deleteHoraCita,
     getHorarioDia
 };
-
-// getCitasPendientesRec().then(console.log);

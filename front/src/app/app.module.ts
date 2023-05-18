@@ -22,7 +22,6 @@ import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.modul
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
-
 registerLocaleData(localeEs);
 
 @NgModule({

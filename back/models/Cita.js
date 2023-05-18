@@ -10,7 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Cita.belongsTo(models.User, {as: 'user'});
+      Cita.belongsTo(models.User, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+        as: 'CitaUser'
+      });
+
+      // Cita.belongsTo(models.User, {as: 'user'});
     }
   }
   Cita.init({
@@ -18,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     fecha: DataTypes.DATE,
     donacion: DataTypes.ENUM('sangre', 'plasma'),
     cancelada: DataTypes.TINYINT,
-    asistida: DataTypes.TINYINT
+    haDonado: DataTypes.TINYINT
   }, {
     sequelize,
     tableName: 'citas',

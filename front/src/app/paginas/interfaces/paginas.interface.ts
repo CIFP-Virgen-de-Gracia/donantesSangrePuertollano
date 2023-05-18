@@ -28,11 +28,7 @@ export interface ResponseMensaje {
   data: Mensaje[],
   msg: string,
 }
-export interface ResponseConectado {
-  success: boolean,
-  data: UserConectado[],
-  msg: string,
-}
+
 export interface ResponseComentario {
   success: boolean,
   data: Mensaje,
@@ -45,11 +41,11 @@ export interface Mensaje {
   fecha: string,
   hora: string
 }
-export interface UserConectado {
-  id: string,
-  nombre: string
+export interface ResponseListaConectados{
+  success: boolean,
+  data: string[],
+  msg: string,
 }
-
 
 
 export interface BorrarMemResponse {

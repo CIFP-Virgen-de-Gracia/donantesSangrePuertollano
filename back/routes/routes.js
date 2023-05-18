@@ -7,8 +7,9 @@ const midsValidar = require('../middlewares/validarMiddlewares');
 const auth = require('../controllers/authController');
 const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
+const stats = require('../controllers/statsController');
 const { check } = require('express-validator');
-const { mismaHora, diaSeleccionado } = require('../helpers/validators/contacto-validators');
+const { mismaHora } = require('../helpers/validators/contacto-validators');
 
 // Mario y Alicia
 // auth routes
@@ -80,6 +81,13 @@ router.put('/citas/updatenumpersonascita', [vJwt.validarJwt, midsUser.midAdmin],
 router.post('/citas/inserthoracita', [vJwt.validarJwt, midsUser.midAdmin], citas.insertHoraCita);
 router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin], citas.deleteHoraCita);
 
+
+// Estadísticas routes
+router.get('/stats/getDonaciones/', stats.getDonaciones);
+router.get('/stats/getAltas/', stats.getAltas);
+router.post('/stats/insertDonacion/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertDonacion);
+router.post('/stats/insertAltas/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertAltas);
+router.get('/stats/getTiposDonacion/', stats.getTiposDonacion);
 
 
 module.exports = router;

@@ -7,6 +7,8 @@ const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
 const metodosFecha = require('../helpers/fechas');
 const { QueryInterface } = require('sequelize');
+const qr = require('../helpers/qr-code');
+const fs = require('fs');
 
 //TODO: hacer una tabla de parametrización en db en principio para el n de pacientes que pueden atender en una misma hora
 
@@ -24,7 +26,7 @@ const pedirCita = async(req, res = response) => {
             
                     const resp = await queriesCitas.insertCita(cita);
             
-                    mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion);
+                    mandarCorreoFechaCita(cita.userId, cita.fecha, cita.donacion, resp.id);
                     
                     res.status(200).json({success: true, msg: 'cita insertada con éxito'});
             }
@@ -238,7 +240,8 @@ const mandarCorreoFechaCita = async(id, fecha, donacion) => {
 
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
-
+    let imagenQr = await qr.generarQr(id, idCita); 
+    console.log(imagenQr);
     let contenido = {};
 
     contenido.asunto = 'Recordatorio de tu cita.';
@@ -246,11 +249,142 @@ const mandarCorreoFechaCita = async(id, fecha, donacion) => {
     contenido.cuerpoHtml = `
         Hola. Recuerda que el día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
         <strong>${(metodosFecha.colocarHora(hora))}</strong> tienes una cita para donar <strong>${(donacion)}</strong>.
+        Se le ha adjuntado un código qr que debera mostrar cuando sea atendido para confirmar su asistencia a la cita.
     `;
 
 
     const correo = await queriesUsers.getEmailById(id);
-    const resp = email.mandarCorreo(correo.email, contenido);
+    const resp = email.mandarCorreoAttachment(correo.email, contenido, imagenQr);
+
+   //Elimino la imagen generada para evitar que surjan problemas de rendimiento y almacenamiento
+    if (fs.existsSync(imagenQr)){
+        fs.unlinkSync(imagenQr);
+    }
+}
+
+
+const mandarCorreoModFechaCita = async(id, fechaAnterior, fechaActual, donacion) => {
+
+    console.log('fechaAnterior =>' + fechaAnterior);
+    console.log('fechaActual => ' + fechaActual);
+
+    const fechas = {
+        diaAnterior: moment(fechaAnterior, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY'),
+        diaActual: moment(fechaActual, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY'),
+        horaAnterior: moment(fechaAnterior, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
+        diaActual: moment(fechaActual, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
+    }
+    let contenido = {};
+
+    contenido.asunto = 'Modificiación de la fecha de tu cita.';
+
+    contenido.cuerpoHtml = `
+        Hola. Tu cita del día <strong>${(metodosFecha.colocarFecha(fechas.diaAnterior))}</strong> a las 
+        <strong>${(metodosFecha.colocarHora(fechas.horaAnterior))}</strong> para donar <strong>${(donacion)}</strong>
+        ha sido modificada al día <strong>${(metodosFecha.colocarFecha(fechas.diaActual))}</strong> a las 
+        <strong>${(metodosFecha.colocarHora(fechas.horaAnterior))}</strong>.
+    `;
+
+    const correo = await queriesUsers.getEmailById(id);
+    const resp = email.mandarCorreoAttachment(correo.email, contenido,imagenQr);
+
+   //Elimino la imagen generada para evitar que surjan problemas de rendimiento y almacenamiento
+    if (fs.existsSync(imagenQr)){
+        fs.unlinkSync(imagenQr);
+    }
+}
+
+
+const confirmarAsistencia = async(req, res = response) => {
+
+    try {
+        
+        const resp = queriesCitas.updateCitaPasadaAsistida(req.body.id, req.body.asistida);
+        res.status(200).json({success:true, msg: 'asistencia acutalizada con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+
+}
+
+
+const limpiarUser = (citas) => {
+    
+    const filtro = ({id, nombre}) => ({id, nombre});
+
+    citas.forEach(cita => {
+        cita.user.dataValues = filtro(cita.user.dataValues);
+    });
+}
+
+
+const updateFechaCita = async(req, res = response) => {
+
+    try {
+
+        const resp = await queriesCitas.updateFechaCitaPendiente(req.body.id, 
+            moment(req.body.fechaActual, 'YYYY-MM-DD HH:mm:ss').add(2, 'hour'));
+        mandarCorreoModFechaCita(resp.user.id, req.body.fechaAntigua, req.body.fechaActual, resp.donacion);
+
+        res.status(200).json({success: true, msg: 'fecha actualizada con éxito'});
+    }
+    catch (err) {
+        
+        console.log(err);
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+// TODO cambiar códigos (200 -> 201)
+const modNumPersonaCita = async(req, res = response) => {
+
+    try {
+
+        const resp = await queriesCitas.updateNumPersonasCita(req.body.nPersonas);
+
+        res.status(200).json({success: true, msg: 'parámetro actualizado con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+
+const insertHoraCita = async(req, res = response) => {
+    try {
+
+        const horario = await queriesCitas.getHorarioDia(req.body.codDia);
+
+        if (req.body.hora > horario.hEntrada && req.body.hora < horario.hSalida) {
+            const resp = await queriesCitas.insertHoraCita(req.body.codDia, req.body.hora);
+    
+            res.status(200).json({success: true, msg: 'hora insertada con éxito'});
+        }
+        else {
+            res.status(200).json({success: false, msg: 'hora no válida'});
+        }
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+
+const deleteHoraCita = async(req, res = response) => {
+    try {
+
+        const resp = await queriesCitas.deleteHoraCita(req.params.hora);
+
+        res.status(200).json({success: true, msg: 'hora eliminada con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
 }
 
 

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AptoSangreComponent } from './apto-sangre/apto-sangre.component';
 import { ResultadoComponent } from './apto-sangre/resultado/resultado.component';
 import { AvisoComponent } from './apto-sangre/aviso/aviso.component';
-import { ConfigGuard } from './auth/guards/config.guard';
+import { AdminGuard } from './auth/guards/admin.guard';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { GaleriaComponent } from './galeria/galeria.component';
 import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
@@ -36,7 +36,6 @@ const routes: Routes = [
     path: 'donacion',
     loadChildren: () => import('./paginas-donacion/paginas-donacion.module').then( m => m.PaginasDonacionModule )
   },
-
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
@@ -48,8 +47,8 @@ const routes: Routes = [
   {
     path: 'configuracion',
     loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
-    canMatch: [ ConfigGuard ],
-    canActivate: [ ConfigGuard ]
+    canMatch: [ AdminGuard ],
+    canActivate: [ AdminGuard ]
   },
   {
     path: 'citas',
@@ -68,6 +67,10 @@ const routes: Routes = [
   {
     path: 'politicas-cookies',
     component: PoliticasCookiesComponent
+  },
+  {
+    path: 'stats',
+    loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule),
   },
   {
     path: '**',

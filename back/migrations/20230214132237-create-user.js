@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      gSanguineo: {
+        type: Sequelize.STRING(3),
+        allowNull: true
+      },
       passwd: {
         type: Sequelize.STRING,
         allowNull: false
