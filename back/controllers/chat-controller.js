@@ -1,5 +1,6 @@
 //Isa
 const queriesChat = require("../database/queries/queries-chat");
+const queriesCitas = require('../database/queries/queriesCitas');
 
 const connectedUsers = [];
 const nombreSala = "Chat"
@@ -20,6 +21,7 @@ const conectado = (socket) => {
         console.log("No hay usuario");
     }
 };
+
 
 const desconectado = (socket) => {
     console.log('Usuario desconectado disconnet');

@@ -29,7 +29,7 @@ registerLocaleData(localeEs);
         AppComponent,
         AptoSangreComponent,
         GaleriaComponent,
-        GaleriaComponent,
+        GaleriaComponent
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'es-es' }
@@ -42,7 +42,7 @@ registerLocaleData(localeEs);
         PaginasModule,
         SharedModule,
         GestionContenidoModule,
-        NoticiasRoutingModule,
+        NoticiasRoutingModule, 
         HttpClientModule,
         BrowserAnimationsModule,
         AuthModule,

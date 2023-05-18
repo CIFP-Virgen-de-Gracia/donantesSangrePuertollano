@@ -1,0 +1,12 @@
+<div class="container">
+    <ngb-timepicker [(ngModel)]="time"></ngb-timepicker>
+    <button (click)="anadirHora()">Añadir</button>
+    <ng-container *ngFor="let hora of this.horas; let i = index">
+        <div class="card-body border border-3">
+            {{hora}}
+            <button (click)="quitar(i)">quitar</button>
+        </div>
+    </ng-container>
+</div>
+
+  

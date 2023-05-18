@@ -2,28 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('horarios', {
+    await queryInterface.createTable('ParametrosGenerales', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      codDia: {
-        type: Sequelize.CHAR,
-        allowNull: false
+      campo: {
+        type: Sequelize.STRING
       },
-      dia: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      hEntrada: {
-        type: Sequelize.TIME,
-        allowNull: false
-      },
-      hSalida: {
-        type: Sequelize.TIME,
-        allowNull: false
+      valor: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('horarios');
+    await queryInterface.dropTable('ParametrosGenerales');
   }
 };

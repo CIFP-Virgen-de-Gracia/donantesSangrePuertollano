@@ -30,6 +30,7 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
         res.status(200).json(resp);
     }).catch(err => {
 
+        console.log(err);
         const resp = {
             success: false,
             msg: 'fallo en la autenticación',
@@ -94,6 +95,7 @@ const register = async (req, res = response) => { // poner código
     } 
     catch (err) {
 
+        console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
@@ -165,6 +167,7 @@ const desactivarNewsletter = (req, res = response) => {
         }).catch(err => {
             res.send(HTMLs.error())
         });
+
 }
 
 
@@ -207,8 +210,9 @@ const recuperarPasswd = async (req, res = response) => {
 
     try {
         const user = await queriesUsers.getUser(req.params.id);
-        let resp = null;
 
+        let resp = null;
+        console.log(user.codRecPasswd);
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);

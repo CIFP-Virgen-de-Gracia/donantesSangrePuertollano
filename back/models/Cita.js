@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id',
         as: 'CitaUser'
       });
+
+      // Cita.belongsTo(models.User, {as: 'user'});
     }
   }
   Cita.init({
