@@ -174,7 +174,7 @@ const getCitasPendientes = async() => {
 
 
 const getCitasPendientesRec = async() => {
-    const citas = await conexion.query('SELECT citas.fecha, citas.donacion, emails.id, emails.email FROM citas '
+    const citas = await conexion.query('SELECT citas.id, citas.fecha, citas.donacion, emails.id as userId, emails.email FROM citas '
         + 'JOIN emails on citas.userId = emails.id WHERE citas.cancelada <> 1 '
         + 'AND fecha > DATE(NOW())'
     );
