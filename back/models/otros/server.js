@@ -1,6 +1,8 @@
 const express = require('express');
 // const body_parser = require('body-parser');
 const cors = require('cors');
+const cron = require('node-cron');
+const citasController = require('../../controllers/citasController');
 const { conexion, sequelize } = require('../../database/Conexion');
 const fileupload = require("express-fileupload");
 const { startSocketServer } = require('./socket-server');
@@ -56,6 +58,9 @@ class Server {
         })
     }
 }
+
+cron.schedule('0 0 8 * * *', () => {citasController.recordarCitaTresDias()});
+
 startSocketServer() // Inicia el servidor de Socket.io
 
 module.exports = Server;

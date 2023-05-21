@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     gSanguineo: DataTypes.STRING(3),
     passwd: DataTypes.STRING,
-    codRecPasswd: DataTypes.STRING
+    codRecPasswd: DataTypes.STRING,
+    dni: DataTypes.STRING,
+    nDonante: DataTypes.INTEGER
   }, {
     sequelize,
     tableName: 'users',

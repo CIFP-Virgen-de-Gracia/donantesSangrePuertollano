@@ -10,10 +10,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       pregunta: {
-        type: Sequelize.STRING(65000)
+        type: Sequelize.TEXT
       },
       respuesta: {
-        type: Sequelize.STRING(65000)
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
