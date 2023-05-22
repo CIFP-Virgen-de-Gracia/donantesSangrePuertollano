@@ -15,38 +15,21 @@
 
 <main>
   <div class="contenedor row">
-    <nav class="navbar navbar-expand-md">
-      <div class="col-12 col-md-3 cabeceraMenu">
-        <ul class="navbar-brand titulo_Movil">
-          <li class="nav-item"
-           *ngFor="let e of elementos; let i = index">
-              <h3 *ngIf="i == elementoActivo">{{ e.nombre | titlecase }}</h3>
-          </li>
-        </ul>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-        data-bs-target="#menu-medula-Osea" aria-controls="menu-medula-Osea" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <i class="fa-solid fa-bars fs-2"></i>
-        </button>
+    <div class="col-2 col-md-3 menu-horizontal g-0" id="menu-medula-Osea">
+      <ul class="">
+        <li *ngFor="let e of elementos; let i = index"
+          routerLink="./{{ e.enlace }}"
+          [class.activo]="i == elementoActivo"
+          (click) = "elementoActivo = i">
+          <i tooltip="{{ e.nombre }}" placement="top" [showDelay]="500" class="fa-solid {{ e.icono }}"></i>
+          <span class="oculto">{{ e.nombre | titlecase }}</span>
+        </li>
+      </ul>
+    </div>
 
-      </div>
-      <div class="col-12 col-md-3 menu-horizontal g-0 collapse navbar-collapse text-center" id="menu-medula-Osea">
-        <ul class="">
-          <li *ngFor="let e of elementos; let i = index"
-            routerLink="./{{ e.enlace }}"
-            [class.activo]="i == elementoActivo"
-            (click) = "elementoActivo = i">
-            <i class="fa-solid {{ e.icono }}" data-toggle="tooltip" data-placement="left" title="{{e.nombre}}"></i>
-            <span>{{ e.nombre | titlecase }}</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="col-12 col-md-9 config">
-        <router-outlet></router-outlet>
-      </div>
-
-    </nav>
+    <div class="col-10 col-md-9 config">
+      <router-outlet></router-outlet>
+    </div>
 
   </div>
 </main>

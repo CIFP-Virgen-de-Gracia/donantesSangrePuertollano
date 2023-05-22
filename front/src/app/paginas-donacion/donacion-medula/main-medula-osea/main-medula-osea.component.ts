@@ -14,7 +14,7 @@ export class MainMedulaOseaComponent {
       enlace: "donaMedulaOsea"
     },
     {
-      nombre : "¿Donde hacer la donacion?",
+      nombre : "¿Donde donar?",
       icono: "fa-solid fa-map-location-dot",
       enlace: "mapaOsea"
     }

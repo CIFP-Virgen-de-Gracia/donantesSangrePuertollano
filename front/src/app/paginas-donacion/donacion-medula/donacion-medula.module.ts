@@ -6,7 +6,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MainMedulaOseaComponent } from './main-medula-osea/main-medula-osea.component';
 import { MedulaOseaComponent } from './medula-osea/medula-osea.component';
 import { DondeMedulaOseaComponent } from './donde-medula-osea/donde-medula-osea.component';
-
+import { TooltipModule } from 'ng2-tooltip-directive';
 @NgModule({
   declarations: [
     MainMedulaOseaComponent,
@@ -21,6 +21,7 @@ import { DondeMedulaOseaComponent } from './donde-medula-osea/donde-medula-osea.
     DonacionMedulaRoutingModule,
     ReactiveFormsModule,
     AngularEditorModule,
+    TooltipModule
   ],
   exports: [
     MainMedulaOseaComponent
