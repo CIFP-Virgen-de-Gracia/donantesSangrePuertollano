@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('horarios', {
+    await queryInterface.createTable('diasHoras', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,15 +13,7 @@ module.exports = {
         type: Sequelize.CHAR,
         allowNull: false
       },
-      dia: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      hEntrada: {
-        type: Sequelize.TIME,
-        allowNull: false
-      },
-      hSalida: {
+      hora: {
         type: Sequelize.TIME,
         allowNull: false
       },
@@ -33,9 +25,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    },
+    {
+      unique: true,
+      fields: ['codDia', 'hora']
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('horarios');
+    await queryInterface.dropTable('diasHoras');
   }
 };

@@ -44,7 +44,7 @@ const fechaEsMayor = (fecha, ahora) => {
 
 
 const horaValida = async(fecha) => {
-    const horasDisp = await queriesCitas.getHorarioCitas();
+    const horasDisp = await queriesCitas.getHorarioCitas(moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'));
 
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss');
     
@@ -53,7 +53,7 @@ const horaValida = async(fecha) => {
      
         if (horaDisp == hora) {
             valida = true;
-            return // Opto por el return porque es un bucle muy sencillo.
+            return; // Opto por el return porque es un bucle muy sencillo.
         }
     });
 

@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       mensaje: {
-        type: Sequelize.STRING(65000)
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
