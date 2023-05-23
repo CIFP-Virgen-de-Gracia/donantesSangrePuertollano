@@ -1,114 +1,238 @@
-<div class="botones mensajes d-flex justify-content-between">
-  <div [ngClass]="actualizado ? 'mensaje-ok' : 'mensaje-error'" class="d-flex align-items-center">
+<form [formGroup]="contactoForm" (ngSubmit)="guardar()"  #cForm="ngForm">
+  <div class="botones mensajes d-flex justify-content-between">
+    <div [ngClass]="actualizado ? 'mensaje-ok' : 'mensaje-error'" class="d-flex align-items-center">
 
-    <i [ngClass]="actualizado ? 'fa-circle-check' : 'fa-triangle-exclamation'" class="fa-solid icono-peq me-2"
-      *ngIf="mensaje">
-    </i>
+      <i [ngClass]="actualizado ? 'fa-circle-check' : 'fa-triangle-exclamation'" class="fa-solid icono-peq me-2"
+        *ngIf="mensaje">
+      </i>
 
-    <div>{{ mensaje }}</div>
-  </div>
-
-  <button (click)="guardar()" class="btn-primario" type="submit">Guardar</button>
-</div>
-
-
-<div class="horarios">
-  <h3 class="titulo mb-4">Horario</h3>
-
-  <div class="horario d-flex flex-column flex-xl-row" *ngFor="let h of hMostrar">
-    <div class="horas d-flex">
-      <div class="d-flex flex-column flex-xl-row">
-        <p class="f-rojo">Entrada</p>
-        <input class="inpt pe-xl-4" type="time" [(ngModel)]="h.hEntrada"/>
-      </div>
-
-      <div class="d-flex flex-column flex-xl-row">
-        <p class="f-rojo">Salida</p>
-        <input class="inpt pe-xl-5" type="time" [(ngModel)]="h.hSalida"/>
-      </div>
+      <div>{{ mensaje }}</div>
     </div>
 
-    <div class="dias d-flex flex-column flex-xl-row">
-      <p class="f-rojo">Días</p>
+    <button class="btn-primario" type="submit">Guardar</button>
+  </div>
 
-      <div class="inpt d-flex align-items-center justify-content-center">
-        <div class="dia" *ngFor="let dia of h.dias">
 
-          <input type="checkbox"
-            class="me-1"
-            name="{{ dia.valor }}"
-            value="{{ dia.valor }}"
-            [(ngModel)]="dia.seleccionado">
+  <div class="horarios">
+    <h3 class="titulo mb-4">Horario</h3>
 
-          <label for="{{ dia.valor }}">{{ dia.letra }}</label>
+    <p *ngIf="contactoForm.get('horarios')?.errors?.['mismaHora']"
+      class="mensaje-error mb-3">Hay horarios con las mismas horas de entrada y salida
+    </p>
+
+    <ng-container formArrayName="horarios">
+      <ng-container *ngFor="let horarioForm of horarios.controls; let i = index">
+        <div class="horario d-flex flex-column flex-xl-row align-items-center" [formGroupName]="i">
+
+          <div class="horas d-flex">
+            <div class="d-flex flex-column flex-xl-row">
+              <p class="f-rojo">Entrada</p>
+              <input type="time"
+                class="inpt pe-xl-4 pe-xxl-5"
+                formControlName="hEntrada" />
+            </div>
+
+            <div class="d-flex flex-column flex-xl-row">
+              <p class="f-rojo">Salida</p>
+              <input type="time"
+                class="inpt pe-xl-4 pe-xxl-5"
+                formControlName="hSalida" />
+            </div>
+          </div>
+
+          <div class="dias d-flex flex-column flex-xl-row">
+            <p class="f-rojo">Días</p>
+
+            <ng-container formArrayName="dias">
+              <div class="ms-xl-2 d-flex align-items-center justify-content-center">
+
+                <ng-container *ngFor="let diaForm of getDiasHorario(i).controls; let j = index">
+                  <div class="dia" [formGroupName]="j">
+
+                    <input type="checkbox"
+                      class="me-1"
+                      name="{{ diaForm.get('nombre')!.value }}"
+                      value="{{ diaForm.get('nombre')!.value }}"
+                      formControlName="seleccionado" />
+
+                    <label for="{{ diaForm.get('nombre')!.value }}">{{ diaForm.get("letra")!.value }}</label><!-- getLetra(i,j) -->
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+
+          <i class="fa-solid fa-trash ms-auto me-2" (click)="deleteHorario(i)"></i>
         </div>
-      </div>
-    </div>
 
-    <!-- <i class="fa-solid fa-trash ms-auto me-2" (click)="deleteHorario($event)"></i> -->
+        <div>
+          <p *ngIf="horarioForm.get('hEntrada')?.errors?.['required']
+                    || horarioForm.get('hSalida')?.errors?.['required']"
+            class="mensaje-error">La horas de entrada y salida son obligatorias
+          </p>
+
+          <p *ngIf="horarioForm.get('dias')?.errors?.['noDiaSelecc']"
+            class="mensaje-error">Es necesario seleccionar al menos 1 día
+          </p>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+    <button type="button" (click)="addHorario()" class="btn-primario">
+      Añadir otro
+    </button>
   </div>
 
-  <button type="submit" (click)="addHorario()" class="btn-primario">
-    Añadir otro
-  </button>
-</div>
 
+  <div class="telefonos">
+    <h3 class="titulo mb-4">Teléfonos</h3>
 
-<div class="telefonos">
-  <h3 class="titulo mb-4">Teléfonos</h3>
+    <ng-container formArrayName="telefonos">
+      <ng-container *ngFor="let telefonoForm of telefonos.controls; let i = index">
 
-  <div class="telefono d-flex flex-column flex-md-row align-items-center"
-    *ngFor="let t of telefonos; let i = index">
+        <div class="telefono row align-items-center g-0" [formGroupName]="i">
 
-    <div class="f-rojo">Número</div>
-    <input type="text" class="inpt numero" [(ngModel)]="t.numero">
+          <div class="col-12 col-md-6 d-flex flex-column flex-md-row">
+            <div class="f-rojo">Número</div>
+            <input type="text"
+              class="inpt numero"
+              formControlName="numero"/>
+          </div>
 
-    <div class="f-rojo">Extensión</div>
-    <input type="text" class="inpt extension" [(ngModel)]="t.extension">
+          <div class="col-12 col-md-5 d-flex flex-column flex-md-row">
+            <div class="f-rojo">Extensión</div>
+            <input type="text"
+              class="inpt extension"
+              formControlName="extension"/></div>
 
-    <i class="fa-solid fa-trash ms-2 me-2" (click)="deleteTelefono(i)"></i>
+          <div class="col-md-1 d-flex">
+            <i class="fa-solid fa-trash ms-auto me-2" (click)="deleteTelefono(i)"></i>
+          </div>
+        </div>
+
+        <div class="row g-0">
+          <div class="col-12 col-md-6">
+            <span *ngIf="telefonoForm.get('numero')?.errors?.['required']"
+              class="mensaje-error">El número es obligatorio
+            </span>
+
+            <span *ngIf="telefonoForm.get('numero')?.errors?.['pattern']"
+              class="mensaje-error">Número no válido
+            </span>
+          </div>
+
+          <div class="col-12 col-md-5">
+            <span *ngIf="telefonoForm.get('extension')?.errors?.['pattern']"
+              class="mensaje-error">Extensión no válida
+            </span>
+          </div>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+    <button type="button" (click)="addTelefono()" class="btn-primario">
+      Añadir otro
+    </button>
   </div>
 
-  <button type="submit" (click)="addTelefono()" class="btn-primario">
-    Añadir otro
-  </button>
-</div>
+
+  <div class="direcciones">
+    <h3 class="titulo mb-4">Dirección</h3>
+
+    <ng-container formArrayName="direcciones">
+      <ng-container *ngFor="let dirForm of direcciones.controls; let i = index">
+        <div class="direccion" [formGroupName]="i">
+
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">Lugar</div>
+
+              <input type="text"
+                formControlName="lugar"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
+
+            <span *ngIf="dirForm.get('lugar')?.invalid"
+              class="mensaje-error">Lugar no válido
+            </span>
+          </div>
+
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">Calle</div>
+
+              <input type="text"
+                formControlName="calle"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
+
+            <span *ngIf="dirForm.get('calle')?.invalid"
+              class="mensaje-error">Calle no válida
+            </span>
+          </div>
+
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">Número</div>
+
+              <input type="text"
+                formControlName="numero"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
+
+            <span *ngIf="dirForm.get('numero')?.invalid"
+              class="mensaje-error">Número no válido
+            </span>
+          </div>
+
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">Ciudad</div>
+
+              <input type="text"
+                formControlName="ciudad"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
+
+            <span *ngIf="dirForm.get('ciudad')?.invalid"
+              class="mensaje-error">Ciudad no válida
+            </span>
+          </div>
 
 
-<div class="direcciones">
-  <h3 class="titulo mb-4">Dirección</h3>
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">Provincia</div>
 
-  <div class="direccion" *ngFor="let d of direcciones">
+              <input type="text"
+                formControlName="provincia"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
 
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">Lugar</div>
-      <input type="text" [(ngModel)]="d.lugar" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
+            <span *ngIf="dirForm.get('provincia')?.invalid"
+              class="mensaje-error">Provincia no válida
+            </span>
+          </div>
 
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">Calle</div>
-      <input type="text" [(ngModel)]="d.calle" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
+          <div>
+            <div class="row gx-0">
+              <div class="nombre col-12 col-xl-4 f-rojo">CP</div>
 
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">Número</div>
-      <input type="text" [(ngModel)]="d.numero" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
+              <input type="number"
+                formControlName="cp"
+                class="valor align-middle col-12 col-xl-8 inpt"/>
+            </div>
 
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">Ciudad</div>
-      <input type="text" [(ngModel)]="d.ciudad" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
+            <span *ngIf="dirForm.get('cp')?.invalid"
+              class="mensaje-error">Código postal no válido
+            </span>
+          </div>
 
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">Provincia</div>
-      <input type="text" [(ngModel)]="d.provincia" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
-
-    <div class="row gx-0">
-      <div class="nombre col-12 col-xl-4 f-rojo">CP</div>
-      <input type="number" [(ngModel)]="d.cp" class="valor align-middle col-12 col-xl-8 inpt">
-    </div>
-
+        </div>
+      </ng-container>
+    </ng-container>
   </div>
-</div>
+</form>
+

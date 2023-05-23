@@ -21,4 +21,4 @@ const routes: Routes = [
     RouterModule
   ]
 })
-export class NoticiasRoutingModule { }
+export class NoticiasRoutingModule { } 

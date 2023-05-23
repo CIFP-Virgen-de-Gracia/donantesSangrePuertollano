@@ -1,36 +1,66 @@
-.custom-control.image-checkbox{
+h1 {
+  padding-top: 5rem;
+}
+
+.contenedor-imagenes {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  row-gap: 4rem;
+  padding: 0 4rem;
+
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 3rem
+  }
+
+  @media (min-width: 992px) {
+    padding: 0 7rem;
+    column-gap: 5rem;
+  }
+
+  @media (min-width: 1400px) {
+    padding: 0 17rem;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.custom-control.image-checkbox {
   position: relative;
   padding-left: 0 !important;
 
-
-  input[type=checkbox]{
+  input[type=checkbox] {
     box-sizing: border-box;
     padding: 0 !important;
 
-    &.custom-control-input{
+    &.custom-control-input {
       z-index: -1;
       opacity: 0;
-      &:hover{
+
+      &:hover {
         opacity: .8;
       }
-      &:checked{
+
+      &:checked {
         z-index: 0;
         opacity: 1;
       }
     }
   }
 
-  label{
-      cursor: pointer;
+  label {
+    cursor: pointer;
 
-      &:focus,
-      &:hover{
-          opacity: .8;
-      }
+    &:focus,
+    &:hover {
+      opacity: .8;
+    }
   }
-}
-
-
-button:hover{
-  background-color: var(--color-granate-oscuro);
 }

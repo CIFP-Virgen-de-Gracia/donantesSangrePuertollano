@@ -88,7 +88,6 @@ export class AddHimnoComponent {
     } else {
       if (!this.comprobarExtension(this.cancion.archivo)) {
         this.aviso = 3;
-        console.log(this.aviso);
       } else {
         this.ConfigService.addAudio(this.cancion).subscribe((res) => {
           if (res.success !== false) {

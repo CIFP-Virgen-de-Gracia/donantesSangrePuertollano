@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { Md5 } from 'ts-md5';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { WebSocketService } from '../../paginas/services/web-socket.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private authHttsService: AuthService,
     private SharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private WebSocketService:WebSocketService
   ) { }
 
   irARegistro() {
@@ -38,6 +40,8 @@ export class LoginComponent {
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.erroneo = false;
         this.SharedService.comprobarPermisos.next(!this.erroneo);
+        let datos = JSON.parse(localStorage.getItem('user') || "");
+        this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);
         this.router.navigate(['']);
       }
       else this.erroneo = true;

@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         defaultValue: false
       },
-      asistida: {
+      haDonado: {
         type: Sequelize.TINYINT,
         allowNull: false,
         defaultValue: false

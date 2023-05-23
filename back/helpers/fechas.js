@@ -11,7 +11,10 @@ const colocarFecha = (fecha) => {
 const colocarHora = (hora) => {
     return hora.slice(0, 5);
 }
-
+//Isabel
+const comprobarHoraFecha = (fecha,fechaDb) => {
+  return fechaDb.getTime() === fecha.getTime();
+}
 
 const horaEsMayor = (hora, ahora) => { // copara horas con el siguiente formato HH:mm
     let esMayor = false;
@@ -41,16 +44,16 @@ const fechaEsMayor = (fecha, ahora) => {
 
 
 const horaValida = async(fecha) => {
-    const horasDisp = await queriesCitas.getHorarioCitas();
+    const horasDisp = await queriesCitas.getHorarioCitas(moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'));
 
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss');
     
     let valida = false;
     horasDisp.forEach(horaDisp => {
-        console.log(horaDisp);
+     
         if (horaDisp == hora) {
             valida = true;
-            return // Opto por el return porque es un bucle muy sencillo.
+            return; // Opto por el return porque es un bucle muy sencillo.
         }
     });
 
@@ -62,5 +65,6 @@ module.exports = {
     colocarFecha,
     colocarHora,
     horaEsMayor,
-    horaValida
+    horaValida,
+    comprobarHoraFecha
 }

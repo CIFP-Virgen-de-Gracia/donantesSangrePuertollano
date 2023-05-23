@@ -30,7 +30,7 @@ export class MostrarCitasComponent {
 
     const id = JSON.parse(localStorage.getItem('user')!).id;
 
-    zip([this.citasService.fetchCitaPendiente(id), this.citasService.fetchCitasPasadas(id)])
+    zip([this.citasService.fetchCitaPendienteUser(id), this.citasService.fetchCitasPasadasUser(id)])
       .subscribe(([citasPendientesResp, citasPasadasResp]) => {
 
         if (citasPendientesResp.success && citasPasadasResp.success) {

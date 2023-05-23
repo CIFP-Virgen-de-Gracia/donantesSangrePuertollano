@@ -2,7 +2,7 @@ const sequelize = require('../ConexionSequelize');
 const fs = require("fs");
 const path = require('path');
 const fileUpload = require('express-fileupload');
-const File = require('../../helpers/FileUpload');
+const File = require('../../helpers/fileUpload');
 const models = require('../../models/index.js');
 const assets = require('../../helpers/irAssets');
 
@@ -31,7 +31,7 @@ class Queries_Galeria {
         try {
             let galeria = await models.Galeria.create();
             galeria.id = null;
-            const nombre = await File.subirArchivo(req.files, undefined, 'galeria');
+            const nombre = await File.subirArchivo(req.files.archivo, undefined, 'galeria');
             assets.copiarAssests('galeria', 'galeria', nombre);
             galeria.nombre = nombre;
             const resp = await galeria.save();

@@ -19,10 +19,11 @@ export class ModalPedirCitaComponent {
   puedePedirCita = false;
 
   @ViewChild('content') content!: ElementRef;
-	
+
   constructor(
     private modalService: NgbModal,
     private citasService: CitasService,
+  
     private router: Router) {}
 
 
@@ -42,7 +43,7 @@ export class ModalPedirCitaComponent {
       id = JSON.parse(user).id;
 
       const resp = await firstValueFrom(this.citasService.compHaPedidoCita(id));
-      
+
       this.puedePedirCita = resp.success;
     }
     else {
@@ -51,11 +52,10 @@ export class ModalPedirCitaComponent {
 
 
     if (!this.registrado || !this.puedePedirCita) {
-      console.log('entra');
       this.modalService.open(this.content, { centered: true });
     }
     else {
-      
+
       this.router.navigate(['/citas/pedircita']);
     }
   }

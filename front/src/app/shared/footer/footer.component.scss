@@ -4,6 +4,10 @@ footer {
   height: fit-content;
   padding: 2rem 4rem;
 
+  .enlace {
+    padding-top: 0 !important;
+  }
+
   @media (max-width: 992px) {
     padding: 2rem;
   }
@@ -19,8 +23,8 @@ footer {
         margin-top: 1.5rem;
       }
 
-      &.copyright .enlaces {
-        margin-top: .5rem;
+      &.copyright .enlace {
+        margin-top: .7rem;
       }
     }
 

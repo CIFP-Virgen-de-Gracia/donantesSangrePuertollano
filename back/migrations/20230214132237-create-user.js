@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      gSanguineo: {
+        type: Sequelize.STRING(3),
+        allowNull: true
+      },
       passwd: {
         type: Sequelize.STRING,
         allowNull: false
@@ -20,7 +24,15 @@ module.exports = {
       codRecPasswd: {
         type: Sequelize.STRING,
         allowNull: true
-      }, 
+      },
+      dni: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      nDonante: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

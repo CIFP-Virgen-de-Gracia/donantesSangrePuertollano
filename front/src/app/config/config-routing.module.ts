@@ -5,6 +5,7 @@ import { HermandadConfigComponent } from './hermandad-config/hermandad-config.co
 import { ContactoConfigComponent } from './contacto-config/contacto-config.component';
 import { HimnoConfigComponent } from './himno-config/himno-config.component';
 import { TestConfigComponent } from './test-config/test-config.component';
+import { FaqsConfigComponent } from './faqs-config/faqs-config.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'contacto', component: ContactoConfigComponent },
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},
+      { path: 'faq', component: FaqsConfigComponent },
       { path: '**', redirectTo: 'hermandad' }
     ]
   }

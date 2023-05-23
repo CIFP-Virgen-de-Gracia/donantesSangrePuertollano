@@ -17,9 +17,7 @@ export class HimnoComponent implements OnInit {
     this.PaginasService.getListado().subscribe((res) => {
       if (res.success !== false) {
         res.data.map(c => this.letra.push(c.letra));
-        console.log(this.letra);
-      } else {
-        console.log("No encontrada");
+
       }
     });
   }
