@@ -104,6 +104,15 @@ class QueriesUsers {
     }
 
 
+    getUserCambiarPasswd = async(id, passwd) => {
+        const user = await models.User.findByPk(id, {
+            attributes: ['id', passwd]
+        });
+
+        return user;
+    }
+
+
     //Mario
     getAbilities = async(roles) =>  {
         try {
@@ -308,6 +317,21 @@ class QueriesUsers {
 
         this.sequelize.desconectar();
         return resp.dataValues;
+    }
+
+
+    //Mario
+    updateUser = async(id, datosUser) => {
+        let user = await models.User.findByPk(id);
+        let updateUser = {};
+
+        for (const [key, value] of Object.entries(datosUser)) {
+            if (value != null) updateUser[key] = value;
+        }
+
+        const resp = await user.update(updateUser);
+
+        return resp;
     }
 
 

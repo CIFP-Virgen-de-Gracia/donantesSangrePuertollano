@@ -249,6 +249,23 @@ const recuperarPasswd = async (req, res = response) => {
     }
 }
 
+//Mario
+const cambiarPasswd = async(req, res = response) => {
+
+    try {
+
+        const user = await queriesUsers.getUserCambiarPasswd(req.body.id, req.body.passwd);
+
+        const resp = await queriesUsers.updateUserPasswd(user.id, req.body.passwdNueva);
+        
+        res.status(201).json({success: true, msg: 'passwd actualizada con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
 
 // Alicia
 const puedeModificar = async (req, res = response) => {
@@ -286,6 +303,7 @@ module.exports = {
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,
+    cambiarPasswd,
     recuperarPasswd,
     puedeModificar,
     desactivarNewsletter,

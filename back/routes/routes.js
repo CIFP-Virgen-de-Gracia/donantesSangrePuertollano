@@ -8,8 +8,10 @@ const auth = require('../controllers/authController');
 const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
 const stats = require('../controllers/statsController');
+const users = require('../controllers/userController');
 const { check } = require('express-validator');
 const { mismaHora } = require('../helpers/validators/contacto-validators');
+const queriesUsers = require('../database/queries/queriesUsers');
 
 // Mario y Alicia
 // auth routes
@@ -19,12 +21,19 @@ router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
+router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.midUser], auth.cambiarPasswd);
 router.post('/suscripcionNewsletter', [
     check('email', 'Formato de correo no válido').isEmail(),
     midsValidar.validarCampos
 ], auth.mandarEmailNewsletter); //Alicia
 router.get('/activarNewsletter/:id/:vKey', auth.activarNewsletter); //Alicia
 router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alicia
+
+
+// Usuarios routes
+// Mario
+// [vJwt.validarJwt, midsUser.midUser]
+router.put('/users/updateuser', users.updateUser);
 
 
 // Contenido routes
