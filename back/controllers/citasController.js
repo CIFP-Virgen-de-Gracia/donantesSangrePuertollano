@@ -220,7 +220,7 @@ const recordarCitaTresDias = async() => {
     tresDiasMas.setDate(hoy.getDate() + 3);
 
     let diffTime = 0;
-    let diffHours = 0;
+    let diffHours = 0;6
     citas.forEach(cita => {
         const fCita = new Date(cita.fecha);
 
@@ -230,18 +230,17 @@ const recordarCitaTresDias = async() => {
 
             const fec = fCita.getFullYear() + '-' + fCita.getMonth() + '-' + fCita.getDate() + ' ' 
                 + fCita.getHours() + ':' + fCita.getMinutes() + ':' + fCita.getSeconds()
-            mandarCorreoFechaCita(cita.id, fec, cita.donacion);
+            mandarCorreoFechaCita(cita.userId, fec, cita.donacion, cita.id);
         }
     });
 }
 
 
-const mandarCorreoFechaCita = async(id, fecha, donacion) => {
+const mandarCorreoFechaCita = async(id, fecha, donacion, idCita) => {
 
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
     let imagenQr = await qr.generarQr(id, idCita); 
-    console.log(imagenQr);
     let contenido = {};
 
     contenido.asunto = 'Recordatorio de tu cita.';
@@ -405,6 +404,3 @@ module.exports = {
     insertHoraCita,
     deleteHoraCita
 }
-
-
-recordarCitaTresDias().then(console.log('asdf'));

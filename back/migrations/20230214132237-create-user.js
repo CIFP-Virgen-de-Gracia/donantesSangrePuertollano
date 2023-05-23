@@ -24,7 +24,15 @@ module.exports = {
       codRecPasswd: {
         type: Sequelize.STRING,
         allowNull: true
-      }, 
+      },
+      dni: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      nDonante: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

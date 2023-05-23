@@ -15,7 +15,6 @@ class QueriesUsers {
 
 
     //Mario
-    //Mario
     getIdEmail = async(email) => {
         const id = await models.Email.findOne({
             attributes: ['id'],
@@ -107,6 +106,15 @@ class QueriesUsers {
     getUserCambiarPasswd = async(id, passwd) => {
         const user = await models.User.findByPk(id, {
             attributes: ['id', passwd]
+        });
+
+        return user;
+    }
+
+
+    getUserInfo = async(id) => {
+        const user = await models.User.findByPk(id, {
+            attributes: ['id', 'nombre', 'gSanguineo', 'dni', 'nDonante', ]
         });
 
         return user;
@@ -307,7 +315,6 @@ class QueriesUsers {
         
     //Mario
     updateUserPasswd = async(id, nuevaPasswd) => {
-        this.sequelize.conectar();
 
         let user = await models.User.findByPk(id);
         user.update({passwd: nuevaPasswd});
@@ -315,7 +322,6 @@ class QueriesUsers {
 
         const resp = await user.save();
 
-        this.sequelize.desconectar();
         return resp.dataValues;
     }
 
@@ -326,6 +332,7 @@ class QueriesUsers {
         let updateUser = {};
 
         for (const [key, value] of Object.entries(datosUser)) {
+            console.log(key + ' => ' + value);
             if (value != null) updateUser[key] = value;
         }
 
@@ -333,6 +340,7 @@ class QueriesUsers {
 
         return resp;
     }
+
 
 
     //Mario
@@ -363,3 +371,10 @@ class QueriesUsers {
 const queriesUsers = new QueriesUsers();
 
 module.exports = queriesUsers;
+
+const a = {
+    gSanguineo: 'A+',
+    dni: '05937787S'
+}
+
+// queriesUsers.getUserInfo(1).then(console.log);
