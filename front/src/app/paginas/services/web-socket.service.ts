@@ -18,7 +18,7 @@ export class WebSocketService extends Socket {
       datos = JSON.parse(localStorage.getItem('user') || "");
     }
     super({
-      url: environment.baseSocket,
+      url: environment.socketUrl,
       options: {
         query: {
           payload: datos.nombre
@@ -32,12 +32,11 @@ export class WebSocketService extends Socket {
   }
 
   emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
-    console.log("evento inicio");
     this.ioSocket.emit('iniciarSesion', {
       payload
     }, (respuesta: ResponseListaConectados) => {
       if (respuesta.success) {
-        console.log(respuesta);
+
         this.ChatService.setListaConectados(respuesta.data);
       }
     });
@@ -47,7 +46,7 @@ export class WebSocketService extends Socket {
       payload
     }, (respuesta: ResponseListaConectados) => {
       if (respuesta.success) {
-        console.log(respuesta);
+
         this.ChatService.setListaConectados(respuesta.data);
       }
     });

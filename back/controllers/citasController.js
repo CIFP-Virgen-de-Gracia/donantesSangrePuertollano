@@ -172,7 +172,6 @@ const mandarCorreoFechaCita = async(id, fecha, donacion, idCita) => {
     const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
     let imagenQr = await qr.generarQr(id,idCita); 
-    console.log(imagenQr);
     let contenido = {};
 
     contenido.asunto = 'Recordatorio de tu cita.';

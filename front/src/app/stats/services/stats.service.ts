@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { DonacionResponse, AltaResponse, MsgResponse } from '../interfaces/stats.interface';
+import { DonacionResponse, AltaResponse } from '../interfaces/stats.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,15 +27,6 @@ export class StatsService {
     return this.http.get<AltaResponse>(this.url+ '/getAltas');
   }
 
-
-  insertDonacion(payload: FormData): Observable<MsgResponse> {
-    return this.http.post<MsgResponse>(this.url+ '/insertDonacion', payload, this.header);
-  }
-
-
-  insertAltas(payload: FormData): Observable<MsgResponse> {
-    return this.http.post<MsgResponse>(this.url+ '/insertAltas', payload, this.header);
-  }
 
   getTiposDonacion(): Observable<any> {
     return this.http.get<any>(this.url+ '/getTiposDonacion');

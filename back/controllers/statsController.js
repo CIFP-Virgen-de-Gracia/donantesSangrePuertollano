@@ -50,58 +50,41 @@ const getAltas = async(req, res = response) => {
 }
 
 
-const insertDonacion = async(req, res = response) => { 
-    req.body.fecha = moment(req.body.fecha, 'YYYY-MM-DD').add(2, 'hour');
-
-    queriesDonaciones.insertDonacion(req.body)
-        .then(donacion => {
-
-            const resp = {
-                success: true,
-                msg: 'Donación registrada con éxito'
-            }
-
-            res.status(200).json(resp);
-
-        }).catch(err => {
-            
-            const resp = {
-                success: false,
-                msg: 'Se ha producido un error',
-            }
-
-            res.status(200).json(resp);
-        });
+const insertDonacion = async(payload) => { 
+    payload.fecha = moment(payload.fecha, 'YYYY-MM-DD').add(2, 'hour');
+   
+    const donacion = await queriesDonaciones.insertDonacion(payload);
+    
+    return (donacion) 
+        ? { success: true, msg: 'Donación registrada con éxito', data: donacion }
+        : { success: false,  msg: 'Se ha producido un error' }
 }
 
 
-const insertAltas = async(req, res = response) => { 
-    req.body.fecha = moment(req.body.fecha, 'YYYY-MM-DD').add(2, 'hour');
+const insertAltas = async(payload) => { 
+    payload.fecha = moment(payload.fecha, 'YYYY-MM-DD').add(2, 'hour');
     const promesas = [];
 
-    for (let i = 0; i < req.body.altas; i++) {
-        promesas.push(() => queriesAltas.insertAltas(req.body));
+    for (let i = 0; i < payload.altas; i++) {
+        promesas.push(() => queriesAltas.insertAltas(payload));
     }
 
     try {
         const promesasResp = await Promise.all(promesas.map(p => p()));
 
-        const resp = {
+        return {
             success: true,
-            msg: 'Altas registradas con éxito'
+            msg: 'Altas registradas con éxito',
+            data: promesasResp
         }
-
-        res.status(200).json(resp);
 
     } catch(err) {
             
-        const resp = {
+        return {
             success: false,
             msg: 'Se ha producido un error',
         }
-
-        res.status(200).json(resp);
-    }    
+    } 
 }
 
 

@@ -19,9 +19,10 @@ const getTiposDonacion = async() => {
 }
 
 
-const insertDonacion = async(donacion) => {  
+const insertDonacion = async(donacion) => { 
+    
     try {
-
+        
         const resp = await models.Donacion.create({
             id: null,
             nDonante: donacion.nDonante ? donacion.nDonante : null,
@@ -30,7 +31,7 @@ const insertDonacion = async(donacion) => {
             genero: donacion.genero,
             fecha: donacion.fecha
         });
-
+        
         return resp;
 
     } catch (err) {
