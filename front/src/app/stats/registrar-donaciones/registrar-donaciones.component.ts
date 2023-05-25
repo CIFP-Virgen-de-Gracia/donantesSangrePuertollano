@@ -13,7 +13,7 @@ export class RegistrarDonacionesComponent {
 
   timer: NodeJS.Timeout | undefined;
   fecha?: NgbDateStruct;
-  tiposDonacion = ['sangre', 'plasma', 'médula', 'órganos', 'patata'];
+  tiposDonacion = ['sangre', 'plasma', 'médula', 'órganos'];
   grpsSanguineos = ['A+', 'A-', 'B+', 'B-', 'B+', 'AB+', 'AB-', '0+', '0-'];
   generos = ['hombre', 'mujer'];
   registrada: boolean = false;
