@@ -26,9 +26,4 @@ export class StatsService {
   getAltas(): Observable<AltaResponse> {
     return this.http.get<AltaResponse>(this.url+ '/getAltas');
   }
-
-
-  getTiposDonacion(): Observable<any> {
-    return this.http.get<any>(this.url+ '/getTiposDonacion');
-  }
 }

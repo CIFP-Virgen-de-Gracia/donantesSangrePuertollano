@@ -88,32 +88,9 @@ const insertAltas = async(payload) => {
 }
 
 
-const getTiposDonacion = async(req, res = response) => {
-    queriesDonaciones.getTiposDonacion()
-        .then(donaciones => {
-
-            const resp = {
-                success: true,
-                data: donaciones
-            }
-
-            res.status(200).json(resp);
-
-        }).catch(err => {
-            
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
-
-            res.status(203).json(resp);
-        });
-}
-
 module.exports = {
     getDonaciones,
     getAltas,
     insertDonacion,
-    insertAltas,
-    getTiposDonacion
+    insertAltas
 }

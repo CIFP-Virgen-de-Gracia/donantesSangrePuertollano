@@ -10,15 +10,6 @@ const getDonaciones = async() => {
 }
 
 
-const getTiposDonacion = async() => {  
-    const resp = await models.Cita.findAll({
-        attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('donacion')) ,'donacion']]
-    });
-    
-    return resp;
-}
-
-
 const insertDonacion = async(donacion) => { 
     
     try {
@@ -44,6 +35,5 @@ const insertDonacion = async(donacion) => {
 
 module.exports = {
     getDonaciones,
-    getTiposDonacion,
     insertDonacion
 };
