@@ -30,6 +30,7 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
         res.status(200).json(resp);
     }).catch(err => {
 
+        console.log(err);
         const resp = {
             success: false,
             msg: 'fallo en la autenticación',
@@ -94,6 +95,7 @@ const register = async (req, res = response) => { // poner código
     } 
     catch (err) {
 
+        console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
@@ -165,6 +167,7 @@ const desactivarNewsletter = (req, res = response) => {
         }).catch(err => {
             res.send(HTMLs.error())
         });
+
 }
 
 
@@ -207,8 +210,9 @@ const recuperarPasswd = async (req, res = response) => {
 
     try {
         const user = await queriesUsers.getUser(req.params.id);
-        let resp = null;
 
+        let resp = null;
+        console.log(user.codRecPasswd);
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);
@@ -275,6 +279,79 @@ const puedeModificar = async (req, res = response) => {
 }
 
 
+const modContrasena = async(req, res = response) => {
+
+    try {
+        
+        const id = await queriesUsers.getUserIdPasswd(req.body.id, req.body.passwdActual());
+        if (id != null) {
+            const respUp = await queriesUsers.updateUserPasswd(req.body.id, req.body.passwdNueva);
+    
+            const resp = {
+                success: true,
+                cod: 0,
+                msg: 'contraseña modificada con éxito'
+            };
+    
+            res.status(201).json(resp);
+        }
+        else {
+    
+            const resp = {
+                success: false,
+                cod: 1,
+                msg: 'error de autenticación'
+            }
+
+            res.status(200).json(resp);
+        }
+    }
+    catch (err) {
+
+        const resp = {
+            success: false,
+            cod: 2,
+            msg: 'se ha producido un error'
+        }
+
+        res.status(200).json(resp);
+    }
+}
+
+
+const updateDatosUser = async(req, res = response) => {
+    
+    try {
+        const updateUser = {
+            gSanguineo: req.body.gSanguineo,
+            dni: req.body.dni,
+            nDonante: req.body.nDonante
+        };
+
+        const resp = await queriesUsers.updateUser(id, updateUser);
+
+        res.status(201).json({success: true, msg: 'actualizado con éxito'});
+    }
+    catch(err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+
+const getInfoUser = async(req, res = response) => {
+
+    try {
+        const user = await queriesUsers.getUserInfo(req.params.id);
+
+        res.status(200).json({success: true, data: user, msg: 'devuelto con éxito'});
+    }
+    catch(err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
 
 module.exports = {
     login,
@@ -282,8 +359,12 @@ module.exports = {
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,
+    getInfoUser,
     recuperarPasswd,
     puedeModificar,
     desactivarNewsletter,
-    mandarEmailNewsletter
+    mandarEmailNewsletter,
+    modContrasena,
+    updateDatosUser,
+
 }

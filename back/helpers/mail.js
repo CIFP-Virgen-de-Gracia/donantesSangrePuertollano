@@ -45,8 +45,9 @@ const mandarCorreo = (destinatario, contenido) => {
         if (error) throw error;
     });
 }
+
 //Isa
-const mandarCorreoAttachment = (destinatario, contenido,qrPath) => {
+const mandarCorreoAttachment = (destinatario, contenido, qrPath) => {
     const qr = fs.readFileSync(qrPath);
     mailOptions = {
         from: process.env.EMAIL_ACCOUNT,

@@ -12,7 +12,7 @@ import { AddImagenComponent } from './add-imagen/add-imagen.component';
     CommonModule,
     NgxPaginationModule
   ],
-  exports: [
+  exports: [ 
     AddImagenComponent
   ]
 })

@@ -60,6 +60,7 @@ export class PedirCitaPacienteComponent {
   traerHorario() {
     this.pedirCitaHttpService.fetchHorasDisponibles(this.fechaSeleccionada).subscribe(resp => {
       this.horasDisponibles = resp.horas;
+      console.log(resp);
       if (this.horasDisponibles.length == 0) this.noHayHoras = true;
     });
   }
@@ -70,6 +71,8 @@ export class PedirCitaPacienteComponent {
     this.transFecha(this.fecha);
     this.traerHorario();
     this.sinSeleccionar = false;
+
+    // console.log(dow);
   }
 
 

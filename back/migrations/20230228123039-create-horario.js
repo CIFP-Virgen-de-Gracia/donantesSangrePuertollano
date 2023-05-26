@@ -9,6 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      codDia: {
+        type: Sequelize.CHAR,
+        allowNull: false
+      },
       dia: {
         type: Sequelize.STRING,
         allowNull: false

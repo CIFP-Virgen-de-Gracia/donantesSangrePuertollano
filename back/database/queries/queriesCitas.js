@@ -74,14 +74,54 @@ const getCitasFechaHora = async(fecha) => {
 }
 
 
-const getHorarioCitas = async() => {
-    const horas = await models.HoraCita.findAll();
+const getHorarioCitas = async(dia) => {
 
+    const fecha = new Date(dia);
+    let codDia = '';
+
+    switch (fecha.getDay()) {
+        case 1:
+            
+            codDia = 'l';
+            break;
+    
+        case 2:
+            
+            codDia = 'm';
+            break;
+        
+        case 3:
+            
+            codDia = 'x';
+            break;
+
+        case 4:
+            
+            codDia = 'j';
+            break;
+
+        case 5:
+            
+            codDia = 'v';
+            break;
+
+        case 6:
+            
+            codDia = 's';
+            break;
+    }
+
+    const horas = await conexion.query('SELECT diasHoras.hora FROM diasHoras '
+        + 'JOIN horarios ON horarios.codDia = diasHoras.codDia '
+        + 'WHERE horarios.codDia LIKE ' + "'" + codDia + "'");
+    
     let arrayHoras = [];
     horas.forEach(hora => {
-        arrayHoras.push(hora.dataValues.hora)
+        arrayHoras.push(hora.hora);
+
     });
 
+    console.log(arrayHoras);
     return arrayHoras;
 }
 
@@ -119,14 +159,55 @@ const getCitasPasadasUser = async(id) => {
     return (citasUser != null) ? citasUser : null;
 }
 
-// FIXME: cambiar CitaPendiente por Cita
-// const getCitasPendientes = async() => {
-//     return await Cita.findAll({include: ['user']}); 
-// }
+const getCitasPendientes = async() => {
+    return await models.Cita.findAll({
+        attributes: ['id', 'fecha', 'donacion', 'cancelada'],
+        where: {
+            fecha: {
+                [Op.gt]: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+        },
+        include: ['user'],
+        order: [['cancelada', 'ASC'], ['fecha', 'DESC']]
+    }); 
+}
 
 
-// const getCitasPasadas = async() => {
-//     return await Cita.findAll({include: ['user']});
+const getCitasPendientesRec = async() => {
+    const citas = await conexion.query('SELECT citas.id, citas.fecha, citas.donacion, emails.id as userId, emails.email FROM citas '
+        + 'JOIN emails on citas.userId = emails.id WHERE citas.cancelada <> 1 '
+        + 'AND fecha > DATE(NOW())'
+    );
+
+    return citas;
+}
+
+
+const getCitasPasadas = async() => {
+    return await models.Cita.findAll({
+        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
+        where: {
+            fecha: {
+                [Op.lte]: moment().format('YYYY-MM-DD HH:mm:ss')
+            }
+        },
+        include: ['user'],
+        order: [['fecha', 'DESC']]
+    });
+}
+
+
+// const getCitas = async() => {
+//     return await models.Cita.findAll({
+//         attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
+//         where: {
+//             fecha: {
+//                 [Op.lte]: moment().format('YYYY-MM-DD HH:mm:ss')
+//             }
+//         },
+//         include: ['user'],
+//         order: [['fecha', 'DESC']]
+//     });
 // }
 
 
@@ -142,15 +223,17 @@ const cancelarCita = async(idCita) => {
 }
 
 
-// const updateFechaCitaPendiente = async(id, fecha) => {
-//     let cita = await Cita.findByPk(id);
+const updateFechaCitaPendiente = async(id, fecha) => {
+    let cita = await models.Cita.findByPk(id, {include: ['user']});
     
-//     cita.update({fecha: fecha});
 
-//     const resp = cita.save();
+    cita.fecha = fecha;
+    cita.update({fecha: fecha});
 
-//     return resp;
-// }
+    const resp = cita.save();
+
+    return resp;
+}
 
 
 const updateCitaPasadaAsistida = async(id, haDonado) => {
@@ -164,6 +247,45 @@ const updateCitaPasadaAsistida = async(id, haDonado) => {
 }
 
 
+const updateNumPersonasCita = async(nPersonas) => {
+    let param = await models.ParametrosGenerales.findByPk(1);
+
+    param.update({valor: nPersonas});
+
+    const resp = param.save();
+
+    return resp;
+}
+
+
+const insertHoraCita = async(codDia, hora) => {
+    const resp = models.DiaHora.create({
+        codDia: codDia,
+        hora: hora
+    });
+
+    return resp;
+}
+
+
+const deleteHoraCita = async(hora) => {
+    const resp = await models.DiaHora.destroy({
+        where: {hora: hora}
+    });
+
+    return resp;
+}
+
+
+const getHorarioDia = async(codDia) => {
+    const resp = await models.Horario.findAll({
+        attributes: ['hEntrada', 'hSalida'],
+        where: {codDia: codDia}
+    });
+
+    return resp;
+}
+
 
 module.exports = {
     getCitasFechaHora,
@@ -172,9 +294,15 @@ module.exports = {
     getNumCitasPendientesUser,
     getCitaPendienteUser,
     getCitasPasadasUser,
-    // getCitasPasadas,
-    // getCitasPendientes,
+    getCitasPasadas,
+    getCitasPendientes,
+    getCitasPendientesRec,
     insertCita,
     cancelarCita,
-    updateCitaPasadaAsistida
+    updateFechaCitaPendiente,
+    updateCitaPasadaAsistida,
+    updateNumPersonasCita,
+    insertHoraCita,
+    deleteHoraCita,
+    getHorarioDia
 };
