@@ -13,10 +13,13 @@ export class WebsocketService extends Socket {
 
 
   constructor() {
-    super({ url: environment.socketUrl });
+    super({
+      url: environment.socketUrl,
+      options: { query: { payload: localStorage.getItem('user') } }
+    });
 
-    this.ioSocket.on('insertar-donacion', (res: any) => this.insertarDonacion.emit(res))
-    this.ioSocket.on('insertar-altas', (res: any) => this.insertarAltas.emit(res))
+    this.ioSocket.on('insertar-donacion', (res: any) => this.insertarDonacion.emit(res));
+    this.ioSocket.on('insertar-altas', (res: any) => this.insertarAltas.emit(res));
   }
 
 

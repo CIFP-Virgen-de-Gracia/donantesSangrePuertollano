@@ -11,6 +11,7 @@ export class WebSocketService extends Socket {
 
   @Output() outEven: EventEmitter<any> = new EventEmitter();
   @Output() usuariosConectados: EventEmitter<string[]> = new EventEmitter();
+  @Output() conectarChat: EventEmitter<string[]> = new EventEmitter();
 
   constructor(private ChatService: ChatService) {
     let datos: any = "";
@@ -28,7 +29,6 @@ export class WebSocketService extends Socket {
     });
     this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res));
     this.ioSocket.on('usuario-conectado', (usuarios: string[]) => this.usuariosConectados.emit(usuarios));
-
   }
 
   emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
@@ -74,6 +74,12 @@ export class WebSocketService extends Socket {
       if (respuesta.success) {
         this.ChatService.setListaConectados(respuesta.data);
       }
+    });
+  }
+
+  emitEventConectarChat = (payload: string) => {
+    this.ioSocket.emit('conectar-chat', { payload }, (respuesta: string[]) => {
+      this.ChatService.setListaConectados(respuesta);
     });
   }
 }

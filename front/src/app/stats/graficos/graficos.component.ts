@@ -3,7 +3,7 @@ import { StatsService } from '../services/stats.service';
 import { Alta, AltaMostrar, Donacion, DonacionMostrar } from '../interfaces/stats.interface';
 import { Chart, ChartDataset, registerables } from 'chart.js';
 import * as moment from 'moment';
-import { WebsocketService } from 'src/app/shared/services/websocket.service';
+import { WebsocketService } from 'src/app/stats/services/websocket.service';
 moment.locale('es');
 
 @Component({

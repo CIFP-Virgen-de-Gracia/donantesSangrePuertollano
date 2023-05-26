@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StatsService } from '../services/stats.service';
-import { WebsocketService } from 'src/app/shared/services/websocket.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({
   selector: 'app-registrar-altas',
@@ -19,7 +20,8 @@ export class RegistrarAltasComponent {
   errorAltas?: boolean;
   errorFecha?: boolean;
 
-  constructor(private StatsService: StatsService, private SocketService: WebsocketService) {
+
+  constructor (private SocketService: WebsocketService) {
     this.mensaje = '';
   }
 

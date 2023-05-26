@@ -2,7 +2,7 @@ import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StatsService } from '../services/stats.service';
-import { WebsocketService } from 'src/app/shared/services/websocket.service';
+import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({
   selector: 'app-registrar-donaciones',
@@ -36,12 +36,10 @@ export class RegistrarDonacionesComponent {
   onSubmit(form: NgForm) {
     if (this.fecha) {
 
-      const payload = form.value;
-      payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
+      const donacion = form.value;
+      donacion.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      let datos = JSON.parse(localStorage.getItem('user') || ""); //TODO
-
-      this.SocketService.emitEventInsertarDonacion( payload )
+      this.SocketService.emitEventInsertarDonacion( donacion )
         .then(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;
