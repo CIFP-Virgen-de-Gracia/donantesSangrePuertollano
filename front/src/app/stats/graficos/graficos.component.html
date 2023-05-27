@@ -47,7 +47,7 @@
           <div class="contenedor gx-0 row">
             <div class="menu-vertical col-3">
               <ul>
-                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == anioActivoGrpSang">
+                <li *ngFor="let anio of aniosGenerosGrpSang; let i = index" [class.activo]="i == anioActivoGrpSang">
                   <input type="radio" id="gs{{anio}}" value="anuales" (click)="cambiarAnioGrupSang(i)" >
 
                   <label for="gs{{anio}}">{{ anio }}</label>
@@ -70,7 +70,7 @@
           <div class="contenedor gx-0 row">
             <div class="menu-vertical col-3">
               <ul>
-                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == anioActivoGeneros">
+                <li *ngFor="let anio of aniosGenerosGrpSang; let i = index" [class.activo]="i == anioActivoGeneros">
                   <input type="radio" id="g{{anio}}" value="anuales" (click)="cambiarAnioGeneros(i)">
 
                   <label for="g{{anio}}">{{ anio }}</label>
