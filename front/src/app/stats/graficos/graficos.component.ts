@@ -20,6 +20,7 @@ export class GraficosComponent implements OnInit {
   meses: string[] = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
   aniosAltas: string[] = [];
   aniosDonaciones: string[] = [];
+  aniosGenerosGrpSang: string[] = [];
   tiposDonacion: string[] = [];
   generos: string[] = [];
   gSanguineos: (string | undefined)[] = [];
@@ -109,19 +110,23 @@ export class GraficosComponent implements OnInit {
         this.generos = this.getGeneros();
         this.gSanguineos = this.getGrpSanguineos();
         this.aniosDonaciones = this.getAnios(this.donacionesMostrar);
+        this.aniosGenerosGrpSang  = this.getAnios(this.donacionesSangre);
 
-        const anio = this.aniosDonaciones[0];
+        const anioDonaciones = this.aniosDonaciones[0];
+        const anioGenerosGrpSang = this.aniosGenerosGrpSang[0];
 
-        if (anio) {
-          const datasetDonTipos = this.crearDatasetMensDonTipos(anio);
+        if (anioDonaciones) {
+          const datasetDonTipos = this.crearDatasetMensDonTipos(anioDonaciones);
           this.datasetMensDonTipos.push(datasetDonTipos);
           this.crearGrafDonTipos(this.meses, datasetDonTipos.datos);
+        }
 
-          const datasetGrpSang = this.crearDatasetAnualGrpSang(anio);
+        if (anioGenerosGrpSang) {
+          const datasetGrpSang = this.crearDatasetAnualGrpSang(anioGenerosGrpSang);
           this.datasetAnualGrpSang.push(datasetGrpSang);
           this.crearGrafDonGrpSang(datasetGrpSang.datos);
 
-          const datasetGeneros = this.crearDatasetAnualGenero(anio);
+          const datasetGeneros = this.crearDatasetAnualGenero(anioGenerosGrpSang);
           this.datasetAnualGenero.push(datasetGeneros);
           this.crearGrafDonGenero(datasetGeneros.datos);
         }
@@ -354,7 +359,7 @@ export class GraficosComponent implements OnInit {
 
   cambiarAnioGrupSang(index: number) {
     if (this.grafDonGrpSang) {
-      const anio = this.aniosDonaciones[index];
+      const anio = this.aniosGenerosGrpSang[index];
       let dataset = this.datasetAnualGrpSang.find(d => d.anio == anio);
 
       if (!dataset) {
@@ -372,7 +377,7 @@ export class GraficosComponent implements OnInit {
 
   cambiarAnioGeneros(index: number) {
     if (this.grafDonGenero) {
-      const anio = this.aniosDonaciones[index];
+      const anio = this.aniosGenerosGrpSang[index];
       let dataset = this.datasetAnualGenero.find(d => d.anio == anio);
 
       if (!dataset) {
@@ -431,7 +436,7 @@ export class GraficosComponent implements OnInit {
       if (iDataset >= 0) this.datasetAnualGrpSang[iDataset] = dataset;
       else this.datasetAnualGrpSang.push(dataset);
 
-      if (donacion.anio == this.aniosDonaciones[this.anioActivoGrpSang]) {
+      if (donacion.anio == this.aniosGenerosGrpSang[this.anioActivoGrpSang]) {
         if (this.grafDonGrpSang) this.grafDonGrpSang.destroy();
         this.crearGrafDonGrpSang(dataset.datos);
       }
@@ -450,7 +455,7 @@ export class GraficosComponent implements OnInit {
       if (iDataset >= 0) this.datasetAnualGenero[iDataset] = dataset;
       else this.datasetAnualGenero.push(dataset);
 
-      if (donacion.anio == this.aniosDonaciones[this.anioActivoGeneros]) {
+      if (donacion.anio == this.aniosGenerosGrpSang[this.anioActivoGeneros]) {
         if (this.grafDonGenero) this.grafDonGenero.destroy();
         this.crearGrafDonGenero(dataset.datos);
       }
@@ -492,10 +497,9 @@ export class GraficosComponent implements OnInit {
 
   actualizarDonaciones(donacion: DonacionMostrar) {
     const iAnio = this.aniosDonaciones.findIndex(d => d == donacion.anio);
+    const iAnioSangre = this.aniosGenerosGrpSang.findIndex(d => d == donacion.anio);
 
     if (iAnio < 0) {
-      if (this.aniosDonaciones[this.anioActivoGeneros] < donacion.anio) this.anioActivoGeneros++;
-      if (this.aniosDonaciones[this.anioActivoGrpSang] < donacion.anio) this.anioActivoGrpSang++;
       if (this.aniosDonaciones[this.anioActivoDonTipos] < donacion.anio) this.anioActivoDonTipos++;
 
       this.aniosDonaciones.push(donacion.anio);
@@ -504,6 +508,14 @@ export class GraficosComponent implements OnInit {
 
     // Géneros y grupos sanguíneos
     if (donacion.donacion == 'sangre') {
+      if (iAnioSangre < 0) {
+        if (this.aniosGenerosGrpSang[this.anioActivoGeneros] < donacion.anio) this.anioActivoGeneros++;
+        if (this.aniosGenerosGrpSang[this.anioActivoGrpSang] < donacion.anio) this.anioActivoGrpSang++;
+
+        this.aniosGenerosGrpSang.push(donacion.anio);
+        this.aniosGenerosGrpSang.sort().reverse();
+      }
+
       this.actualizarGrpSang(donacion);
       this.actualizarGeneros(donacion);
     }
@@ -511,97 +523,6 @@ export class GraficosComponent implements OnInit {
     // Tipos de donación
     this.actualizarDonTipos(donacion);
   }
-
-  /*
-    actualizarDonaciones(donacion: DonacionMostrar) {
-      const iAnio = this.aniosDonaciones.findIndex(d => d == donacion.anio);
-      let iDataset = -1;
-
-      if (iAnio >= 0) {
-        if (donacion.donacion == 'sangre') {
-
-          // Grupos sanguíneos
-          if (!this.gSanguineos.includes(donacion.gSanguineo)) this.gSanguineos.push(donacion.gSanguineo);
-
-          iDataset = this.datasetAnualGrpSang.findIndex(d => d.anio == donacion.anio);
-          if (iDataset >= 0) {
-            const datasetGrpSang = this.crearDatasetAnualGrpSang(donacion.anio);
-            this.datasetAnualGrpSang[iDataset] = datasetGrpSang;
-
-            if (donacion.anio == this.aniosDonaciones[this.anioActivoGrpSang]) {
-              this.grafDonGrpSang?.destroy();
-              this.crearGrafDonGrpSang(datasetGrpSang.datos);
-            }
-          }
-
-          // Géneros
-          if (!this.generos.includes(donacion.genero)) this.generos.push(donacion.genero);
-
-          iDataset = this.datasetAnualGenero.findIndex(d => d.anio == donacion.anio);
-          if (iDataset >= 0) {
-            const datasetGeneros = this.crearDatasetAnualGenero(donacion.anio);
-            this.datasetAnualGenero[iDataset] = datasetGeneros;
-
-            if (donacion.anio == this.aniosDonaciones[this.anioActivoGeneros]) {
-              this.grafDonGenero?.destroy();
-              this.crearGrafDonGenero(datasetGeneros.datos);
-            }
-          }
-        }
-
-        // Tipos de donación
-        if (!this.tiposDonacion.includes(donacion.donacion)) this.tiposDonacion.push(donacion.donacion);
-
-        const iDatasetMens = this.datasetMensDonTipos.findIndex(d => d.anio == donacion.anio);
-        if (iDatasetMens >= 0) {
-          const datasetDonTiposMens = this.crearDatasetMensDonTipos(donacion.anio);
-          this.datasetMensDonTipos[iDatasetMens] = datasetDonTiposMens;
-        }
-
-        const iDatasetAnual = this.datasetAnualDonTipos.findIndex(d => d.label == donacion.donacion);
-        const datasetDonTiposAnual = this.crearDatasetAnualDonTipos(donacion.donacion);
-
-        if (iDatasetAnual >= 0) this.datasetAnualDonTipos[iDatasetAnual] = datasetDonTiposAnual;
-        else if (this.datasetAnualDonTipos.length != 0) {
-          this.datasetAnualDonTipos.push(datasetDonTiposAnual);
-          this.datasetAnualDonTipos.sort();
-        }
-
-        if (this.grafDonTipos) {
-          const grafLabels = this.grafDonTipos.data.labels
-
-          if (grafLabels?.toString() == this.meses.toString()) { // Activa opción mensual
-
-            if (donacion.anio == this.aniosDonaciones[this.anioActivoDonTipos]) {
-              this.grafDonTipos.destroy();
-              this.crearGrafDonTipos(this.meses, this.datasetMensDonTipos[iDatasetMens].datos);
-            }
-
-          } else { // Activa opción anual
-            this.grafDonTipos.destroy();
-            this.crearGrafDonTipos(this.aniosDonacionesDesc, this.datasetAnualDonTipos);
-          }
-        }
-      } else {
-        if (this.aniosDonaciones[this.anioActivoGeneros] < donacion.anio) this.anioActivoGeneros++;
-        if (this.aniosDonaciones[this.anioActivoGrpSang] < donacion.anio) this.anioActivoGrpSang++;
-
-        this.aniosDonaciones.push(donacion.anio);
-        this.aniosDonaciones.sort().reverse();
-
-        if (this.grafDonTipos!.data.labels?.toString() != this.meses.toString()) {
-          this.datasetAnualDonTipos = [];
-          this.tiposDonacion.forEach(tipoDonacion => {
-            const dataset = this.crearDatasetAnualDonTipos(tipoDonacion);
-            this.datasetAnualDonTipos.push(dataset);
-            this.datasetAnualDonTipos.sort();
-          });
-
-          this.grafDonTipos?.destroy();
-          this.crearGrafDonTipos(this.aniosDonacionesDesc, this.datasetAnualDonTipos);
-        }
-      }
-    } */
 
 
   getDonaciones() {
