@@ -15,6 +15,7 @@ export class GraficosComponent implements OnInit {
 
   donacionesResp: Donacion[] = [];
   donacionesMostrar: DonacionMostrar[] = [];
+  donacionesSangre: DonacionMostrar[] = [];
   altasResp: Alta[] = [];
   altasMostrar: AltaMostrar[] = [];
   meses: string[] = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
@@ -76,10 +77,10 @@ export class GraficosComponent implements OnInit {
   }
 
 
-  get donacionesSangre() {
+ /*  get donacionesSangre() {
     return this.donacionesMostrar.filter(d => d.donacion == 'sangre');
   }
-
+ */
 
   ngOnInit() {
     // Altas
@@ -105,6 +106,7 @@ export class GraficosComponent implements OnInit {
 
         this.donacionesResp = resp.data;
         this.donacionesResp.forEach(don => this.donacionesMostrar.push(this.crearDonacionMostrar(don)));
+        this.donacionesSangre = this.donacionesMostrar.filter(d => d.donacion == 'sangre');
 
         this.tiposDonacion = this.getDonaciones();
         this.generos = this.getGeneros();
@@ -508,6 +510,8 @@ export class GraficosComponent implements OnInit {
 
     // Géneros y grupos sanguíneos
     if (donacion.donacion == 'sangre') {
+      this.donacionesSangre.push(donacion);
+
       if (iAnioSangre < 0) {
         if (this.aniosGenerosGrpSang[this.anioActivoGeneros] < donacion.anio) this.anioActivoGeneros++;
         if (this.aniosGenerosGrpSang[this.anioActivoGrpSang] < donacion.anio) this.anioActivoGrpSang++;
@@ -531,13 +535,13 @@ export class GraficosComponent implements OnInit {
 
 
   getGeneros() {
-    const generos = [...new Set(this.donacionesMostrar.map(stat => stat.genero))];
+    const generos = [...new Set(this.donacionesSangre.map(stat => stat.genero))];
     return generos.filter(gen => gen != undefined);
   }
 
 
   getGrpSanguineos() {
-    const grupos = [...new Set(this.donacionesMostrar.map(stat => stat.gSanguineo))].sort();
+    const grupos = [...new Set(this.donacionesSangre.map(stat => stat.gSanguineo))].sort();
     return grupos.filter(grp => grp != undefined);
   }
 
