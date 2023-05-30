@@ -385,6 +385,23 @@ const deleteHoraCita = async(req, res = response) => {
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
+//Isa
+const getUltimaCita = async(req, res = response) => {
+    queriesCitas.getUltimaCita(req.params.id).then((respuesta) => {
+        res.status(200).json({
+            success: true,
+            data: respuesta,
+            msg: 'Obtenida'
+        });
+    }).catch((err) => {
+       console.log(err);
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se ha podido obtener'
+        });
+    });
+}
 
 
 module.exports = {
@@ -406,5 +423,6 @@ module.exports = {
     updateFechaCita,
     modNumPersonaCita,
     insertHoraCita,
-    deleteHoraCita
+    deleteHoraCita,
+    getUltimaCita
 }

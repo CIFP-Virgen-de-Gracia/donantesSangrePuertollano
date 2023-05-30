@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrincipalComponent } from './principal/principal.component';
-import { LectorComponent } from './lector/lector.component';
 import { SharedModule } from '../shared/shared.module';
-import { AppRoutingModule } from './services/lector-routing.module';
+import { AppRoutingModule } from './lector-routing.module';
 
 
 
 @NgModule({
   declarations: [
     PrincipalComponent,
-    LectorComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +17,6 @@ import { AppRoutingModule } from './services/lector-routing.module';
   ],
   exports: [
     PrincipalComponent,
-    LectorComponent
   ]
 })
 export class PaginaLectorQrModule { }
