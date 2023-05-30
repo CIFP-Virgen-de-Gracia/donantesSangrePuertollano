@@ -58,7 +58,7 @@ export interface CitaMostrar {
     hora: string;
     donacion: string;
     cancelada: boolean;
-} 
+}
 
 
 export interface CitaAdminMostrar {
@@ -93,4 +93,18 @@ export interface CancelarCitaResponse {
 export interface getHoraCitaResponse {
     success: boolean;
     horas: string[];
+}
+
+//Isabel
+export interface CitaInfo{
+  nombre:string;
+  donacion:string;
+  fecha:string;
+  hora:string;
+  cancelada:boolean
+}
+export interface ResponseCitaInfo{
+  success: boolean,
+  data: CitaInfo,
+  msg: string,
 }
