@@ -3,7 +3,7 @@ const error = () => {
                 <h2 style="border-bottom: 0.3rem solid rgb(174, 17, 40);padding-bottom:.5rem;width:fit-content;">
                     Se ha producido un error
                 </h2>
-                <p>Por favor, inténtelo de nuevo más tarde.</p>
+                <p>Por favor, inténtalo de nuevo más tarde.</p>
             </div>`;
 }
 
@@ -33,7 +33,7 @@ const exitoBajaNewsletter = () => {
                 <h2 style="border-bottom: 0.3rem solid rgb(174, 17, 40);padding-bottom:.5rem;width:fit-content;">
                     Te has dado de baja
                 </h2>
-                <p>No recibirías más correos cuando publiquemos una noticia</p>
+                <p>No recibirás más correos cuando publiquemos una noticia.</p>
             </div>`;
 }
 
