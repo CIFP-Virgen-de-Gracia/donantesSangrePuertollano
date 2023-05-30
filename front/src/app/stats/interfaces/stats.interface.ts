@@ -35,8 +35,15 @@ export interface AltaResponse {
   data: Alta[];
 }
 
-export interface MsgResponse {
+export interface MsgResponseDonacion {
   success: boolean;
   msg: string;
+  data?: Donacion;
 }
 
+
+export interface MsgResponseAlta {
+  success: boolean;
+  msg: string;
+  data?: Alta[];
+}

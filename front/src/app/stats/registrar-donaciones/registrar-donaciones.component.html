@@ -19,7 +19,7 @@
 
     <div class="calendario col-12 col-md-6 col-lg-5 pe-md-3 pe-xl-4">
       <label for="calendario" class="f-rojo">Fecha</label>
-      <app-date-picker id="calendario" (onNuevaFecha)="setDia($event)"></app-date-picker>
+      <app-calendario id="calendario" (onNuevaFecha)="setDia($event)"></app-calendario>
 
       <p *ngIf="errorFecha" class="mensaje-error mt-1">
         Debes seleccionar una fecha.
@@ -45,20 +45,20 @@
         </select>
       </div>
 
-      <div class="num-donante contenedor row gx-0">
-        <label for="num-donante" class="f-rojo col-7">Número donante</label>
-
-        <input type="number" id="num-donante" class="inpt col-5"
-          [(ngModel)]="nDonante" name="nDonante">
-      </div>
-
-      <div class="genero contenedor row gx-0">
+      <div class="genero contenedor row gx-0" *ngIf="tipoDonacion == 'sangre'">
         <label for="genero" class="f-rojo col-7">Género</label>
 
         <select id="genero" class="inpt col-5"
           [(ngModel)]="genero" name="genero">
           <option *ngFor="let gen of generos" [ngValue]="gen">{{ gen | titlecase }}</option>
         </select>
+      </div>
+
+      <div class="num-donante contenedor row gx-0">
+        <label for="num-donante" class="f-rojo col-7">Número donante</label>
+
+        <input type="number" id="num-donante" class="inpt col-5"
+          [(ngModel)]="nDonante" name="nDonante">
       </div>
     </div>
   </div>

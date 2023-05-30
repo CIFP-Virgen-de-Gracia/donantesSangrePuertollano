@@ -17,7 +17,7 @@
                   Mensuales
                   <select #donTiposSelect (change)="activoDonTipos = 0"
                     (change)="activarDatosMensDonTipos(donTiposSelect.value)">
-                    <option *ngFor="let anio of aniosDonaciones; let first = first" [selected]="first">{{ anio }}</option>
+                    <option *ngFor="let anio of aniosDonaciones; let first = first"> {{ anio }}</option>
                   </select>
                 </label>
               </li>
@@ -41,15 +41,14 @@
         <div class="pt-4 pb-5 col-12 col-lg-6 pe-lg-4 grp-sang">
           <div class="contenedor-titulo">
             <h2 class="titulo">Donaciones por grupo sanguíneo</h2>
-            <p>Número total de donaciones del año seleccionado agrupadas por grupo sanguíneo.</p>
+            <p>Número total de donaciones de sangre del año seleccionado agrupadas por grupo sanguíneo.</p>
           </div>
 
           <div class="contenedor gx-0 row">
             <div class="menu-vertical col-3">
               <ul>
-                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGrupSang">
-                  <input type="radio" id="gs{{anio}}" value="anuales"
-                    (click) = "activoGrupSang = i" (click) = "cambiarAnioGrupSang(i)" >
+                <li *ngFor="let anio of aniosGenerosGrpSang; let i = index" [class.activo]="i == anioActivoGrpSang">
+                  <input type="radio" id="gs{{anio}}" value="anuales" (click)="cambiarAnioGrupSang(i)" >
 
                   <label for="gs{{anio}}">{{ anio }}</label>
                 </li>
@@ -65,15 +64,14 @@
         <div class="pt-4 pb-5 col-12 col-lg-6 ps-lg-4 generos">
           <div class="contenedor-titulo">
             <h2 class="titulo">Donaciones por género</h2>
-            <p>Número total de donaciones del año seleccionado agrupadas por género.</p>
+            <p>Número total de donaciones de sangre del año seleccionado agrupadas por género.</p>
           </div>
 
           <div class="contenedor gx-0 row">
             <div class="menu-vertical col-3">
               <ul>
-                <li *ngFor="let anio of aniosDonaciones; let i = index" [class.activo]="i == activoGeneros">
-                  <input type="radio" id="g{{anio}}" value="anuales"
-                    (click) = "activoGeneros = i" (click) = "cambiarAnioGeneros(i)">
+                <li *ngFor="let anio of aniosGenerosGrpSang; let i = index" [class.activo]="i == anioActivoGeneros">
+                  <input type="radio" id="g{{anio}}" value="anuales" (click)="cambiarAnioGeneros(i)">
 
                   <label for="g{{anio}}">{{ anio }}</label>
                 </li>
@@ -102,7 +100,7 @@
                   Mensuales
                   <select #numAltasSelect (change)="activoNumAltas = 0"
                     (change)="activarDatosMensNumAltas(numAltasSelect.value)">
-                    <option *ngFor="let anio of aniosAltas; let first = first" [selected]="first">{{ anio }}</option>
+                    <option *ngFor="let anio of aniosAltas; let first = first">{{ anio }}</option>
                   </select>
                 </label>
               </li>

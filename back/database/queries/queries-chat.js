@@ -50,7 +50,7 @@ class QueriesChat {
         return c;
     }
     addMensaje = async (datos) => {
-        console.log(datos);
+
         let data = "";
         let respuesta="";
         this.sequelize.conectar();

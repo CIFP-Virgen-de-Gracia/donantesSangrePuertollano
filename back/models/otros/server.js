@@ -20,11 +20,12 @@ class Server {
         this.pathMusica = "/api/musica";
         this.pathFaq = "/api/faq";
         this.pathChat = "/api/chat";
+
         //Middlewares
         this.middlewares();
 
+        //Rutas
         this.routes();
-        
     }
 
     middlewares() {
@@ -40,15 +41,13 @@ class Server {
     }
 
     routes() {
-
+        this.app.use(this.path, require('../../routes/routes'));
         this.app.use(this.pathAptoSangre, require('../../routes/aptoSangreRoutes'));
         this.app.use(this.pathGaleria, require('../../routes/galeriaRoutes'));
-        this.app.use(this.path, require('../../routes/routes'));
         this.app.use(this.pathNoticias, require('../../routes/noticiasRoutes'));
         this.app.use(this.pathMusica, require('../../routes/cancionRoutes'));
         this.app.use(this.pathFaq, require('../../routes/faqRoutes'));
-        this.app.use(this.pathChat, require('../../routes/chat-routes'));
-
+        this.app.use(this.pathChat, require('../../routes/chatRoutes'));
     }
 
     

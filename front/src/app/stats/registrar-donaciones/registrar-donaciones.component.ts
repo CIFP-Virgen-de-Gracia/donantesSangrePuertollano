@@ -2,6 +2,7 @@ import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StatsService } from '../services/stats.service';
+import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({
   selector: 'app-registrar-donaciones',
@@ -13,7 +14,7 @@ export class RegistrarDonacionesComponent {
   timer: NodeJS.Timeout | undefined;
   fecha?: NgbDateStruct;
   tiposDonacion = ['sangre', 'plasma', 'médula', 'órganos'];
-  grpsSanguineos = ['A+', 'A-', 'B+', 'B-', 'B+', 'AB-', '0+', '0-'];
+  grpsSanguineos = ['A+', 'A-', 'B+', 'B-', 'B+', 'AB+', 'AB-', '0+', '0-'];
   generos = ['hombre', 'mujer'];
   registrada: boolean = false;
   tipoDonacion: string;
@@ -24,7 +25,7 @@ export class RegistrarDonacionesComponent {
   errorFecha?: boolean;
 
 
-  constructor(private StatsService: StatsService) {
+  constructor(private StatsService: StatsService, private SocketService: WebsocketService) {
     this.tipoDonacion = this.tiposDonacion[0];
     this.gSanguineo = this.grpsSanguineos[0];
     this.genero = this.generos[0];
@@ -35,11 +36,11 @@ export class RegistrarDonacionesComponent {
   onSubmit(form: NgForm) {
     if (this.fecha) {
 
-      const payload = form.value;
-      payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
+      const donacion = form.value;
+      donacion.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      this.StatsService.insertAltas(payload)
-        .subscribe(resp => {
+      this.SocketService.emitEventInsertarDonacion( donacion )
+        .then(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;
 

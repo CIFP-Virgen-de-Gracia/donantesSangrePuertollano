@@ -18,7 +18,7 @@
   <div class="row gx-0">
     <div class="calendario col-12 col-md-6 col-lg-5 pe-md-3 pe-xl-4">
       <label for="calendario" class="f-rojo">Fecha</label>
-      <app-date-picker id="calendario" (onNuevaFecha)="setDia($event)"></app-date-picker>
+      <app-calendario id="calendario" (onNuevaFecha)="setDia($event)"></app-calendario>
 
       <p *ngIf="errorFecha" class="mensaje-error mt-1">
         Debes seleccionar una fecha.

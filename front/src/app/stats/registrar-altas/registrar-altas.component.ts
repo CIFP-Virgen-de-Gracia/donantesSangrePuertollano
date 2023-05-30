@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { StatsService } from '../services/stats.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({
   selector: 'app-registrar-altas',
@@ -18,7 +20,8 @@ export class RegistrarAltasComponent {
   errorAltas?: boolean;
   errorFecha?: boolean;
 
-  constructor(private StatsService: StatsService) {
+
+  constructor (private SocketService: WebsocketService) {
     this.mensaje = '';
   }
 
@@ -30,8 +33,8 @@ export class RegistrarAltasComponent {
       const payload = form.value;
       payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      this.StatsService.insertAltas(payload)
-        .subscribe(resp => {
+      this.SocketService.emitEventInsertarAltas( payload )
+        .then(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;
 
