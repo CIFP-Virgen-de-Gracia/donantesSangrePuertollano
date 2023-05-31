@@ -30,7 +30,7 @@ export class MenuComponent implements OnInit {
     private router: Router,
     private modal: NgbModal,
     private citasService: CitasService,
-    private WebSocketService:WebSocketService
+    private WebSocketService: WebSocketService
   ) { }
 
 

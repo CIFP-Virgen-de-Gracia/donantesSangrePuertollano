@@ -82,13 +82,12 @@ router.put('/citas/updatenumpersonascita', [vJwt.validarJwt, midsUser.midAdmin],
 router.post('/citas/inserthoracita', [vJwt.validarJwt, midsUser.midAdmin], citas.insertHoraCita);
 router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin], citas.deleteHoraCita);
 
+router.get('/citas/obtenerultima/:id',[vJwt.validarJwt,midsUser.midUser], citas.getUltimaCita);//Isa
+
 
 // Estadísticas routes
 router.get('/stats/getDonaciones/', stats.getDonaciones);
 router.get('/stats/getAltas/', stats.getAltas);
-router.post('/stats/insertDonacion/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertDonacion);
-router.post('/stats/insertAltas/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertAltas);
-router.get('/stats/getTiposDonacion/', stats.getTiposDonacion);
 
 
 module.exports = router;

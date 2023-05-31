@@ -45,6 +45,10 @@ const routes: Routes = [
     loadChildren: () => import('./gestion-contenido/gestion-contenido.module').then( m => m.GestionContenidoModule )
   },
   {
+    path: 'confirmacion',
+    loadChildren: () => import('./pagina-lector-qr/pagina-lector-qr.module').then( m => m.PaginaLectorQrModule)
+  },
+  {
     path: 'configuracion',
     loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
     canMatch: [ AdminGuard ],

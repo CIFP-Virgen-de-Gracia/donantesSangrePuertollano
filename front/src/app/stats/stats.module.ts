@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { StatsRoutingModule } from './stats-routing.module';
 import { GraficosComponent } from './graficos/graficos.component';
 import { RegistrarDatosComponent } from './registrar-datos-main/registrar-datos-main.component';
-import { DatePickerComponent } from 'src/app/citas/date-picker/date-picker.component';
 import { RegistrarDonacionesComponent } from './registrar-donaciones/registrar-donaciones.component';
 import { RegistrarAltasComponent } from './registrar-altas/registrar-altas.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { RegistrarAltasComponent } from './registrar-altas/registrar-altas.compo
     FormsModule,
     CommonModule,
     StatsRoutingModule,
-    DatePickerComponent
+    CalendarioComponent
   ],
   exports: [
     GraficosComponent
