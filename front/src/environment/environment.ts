@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8090',
-  baseSocket: 'http://localhost:3000'
+  baseSocket: 'http://localhost:3000',
+  apiUrl: "https://localhost:7274",
+  client_ID: '562168214750-u16u9p1acs5nk39gtco2gtal57geo6jo.apps.googleusercontent.com'
 };
 
 /*

@@ -5,6 +5,7 @@ const correo = require('../helpers/mail');
 const genPasswd = require('generate-password');
 const titleCase = require('title-case');
 const md5 = require('md5');
+const googleVerify = require('../helpers/googleVerify');
 const genCode = require('../helpers/genCode');
 const HTMLs = require('../helpers/archivosHtml');
 const models = require('../models/index.js');
@@ -44,20 +45,25 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 // Mario
 const googleSignin = async (req, res = response) => {
 
-    const { id_token } = req.body;
-
+    const { credentials } = req.body;
     try {
-        const { correo, nombre, img } = await googleVerify(id_token);
-
+        const { correo, nombre } = await googleVerify.googleVerify(credentials);
         const [email, creado] = await models.Email.findOrCreate({
             where: { email: correo }
         });
-
         let user = null;
-        user = (creado)
-            ? await queriesUsers.insertUser(email.id, nombre)
-            : await queriesUsers.getUser(email.id);
+        console.log(creado);
+        if (creado) {
+            user = await queriesUsers.insertUser(email.id, nombre);
+        }
+        else {
+            const existe = await queriesUsers.userExiste(email.id);
+            if (!existe) user = await queriesUsers.insertUser(email.id, nombre);
+            else user = await queriesUsers.getUser(email.id);
+        }
 
+       console.log(user);
+        
         const resp = {
             success: true,
             data: {
@@ -67,11 +73,11 @@ const googleSignin = async (req, res = response) => {
             },
             msg: 'logeado con éxito'
         }
-
+        
         return res.status(200).json(resp);
     }
     catch (err) {
-
+        console.log(err);
         const resp = {
             success: false,
             msg: 'error en el registro'
@@ -356,6 +362,7 @@ const getInfoUser = async(req, res = response) => {
 module.exports = {
     login,
     register,
+    googleSignin,
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,

@@ -15,6 +15,7 @@ const { mismaHora } = require('../helpers/validators/contacto-validators');
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
+router.post('/login_Google', auth.googleSignin); //Alejandro y Mario
 router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario

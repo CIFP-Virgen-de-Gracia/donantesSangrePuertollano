@@ -73,6 +73,14 @@ class QueriesUsers {
         this.sequelize.desconectar();
         return user;
     }
+    //Mario
+    userExiste = async(id) => {
+
+        const resp = await models.User.count({where: {id: id}});
+
+        if (resp != 0) return true;
+        else return false
+    }
 
 
     //Mario
