@@ -4,20 +4,27 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { UserInfo } from '../interfaces/usuarios.interface';
 import { UsuariosService } from '../services/usuarios.service';
 import { Md5 } from 'ts-md5';
+import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.scss']
+  styleUrls: ['./perfil.component.scss'],
+  animations: [entradaSalidaVentana]
 })
 export class PerfilComponent {
 
   actualizado!: boolean;
   mensaje: String = '';
 
-  contraErronea = false;
+  contraNoCoincide = false;
   errorAutenticacion = false;
+
+  dniModificado = false;
+  nombreModificado = false;
+
+  codAccion = -1;
 
   info: UserInfo = {
     id: '',
@@ -35,11 +42,14 @@ export class PerfilComponent {
 
   infoForm: FormGroup = new FormGroup({
     nombre: new FormControl(this.info.nombre),
-    dni: new FormControl(this.info.dni),
+    dni: new FormControl(this.info.dni, Validators.pattern("^([0-9]{8})([A-Z])$")),
     gSanguineo: new FormControl(this.info.gSanguineo),
     nDonante: new FormControl(this.info.nDonante)
-    // nTelefono: new FormControl('')
+    
   });
+
+  gSanguineoInput: FormControl = new FormControl({ value: this.info.gSanguineo, disabled: true });
+  nDonanteInput: FormControl = new FormControl({ value: this.info.nDonante, disabled:true });
 
   constructor(
     private usuariosService: UsuariosService,
@@ -56,11 +66,21 @@ export class PerfilComponent {
     this.usuariosService.fetchInfoUser().subscribe(resp => {
       if (resp.success) {
 
+        
+        this.infoForm.patchValue({
+          nombre: resp.data.nombre,
+          dni: resp.data.dni,
+          nDonante: resp.data.nDonante,
+          gSanguineo: resp.data.gSanguineo
+        });
+
         this.info = resp.data;
+        
       }
       else {
 
-        //TODO cartelito de fallo
+        this.codAccion = 1;
+        this.mensaje = "Se ha producido un error. Inténtalo más tarde."
       }
     });
   }
@@ -68,61 +88,63 @@ export class PerfilComponent {
 
   cambiarPasswd() {
 
-    if (this.passwdForm.get('passwd')?.value == this.passwdForm.get('passwdRep')?.value) {
+    if (this.passwdForm.get('passwdNueva')?.value == this.passwdForm.get('passwdRep')?.value) {
 
-      this.contraErronea = false;
+      this.contraNoCoincide = false;
 
 
       const passwdHash = Md5.hashStr(this.passwdForm.get('passwd')?.value);
       const nuevaPasswdHash = Md5.hashStr(this.passwdForm.get('passwdNueva')?.value);
 
       this.authService.cambiarPasswd(passwdHash, nuevaPasswdHash).subscribe(resp => {
+        
         if (resp.success) {
 
-          // TODO cartelito de muy bien
+          this.codAccion = 0;
+          this.mensaje = 'Contraseña cambiada con éxito.'
         }
         else {
-          this.errorAutenticacion = true;
+          
+          this.codAccion = 1;
+          this.mensaje = 'Error de autenticación.'
         }
       });
     }
     else {
 
-      this.contraErronea = true;
+      this.contraNoCoincide = true;
     }
   }
 
   updateUser() {
+    
+    const valoresCambiados: UserInfo = this.infoForm.value;
 
-    const valoresOriginales = this.infoForm.value;
+    valoresCambiados.id = this.info.id;
 
-    // Subscribe to valueChange to get the changed values
-    this.infoForm.valueChanges.subscribe(valoresCambiados => {
-      const camposCambiados = {};
+    this.usuariosService.updateUser(valoresCambiados).subscribe(resp => {
+      console.log(resp);
+      if (resp.success) {
 
-      // Loop through the changedValues and compare with the originalValues
-      for (const key in valoresCambiados) {
-        if (valoresCambiados.hasOwnProperty(key) && valoresCambiados[key] !== valoresOriginales[key]) {
-          valoresCambiados[key] = valoresCambiados[key];
-        }
-        else {
-          valoresCambiados[key] = null;
-        }
+        this.traerInfo();
+
+        this.codAccion = 0;
+        this.mensaje = 'Información actualizada con éxito.'
       }
+      else {
 
-      valoresCambiados.id = this.info.id
-      this.usuariosService.updateUser(valoresCambiados).subscribe(resp => {
-        // if (resp.success) {
-
-        //   //TODO cartelito de todo bien
-        //   this.traerInfo();
-        // }
-        // else (resp.success) {
-
-        //   // TODO cartelito de fallo
-        // }
-      });
+        this.codAccion = 1;
+        this.mensaje = 'Error al actualizar la información.'
+      }
     });
   }
 
+
+  onDniValueChange() {
+    this.dniModificado = !(this.infoForm.get('dni')?.value == this.info.dni);
+  }
+
+  onNombreValueChange() {
+    this.nombreModificado = !(this.infoForm.get('nombre')?.value == this.info.nombre);
+  }
 }

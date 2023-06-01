@@ -11,7 +11,7 @@ import { tap } from 'rxjs';
 })
 export class UsuariosService {
 
-  private usuariosUrl = `${environment.baseUrl}/api/usuarios`
+  private usuariosUrl = `${environment.baseUrl}/api/users`
   private _infoUser = {};
 
   constructor(
@@ -29,7 +29,7 @@ export class UsuariosService {
     const id = JSON.parse(localStorage.getItem('user')!).id;
 
     return this.httpUsuarios.get<interfaces.FetchUserInfoResponse>(this.usuariosUrl
-      + '/getInfoUser/' + id, header).pipe(tap(info => this._infoUser = info));
+      + '/getinfouser/' + id, header).pipe(tap(info => this._infoUser = info));
   }
 
   updateUser(userInfo: interfaces.UserInfo) {

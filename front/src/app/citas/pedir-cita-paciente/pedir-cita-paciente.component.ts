@@ -84,6 +84,7 @@ export class PedirCitaPacienteComponent {
     const tipoDonacion = this.citaForm.get('donacion')?.value;
 
     this.pedirCitaHttpService.insertCita(id, fechaCita, tipoDonacion).subscribe(resp => {
+      console.log(resp);
       if (resp.success) {
 
         setTimeout(() => {  

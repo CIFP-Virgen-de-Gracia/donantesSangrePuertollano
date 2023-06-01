@@ -1,7 +1,7 @@
 const moment = require('moment');
 const sequelize = require('../ConexionSequelize'); 
 const conexion = require('../../database/Conexion');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 const { getArrayCitas } = require('../../helpers/getRelaciones');
 // const { use } = require('../../routes/routes');
 const models = require('../../models/index.js');
@@ -104,8 +104,12 @@ class QueriesUsers {
 
 
     getUserCambiarPasswd = async(id, passwd) => {
-        const user = await models.User.findByPk(id, {
-            attributes: ['id', passwd]
+        const user = await models.User.findOne({
+            attributes: ['id', 'passwd'],
+            where: {
+                id: id,
+                passwd: passwd
+            }
         });
 
         return user;
@@ -186,6 +190,15 @@ class QueriesUsers {
         catch (err) {
             throw err;
         }
+    }
+
+
+    userExiste = async(id) => {
+
+        const resp = await models.User.count({where: {id: id}});
+
+        if (resp != 0) return true;
+        else return false
     }
 
 
@@ -336,6 +349,8 @@ class QueriesUsers {
             if (value != null) updateUser[key] = value;
         }
 
+        console.log('asdfasdfasdfasdfasdfasdf');
+        console.log(updateUser);
         const resp = await user.update(updateUser);
 
         return resp;

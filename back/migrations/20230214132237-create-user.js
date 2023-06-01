@@ -19,7 +19,7 @@ module.exports = {
       },
       passwd: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       codRecPasswd: {
         type: Sequelize.STRING,

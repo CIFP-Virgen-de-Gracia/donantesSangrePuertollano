@@ -1,18 +1,27 @@
 const { response, request } = require('express');
 const queriesUsers = require('../database/queries/queriesUsers');
-
+const userHelper = require('../helpers/validators/usuario-validators');
 
 const updateUser = (req, res = response) => {
 
     try {
 
-        console.log(req.body);
         const infoUser = {...req.body};
         delete infoUser.id;
 
-        const resp = queriesUsers.updateUser(req.body.id, infoUser);
+        if (userHelper.dniValido(infoUser.dni) && userHelper.gSanguineoValido(infoUser.gSanguineo)) {
 
-        res.status(201).json({success: true, msg: 'actualizado con éxito'});
+            console.log(req.body.id + ' => id');
+            console.log(infoUser);
+            const resp = queriesUsers.updateUser(req.body.id, infoUser);
+    
+            res.status(201).json({success: true, msg: 'actualizado con éxito'});
+        }
+        else {
+            
+            res.status(200).json({success: false, msg: 'se ha producido un error'});
+        }
+
     }
     catch (err) {
 

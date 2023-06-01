@@ -10,16 +10,20 @@ import { ModalAplazarCitaComponent } from '../modal-aplazar-cita/modal-aplazar-c
 @Component({
   selector: 'app-administrar-citas',
   templateUrl: './administrar-citas.component.html',
-  styleUrls: ['./administrar-citas.component.scss']
+  styleUrls: ['./administrar-citas.component.scss'],
+  // animations: ['entradaSalidaVentana']
 })
 export class AdministrarCitasComponent {
 
   citasPendientes: CitaAdminMostrar[] = [];
   citasPasadas: CitaAdminMostrar[] = [];
-  mostrarBotonAsistida: boolean[]  = [];
+  mostrarBotonHaDonado: boolean[]  = [];
   errorTraerCitas: boolean = false;
   noHayCitasPendientes: boolean = false;
   noHayCitasPasadas: boolean = false;
+  codAccion: number = -1;
+  accion: string;
+  timer: NodeJS.Timeout | undefined;
 
   constructor(
     private modal: NgbModal,
@@ -29,21 +33,24 @@ export class AdministrarCitasComponent {
   ngOnInit() {
 
     this.traerCitasAdmin();
+
+    // this.citasService.codAccion.subscribe(ca => {
+
+    //   this.codAccion = ca;
+    // });
   }
 
 
   traerCitasAdmin() {
     zip([this.citasService.fetchCitasPendientes(), this.citasService.fetchCitasPasadas()])
       .subscribe(([citasPendientesResp, citasPasadasResp]) => {
-
         if (citasPendientesResp.success && citasPasadasResp.success) {
           citasPasadasResp.citas.forEach(cita => {
-            this.mostrarBotonAsistida.push(cita.asistida == 0);
+            this.mostrarBotonHaDonado.push(cita.haDonado == 0);
           });
-
+          
           this.colocarCitas(citasPendientesResp.citas, this.citasPendientes);
           this.colocarCitas(citasPasadasResp.citas, this.citasPasadas);
-
 
           if (this.citasPendientes.length == 0) this.noHayCitasPendientes = true;
           if (this.citasPasadas.length == 0) this.noHayCitasPasadas = true;
@@ -57,7 +64,7 @@ export class AdministrarCitasComponent {
 
 
   colocarCitas(citas: CitaAdmin[], array: CitaAdminMostrar[]) {
-    let citaAsistida = '';
+    let citaHaDonado = '';
 
     array.length = 0;
     citas.forEach(cita => {
@@ -68,7 +75,7 @@ export class AdministrarCitasComponent {
         hora: fechaCompletaPas.format('HH:mm'),
         donacion: cita.donacion,
         cancelada: cita.cancelada,
-        asistida: cita.asistida,
+        haDonado: cita.haDonado,
         user: {
           id: cita.user.id,
           nombre: cita.user.nombre
@@ -94,9 +101,21 @@ export class AdministrarCitasComponent {
     this.modal.open(ModalAplazarCitaComponent).result.then(resultado => {
       
     }, reason => {
+
       this.traerCitasAdmin();
+      this.citasService.codAccion.subscribe(ca => {
+
+        this.accion = ca ? 'aplazada' : 'aplazar';
+        this.codAccion = ca;
+        this.setTimer(2000);
+      });
     });
-    
+  }
+
+
+  setTimer(tiempo: number) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
   }
 
 
@@ -113,18 +132,23 @@ export class AdministrarCitasComponent {
       if (resp.success) {
         
         this.citasPendientes[index].cancelada = true;
+        this.accion = 'cancelada';
+        this.codAccion = 0;
+        this.setTimer(2000);
       }
       else {
 
-        // TODO: cartelito de fallo
+        this.accion = 'cancelar';
+        this.codAccion = 1;
+        this.setTimer(2000);
       }
     });
   }
 
 
-  onAsistidaChange(value: number, index: number): void {
+  onHaDonadoChange(value: number, index: number): void {
     
-    this.citasPasadas[index].asistida = value;
-    this.citasService.confirmarAsistencia(this.citasPasadas[index].id, value).subscribe(resp => {});
+    this.citasPasadas[index].haDonado = value;
+    this.citasService.confirmarHaDonado(this.citasPasadas[index].id, value).subscribe(resp => {});
   }
 }

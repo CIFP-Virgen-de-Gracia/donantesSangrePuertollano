@@ -21,7 +21,7 @@ router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
-router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.midUser], auth.cambiarPasswd);
+router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.midUser], auth.modContrasena);
 router.post('/suscripcionNewsletter', [
     check('email', 'Formato de correo no válido').isEmail(),
     midsValidar.validarCampos
@@ -34,7 +34,7 @@ router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alic
 // Mario
 // [vJwt.validarJwt, midsUser.midUser]
 router.put('/users/updateuser', users.updateUser);
-
+router.get('/users/getinfouser/:id', auth.getInfoUser);
 
 // Contenido routes
 // Todo Alicia
@@ -71,7 +71,7 @@ router.put('/addOrUpdateMemoria', [
 router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 
 
-// pedir cita routes
+// citas routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);
 router.get('/citas/gethorascitas',[vJwt.validarJwt, midsUser.midAdmin], citas.getHorasCitas);
 router.post('/citas/pedircita', [vJwt.validarJwt, midsCitas.yaHaPedidoUnaCita, midsCitas.hayCapacidad, midsUser.midUser], citas.pedirCita);
@@ -83,12 +83,16 @@ router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser]
 router.get('/citas/getcitaspendientes', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPendientes);
 router.get('/citas/getcitaspasadas', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPasadas);
 router.put('/citas/aplazarcita', [vJwt.validarJwt, midsUser.midAdmin],citas.updateFechaCita);
-router.put('/citas/updateasistencia',[vJwt.validarJwt, midsUser.midAdmin], citas.confirmarAsistencia);
+router.put('/citas/updatehadonado',[vJwt.validarJwt, midsUser.midAdmin], citas.confirmarHaDonado);
 router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser], citas.yaHaPedidoUnaCita);
 
+router.get('/citas/gethorarios', citas.getHorarios);
 router.put('/citas/updatenumpersonascita', [vJwt.validarJwt, midsUser.midAdmin], citas.modNumPersonaCita);
 router.post('/citas/inserthoracita', [vJwt.validarJwt, midsUser.midAdmin], citas.insertHoraCita);
 router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin], citas.deleteHoraCita);
+
+router.get('/citas/getcitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.getNumPersonasCita);
+router.put('/citas/updatecitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.updateNumPersonascita);
 
 
 // Estadísticas routes

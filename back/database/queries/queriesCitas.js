@@ -33,6 +33,7 @@ const getNumCitasHora = async(fecha) => {
         where: {fecha: fecha}
     });
 
+    console.log(n);
     return n;
 }
 
@@ -73,57 +74,70 @@ const getCitasFechaHora = async(fecha) => {
     }
 }
 
+const getHorarioCitas = async() => {
+    let diasHoras = {l: [], m: [], x: [], j: [], v: [], s:[], d:[]};
+    const horas = await conexion.query('SELECT diasHoras.hora, diasHoras.codDia FROM diasHoras');
 
-const getHorarioCitas = async(dia) => {
-
-    const fecha = new Date(dia);
-    let codDia = '';
-
-    switch (fecha.getDay()) {
-        case 1:
-            
-            codDia = 'l';
-            break;
+    Object.keys(diasHoras).forEach(key => {
+        horas.forEach(hora => {
+            if (hora.codDia == key) {
+                diasHoras[key].push(hora.hora);
+            }
+        });
+    })
     
-        case 2:
-            
-            codDia = 'm';
-            break;
-        
-        case 3:
-            
-            codDia = 'x';
-            break;
-
-        case 4:
-            
-            codDia = 'j';
-            break;
-
-        case 5:
-            
-            codDia = 'v';
-            break;
-
-        case 6:
-            
-            codDia = 's';
-            break;
-    }
-
-    const horas = await conexion.query('SELECT diasHoras.hora FROM diasHoras '
-        + 'JOIN horarios ON horarios.codDia = diasHoras.codDia '
-        + 'WHERE horarios.codDia LIKE ' + "'" + codDia + "'");
-    
-    let arrayHoras = [];
-    horas.forEach(hora => {
-        arrayHoras.push(hora.hora);
-
-    });
-
-    console.log(arrayHoras);
-    return arrayHoras;
+    return diasHoras;
 }
+
+// const getHorarioCitas = async(dia) => {
+
+//     const fecha = new Date(dia);
+//     let codDia = '';
+
+//     switch (fecha.getDay()) {
+//         case 1:
+            
+//             codDia = 'l';
+//             break;
+    
+//         case 2:
+            
+//             codDia = 'm';
+//             break;
+        
+//         case 3:
+            
+//             codDia = 'x';
+//             break;
+
+//         case 4:
+            
+//             codDia = 'j';
+//             break;
+
+//         case 5:
+            
+//             codDia = 'v';
+//             break;
+
+//         case 6:
+            
+//             codDia = 's';
+//             break;
+//     }
+
+//     const horas = await conexion.query('SELECT diasHoras.hora FROM diasHoras '
+//         + 'JOIN horarios ON horarios.codDia = diasHoras.codDia '
+//         + 'WHERE horarios.codDia LIKE ' + "'" + codDia + "'");
+    
+//     let arrayHoras = [];
+//     horas.forEach(hora => {
+//         arrayHoras.push(hora.hora);
+
+//     });
+
+//     return arrayHoras;
+// }
 
 
 const getCitaPendienteUser = async(id) => {
@@ -138,6 +152,7 @@ const getCitaPendienteUser = async(id) => {
 
         order: [['cancelada', 'ASC'], ['fecha', 'DESC']]
     });
+
 
     return (citasUser != null) ? citasUser : null;
 }
@@ -185,7 +200,7 @@ const getCitasPendientesRec = async() => {
 
 const getCitasPasadas = async() => {
     return await models.Cita.findAll({
-        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'asistida'],
+        attributes: ['id', 'fecha', 'donacion', 'cancelada', 'haDonado'],
         where: {
             fecha: {
                 [Op.lte]: moment().format('YYYY-MM-DD HH:mm:ss')
@@ -236,7 +251,7 @@ const updateFechaCitaPendiente = async(id, fecha) => {
 }
 
 
-const updateCitaPasadaAsistida = async(id, haDonado) => {
+const updateCitaPasadaHaDonado = async(id, haDonado) => {
     let cita = await models.Cita.findByPk(id);
 
     cita.update({haDonado: haDonado});
@@ -259,6 +274,7 @@ const updateNumPersonasCita = async(nPersonas) => {
 
 
 const insertHoraCita = async(codDia, hora) => {
+    console.log(codDia, hora);
     const resp = models.DiaHora.create({
         codDia: codDia,
         hora: hora
@@ -287,6 +303,23 @@ const getHorarioDia = async(codDia) => {
 }
 
 
+const getHorarios = async() => {
+    const resp = await models.Horario.findAll({
+        attributes: ['codDia', 'hEntrada', 'hSalida']
+    });
+
+    return resp;
+}
+
+
+const getNumPersCita = async() => {
+    const resp = await models.ParametrosGenerales.findByPk(1);
+
+    return resp.dataValues.valor;
+}
+
+
+
 module.exports = {
     getCitasFechaHora,
     getHorarioCitas,
@@ -300,9 +333,11 @@ module.exports = {
     insertCita,
     cancelarCita,
     updateFechaCitaPendiente,
-    updateCitaPasadaAsistida,
+    updateCitaPasadaHaDonado,
     updateNumPersonasCita,
     insertHoraCita,
     deleteHoraCita,
-    getHorarioDia
+    getHorarioDia,
+    getHorarios,
+    getNumPersCita
 };
