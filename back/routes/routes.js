@@ -17,6 +17,7 @@ const queriesUsers = require('../database/queries/queriesUsers');
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
+router.post('/login_Google', auth.googleSignin); //Alejandro y Mario
 router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
@@ -94,13 +95,12 @@ router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin
 router.get('/citas/getcitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.getNumPersonasCita);
 router.put('/citas/updatecitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.updateNumPersonascita);
 
+router.get('/citas/obtenerultima/:id',[vJwt.validarJwt,midsUser.midUser], citas.getUltimaCita);//Isa
+
 
 // Estadísticas routes
 router.get('/stats/getDonaciones/', stats.getDonaciones);
 router.get('/stats/getAltas/', stats.getAltas);
-router.post('/stats/insertDonacion/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertDonacion);
-router.post('/stats/insertAltas/', [ vJwt.validarJwt, midsUser.midAdmin ], stats.insertAltas);
-router.get('/stats/getTiposDonacion/', stats.getTiposDonacion);
 
 
 module.exports = router;

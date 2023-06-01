@@ -11,7 +11,6 @@ export class AuthService {
 
   private authUrl: string = `${environment.baseUrl}/api`; // cambiar en el server // hacer archivo env
   private _auth: interfaces.Auth | undefined;
-
   constructor(private httpUsers: HttpClient) { }
 
 
@@ -90,5 +89,10 @@ export class AuthService {
           })
         );
     }
+  }
+
+  LoginWithGoogle(credentials: string): Observable<any> {
+    const header = new HttpHeaders().set('Content-type', 'application/json');
+    return this.httpUsers.post(this.authUrl + "/login_Google", {credentials: credentials}, { headers: header });
   }
 }

@@ -10,18 +10,10 @@ const getDonaciones = async() => {
 }
 
 
-const getTiposDonacion = async() => {  
-    const resp = await models.Cita.findAll({
-        attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('donacion')) ,'donacion']]
-    });
+const insertDonacion = async(donacion) => { 
     
-    return resp;
-}
-
-
-const insertDonacion = async(donacion) => {  
     try {
-
+        
         const resp = await models.Donacion.create({
             id: null,
             nDonante: donacion.nDonante ? donacion.nDonante : null,
@@ -30,7 +22,7 @@ const insertDonacion = async(donacion) => {
             genero: donacion.genero,
             fecha: donacion.fecha
         });
-
+        
         return resp;
 
     } catch (err) {
@@ -43,6 +35,5 @@ const insertDonacion = async(donacion) => {
 
 module.exports = {
     getDonaciones,
-    getTiposDonacion,
     insertDonacion
 };

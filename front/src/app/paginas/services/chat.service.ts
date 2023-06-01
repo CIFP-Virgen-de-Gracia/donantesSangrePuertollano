@@ -34,17 +34,14 @@ export class ChatService {
   }
   setListaConectados(lista: string[]) {
     this.listaConectados = lista;
-    console.log(this.listaConectados);
   }
 
   agregarConectado(usuario: string): void {
     this.listaConectados.push(usuario);
-    console.log(this.listaConectados);
   }
   borrarConectado(usuario: string): void {
     let lista = this.listaConectados.filter((u) => u !== usuario);
     this.listaConectados = lista;
-    console.log(this.listaConectados);
   }
 
 

@@ -37,7 +37,11 @@ export class ChatComponent {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('user') != null) {
+    const user = localStorage.getItem('user');
+
+    if (user != null) {
+      this.socketService.emitEventConectarChat(JSON.parse(user).nombre);
+
       this.ChatService.getListadoMensajes().subscribe((res) => { });
       this.estaRegistrado = true;
     }

@@ -16,7 +16,7 @@ export class CitasService {
   private _citasPasadas: interfaces.CitaAdmin[];
   private _citasPendientesUser: interfaces.Cita[];
   private _citasPasadasUser: interfaces.Cita[];
-  
+
   idCita: Subject<string>;
   diaCita: Subject<string>;
   horaCita: Subject<string>;
@@ -159,12 +159,12 @@ export class CitasService {
     };
 
     const body = {
-      id: id, 
+      id: id,
       fechaAntigua: fechaAntigua,
       fechaActual: fechaCita,
     };
 
-    return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+    return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
       '/aplazarcita', body, header);
   }
 
@@ -216,7 +216,7 @@ export class CitasService {
       })
     };
 
-    return this.httpPedirCita.delete<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+    return this.httpPedirCita.delete<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
       '/deletehoracita/' + hora, header);
   }
 

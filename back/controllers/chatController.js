@@ -1,7 +1,7 @@
 //Isa
 const { response, request } = require('express');
 const queriesChat = require("../database/queries/queries-chat");
-const chat = require("./chat-controller");
+const chat = require("./socketController");
 
 const Listado = async (req, res = response) => {
     queriesChat.getListado().then((mensajes) => {
@@ -11,7 +11,7 @@ const Listado = async (req, res = response) => {
             msg: 'Mensajes obtenidos'
         });
     }).catch((err) => {
-        console.log(err);
+
         res.status(203).json({
             success: false,
             data: null,
@@ -29,7 +29,7 @@ const borrarMensajes = async (req, res = response) => {
             msg: 'Mensaje borrados'
         });
     }).catch((err) => {
-        console.log(err);
+       
         res.status(203).json({
             success: false,
             data: null,

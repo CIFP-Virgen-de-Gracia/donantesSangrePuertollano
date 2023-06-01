@@ -45,30 +45,37 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
 // Mario
 const googleSignin = async (req, res = response) => {
 
-    const { id_token } = req.body;
-
+    const { credentials } = req.body;
     try {
-        const { correo, nombre, img } = await googleVerify(id_token);
-
+        const { correo, nombre } = await googleVerify.googleVerify(credentials);
         const [email, creado] = await models.Email.findOrCreate({
             where: { email: correo }
         });
-
         let user = null;
-
+        
         if (creado) {
             user = await queriesUsers.insertUser(email.id, nombre);
         }
         else {
-            const existe = await userExiste(email.id);
-            if (existe) user = await queriesUsers.insertUser(email.id, nombre);
+            const existe = await queriesUsers.userExiste(email.id);
+            if (!existe) user = await queriesUsers.insertUser(email.id, nombre);
             else user = await queriesUsers.getUser(email.id);
+        }
+        
+        const resp = {
+            success: true,
+            data: {
+                id: user.id,
+                nombre: user.nombre,
+                token: generarJWT(user.id),
+            },
+            msg: 'logeado con éxito'
         }
         
         return res.status(200).json(resp);
     }
     catch (err) {
-
+        console.log(err);
         const resp = {
             success: false,
             msg: 'error en el registro'
@@ -352,6 +359,7 @@ const getInfoUser = async(req, res = response) => {
 module.exports = {
     login,
     register,
+    googleSignin,
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,

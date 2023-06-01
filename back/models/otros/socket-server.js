@@ -1,5 +1,5 @@
 //Isa
-const { socketController } = require('../../controllers/chat-controller');
+const { socketController } = require('../../controllers/socketController');
 const { Server } = require('socket.io');
 
 const startSocketServer = () => {
