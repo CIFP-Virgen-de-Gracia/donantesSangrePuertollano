@@ -107,7 +107,7 @@ export class AdministrarCitasComponent {
 
         this.accion = ca ? 'aplazada' : 'aplazar';
         this.codAccion = ca;
-        this.setTimer(2000);
+        this.setTimer(4000);
       });
     });
   }
@@ -134,13 +134,13 @@ export class AdministrarCitasComponent {
         this.citasPendientes[index].cancelada = true;
         this.accion = 'cancelada';
         this.codAccion = 0;
-        this.setTimer(2000);
+        this.setTimer(4000);
       }
       else {
 
         this.accion = 'cancelar';
         this.codAccion = 1;
-        this.setTimer(2000);
+        this.setTimer(4000);
       }
     });
   }

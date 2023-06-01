@@ -26,6 +26,8 @@ export class PerfilComponent {
 
   codAccion = -1;
 
+  timer: NodeJS.Timeout | undefined;
+
   info: UserInfo = {
     id: '',
     nombre: '',
@@ -61,6 +63,13 @@ export class PerfilComponent {
     this.traerInfo();
   }
   
+
+  setTimer(tiempo: number) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
+  }
+
+
 
   traerInfo() {
     this.usuariosService.fetchInfoUser().subscribe(resp => {
@@ -102,11 +111,13 @@ export class PerfilComponent {
 
           this.codAccion = 0;
           this.mensaje = 'Contraseña cambiada con éxito.'
+          this.setTimer(4000);
         }
         else {
           
           this.codAccion = 1;
           this.mensaje = 'Error de autenticación.'
+          this.setTimer(4000);
         }
       });
     }
