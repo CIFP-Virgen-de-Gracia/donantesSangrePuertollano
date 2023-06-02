@@ -23,7 +23,7 @@
 
             <div class="card-body p-0 mt-5">
                 <button type="submit" class="btn w-100 btnAceptar mb-3" [disabled]="aplazarCitaForm.invalid">Aceptar</button>
-                <button type="button" class="btn w-100 border-red">Cancelar</button>
+                <button type="button" class="btn w-100 border-red" (click)="cancelar()">Cancelar</button>
             </div>
         </div>
     </form>

@@ -4,9 +4,12 @@ const {response,request} = require('express');
 
 const hayCapacidad = async(req, res, next) => {
 
+    console.log('A VER');
+    console.log(req.body.fecha);
     const numCitas = await queriesCitas.getNumCitasHora(req.body.fecha);
-    
-    if (numCitas < 2) {next();}
+    const numPersCita = await queriesCitas.getNumPersCita();
+
+    if (numCitas < numPersCita) {next();}
     else {
 
         return res.status(200).json({success: false, msg: 'no hay espacio'});

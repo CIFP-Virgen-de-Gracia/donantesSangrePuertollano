@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   DiasHoras.init({
-    idDia: DataTypes.BIGINT,
-    idHora: DataTypes.BIGINT
+    codDia: DataTypes.CHAR,
+    hora: DataTypes.TIME
   }, {
     sequelize,
     tableName: 'diasHoras',

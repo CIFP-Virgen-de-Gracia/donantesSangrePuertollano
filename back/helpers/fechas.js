@@ -46,10 +46,14 @@ const fechaEsMayor = (fecha, ahora) => {
 const horaValida = async(fecha) => {
     const horasDisp = await queriesCitas.getHorarioCitas(moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'));
 
+    
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss');
     
+    const codDia = ['l', 'm', 'x', 'j', 'v', 's'];
+    const diaSemana = new Date(fecha);
+    
     let valida = false;
-    horasDisp.forEach(horaDisp => {
+    horasDisp[codDia[diaSemana.getDay() - 1]].forEach(horaDisp => {
      
         if (horaDisp == hora) {
             valida = true;

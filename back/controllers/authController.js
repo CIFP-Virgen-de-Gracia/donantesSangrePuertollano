@@ -52,7 +52,7 @@ const googleSignin = async (req, res = response) => {
             where: { email: correo }
         });
         let user = null;
-        console.log(creado);
+        
         if (creado) {
             user = await queriesUsers.insertUser(email.id, nombre);
         }
@@ -61,8 +61,6 @@ const googleSignin = async (req, res = response) => {
             if (!existe) user = await queriesUsers.insertUser(email.id, nombre);
             else user = await queriesUsers.getUser(email.id);
         }
-
-       console.log(user);
         
         const resp = {
             success: true,
@@ -255,6 +253,23 @@ const recuperarPasswd = async (req, res = response) => {
     }
 }
 
+//Mario
+const cambiarPasswd = async(req, res = response) => {
+
+    try {
+
+        const user = await queriesUsers.getUserCambiarPasswd(req.body.id, req.body.passwd);
+
+        const resp = await queriesUsers.updateUserPasswd(user.id, req.body.passwdNueva);
+        
+        res.status(201).json({success: true, msg: 'passwd actualizada con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
 
 // Alicia
 const puedeModificar = async (req, res = response) => {
@@ -288,8 +303,10 @@ const puedeModificar = async (req, res = response) => {
 const modContrasena = async(req, res = response) => {
 
     try {
-        
-        const id = await queriesUsers.getUserIdPasswd(req.body.id, req.body.passwdActual());
+        console.log('asdfasdf');
+
+        const id = await queriesUsers.getUserCambiarPasswd(req.body.id, req.body.passwd);
+        console.log('id => ' + id);
         if (id != null) {
             const respUp = await queriesUsers.updateUserPasswd(req.body.id, req.body.passwdNueva);
     
@@ -325,26 +342,6 @@ const modContrasena = async(req, res = response) => {
 }
 
 
-const updateDatosUser = async(req, res = response) => {
-    
-    try {
-        const updateUser = {
-            gSanguineo: req.body.gSanguineo,
-            dni: req.body.dni,
-            nDonante: req.body.nDonante
-        };
-
-        const resp = await queriesUsers.updateUser(id, updateUser);
-
-        res.status(201).json({success: true, msg: 'actualizado con éxito'});
-    }
-    catch(err) {
-
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
-    }
-}
-
-
 const getInfoUser = async(req, res = response) => {
 
     try {
@@ -366,12 +363,17 @@ module.exports = {
     activarCorreo,
     activarNewsletter,
     mandarEmailRecuperarPasswd,
+    cambiarPasswd,
     getInfoUser,
     recuperarPasswd,
     puedeModificar,
     desactivarNewsletter,
     mandarEmailNewsletter,
-    modContrasena,
-    updateDatosUser,
+    modContrasena
 
 }
+
+queriesUsers.userExiste(1, 'Mario Lo Tschibukai').then(existe => {
+    if (existe) console.log('asdf');
+    else console.log('posno');
+});
