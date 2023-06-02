@@ -60,7 +60,7 @@ export interface CitaMostrar {
     hora: string;
     donacion: string;
     cancelada: boolean;
-}
+} 
 
 
 export interface CitaAdminMostrar {
@@ -94,7 +94,32 @@ export interface CancelarCitaResponse {
 
 export interface getHoraCitaResponse {
     success: boolean;
-    horas: string[];
+    horas: Horario;
+}
+
+export interface getHorarioResponse {
+    success: boolean;
+    data: [];
+    msg: string;
+}
+
+
+export interface Horario {
+    [key: string]: string[];
+}
+
+
+export interface HorarioDia {
+    codDia: string;
+    hEntrada: string;
+    hSalida: string;
+}
+
+
+export interface GetALaVezResponse {
+    success: string;
+    num: number;
+    msg: string;
 }
 
 //Isabel

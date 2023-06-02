@@ -271,4 +271,18 @@ export class CitasService {
     return this.httpPedirCita.get<interfaces.GetALaVezResponse>(this.pedirCitaUrl +
       '/getcitasalavez', header);
   }
+
+
+  //Isa
+  getUltimaCitaUser(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpPedirCita.get<interfaces.ResponseCitaInfo>(this.pedirCitaUrl +
+      '/obtenerultima/' + id, header);
+  }
 }
