@@ -19,14 +19,16 @@ export class ConfigMainComponent { //Alicia
 
 
   limpiarMensaje() {
-    clearTimeout(this.timer);
+    this.exito = false;
     this.mensaje = '';
   }
 
 
   setTimer(tiempo: number) {
-    this.timer = setTimeout(() => this.mensaje = '', tiempo);
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.limpiarMensaje(), tiempo);
   }
+
 
   onMensaje(res: MensajeInf) {
     this.limpiarMensaje();

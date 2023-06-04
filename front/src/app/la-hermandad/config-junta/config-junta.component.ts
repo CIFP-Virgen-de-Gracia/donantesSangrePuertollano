@@ -1,15 +1,12 @@
 import { NgForm } from '@angular/forms';
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { LaHermandadService } from '../services/la-hermandad.service';
-import { SharedService } from 'src/app/shared/services/shared.service';
 import { Cargo, Integrante, MensajeInf } from '../interfaces/la-hermandad.interface';
-import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-config-junta',
   templateUrl: './config-junta.component.html',
-  styleUrls: ['./config-junta.component.scss'],
-  animations: [ entradaSalidaVentana ]
+  styleUrls: ['./config-junta.component.scss']
 })
 export class ConfigJuntaComponent {
 
@@ -19,9 +16,8 @@ export class ConfigJuntaComponent {
   cargos: Cargo[] = [];
   infoInt!: Integrante;
   junta: Integrante[] = [];
-  codAccion: number = -1;
   accion: string = '';
-  acciones = ['añadir', 'editar', 'borrar'];
+  acciones = ['añadir', 'editar'];
 
 
   constructor(private HermandadService: LaHermandadService) {
@@ -69,9 +65,9 @@ export class ConfigJuntaComponent {
           if (indexInt == -1) this.junta.push(this.infoInt);
           else this.junta[indexInt] = this.infoInt;
 
-          this.mensaje.emit({ exito: true, msg: 'Éxito al actualizar el integrante'});
+          this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el integrante`});
 
-        } else this.mensaje.emit({ exito: false, msg: 'Error al actualizar el integrante'});
+        } else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el integrante`});
 
         this.closeModal.nativeElement.click();
         form.resetForm();

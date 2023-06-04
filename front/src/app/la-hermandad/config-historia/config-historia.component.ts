@@ -1,14 +1,12 @@
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { LaHermandadService } from '../services/la-hermandad.service';
 import { Historia, MensajeInf } from '../interfaces/la-hermandad.interface';
-import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-config-historia',
   templateUrl: './config-historia.component.html',
-  styleUrls: ['./config-historia.component.scss'],
-  animations: [ entradaSalidaVentana ]
+  styleUrls: ['./config-historia.component.scss']
 })
 export class ConfigHistoriaComponent { //Alicia
 

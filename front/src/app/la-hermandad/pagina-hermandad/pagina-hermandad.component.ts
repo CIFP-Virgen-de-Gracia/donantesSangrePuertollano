@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LaHermandadService } from '../services/la-hermandad.service';
 import { Historia, Integrante } from '../interfaces/la-hermandad.interface';
 
-
 @Component({
   selector: 'app-pagina-hermandad',
   templateUrl: './pagina-hermandad.component.html',
