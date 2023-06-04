@@ -45,6 +45,10 @@ const routes: Routes = [
     loadChildren: () => import('./gestion-contenido/gestion-contenido.module').then( m => m.GestionContenidoModule )
   },
   {
+    path: 'confirmacion',
+    loadChildren: () => import('./pagina-lector-qr/pagina-lector-qr.module').then( m => m.PaginaLectorQrModule)
+  },
+  {
     path: 'configuracion',
     loadChildren: () => import('./config/config.module').then( m => m.ConfigModule ),
     canMatch: [ AdminGuard ],
@@ -71,6 +75,10 @@ const routes: Routes = [
   {
     path: 'stats',
     loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule),
+  },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)
   },
   {
     path: '**',

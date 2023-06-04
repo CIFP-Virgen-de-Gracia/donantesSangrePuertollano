@@ -9,7 +9,7 @@ import { MainAuthComponent } from './main-auth/main-auth.component';
 import { fromEvent } from 'rxjs';
 import { RecuperarPasswdComponent } from './recuperar-passwd/recuperar-passwd.component';
 import { SharedModule } from '../shared/shared.module';
-
+import { MaterialModule } from './material/material.module';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -23,7 +23,8 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     HttpClientModule,
     AuthRoutingModule,
-    SharedModule
+    SharedModule,
+    MaterialModule
   ]
 })
 export class AuthModule { }

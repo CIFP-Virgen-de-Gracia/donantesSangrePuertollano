@@ -11,7 +11,6 @@ export class AuthService {
 
   private authUrl: string = `${environment.baseUrl}/api`; // cambiar en el server // hacer archivo env
   private _auth: interfaces.Auth | undefined;
-
   constructor(private httpUsers: HttpClient) { }
 
 
@@ -24,20 +23,40 @@ export class AuthService {
 
   registro(user: interfaces.UserRegsitro) {
 
-    return this.httpUsers.post<interfaces.registroResponse>(this.authUrl + '/register', user);
+    return this.httpUsers.post<interfaces.RegistroResponse>(this.authUrl + '/register', user);
   }
 
 
   solicitarRecPasswd(email: string) {
 
-    return this.httpUsers.post<interfaces.solicitarRecPasswdResponse>(this.authUrl
+    return this.httpUsers.post<interfaces.SolicitarRecPasswdResponse>(this.authUrl
       + '/solicitarrecpasswd', { email: email });
   }
 
 
   recuperarPasswd(id: string, cod: string) {
-    return this.httpUsers.post<interfaces.recPasswdResponse>(this.authUrl
+
+    return this.httpUsers.post<interfaces.RecPasswdResponse>(this.authUrl
       + '/recuperarpasswd/' + id, { cod: cod });
+  }
+
+
+  cambiarPasswd(passwd: string, passwdNueva: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    const passwds = {
+      id: JSON.parse(localStorage.getItem('user')!).id,
+      passwd: passwd,
+      passwdNueva: passwdNueva
+    };
+
+    return this.httpUsers.put<interfaces.RecPasswdResponse>(this.authUrl
+      + '/cambiarpasswd', passwds, header);
   }
 
 
@@ -70,5 +89,10 @@ export class AuthService {
           })
         );
     }
+  }
+
+  LoginWithGoogle(credentials: string): Observable<any> {
+    const header = new HttpHeaders().set('Content-type', 'application/json');
+    return this.httpUsers.post(this.authUrl + "/login_Google", {credentials: credentials}, { headers: header });
   }
 }

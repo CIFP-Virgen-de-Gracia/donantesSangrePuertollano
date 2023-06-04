@@ -25,18 +25,18 @@ export interface Auth {
     msg: string;
 }
 
-export interface registroResponse {
+export interface RegistroResponse {
     success: boolean;
     msg: string;
 }
 
-export interface solicitarRecPasswdResponse {
+export interface SolicitarRecPasswdResponse {
     success: boolean;
     id: number;
     msg: string;
 }
 
-export interface recPasswdResponse {
+export interface RecPasswdResponse {
     success: boolean;
     msg: string;
 }

@@ -17,8 +17,21 @@ div {
             color: var(--color-secundario);
         }
     }
+
+    mat-card{
+      max-width: 400px;
+      margin: 2px auto;
+      text-align: center;
+    }
+
+    mat-form-field{
+      display: block;
+      background-color: red;
+    }
 }
 
 button {
     width: 10rem;
 }
+
+

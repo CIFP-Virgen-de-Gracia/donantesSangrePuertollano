@@ -8,17 +8,21 @@ const auth = require('../controllers/authController');
 const contenido = require('../controllers/contenidoController');
 const citas = require('../controllers/citasController');
 const stats = require('../controllers/statsController');
+const users = require('../controllers/userController');
 const { check } = require('express-validator');
 const { mismaHora } = require('../helpers/validators/contacto-validators');
+const queriesUsers = require('../database/queries/queriesUsers');
 
 // Mario y Alicia
 // auth routes
 router.post('/login', auth.login); //Mario
 router.post('/register', auth.register); //Mario
+router.post('/login_Google', auth.googleSignin); //Alejandro y Mario
 router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
+router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.midUser], auth.modContrasena);
 router.post('/suscripcionNewsletter', [
     check('email', 'Formato de correo no válido').isEmail(),
     midsValidar.validarCampos
@@ -26,6 +30,12 @@ router.post('/suscripcionNewsletter', [
 router.get('/activarNewsletter/:id/:vKey', auth.activarNewsletter); //Alicia
 router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alicia
 
+
+// Usuarios routes
+// Mario
+// [vJwt.validarJwt, midsUser.midUser]
+router.put('/users/updateuser', users.updateUser);
+router.get('/users/getinfouser/:id', auth.getInfoUser);
 
 // Contenido routes
 // Todo Alicia
@@ -63,7 +73,7 @@ router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmi
 router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
 
-// pedir cita routes
+// citas routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);
 router.get('/citas/gethorascitas',[vJwt.validarJwt, midsUser.midAdmin], citas.getHorasCitas);
 router.post('/citas/pedircita', [vJwt.validarJwt, midsCitas.yaHaPedidoUnaCita, midsCitas.hayCapacidad, midsUser.midUser], citas.pedirCita);
@@ -75,12 +85,18 @@ router.get('/citas/getcitaspasadasuser/:id', [vJwt.validarJwt, midsUser.midUser]
 router.get('/citas/getcitaspendientes', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPendientes);
 router.get('/citas/getcitaspasadas', [vJwt.validarJwt, midsUser.midAdmin],citas.getCitasPasadas);
 router.put('/citas/aplazarcita', [vJwt.validarJwt, midsUser.midAdmin],citas.updateFechaCita);
-router.put('/citas/updateasistencia',[vJwt.validarJwt, midsUser.midAdmin], citas.confirmarAsistencia);
+router.put('/citas/updatehadonado',[vJwt.validarJwt, midsUser.midAdmin], citas.confirmarHaDonado);
 router.get('/citas/yatienecita/:id', [vJwt.validarJwt, midsUser.midUser], citas.yaHaPedidoUnaCita);
 
+router.get('/citas/gethorarios', citas.getHorarios);
 router.put('/citas/updatenumpersonascita', [vJwt.validarJwt, midsUser.midAdmin], citas.modNumPersonaCita);
 router.post('/citas/inserthoracita', [vJwt.validarJwt, midsUser.midAdmin], citas.insertHoraCita);
 router.delete('/citas/deletehoracita/:hora', [vJwt.validarJwt, midsUser.midAdmin], citas.deleteHoraCita);
+
+router.get('/citas/getcitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.getNumPersonasCita);
+router.put('/citas/updatecitasalavez', [vJwt.validarJwt, midsUser.midAdmin], citas.updateNumPersonascita);
+
+router.get('/citas/obtenerultima/:id',[vJwt.validarJwt,midsUser.midUser], citas.getUltimaCita);//Isa
 
 
 // Estadísticas routes

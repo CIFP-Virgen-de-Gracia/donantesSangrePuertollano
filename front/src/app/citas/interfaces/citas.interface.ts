@@ -1,3 +1,5 @@
+import { Hora } from "src/app/config/interfaces/config.interface";
+
 export interface CitasReservadasHorasResponse {
     sucess: boolean;
     fecha: string;
@@ -30,7 +32,7 @@ export interface CitaAdmin {
     fecha: string;
     donacion: string;
     cancelada: boolean;
-    asistida: number;
+    haDonado: number;
     user : {
         id: string;
         nombre: string;
@@ -67,7 +69,7 @@ export interface CitaAdminMostrar {
     hora: string;
     donacion: string;
     cancelada: boolean;
-    asistida: number;
+    haDonado: number;
     user: {
         id: string;
         nombre: string;
@@ -92,5 +94,44 @@ export interface CancelarCitaResponse {
 
 export interface getHoraCitaResponse {
     success: boolean;
-    horas: string[];
+    horas: Horario;
 }
+
+export interface getHorarioResponse {
+    success: boolean;
+    data: [];
+    msg: string;
+}
+
+
+export interface Horario {
+    [key: string]: string[];
+}
+
+
+export interface HorarioDia {
+    codDia: string;
+    hEntrada: string;
+    hSalida: string;
+}
+
+
+export interface GetALaVezResponse {
+    success: string;
+    num: number;
+    msg: string;
+}
+
+//Isabel
+export interface CitaInfo{
+    nombre:string;
+    donacion:string;
+    fecha:string;
+    hora:string;
+    cancelada:boolean
+  }
+  export interface ResponseCitaInfo{
+    success: boolean,
+    data: CitaInfo,
+    msg: string,
+  }

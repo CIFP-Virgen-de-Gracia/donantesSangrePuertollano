@@ -25,7 +25,7 @@ export class RegistroComponent {
     passwd: new FormControl('', [Validators.required]),
     passwdRep: new FormControl('', [Validators.required])
   });
-
+   
 
   constructor(
     private authHttsService: AuthService,

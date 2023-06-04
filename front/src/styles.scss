@@ -208,15 +208,15 @@ button:disabled {
   color: var(--bs-white);
 
 
-  &.btn-primario:hover {
-    background-color: var(--color-contraste-oscuro) !important;
-  }
+  // &.btn-primario:hover {
+  //   background-color: var(--color-contraste-oscuro) !important;
+  // }
 
-  &.btn-secundario:hover,
-  &.btn-terciario:hover {
-    background-color: var(--color-contraste) !important;
-    color: var(--color-contraste-oscuro) !important;
-  }
+  // &.btn-secundario:hover,
+  // &.btn-terciario:hover {
+  //   background-color: var(--color-contraste) !important;
+  //   color: var(--color-contraste-oscuro) !important;
+  // }
 
   &.btn-secundario {
 

@@ -16,8 +16,15 @@ const fs = require('fs');
 const pedirCita = async(req, res = response) => {
     try {
 
+        console.log('empieza');
+        console.log(req.body.fecha);
+        console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
+        console.log('acaba');
+
         if (metodosFecha.horaEsMayor(req.body.fecha, moment().format('YYYY-MM-DD HH:mm:ss')) 
                 && metodosFecha.horaValida(req.body.fecha)) {
+                    console.log('fechAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                    console.log(req.body.fecha);
                     const cita = {
                         fecha: moment(req.body.fecha, 'YYYY-MM-DD HH:mm:ss').add(1, 'hour'),
                         userId: req.body.id,
@@ -38,7 +45,8 @@ const pedirCita = async(req, res = response) => {
     }
     catch (err) {
 
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
+        console.log(err);
+        res.status(200).json({success: false, msg: 'se ha producido un error adsf'});
     }
 }
 
@@ -91,6 +99,7 @@ const getCitasPendientes = async(req, res = response) => {
     }
     catch (err) {
 
+        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -106,6 +115,7 @@ const getCitasPasadas = async(req, res = response) => {
     }
     catch (err) {
 
+        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -113,14 +123,15 @@ const getCitasPasadas = async(req, res = response) => {
 
 const getHorasDisponibles = async(req, res = response) => {
 
-    console.log('asdf');
-    console.log(req.params.fecha);
-
     Promise.all([queriesCitas.getHorarioCitas(req.params.fecha), queriesCitas.getCitasFechaHora(req.params.fecha)])
         .then(([horasSeg, horasReservadas]) => {
 
+            const codDia = ['l', 'm', 'x', 'j', 'v', 's'];
+            const diaSemana = new Date(req.params.fecha);
+            
+
             let arrayHorasHorario = [];
-            horasSeg.forEach(horaSeg => {
+            horasSeg[codDia[diaSemana.getDay() - 1]].forEach(horaSeg => {
 
                 // si la hora es después que la actual y es el mismo día o si es otro día (en estos casos las horas
                 // comparadas están disponibles)
@@ -143,12 +154,13 @@ const getHorasDisponibles = async(req, res = response) => {
             let horasDisponibles = [];
             for (const hora of arrayHorasHorario) {
 
-                if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora); // explicación justo arriba (*)
+                if (arrayHorasReservadas.filter(h => (h == hora)).length < 2) horasDisponibles.push(hora); // explicacgetcitaspendientesión justo arriba (*)
             }
 
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
 
+            console.log(err);
             res.status(200).json({success: false, msg: 'se ha producido un error'});
         });
 }
@@ -256,8 +268,100 @@ const mandarCorreoFechaCita = async(id, fecha, donacion, idCita) => {
     const resp = email.mandarCorreoAttachment(correo.email, contenido, imagenQr);
 
    //Elimino la imagen generada para evitar que surjan problemas de rendimiento y almacenamiento
-    if (fs.existsSync(imagenQr)) {
+    if (fs.existsSync(imagenQr)){
         fs.unlinkSync(imagenQr);
+    }
+}
+
+
+const confirmarHaDonado = async(req, res = response) => { // NOTE cambiar asistida en front!!!!!!!!
+
+    try {
+        
+        const resp = queriesCitas.updateCitaPasadaHaDonado(req.body.id, req.body.haDonado);
+        res.status(200).json({success:true, msg: 'ha donado acutalizado con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+
+}
+
+
+// TODO cambiar códigos (200 -> 201)
+const modNumPersonaCita = async(req, res = response) => {
+
+    try {
+
+        const resp = await queriesCitas.updateNumPersonasCita(req.body.nPersonas);
+
+        res.status(200).json({success: true, msg: 'parámetro actualizado con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+
+const getHorarios = async(req, res = response) => {
+    try {
+        
+        const horarios = await queriesCitas.getHorarios();
+
+        res.status(200).json({success: true, data: horarios, msg: 'devuelto con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'}); 
+    }
+}
+
+
+const insertHoraCita = async(req, res = response) => {
+    try {
+
+        const horario = await queriesCitas.getHorarioDia(req.body.codDia);
+        let valido = false;
+
+        horario.forEach(h => {
+            console.log(h.hEntrada + ' => ' + h.hSalida);
+            if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida) {
+                valido = true;
+                return; // es un bucle muy sencillo. Si la hora proporcionada está entre la
+                        // hora de entrada y de salida ya se puede insertar y me salgo del bucle.
+            }
+        });
+
+        if (valido) {
+            const resp = await queriesCitas.insertHoraCita(req.body.codDia, req.body.hora);
+    
+
+            res.status(200).json({success: true, msg: 'hora insertada con éxito'});
+        }
+        else {
+
+            res.status(200).json({success: false, msg: 'hora no válida'});
+        }
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
+    }
+}
+
+
+const deleteHoraCita = async(req, res = response) => {
+    try {
+
+        const resp = await queriesCitas.deleteHoraCita(req.params.hora);
+
+        res.status(200).json({success: true, msg: 'hora eliminada con éxito'});
+    }
+    catch (err) {
+
+        res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
 
@@ -285,35 +389,16 @@ const mandarCorreoModFechaCita = async(id, fechaAnterior, fechaActual, donacion)
     `;
 
     const correo = await queriesUsers.getEmailById(id);
-    const resp = email.mandarCorreoAttachment(correo.email, contenido,imagenQr);
-
-   //Elimino la imagen generada para evitar que surjan problemas de rendimiento y almacenamiento
-    if (fs.existsSync(imagenQr)){
-        fs.unlinkSync(imagenQr);
-    }
-}
-
-
-const confirmarAsistencia = async(req, res = response) => {
-
-    try {
-        
-        const resp = queriesCitas.updateCitaPasadaAsistida(req.body.id, req.body.asistida);
-        res.status(200).json({success:true, msg: 'asistencia acutalizada con éxito'});
-    }
-    catch (err) {
-
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
-    }
-
+    const resp = email.mandarCorreo(correo.email, contenido);
 }
 
 
 const limpiarUser = (citas) => {
-    
+
     const filtro = ({id, nombre}) => ({id, nombre});
 
     citas.forEach(cita => {
+        
         cita.user.dataValues = filtro(cita.user.dataValues);
     });
 }
@@ -331,19 +416,18 @@ const updateFechaCita = async(req, res = response) => {
     }
     catch (err) {
         
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
 
-// TODO cambiar códigos (200 -> 201)
-const modNumPersonaCita = async(req, res = response) => {
+
+const getNumPersonasCita = async(req, res = response) => {
 
     try {
 
-        const resp = await queriesCitas.updateNumPersonasCita(req.body.nPersonas);
+        const resp = await queriesCitas.getNumPersCita();
 
-        res.status(200).json({success: true, msg: 'parámetro actualizado con éxito'});
+        res.status(200).json({success: true, num: resp.dataValues.valor, msg: 'devuelto con éxito'});
     }
     catch (err) {
 
@@ -352,38 +436,35 @@ const modNumPersonaCita = async(req, res = response) => {
 }
 
 
-const insertHoraCita = async(req, res = response) => {
+const updateNumPersonascita = async(req, res = response) => {
+
     try {
 
-        const horario = await queriesCitas.getHorarioDia(req.body.codDia);
+        const resp = await queriesCitas.updateNumPersonasCita(req.body.nCitas);
 
-        if (req.body.hora > horario.hEntrada && req.body.hora < horario.hSalida) {
-            const resp = await queriesCitas.insertHoraCita(req.body.codDia, req.body.hora);
-    
-            res.status(200).json({success: true, msg: 'hora insertada con éxito'});
-        }
-        else {
-            res.status(200).json({success: false, msg: 'hora no válida'});
-        }
+        res.status(200).json({success: true, msg: 'actualizado con éxito'});
     }
     catch (err) {
 
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
-
-
-const deleteHoraCita = async(req, res = response) => {
-    try {
-
-        const resp = await queriesCitas.deleteHoraCita(req.params.hora);
-
-        res.status(200).json({success: true, msg: 'hora eliminada con éxito'});
-    }
-    catch (err) {
-
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
-    }
+//Isa
+const getUltimaCita = async(req, res = response) => {
+    queriesCitas.getUltimaCita(req.params.id).then((respuesta) => {
+        res.status(200).json({
+            success: true,
+            data: respuesta,
+            msg: 'Obtenida'
+        });
+    }).catch((err) => {
+       console.log(err);
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se ha podido obtener'
+        });
+    });
 }
 
 
@@ -392,6 +473,7 @@ module.exports = {
     getCitasPasadasUser,
     getCitasPendientes,
     getCitasPasadas,
+    getHorarios,
     recordarCitaTresDias,
     cancelarCita,
     pedirCita,
@@ -402,9 +484,12 @@ module.exports = {
     getHorasCitas,
     userNoTieneCita,
     yaHaPedidoUnaCita,
-    confirmarAsistencia,
+    confirmarHaDonado,
     updateFechaCita,
     modNumPersonaCita,
     insertHoraCita,
-    deleteHoraCita
+    deleteHoraCita,
+    getUltimaCita,
+    updateNumPersonascita,
+    getNumPersonasCita
 }

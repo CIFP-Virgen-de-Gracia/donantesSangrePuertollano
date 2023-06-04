@@ -16,15 +16,17 @@ export class CitasService {
   private _citasPasadas: interfaces.CitaAdmin[];
   private _citasPendientesUser: interfaces.Cita[];
   private _citasPasadasUser: interfaces.Cita[];
-  
+
   idCita: Subject<string>;
   diaCita: Subject<string>;
   horaCita: Subject<string>;
-
+  codAccion: Subject<number>;
+  
   constructor(private httpPedirCita: HttpClient) {
     this.idCita = new Subject<string>();
     this.diaCita = new Subject<string>();
     this.horaCita = new Subject<string>();
+    this.codAccion = new Subject<number>();
   }
 
   fetchHorasDisponibles(fecha: string) {
@@ -157,17 +159,17 @@ export class CitasService {
     };
 
     const body = {
-      id: id, 
+      id: id,
       fechaAntigua: fechaAntigua,
       fechaActual: fechaCita,
     };
 
-    return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+    return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
       '/aplazarcita', body, header);
   }
 
 
-  confirmarAsistencia(id: string, asistida: number) {
+  confirmarHaDonado(id: string, haDonado: number) {
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -176,7 +178,7 @@ export class CitasService {
     };
 
     return this.httpPedirCita.put<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
-      '/updateasistencia', {id: id, asistida: asistida}, header);
+      '/updatehadonado', {id: id, haDonado: haDonado}, header);
   }
 
 
@@ -193,7 +195,7 @@ export class CitasService {
   }
 
 
-  insertHoraCita(hora: string) {
+  insertHoraCita(codDia: string, hora: string) {
     const header = { 
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -202,7 +204,7 @@ export class CitasService {
     };
 
     return this.httpPedirCita.post<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
-      '/inserthoracita', {hora: hora}, header);
+      '/inserthoracita', {hora: hora, codDia: codDia}, header);
   }
 
 
@@ -214,7 +216,7 @@ export class CitasService {
       })
     };
 
-    return this.httpPedirCita.delete<interfaces.CancelarCitaResponse>(this.pedirCitaUrl + 
+    return this.httpPedirCita.delete<interfaces.CancelarCitaResponse>(this.pedirCitaUrl +
       '/deletehoracita/' + hora, header);
   }
 
@@ -229,5 +231,58 @@ export class CitasService {
 
     return this.httpPedirCita.get<interfaces.getHoraCitaResponse>(this.pedirCitaUrl +
       '/gethorascitas', header);
+  }
+
+
+  fetchHorarios() {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpPedirCita.get<interfaces.getHorarioResponse>(this.pedirCitaUrl +
+      '/gethorarios', header);
+  }
+
+  
+  updateCitasALaVez(nPersCitas: number) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpPedirCita.put<interfaces.getHorarioResponse>(this.pedirCitaUrl +
+      '/updatecitasalavez', {nCitas: nPersCitas}, header);
+  }
+
+
+  getCitasALaVez() {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpPedirCita.get<interfaces.GetALaVezResponse>(this.pedirCitaUrl +
+      '/getcitasalavez', header);
+  }
+
+
+  //Isa
+  getUltimaCitaUser(id: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpPedirCita.get<interfaces.ResponseCitaInfo>(this.pedirCitaUrl +
+      '/obtenerultima/' + id, header);
   }
 }
