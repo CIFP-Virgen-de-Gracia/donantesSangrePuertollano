@@ -17,17 +17,14 @@ const getHistoria = async (req, res = response) => {
 
             const resp = {
                 success: true,
-                data: historia.dataValues
-            }
+                historia: historia.dataValues
+            };
 
             res.status(200).json(resp);
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false };
 
             res.status(200).json(resp);
         });
@@ -223,13 +220,13 @@ const updateHistoria = async (req, res = response) => {
 
     try {
 
-        const historia = await queriesContenidos.updateHistoria(req.body.historia);
+        const historia = await queriesContenidos.updateHistoria(req.body);
        
         if (historia) {
             resp = {
                 success: true,
                 msg: 'Historia actualizada con éxito',
-                historia: historia.valor
+                historia: historia
             }
         }
 
@@ -241,7 +238,7 @@ const updateHistoria = async (req, res = response) => {
  }
 
 
-const updateIntegranteJunta = async (req, res = response) => { 
+const insertOrUpdateIntegranteJunta = async (req, res = response) => { 
     let resp = { success: false, msg: 'Se ha producido un error' };
     let intJunta;
 
@@ -425,7 +422,7 @@ module.exports = {
     descargarDocumento,
     getMemorias,
     updateHistoria,
-    updateIntegranteJunta,
+    insertOrUpdateIntegranteJunta,
     updateContacto,
     insertOrUpdateMemoria,
     deleteMemoria,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from 'src/app/shared/services/shared.service';
-import { Integrante } from '../interfaces/la-hermandad.interface';
+import { LaHermandadService } from '../services/la-hermandad.service';
+import { Historia, Integrante } from '../interfaces/la-hermandad.interface';
 
 
 @Component({
@@ -11,23 +11,23 @@ import { Integrante } from '../interfaces/la-hermandad.interface';
 export class PaginaHermandadComponent implements OnInit {
 
   junta: Integrante[] = [];
-  historia: string = '';
+  historia: Historia = { id: -1, nombre: 'historia', valor: ''};
 
-  constructor(private SharedService: SharedService) { }
+  constructor(private HermandadService: LaHermandadService) { }
 
   //Alicia
   ngOnInit() {
-    this.SharedService.getIntegrantesCargo()
+    this.HermandadService.getIntegrantesCargo()
       .subscribe(resp => {
         if (resp.success) {
           this.junta = resp.data;
         }
       });
 
-    this.SharedService.getHistoria()
+    this.HermandadService.getHistoria()
       .subscribe(resp => {
         if (resp.success) {
-          this.historia = resp.data.valor;
+          this.historia = resp.historia;
         }
       });
   }

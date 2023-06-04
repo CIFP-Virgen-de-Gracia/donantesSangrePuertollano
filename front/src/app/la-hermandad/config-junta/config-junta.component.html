@@ -1,19 +1,3 @@
-<div class="mensaje" [@entradaSalidaVentana]="codAccion == -1" *ngIf="codAccion != -1">
-  <ng-container *ngIf="codAccion == 0">
-    <div class="mensaje-ok d-flex align-items-center justify-content-center">
-      <i class="fa-solid fa-circle-check me-3"></i>
-      <p *ngIf="codAccion == 0">Éxito al {{ accion }} el integrante</p>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="codAccion == 1">
-    <div class="mensaje-error d-flex align-items-center justify-content-center">
-      <i class="fa-solid fa-triangle-exclamation me-3"></i>
-      <p *ngIf="codAccion == 1">Error al {{ accion }} el integrante</p>
-    </div>
-  </ng-container>
-</div>
-
 <div class="junta">
 
   <h3 class="titulo">Junta rectora</h3>
@@ -28,7 +12,7 @@
 
       <div class="col-2 col-md-1 d-flex justify-content-end align-items-center">
         <i class="fa-solid fa-pen me-lg-3 me-2" (click)="setInfoIntegrante(i)" data-bs-toggle="modal"
-          data-bs-target="#updateIntegrante" (click)="accion=acciones[1]"></i>
+          data-bs-target="#insertOrUpdateIntegrante" (click)="accion=acciones[1]"></i>
 
         <i class="fa-solid fa-trash me-2" (click)="deleteIntegrante(i)" (click)="accion=acciones[2]"></i>
       </div>
@@ -36,25 +20,25 @@
   </div>
 
   <button class="mt-2 btn-primario" data-bs-toggle="modal"
-    data-bs-target="#updateIntegrante" (click)="accion=acciones[0]">
+    data-bs-target="#insertOrUpdateIntegrante" (click)="accion=acciones[0]">
     Añadir integrante
   </button>
 </div>
 
 <!--  Modal -->
-<div class="modal" id="updateIntegrante" tabindex="-1" aria-hidden="true" aria-labelledby="updateIntegranteLabel"
+<div class="modal" id="insertOrUpdateIntegrante" tabindex="-1" aria-hidden="true" aria-labelledby="insertOrUpdateIntegranteLabel"
   data-bs-backdrop="static" data-bs-keyboard="false">
 
   <div class="modal-dialog">
     <div class="modal-content">
 
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateIntegranteLabel">{{ accion | titlecase }} integrante</h1>
+        <h1 class="modal-title fs-5" id="insertOrUpdateIntegranteLabel">{{ accion | titlecase }} integrante</h1>
         <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"
           (click)="limpiarIntegrante()"></button>
       </div>
 
-      <form (ngSubmit)="editarForm.form.valid && updateIntegrante(editarForm)" novalidate #editarForm="ngForm">
+      <form (ngSubmit)="editarForm.form.valid && insertOrUpdateIntegranteJunta(editarForm)" novalidate #editarForm="ngForm">
         <div class="modal-body">
           <div class="mb-4">
             <label for="cargos">Cargo</label><br>

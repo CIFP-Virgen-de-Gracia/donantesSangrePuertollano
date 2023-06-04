@@ -1,23 +1,7 @@
-<div class="mensaje" [@entradaSalidaVentana]="codAccion == -1" *ngIf="codAccion != -1">
-  <ng-container *ngIf="codAccion == 0">
-    <div class="mensaje-ok d-flex align-items-center justify-content-center">
-      <i class="fa-solid fa-circle-check me-3"></i>
-      <p *ngIf="codAccion == 0">Éxito al {{ accion }} el integrante</p>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="codAccion == 1">
-    <div class="mensaje-error d-flex align-items-center justify-content-center">
-      <i class="fa-solid fa-triangle-exclamation me-3"></i>
-      <p *ngIf="codAccion == 1">Error al {{ accion }} el integrante</p>
-    </div>
-  </ng-container>
-</div>
-
 <div class="historia">
   <h3 class="titulo mb-4">Historia</h3>
 
-  <div class="contenedor-historia" [innerHtml]="historia"></div>
+  <div class="contenedor-historia" [innerHtml]="historia.valor"></div>
 
   <button class="mt-2 btn-primario" data-bs-toggle="modal" data-bs-target="#updateHistoria">
     Editar historia
@@ -39,7 +23,7 @@
       <form (ngSubmit)="updateHistoria()" novalidate>
         <div class="modal-body">
           <div class="mb-4">
-            <angular-editor name="historia" [config]="editorTextoConfig" [(ngModel)]="historia"></angular-editor>
+            <angular-editor name="historia" [config]="editorTextoConfig" [(ngModel)]="historia.valor"></angular-editor>
           </div>
         </div>
 

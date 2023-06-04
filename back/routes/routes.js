@@ -59,7 +59,7 @@ router.put('/insertOrUpdateMemoria', [
     midsValidar.validarCampos 
 ], contenido.insertOrUpdateMemoria);
 router.put('/updateHistoria', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHistoria);
-router.put('/updateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateIntegranteJunta);
+router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertOrUpdateIntegranteJunta);
 router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
 router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
 

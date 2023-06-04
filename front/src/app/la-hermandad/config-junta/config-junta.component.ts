@@ -1,8 +1,8 @@
 import { NgForm } from '@angular/forms';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { LaHermandadService } from '../services/la-hermandad.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Cargo, Integrante } from '../interfaces/la-hermandad.interface';
+import { Cargo, Integrante, MensajeInf } from '../interfaces/la-hermandad.interface';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
 @Component({
@@ -14,9 +14,8 @@ import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 export class ConfigJuntaComponent {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
-  timer: NodeJS.Timeout | undefined;
-  mensaje: String = '';
   cargos: Cargo[] = [];
   infoInt!: Integrante;
   junta: Integrante[] = [];
@@ -25,16 +24,13 @@ export class ConfigJuntaComponent {
   acciones = ['añadir', 'editar', 'borrar'];
 
 
-  constructor(
-    private SharedService: SharedService,
-    private HermandadService: LaHermandadService
-  ) {
+  constructor(private HermandadService: LaHermandadService) {
     this.limpiarIntegrante();
   }
 
 
   ngOnInit() {
-    this.SharedService.getIntegrantesCargo()
+    this.HermandadService.getIntegrantesCargo()
       .subscribe(resp => {
         if (resp.success) this.junta = resp.data;
       });
@@ -47,7 +43,6 @@ export class ConfigJuntaComponent {
 
 
   setInfoIntegrante(index: number) {
-    this.limpiarMensaje()
     const integrante = this.junta[index];
 
     this.infoInt = {
@@ -59,11 +54,11 @@ export class ConfigJuntaComponent {
   }
 
 
-  updateIntegrante(form: NgForm) {
+  insertOrUpdateIntegranteJunta(form: NgForm) {
     const idCargo = this.cargos.find(c => c.nombre == this.infoInt.cargo);
     if (idCargo) this.infoInt.idCargo = idCargo.id;
 
-    this.HermandadService.updateIntegranteJunta(this.infoInt)
+    this.HermandadService.insertOrUpdateIntegranteJunta(this.infoInt)
       .subscribe(resp => {
 
         if (resp.success && resp.intJunta) {
@@ -74,11 +69,10 @@ export class ConfigJuntaComponent {
           if (indexInt == -1) this.junta.push(this.infoInt);
           else this.junta[indexInt] = this.infoInt;
 
-          this.codAccion = 0;
+          this.mensaje.emit({ exito: true, msg: 'Éxito al actualizar el integrante'});
 
-        } else this.codAccion = 1;
+        } else this.mensaje.emit({ exito: false, msg: 'Error al actualizar el integrante'});
 
-        this.setTimer(4000);
         this.closeModal.nativeElement.click();
         form.resetForm();
       })
@@ -86,34 +80,20 @@ export class ConfigJuntaComponent {
 
 
   deleteIntegrante(index: number) {
-    this.limpiarMensaje();
-
     this.HermandadService.deleteIntegranteJunta(this.junta[index].id)
       .subscribe(resp => {
 
         if (resp.success) {
           this.junta.splice(this.junta.findIndex(i => i.id == resp.idInt), 1);
-          this.codAccion = 0;
+          this.mensaje.emit({ exito: true, msg: 'Éxito al eliminar el integrante'});
 
-        } else this.codAccion = 1;
+        } else this.mensaje.emit({ exito: false, msg: 'Error al eliminar el integrante'});
 
-        this.setTimer(4000);
       });
   }
 
 
   limpiarIntegrante() {
     this.infoInt = { id: -1, nombre: '', cargo: '', idCargo: -1 };
-  }
-
-
-  limpiarMensaje() {
-    clearTimeout(this.timer);
-    this.codAccion = -1;
-  }
-
-
-  setTimer(tiempo: number) {
-    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
   }
 }

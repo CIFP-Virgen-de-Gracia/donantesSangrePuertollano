@@ -1,9 +1,8 @@
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Component, ElementRef, ViewChild } from '@angular/core';
 import { LaHermandadService } from '../services/la-hermandad.service';
-import { SharedService } from 'src/app/shared/services/shared.service';
+import { Historia, MensajeInf } from '../interfaces/la-hermandad.interface';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
-
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-config-historia',
@@ -14,8 +13,10 @@ import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 export class ConfigHistoriaComponent { //Alicia
 
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
   timer: NodeJS.Timeout | undefined;
+  historia: Historia = { id: -1, nombre: 'historia', valor: '' };
   editorTextoConfig: AngularEditorConfig = {
     editable: true,
     height: '400px',
@@ -28,21 +29,15 @@ export class ConfigHistoriaComponent { //Alicia
     sanitize: true,
     toolbarHiddenButtons: [['fontName']]
   };
-  historia: string = '';
-  mensaje: string = '';
-  codAccion = -1;
-  accion: string = 'editar';
 
-  constructor(
-    private SharedService: SharedService,
-    private HermandadService: LaHermandadService
-  ) {}
+
+  constructor(private HermandadService: LaHermandadService) {}
 
 
   ngOnInit() {
-    this.SharedService.getHistoria()
+    this.HermandadService.getHistoria()
       .subscribe(resp => {
-        if (resp.success) this.historia = resp.data.valor;
+        if (resp.success) this.historia = resp.historia;
       });
   }
 
@@ -52,19 +47,12 @@ export class ConfigHistoriaComponent { //Alicia
       .subscribe(resp => {
 
         if (resp.success && resp.historia) {
-          console.log(resp)
           this.historia = resp.historia;
-          this.codAccion = 0;
+          this.mensaje.emit({ exito: true, msg: 'Éxito al actualizar la historia'});
 
-        } else this.codAccion = 1;
+        } else this.mensaje.emit({ exito: false, msg: 'Error al actualizar la historia'});
 
-        this.setTimer(4000);
         this.closeModal.nativeElement.click();
       })
-  }
-
-  setTimer(tiempo: number) {
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
   }
 }

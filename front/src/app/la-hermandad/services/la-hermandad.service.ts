@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CargoResponse, HistoriaUpdateResponse, IntDeleteResponse, Integrante, IntUpdateInsertResponse } from '../interfaces/la-hermandad.interface';
+import { CargoResponse, Historia, HistoriaGetResponse, HistoriaUpdateResponse, IntDeleteResponse, Integrante, IntUpdateInsertResponse } from '../interfaces/la-hermandad.interface';
 
 
 
@@ -12,34 +12,44 @@ import { CargoResponse, HistoriaUpdateResponse, IntDeleteResponse, Integrante, I
 //Alicia
 export class LaHermandadService {
 
-  configUrl = `${environment.baseUrl}/api`;
+  baseUrl = `${environment.baseUrl}/api`;
 
 
   constructor(private http: HttpClient) { }
 
 
-  updateHistoria(historia: string): Observable<HistoriaUpdateResponse> {
+  getHistoria(): Observable<HistoriaGetResponse> {
+    return this.http.get<HistoriaGetResponse>(`${this.baseUrl}/getHistoria`);
+  }
+
+
+  updateHistoria(historia: Historia): Observable<HistoriaUpdateResponse> {
     const header = { headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.put<HistoriaUpdateResponse>(`${this.configUrl}/updateHistoria`, { historia: historia }, header);
+    return this.http.put<HistoriaUpdateResponse>(`${this.baseUrl}/updateHistoria`, historia, header);
+  }
+
+
+  getIntegrantesCargo(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`);
   }
 
 
   getCargosJunta(): Observable<CargoResponse> {
-    return this.http.get<CargoResponse>(`${this.configUrl}/getCargosJunta`);
+    return this.http.get<CargoResponse>(`${this.baseUrl}/getCargosJunta`);
   }
 
 
-  updateIntegranteJunta(integrante: Integrante): Observable<IntUpdateInsertResponse> {
+  insertOrUpdateIntegranteJunta(integrante: Integrante): Observable<IntUpdateInsertResponse> {
     const header = { headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.put<IntUpdateInsertResponse>(`${this.configUrl}/updateIntegranteJunta`, integrante, header);
+    return this.http.put<IntUpdateInsertResponse>(`${this.baseUrl}/insertOrUpdateIntegranteJunta`, integrante, header);
   }
 
 
@@ -49,6 +59,6 @@ export class LaHermandadService {
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.delete<IntDeleteResponse>(`${this.configUrl}/deleteIntegranteJunta/${id}`, header);
+    return this.http.delete<IntDeleteResponse>(`${this.baseUrl}/deleteIntegranteJunta/${id}`, header);
   }
 }

@@ -137,21 +137,21 @@ insertIntegranteJunta = async (datos) => {
 }
 
 
-updateHistoria = async (texto) => {
+updateHistoria = async (historia) => {
   try {
 
-    const [historia, created] = await models.Contenido.findOrCreate({
-      where: { nombre: 'historia' },
+    const [resp, created] = await models.Contenido.findOrCreate({
+      where: { id: historia.id },
       defaults: {
         id: null,
-        nombre: 'historia',
-        valor: texto
+        nombre: historia.nombre,
+        valor: historia.valor
       }
     });
+    
+    if (!created) await resp.update({ valor: historia.valor });
 
-    if (!created) await historia.update({ valor: texto });
-
-    return historia;
+    return resp;
 
   } catch (err) {
     throw err;
@@ -177,47 +177,6 @@ updateIntegranteJunta = async (datos) => {
       };
  
     } else return null;
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
-updateNombreIntegranteJunta = async (integrante) => {
-  try {
-
-    const int = await models.IntegranteJunta.findByPk(integrante.id);
-    const respInt = await int.update({ nombre: integrante.nombre });
-
-    return respInt;
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
-updateCargoIntegranteJunta = async (integrante) => {
-  try {
-
-    const idCargo = await models.CargoJunta.findOne({
-      attributes: ['id'],
-      where: {
-        nombre: integrante.cargo
-      }
-    });
-
-    const cargoInt = await models.CargoIntegrante.findOne({
-      attributes: ['idCargo', 'idIntegrante'],
-      where: {
-        idIntegrante: integrante.id
-      }
-    });
-
-    const respCargo = await cargoInt.update({ idCargo: idCargo.id });
-
-    return respCargo;
 
   } catch (err) {
     throw err;
@@ -403,8 +362,6 @@ module.exports = {
   insertIntegranteJunta,
   updateHistoria,
   updateIntegranteJunta,
-  updateNombreIntegranteJunta,
-  updateCargoIntegranteJunta,
   updateDireccion,
   updateTelefono,
   updateHorario,
