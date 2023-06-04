@@ -54,7 +54,7 @@ export interface BorrarMemResponse {
   data: number
 }
 
-export interface AddUpdateMemResponse {
+export interface InsertUpdateMemResponse {
   success: boolean,
   msg: string,
   data: Memoria

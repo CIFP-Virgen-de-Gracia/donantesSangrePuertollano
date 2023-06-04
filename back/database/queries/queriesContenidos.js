@@ -3,366 +3,415 @@ const models = require('../../models/index.js');
 
 //Alicia
 getHistoria = async () => {
-    const historia = await models.Contenido.findOne({
-        attributes: ['id', 'nombre', 'valor'],
-        where: {
-            nombre: 'historia'
-        }
-    });
+  const historia = await models.Contenido.findOne({
+    attributes: ['id', 'nombre', 'valor'],
+    where: {
+      nombre: 'historia'
+    }
+  });
 
-    return historia;
+  return historia;
 }
 
 
 getHorarios = async () => {
-    const horarios = await models.Horario.findAll();
+  const horarios = await models.Horario.findAll();
 
-    return horarios;
+  return horarios;
 }
 
 
 getTelefonos = async () => {
-    const telefonos = await models.Telefono.findAll();
+  const telefonos = await models.Telefono.findAll();
 
-    return telefonos;
+  return telefonos;
 }
 
 
 getDirecciones = async () => {
-    const direcciones = await models.Direccion.findAll();
+  const direcciones = await models.Direccion.findAll();
 
-    return direcciones;
+  return direcciones;
 }
 
 
 getCargosJunta = async () => {
-    const cargos = await models.CargoJunta.findAll();
+  const cargos = await models.CargoJunta.findAll();
 
-    return cargos;
+  return cargos;
 }
 
 
 getCargoIntegrantes = async () => {
-    //https://stackoverflow.com/questions/68132680/how-to-return-values-from-joined-tables-in-sequelize-at-the-same-level-as-master
-    const cargosIntegrantes = await models.IntegranteJunta.findAll({
+  //https://stackoverflow.com/questions/68132680/how-to-return-values-from-joined-tables-in-sequelize-at-the-same-level-as-master
+  const cargosIntegrantes = await models.IntegranteJunta.findAll({
+    include: [
+      {
+        model: models.CargoIntegrante,
+        attributes: [],
+        as: 'CargoIntegrante',
         include: [
-            {
-                model: models.CargoIntegrante,
-                attributes: [],
-                as: 'CargoIntegrante',
-                include: [
-                    {
-                        model: models.CargoJunta,
-                        attributes: [],
-                        as: 'CargoJunta'
-                    }
-                ]
-            }
-        ],
-        attributes: ['id', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'],
-            [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
-    });
+          {
+            model: models.CargoJunta,
+            attributes: [],
+            as: 'CargoJunta'
+          }
+        ]
+      }
+    ],
+    attributes: ['id', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'],
+      [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
+  });
 
-    return cargosIntegrantes;
+  return cargosIntegrantes;
 }
 
 
 getMemoria = async (id) => {
-    const memoria = await models.Memoria.findByPk(id);
-    
-    return memoria;
+  const memoria = await models.Memoria.findByPk(id);
+
+  return memoria;
 }
 
 
 getMemorias = async () => {
-    const memorias = await models.Memoria.findAll({ order: [['anio', 'ASC']] });
-    
-    return memorias;
+  const memorias = await models.Memoria.findAll({ order: [['anio', 'ASC']] });
+
+  return memorias;
 }
 
 
 insertHorario = async (horario) => {
-    try {
+  try {
 
-        const resp = await models.Horario.create({
-            dia: horario.dia,
-            hEntrada: horario.hEntrada,
-            hSalida: horario.hSalida
-        });
+    const resp = await models.Horario.create({
+      dia: horario.dia,
+      hEntrada: horario.hEntrada,
+      hSalida: horario.hSalida
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 insertTelefono = async (tlfn) => {
-    try {
+  try {
 
-        const resp = await models.Telefono.create({
-            numero: tlfn.numero,
-            extension: tlfn.extension
-        });
+    const resp = await models.Telefono.create({
+      numero: tlfn.numero,
+      extension: tlfn.extension
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
-insertMemoria = async() => {
-    try {
+insertIntegranteJunta = async (datos) => {
+  try {
 
-        const resp = await models.Memoria.create({
-            id: null,
-            anio: memoria.anio,
-            imagen: memoria.imagen,
-            documento: memoria.documento
-        });
+    const intJunta = await models.IntegranteJunta.create({ id: null, nombre: datos.nombre });
+    datos.id = intJunta.id;
+    const cargoInt = await models.CargoIntegrante.create({ idCargo: datos.idCargo, idIntegrante: datos.id });
+    const cargo = await models.CargoJunta.findByPk(cargoInt.idCargo, { attributes: ['nombre'] });
 
-        return resp;
-
-    } catch (err) {
-        throw err;
+    return {
+      cargo: cargo.nombre,
+      id: intJunta.id,
+      idCargo: cargoInt.idCargo,
+      nombre: intJunta.nombre
     }
+
+  } catch (err) {
+    await models.IntegranteJunta.destroy({ where: { id: datos.id } });
+
+    throw err;
+  }
 }
 
 
-updateHistoria = async (valor) => {
-    let resp = null;
+updateHistoria = async (texto) => {
+  try {
 
-    try {
+    const [historia, created] = await models.Contenido.findOrCreate({
+      where: { nombre: 'historia' },
+      defaults: {
+        id: null,
+        nombre: 'historia',
+        valor: texto
+      }
+    });
 
-        const historia = await models.Contenido.findOne({
-            where: {
-                nombre: 'historia',
-            }
-        });
+    if (!created) await historia.update({ valor: texto });
 
-        if (historia == null) {
-            resp = await models.Contenido.create({
-                nombre: 'historia',
-                valor: valor
-            });
-        } else resp = await historia.update({ valor: valor });
+    return historia;
 
-        return resp;
+  } catch (err) {
+    throw err;
+  }
+}
 
-    } catch (err) {
-        throw err;
-    }
+
+updateIntegranteJunta = async (datos) => {
+  try {
+
+    const intJunta = await models.IntegranteJunta.findByPk(datos.id);
+    const cargoInt = await models.CargoIntegrante.findOne({ where: { idIntegrante: datos.id } });
+    const cargo = await models.CargoJunta.findByPk(datos.idCargo, { attributes: ['nombre'] });
+    
+    if (intJunta && cargoInt) {
+      await Promise.all([intJunta.update({ nombre: datos.nombre }), cargoInt.update({ idCargo: datos.idCargo })]);
+
+      return {
+        cargo: cargo.nombre,
+        id: intJunta.id,
+        idCargo: cargoInt.idCargo,
+        nombre: intJunta.nombre
+      };
+ 
+    } else return null;
+
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 updateNombreIntegranteJunta = async (integrante) => {
-    try {
+  try {
 
-        const int = await models.IntegranteJunta.findByPk(integrante.id);
-        const respInt = await int.update({ nombre: integrante.nombre });
+    const int = await models.IntegranteJunta.findByPk(integrante.id);
+    const respInt = await int.update({ nombre: integrante.nombre });
 
-        return respInt;
+    return respInt;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 updateCargoIntegranteJunta = async (integrante) => {
-    try {
+  try {
 
-        const idCargo = await models.CargoJunta.findOne({
-            attributes: ['id'],
-            where: {
-                nombre: integrante.cargo
-            }
-        });
+    const idCargo = await models.CargoJunta.findOne({
+      attributes: ['id'],
+      where: {
+        nombre: integrante.cargo
+      }
+    });
 
-        const cargoInt = await models.CargoIntegrante.findOne({
-            attributes: ['idCargo', 'idIntegrante'],
-            where: {
-                idIntegrante: integrante.id
-            }
-        });
+    const cargoInt = await models.CargoIntegrante.findOne({
+      attributes: ['idCargo', 'idIntegrante'],
+      where: {
+        idIntegrante: integrante.id
+      }
+    });
 
-        const respCargo = await cargoInt.update({ idCargo: idCargo.id });
+    const respCargo = await cargoInt.update({ idCargo: idCargo.id });
 
-        return respCargo;
+    return respCargo;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 updateDireccion = async (direccion) => {
-    try {
+  try {
 
-        const dir = await models.Direccion.findByPk(direccion.id);
-        const resp = await dir.update({
-            lugar: direccion.lugar,
-            calle: direccion.calle,
-            numero: direccion.numero,
-            provincia: direccion.provincia,
-            ciudad: direccion.ciudad,
-            cp: direccion.cp
-        });
+    const dir = await models.Direccion.findByPk(direccion.id);
+    const resp = await dir.update({
+      lugar: direccion.lugar,
+      calle: direccion.calle,
+      numero: direccion.numero,
+      provincia: direccion.provincia,
+      ciudad: direccion.ciudad,
+      cp: direccion.cp
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 updateTelefono = async (telefono) => {
-    try {
+  try {
 
-        const tlfn = await models.Telefono.findByPk(telefono.id);
-        const resp = await tlfn.update({
-            numero: telefono.numero,
-            extension: telefono.extension
-        });
+    const tlfn = await models.Telefono.findByPk(telefono.id);
+    const resp = await tlfn.update({
+      numero: telefono.numero,
+      extension: telefono.extension
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 updateHorario = async (horario) => {
-    try {
+  try {
 
-        const h = await models.Horario.findByPk(horario.id);
-        const resp = await h.update({
-            hEntrada: horario.hEntrada,
-            hSalida: horario.hSalida
-        });
+    const h = await models.Horario.findByPk(horario.id);
+    const resp = await h.update({
+      hEntrada: horario.hEntrada,
+      hSalida: horario.hSalida
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
-addOrUpdateMemoria = async (memoria) => {
-    try {
+insertOrUpdateMemoria = async (memoria) => {
+  try {
 
-        const [mem, creada] = await models.Memoria.findOrCreate({
-            where: { id: memoria.id },
-            defaults: {
-                id: null,
-                anio: memoria.anio,
-                imagen: memoria.imagen,
-                documento: memoria.documento
-            }
-        });
+    const [mem, creada] = await models.Memoria.findOrCreate({
+      where: { id: memoria.id },
+      defaults: {
+        id: null,
+        anio: memoria.anio,
+        imagen: memoria.imagen,
+        documento: memoria.documento
+      }
+    });
 
-        const resp = creada 
-            ? mem 
-            : await mem.update({
-                anio: memoria.anio,
-                imagen: memoria.imagen ? memoria.imagen : null,
-                documento: memoria.documento ? memoria.documento : null,
-            });
+    const resp = creada
+      ? mem
+      : await mem.update({
+        anio: memoria.anio,
+        imagen: memoria.imagen ? memoria.imagen : null,
+        documento: memoria.documento ? memoria.documento : null,
+      });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 deleteHorario = async (id) => {
-    try {
+  try {
 
-        const resp = await models.Horario.destroy({
-            where: { id: id }
-        });
+    const resp = await models.Horario.destroy({
+      where: { id: id }
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 deleteTelefono = async (id) => {
-    try {
+  try {
 
-        const resp = await models.Telefono.destroy({
-            where: { id: id }
-        });
+    const resp = await models.Telefono.destroy({
+      where: { id: id }
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
-deleteMemoria = async(id) => {
-    try {
-        const resp = await models.Memoria.destroy({
-            where: { id: id }
-        });
+deleteMemoria = async (id) => {
+  try {
+    const resp = await models.Memoria.destroy({
+      where: { id: id }
+    });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
 deleteImgMemoria = async (id) => {
-    try {
+  try {
 
-        const mem = await models.Memoria.findByPk(id)
-        const resp = await mem.update({ imagen: null });
+    const mem = await models.Memoria.findByPk(id)
+    const resp = await mem.update({ imagen: null });
 
-        return resp;
+    return resp;
 
-    } catch (err) {
-        throw err;
-    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 
+deleteIntegranteJunta = async (id) => {
+  try {
+
+    const integrante = await models.IntegranteJunta.destroy({ where: { id: id } });
+
+    if (integrante == 1) {
+      const cargoInt = await models.CargoIntegrante.destroy({ where: { idIntegrante: id } });
+
+      if (cargoInt == 0) {
+        await models.IntegranteJunta.restore({ where: { id: id } });
+        return 0;
+      }
+    }
+
+    return integrante;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
 
 module.exports = {
-    getHistoria,
-    getHorarios,
-    getTelefonos,
-    getDirecciones,
-    getCargosJunta,
-    getCargoIntegrantes,
-    getMemoria,
-    getMemorias,
-    insertHorario,
-    insertTelefono,
-    insertMemoria,
-    updateHistoria,
-    updateNombreIntegranteJunta,
-    updateCargoIntegranteJunta,
-    updateDireccion,
-    updateTelefono,
-    updateHorario,
-    addOrUpdateMemoria,
-    deleteHorario,
-    deleteTelefono,
-    deleteMemoria,
-    deleteImgMemoria
+  getHistoria,
+  getHorarios,
+  getTelefonos,
+  getDirecciones,
+  getCargosJunta,
+  getCargoIntegrantes,
+  getMemoria,
+  getMemorias,
+  insertHorario,
+  insertTelefono,
+  insertIntegranteJunta,
+  updateHistoria,
+  updateIntegranteJunta,
+  updateNombreIntegranteJunta,
+  updateCargoIntegranteJunta,
+  updateDireccion,
+  updateTelefono,
+  updateHorario,
+  insertOrUpdateMemoria,
+  deleteHorario,
+  deleteTelefono,
+  deleteMemoria,
+  deleteImgMemoria,
+  deleteIntegranteJunta
 };

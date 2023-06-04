@@ -1,0 +1,76 @@
+.mensaje {
+  position: fixed;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  z-index: 80;
+  background-color: var(--bs-white);
+  padding: 1rem;
+  bottom: 20px;
+  right: 2%;
+  width: 96%;
+
+  @media (min-width: 576px) {
+      right: 15px;
+      width: 60%;
+      padding: 1rem 2rem;
+  }
+
+  @media (min-width: 992px) {
+      width: 35%;
+  }
+
+  @media (min-width: 1400px) {
+      width: 25%;
+  }
+}
+
+.botones {
+  margin-bottom: 1rem;
+}
+
+.junta {
+  .titulo {
+    margin-top: 4rem;
+  }
+
+  .info {
+    font-size: var(--letra-pequena);
+  }
+
+  .contenedor-integrantes {
+    .integrante {
+      border-bottom: 2px solid var(--color-primario);
+      margin-bottom: 2.5rem;
+
+      .nombre,
+      .cargo {
+        border: none;
+        outline: none;
+        padding: .5rem;
+      }
+
+      .cargos option {
+        font-family: arial !important;
+      }
+
+      i {
+        color: var(--color-contraste-oscuro);
+
+        &:hover {
+          color: var(--color-granate);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .junta .contenedor-integrantes .integrante {
+    margin-bottom: 2rem;
+
+    .nombre,
+    .cargos {
+      padding: .5rem 1rem;
+    }
+  }
+}

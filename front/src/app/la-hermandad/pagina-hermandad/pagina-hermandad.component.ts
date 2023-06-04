@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Integrante } from 'src/app/shared/interfaces/shared.interface';
+import { Integrante } from '../interfaces/la-hermandad.interface';
 
 
 @Component({
-  selector: 'app-la-hermandad',
-  templateUrl: './la-hermandad.component.html',
-  styleUrls: ['./la-hermandad.component.scss']
+  selector: 'app-pagina-hermandad',
+  templateUrl: './pagina-hermandad.component.html',
+  styleUrls: ['./pagina-hermandad.component.scss']
 })
-export class LaHermandadComponent implements OnInit {
+export class PaginaHermandadComponent implements OnInit {
 
   junta: Integrante[] = [];
-  historia: String = '';
+  historia: string = '';
 
   constructor(private SharedService: SharedService) { }
 

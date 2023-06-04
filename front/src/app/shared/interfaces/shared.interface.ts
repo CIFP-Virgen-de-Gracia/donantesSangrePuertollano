@@ -4,13 +4,6 @@ export interface Email { //Alicia
   email: string;
 }
 
-export interface Integrante { //Alicia
-  id: number,
-  nombre: string,
-  cargo: string,
-  idCargo: number
-}
-
 export interface HorarioResponse { //Alicia
   success: boolean;
   data: Horario[];

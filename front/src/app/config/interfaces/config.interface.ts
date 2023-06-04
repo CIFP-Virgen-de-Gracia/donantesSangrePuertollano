@@ -10,16 +10,6 @@ export interface updateResponse { //Alicia
   }
 }
 
-export interface cargoResponse { //Alicia
-  success: boolean;
-  data: Cargo[];
-}
-
-export interface Cargo { //Alicia
-  id: number;
-  nombre: string;
-}
-
 export interface Horario { //Alicia
   id: number;
   dia: string;

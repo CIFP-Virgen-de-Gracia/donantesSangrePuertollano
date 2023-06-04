@@ -22,6 +22,7 @@ import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.modul
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
+import { LaHermandadModule } from './la-hermandad/la-hermandad.module';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -42,7 +43,7 @@ registerLocaleData(localeEs);
         PaginasModule,
         SharedModule,
         GestionContenidoModule,
-        NoticiasRoutingModule, 
+        NoticiasRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
         AuthModule,
@@ -51,7 +52,8 @@ registerLocaleData(localeEs);
         NgxPaginationModule,
         PaginasDonacionModule,
         GaleriaModule,
-        ConfigRoutingModule
+        ConfigRoutingModule,
+        LaHermandadModule
     ]
 })
 export class AppModule {}

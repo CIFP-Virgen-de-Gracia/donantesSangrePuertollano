@@ -35,7 +35,7 @@
       <div class="contenedor-btns" *ngIf="puedeModificar">
         <button class="btn-secundario mt-3"
           data-bs-toggle="modal"
-          data-bs-target="#addOrUpdateMemoria"
+          data-bs-target="#insertOrUpdateMemoria"
           (click)="accion=acciones[0]"
           (click)="limpiarMemoria()">
           Añadir memoria
@@ -69,7 +69,7 @@
                   (click)="setInfoMemoria(i)"
                   (click)="accion=acciones[1]"
                   data-bs-toggle="modal"
-                  data-bs-target="#addOrUpdateMemoria">
+                  data-bs-target="#insertOrUpdateMemoria">
                 </i>
 
                 <i class="fa-solid fa-trash"
@@ -85,18 +85,18 @@
   </div>
 
  <!--  Modal -->
-  <div class="modal" id="addOrUpdateMemoria" tabindex="-1" aria-hidden="true"
-    aria-labelledby="addOrUpdateMemoriaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal" id="insertOrUpdateMemoria" tabindex="-1" aria-hidden="true"
+    aria-labelledby="insertOrUpdateMemoriaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
 
     <div class="modal-dialog">
       <div class="modal-content">
 
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addOrUpdateMemoriaLabel">{{ accion | titlecase }} memoria</h1>
+          <h1 class="modal-title fs-5" id="insertOrUpdateMemoriaLabel">{{ accion | titlecase }} memoria</h1>
           <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
 
-        <form (ngSubmit)="editarForm.form.valid && addOrUpdateMemoria()" novalidate #editarForm="ngForm">
+        <form (ngSubmit)="editarForm.form.valid && insertOrUpdateMemoria()" novalidate #editarForm="ngForm">
           <div class="modal-body">
             <div class="mb-4">
               <label for="anio">Año</label><br>
@@ -108,8 +108,7 @@
                 pattern="[0-9]{4}"
                 required
                 min="1"
-                [(ngModel)]="infoMemoria.anio"
-                [ngClass]="{'error-input' : anio.invalid && (anio.dirty || anio.touched)}"/>
+                [(ngModel)]="infoMemoria.anio"/>
 
               <div *ngIf="anio.dirty || anio.touched">
                 <p class="mensaje-error" *ngIf="anio.errors?.['pattern']">
@@ -136,8 +135,7 @@
                   id="inpt-doc"
                   class="form-control"
                   accept="application/pdf, application/odt, application/doc, application/docx"
-                  (change)="onDocumentoSeleccionado($event)"
-                  [ngClass]="{'error-input' : !documentoError}"/>
+                  (change)="onDocumentoSeleccionado($event)"/>
 
                   <label for="inpt-doc" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
@@ -166,8 +164,7 @@
                   id="inpt-img"
                   class="form-control"
                   accept="image/png, image/jpg, image/jpeg, image/gif, image/tiff, image/svg, image/webp"
-                  (change)="onImgSeleccionada($event)"
-                  [ngClass]="{'error-input' : !imagenError}"/>
+                  (change)="onImgSeleccionada($event)"/>
 
                   <label for="inpt-img" class="nombre-archivo d-flex g-0">
                     <span>Examinar</span>
