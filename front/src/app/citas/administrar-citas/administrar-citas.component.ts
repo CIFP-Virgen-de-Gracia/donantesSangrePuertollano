@@ -5,13 +5,14 @@ import { Component } from '@angular/core';
 import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalAplazarCitaComponent } from '../modal-aplazar-cita/modal-aplazar-cita.component';
+import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
 
 @Component({
   selector: 'app-administrar-citas',
   templateUrl: './administrar-citas.component.html',
   styleUrls: ['./administrar-citas.component.scss'],
-  // animations: ['entradaSalidaVentana']
+  animations: [entradaSalidaVentana]
 })
 export class AdministrarCitasComponent {
 
@@ -22,7 +23,7 @@ export class AdministrarCitasComponent {
   noHayCitasPendientes: boolean = false;
   noHayCitasPasadas: boolean = false;
   codAccion: number = -1;
-  accion: string;
+  mensaje: string;
   timer: NodeJS.Timeout | undefined;
 
   constructor(
@@ -58,6 +59,10 @@ export class AdministrarCitasComponent {
         else {
 
           this.errorTraerCitas = true;
+
+          this.codAccion = 1;
+          this.mensaje = "Se ha producido un error. Inténtalo más tarde."
+          this.setTimer(4000);
         }
       });
   }
@@ -105,7 +110,8 @@ export class AdministrarCitasComponent {
       this.traerCitasAdmin();
       this.citasService.codAccion.subscribe(ca => {
 
-        this.accion = ca ? 'aplazada' : 'aplazar';
+        this.mensaje = ca == 0 ? 'Cita aplazada con éxito.' 
+          : 'Error al aplazar la cita.';
         this.codAccion = ca;
         this.setTimer(4000);
       });
@@ -132,13 +138,13 @@ export class AdministrarCitasComponent {
       if (resp.success) {
         
         this.citasPendientes[index].cancelada = true;
-        this.accion = 'cancelada';
+        this.mensaje = 'Cita cancelada con éxito.';
         this.codAccion = 0;
         this.setTimer(4000);
       }
       else {
 
-        this.accion = 'cancelar';
+        this.mensaje = 'Error al cancelar la cita.';
         this.codAccion = 1;
         this.setTimer(4000);
       }
