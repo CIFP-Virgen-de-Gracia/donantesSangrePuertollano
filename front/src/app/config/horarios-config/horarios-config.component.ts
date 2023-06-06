@@ -21,7 +21,7 @@ import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 export class HorariosConfigComponent {
   // Alicia
   citasForm!: FormGroup;
-  horariosData: Horario[] = [];
+  horariosData: Horario[] = []; 
   hMostrar!: HorarioMostrar[];
   hBorrar: number[] = [];
   timer: NodeJS.Timeout | undefined;
