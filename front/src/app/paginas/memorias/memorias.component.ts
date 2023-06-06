@@ -142,8 +142,8 @@ export class MemoriasComponent implements OnInit {
   }
 
 
-  addOrUpdateMemoria() {
-    this.PaginasService.addOrUpdateMemoria(this.infoMemoria)
+  insertOrUpdateMemoria() {
+    this.PaginasService.insertOrUpdateMemoria(this.infoMemoria)
       .subscribe( resp => {
 
         if (resp.success) {

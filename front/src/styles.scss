@@ -65,11 +65,15 @@ body {
   }
 
 
-  // Botones - inputs - select
+// Botones - inputs - select
   select {
     option {
       font-family: arial !important;
     }
+  }
+
+  input:read-only {
+    cursor: default;
   }
 
   input.inpt,
@@ -313,8 +317,7 @@ h1.titulo {
 
 .contenedor-historia {
 
-  p,
-  div:not(:first-of-type) {
+  p:not(:first-of-type) {
     padding-top: 1.5rem !important;
     text-align: unset;
   }

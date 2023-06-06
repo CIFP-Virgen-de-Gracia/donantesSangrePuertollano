@@ -49,7 +49,6 @@ router.get('/getMemorias', contenido.getMemorias);
 router.get('/upload/img/:nombre', contenido.getImagen);
 router.get('/upload/doc/:nombre', contenido.getDocumento);
 router.get('/download/:nombre', contenido.descargarDocumento);
-router.put('/updateHermandad', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHermandad);
 router.put('/updateContacto', [ 
     vJwt.validarJwt, 
     midsUser.midAdmin,
@@ -63,14 +62,16 @@ router.put('/updateContacto', [
     check('direcciones.*.cp', 'Código postal no válido').matches(/^[0-9]{5}$/),
     midsValidar.validarCampos,
 ], contenido.updateContacto);
-router.put('/addOrUpdateMemoria', [ 
+router.put('/insertOrUpdateMemoria', [ 
     vJwt.validarJwt, 
     midsUser.midAdmin, 
     check('anio', 'El año es obligatorio').not().isEmpty(),
     midsValidar.validarCampos 
-], contenido.addOrUpdateMemoria);
+], contenido.insertOrUpdateMemoria);
+router.put('/updateHistoria', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHistoria);
+router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertOrUpdateIntegranteJunta);
 router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
-
+router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
 
 // citas routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);

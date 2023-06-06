@@ -27,15 +27,6 @@ export class SharedService {
     return this.http.post<any>(`${this.baseUrl}/suscripcionNewsletter`, email);
   }
 
-  //Alicia
-  getIntegrantesCargo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`);
-  }
-
-  //Alicia
-  getHistoria(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getHistoria`);
-  }
 
   //Alicia
   getHorarios(): Observable<HorarioResponse> {

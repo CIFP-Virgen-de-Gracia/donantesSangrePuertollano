@@ -27,9 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     idIntegrante: DataTypes.BIGINT
   }, {
     sequelize,
+    paranoid: true,
     tableName: 'cargoIntegrante',
     modelName: 'CargoIntegrante',
-    timestamps: false
+    timestamps: true,
   });
 
   
