@@ -5,7 +5,7 @@ import { ContactoConfigComponent } from './contacto-config/contacto-config.compo
 import { HimnoConfigComponent } from './himno-config/himno-config.component';
 import { TestConfigComponent } from './test-config/test-config.component';
 import { FaqsConfigComponent } from './faqs-config/faqs-config.component';
-import { CitasConfigComponent } from './citas-config/citas-config.component';
+import { HorariosConfigComponent } from './horarios-config/horarios-config.component';
 import { ConfigMainComponent } from '../la-hermandad/config-main/config-main.component';
 
 const routes: Routes = [
@@ -15,7 +15,7 @@ const routes: Routes = [
     children: [
       { path: 'hermandad', component: ConfigMainComponent },
       { path: 'contacto', component: ContactoConfigComponent },
-      { path: 'citas', component: CitasConfigComponent},
+      { path: 'citas', component: HorariosConfigComponent},
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},
       { path: 'faq', component: FaqsConfigComponent },

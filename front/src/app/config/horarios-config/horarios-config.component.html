@@ -1,3 +1,22 @@
+<div class="mensaje"
+      [@entradaSalidaVentana]="codAccion == -1"
+      *ngIf="codAccion != -1">
+
+      <ng-container *ngIf="codAccion == 0">
+        <div class="mensaje-ok d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-circle-check me-3"></i>
+          <p *ngIf="codAccion == 0">{{ mensaje }}</p>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="codAccion == 1">
+        <div class="mensaje-error d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-triangle-exclamation me-3"></i>
+          <p *ngIf="codAccion == 1">Error al {{ mensaje }} la cita</p>
+        </div>
+      </ng-container>
+    </div>
+
 <form [formGroup]="citasForm" (ngSubmit)="guardar()"  #cForm="ngForm">
     <div class="horarios">
         <h3 class="titulo mb-4">Horario</h3>
@@ -70,25 +89,26 @@
         </button>
     </div>
 </form>
-<div class="horas-citas">
+<div class="horas-citas pt-5">
     <h3 class="titulo mb-4">Horas citas</h3>
     <div class="row p-0">
     
-        <div class="col-6 col-xl-4">
+        <div class="col-12 col-sm-4 col-md-6 col-xl-4">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center pe-3">
-                    <ngb-timepicker class="me-5" [(ngModel)]="time"></ngb-timepicker>
+                    <ngb-timepicker class="" [(ngModel)]="time"></ngb-timepicker>
                 </div>
-                <div class="col-12 d-flex justify-content-center pt-2">
+                <div class="col-12 d-flex justify-content-center pt-0 p-md-2">
                     <button (click)="anadirHora(this.diaSeleccionado)" [disabled]="!this.horaValida"
-                        class="btn-primario me-5">Añadir</button>
+                        class="btn-primario me-0">Añadir</button>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-xl-4 p-0">
-            <div class="row p-0 ">
-                <div class="col-9 sombra">
-                    <div class="row">
+        <!-- <div class="col-0 col-sm-1 col-md-0"></div> -->
+        <div class="col-12 col-sm-8 col-md-6 col-xl-4 py-0 pt-5 pt-sm-0 px-5 px-xs-4 px-sm-0">
+            <div class="row px-0 px-xs-5 px-md-1 py-0 py-md-0">
+                <div class="col-12 col-md-9 sombra">
+                    <div class="row px-0">
                         <div class="col-5 p-0">
                             <div class="btnes-dias">
                                     <div *ngFor="let dia of this.diasSemana" 
@@ -103,7 +123,7 @@
                                 <ng-container *ngFor="let hora of this.horasMostrar; let i = index">
                                     <div class="hora px-3" [ngClass]="this.isHoraEntradaSalida[i] ? 'hora-horario' : ''">
                                         {{hora}}
-                                        <button class="quitar ms-auto" *ngIf="!this.isHoraEntradaSalida[i]" (click)="quitar(i)">
+                                        <button class="quitar ms-auto my-0" *ngIf="!this.isHoraEntradaSalida[i]" (click)="quitar(i)">
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
                                     </div>
@@ -112,34 +132,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3"></div>
+                <div class="col-0 col-md-3"></div>
             </div> 
         </div>
-        <div class="col-12 col-xl-4 p-0">
+        <div class="col-12 col-xl-4 py-2 py-sm-5 py-xl-0">
             <div class="row align-items-center g-0 p-0">
-              
                 <div class="col-12 d-flex flex-column flex-md-row mb-5 mt-2 mt-md-0 p-0">
                     <div class="row w-100 mx-0">
                         <form class="col-12 p-0"[formGroup]="aLaVezForm" (ngSubmit)="updateCitasALavez()">
-                            <div class="row pt-5 pt-xl-0 mx-0">
-                                <div class="f-rojo col-4 col-xl-8 aparece-grande">Donantes a la vez</div>
-                                    <!-- <div class="f-rojo col-8 col-md-8 aparece-pequeno"></div> -->
-                                <input type="text"
-                                    class="inpt campo col-2 col-xl-4"
-                                    formControlName="nALaVez"
-                                    [placeholder]="this.numCitasALaVez"
-                                />
-                                <div class="col-8 col-xl-0"></div>
-                                <!-- <div class="row mensajito">
-                                    <span *ngIf="aLaVezForm.get('nALaVez')?.errors?.['pattern']"
-                                        class="mensaje-error">Introduce un número válido
-                                    </span>
-                                </div> -->
+                            <div class="row pt-5 p-0 p-sm-2 p-md-3 pt-xl-0 mx-0">
+                              <div class="col-0 col-xs-2 col-sm-6 col-xl-0"></div>
+                              <div class="f-rojo col-9 col-xs-7 col-sm-4 col-xl-8 aparece-grande">Donantes a la vez</div>
+
+                              <input type="text"
+                                  class="inpt campo col-3 col-sm-2 col-xl-4"
+                                  formControlName="nALaVez"
+                                  [placeholder]="this.numCitasALaVez"
+                              />
+                              <div class="col-12 mensajito">
+                                <div class="row">
+                                  <div class="col-6 col-xl-0"></div>
+                                  <span *ngIf="aLaVezForm.get('nALaVez')?.errors?.['pattern']"
+                                      class="mensaje-error col-6 col-xl-12">Introduce un número.
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="d-flex justify-content-end w-100">
+                                <button type="submit" class="btn-primario">
+                                    Guardar
+                                </button>
+                              </div>
                             </div>
 
-                            <button class="btn-primario me-auto">
-                                Guardar
-                            </button>
                         </form>
                     </div>
     

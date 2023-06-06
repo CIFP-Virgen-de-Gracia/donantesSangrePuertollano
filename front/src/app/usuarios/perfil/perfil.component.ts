@@ -90,6 +90,7 @@ export class PerfilComponent {
 
         this.codAccion = 1;
         this.mensaje = "Se ha producido un error. Inténtalo más tarde."
+        this.setTimer(4000);
       }
     });
   }
@@ -141,11 +142,13 @@ export class PerfilComponent {
 
         this.codAccion = 0;
         this.mensaje = 'Información actualizada con éxito.'
+        this.setTimer(4000);
       }
       else {
 
         this.codAccion = 1;
         this.mensaje = 'Error al actualizar la información.'
+        this.setTimer(4000);
       }
     });
   }

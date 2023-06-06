@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as interfaces from '../interfaces/auth.interface';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, Observable, of, Subject, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
@@ -11,7 +11,13 @@ export class AuthService {
 
   private authUrl: string = `${environment.baseUrl}/api`; // cambiar en el server // hacer archivo env
   private _auth: interfaces.Auth | undefined;
-  constructor(private httpUsers: HttpClient) { }
+
+  tokenExpirado: Subject<boolean>;
+
+  constructor(private httpUsers: HttpClient) {
+
+    this.tokenExpirado = new Subject<boolean>(); 
+  }
 
 
   login(user: interfaces.UserLogin) {
