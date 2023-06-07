@@ -1,6 +1,6 @@
 import { Telefono } from '../interfaces/telefonos.interfaces';
 import { TelefonosService } from '../services/telefonos.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
@@ -42,22 +42,14 @@ export class ConfigTfnosComponent implements OnInit {
 
 
   insertOrUpdateTfno() {
-    /* Object.keys(this.modalForm.controls).forEach(key => { //Comprobar errores
-      const controlErrors: ValidationErrors | null = this.modalForm.get(key)!.errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    }); */
+    let extValue = this.modalForm.value.extension; // Al editar un teléfono, si borramos la extensión, envía una cadena vacía
+    if (extValue == '') extValue = null; //Lo pongo a null para evitar que envíe la cadena vacía.
 
-    const extension = this.formCtrls['extension'];
-
-    if (this.modalForm.value.extension == '') { //Aunque no tiene Validator.required,
-      extension.clearValidators();              //sigue saltando el error, así que le quito los Validators.
-      extension.setValidators([Validators.pattern(/^[0-9]*$/)]);
-      extension.updateValueAndValidity();
-      this.modalForm.value.extension = null; // Lo pongo a null para evitar que envíe una cadena vacía.
+    const extControl = this.formCtrls['extension'];
+    if (extControl.errors && extControl.errors['required']) { //Aunque no tiene Validator.required,
+      extControl.clearValidators();                           //sigue saltando el error, así que le quito los Validators.
+      extControl.setValidators([Validators.pattern(/^[0-9]*$/)]);
+      extControl.updateValueAndValidity();
     }
 
     if (this.modalForm.valid) {
