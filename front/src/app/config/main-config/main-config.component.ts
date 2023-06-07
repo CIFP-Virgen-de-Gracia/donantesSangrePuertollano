@@ -18,6 +18,10 @@ export class MainConfigComponent {
       icono: "fa-phone"
     },
     {
+      nombre: "direcciones",
+      icono: "fa-location-dot"
+    },
+    {
       nombre : "himno",
       icono: "fa-headphones"
     },

@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
-import { Dia, Direccion, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
+import { Dia, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
 import { Time } from '@angular/common';
 import * as interfaces from '../../citas/interfaces/citas.interface';
 import { tap, zip } from 'rxjs';

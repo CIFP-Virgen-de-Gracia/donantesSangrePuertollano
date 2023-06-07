@@ -10,6 +10,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ModalPedirCitaComponent } from './modal-pedir-cita/modal-pedir-cita.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TelefonosModule } from '../telefonos/telefonos.module';
+import { DireccionesModule } from '../direcciones/direcciones.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TelefonosModule } from '../telefonos/telefonos.module';
     ReactiveFormsModule,
     AngularEditorModule,
     NgbModule,
-    TelefonosModule
+    TelefonosModule,
+    DireccionesModule
   ],
   entryComponents: [
     ModalPedirCitaComponent

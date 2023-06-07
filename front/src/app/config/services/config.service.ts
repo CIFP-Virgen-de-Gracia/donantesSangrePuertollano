@@ -2,10 +2,11 @@ import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
-import { Direccion, HorarioGuardar } from '../interfaces/config.interface';
+import { HorarioGuardar } from '../interfaces/config.interface';
 import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
+import { Direccion } from 'src/app/direcciones/interfaces/direcciones.interfaces';
 
 @Injectable({
   providedIn: 'root'

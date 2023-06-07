@@ -4,7 +4,8 @@ import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
-import { Dia, Direccion, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
+import { Dia, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
+import { Direccion } from 'src/app/direcciones/interfaces/direcciones.interfaces';
 
 @Component({
   selector: 'app-contacto-config',
@@ -52,11 +53,6 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
 
     this.SharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.getHorarios(resp.data);
-    });
-
-
-    this.SharedService.getDirecciones().subscribe(resp => {
-      if (resp.success) this.getDirs(resp.data);
     });
   }
 

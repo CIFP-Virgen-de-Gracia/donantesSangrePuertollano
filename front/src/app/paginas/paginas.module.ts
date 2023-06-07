@@ -14,6 +14,7 @@ import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemoriasComponent } from './memorias/memorias.component';
 import { TelefonosModule } from '../telefonos/telefonos.module';
+import { DireccionesModule } from '../direcciones/direcciones.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { TelefonosModule } from '../telefonos/telefonos.module';
     PaginasRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    TelefonosModule
+    TelefonosModule,
+    DireccionesModule
   ],
   exports: [
     MainPageComponent
