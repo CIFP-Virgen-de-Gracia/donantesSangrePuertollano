@@ -29,11 +29,11 @@ export class ConfigHistoriaComponent { //Alicia
   };
 
 
-  constructor(private HermandadService: LaHermandadService) {}
+  constructor(private hermandadService: LaHermandadService) {}
 
 
   ngOnInit() {
-    this.HermandadService.getHistoria()
+    this.hermandadService.getHistoria()
       .subscribe(resp => {
         if (resp.success) this.historia = resp.data;
       });
@@ -41,7 +41,7 @@ export class ConfigHistoriaComponent { //Alicia
 
 
   updateHistoria() {
-    this.HermandadService.updateHistoria(this.historia)
+    this.hermandadService.updateHistoria(this.historia)
       .subscribe(resp => {
 
         if (resp.success) {

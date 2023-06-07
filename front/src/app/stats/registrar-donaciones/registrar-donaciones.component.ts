@@ -24,7 +24,7 @@ export class RegistrarDonacionesComponent {
   errorFecha?: boolean;
 
 
-  constructor(private SocketService: WebsocketService) {
+  constructor(private socketService: WebsocketService) {
     this.tipoDonacion = this.tiposDonacion[0];
     this.gSanguineo = this.grpsSanguineos[0];
     this.genero = this.generos[0];
@@ -38,7 +38,7 @@ export class RegistrarDonacionesComponent {
       const donacion = form.value;
       donacion.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      this.SocketService.emitEventInsertarDonacion( donacion )
+      this.socketService.emitEventInsertarDonacion( donacion )
         .then(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;

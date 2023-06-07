@@ -20,18 +20,18 @@ export class ConfigJuntaComponent {
   acciones = ['añadir', 'editar'];
 
 
-  constructor(private HermandadService: LaHermandadService) {
+  constructor(private hermandadService: LaHermandadService) {
     this.limpiarIntegrante();
   }
 
 
   ngOnInit() {
-    this.HermandadService.getIntegrantesCargo()
+    this.hermandadService.getIntegrantesCargo()
       .subscribe(resp => {
         if (resp.success) this.junta = resp.data;
       });
 
-    this.HermandadService.getCargosJunta()
+    this.hermandadService.getCargosJunta()
       .subscribe(resp => {
         if (resp.success) this.cargos = resp.data;
       });
@@ -54,7 +54,7 @@ export class ConfigJuntaComponent {
     const idCargo = this.cargos.find(c => c.nombre == this.infoInt.cargo);
     if (idCargo) this.infoInt.idCargo = idCargo.id;
 
-    this.HermandadService.insertOrUpdateIntegranteJunta(this.infoInt)
+    this.hermandadService.insertOrUpdateIntegranteJunta(this.infoInt)
       .subscribe(resp => {
 
         if (resp.success) {
@@ -79,7 +79,7 @@ export class ConfigJuntaComponent {
     const int = this.junta[index];
 
     if (int) {
-      this.HermandadService.deleteIntegranteJunta(int.id)
+      this.hermandadService.deleteIntegranteJunta(int.id)
       .subscribe(resp => {
 
         if (resp.success) {

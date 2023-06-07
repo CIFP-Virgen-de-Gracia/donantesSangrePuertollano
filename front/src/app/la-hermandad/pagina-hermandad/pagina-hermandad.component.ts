@@ -12,18 +12,18 @@ export class PaginaHermandadComponent implements OnInit {
   junta: Integrante[] = [];
   historia: Historia = { id: -1, nombre: 'historia', valor: ''};
 
-  constructor(private HermandadService: LaHermandadService) { }
+  constructor(private hermandadService: LaHermandadService) { }
 
   //Alicia
   ngOnInit() {
-    this.HermandadService.getIntegrantesCargo()
+    this.hermandadService.getIntegrantesCargo()
       .subscribe(resp => {
         if (resp.success) {
           this.junta = resp.data;
         }
       });
 
-    this.HermandadService.getHistoria()
+    this.hermandadService.getHistoria()
       .subscribe(resp => {
         if (resp.success) {
           this.historia = resp.data;

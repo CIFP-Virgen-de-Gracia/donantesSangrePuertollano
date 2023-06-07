@@ -19,7 +19,7 @@ export class RegistrarAltasComponent {
   errorFecha?: boolean;
 
 
-  constructor (private SocketService: WebsocketService) {
+  constructor (private socketService: WebsocketService) {
     this.mensaje = '';
   }
 
@@ -31,7 +31,7 @@ export class RegistrarAltasComponent {
       const payload = form.value;
       payload.fecha = `${this.fecha.year}-${this.fecha.month}-${this.fecha.day}`;
 
-      this.SocketService.emitEventInsertarAltas( payload )
+      this.socketService.emitEventInsertarAltas( payload )
         .then(resp => {
           if (resp.success) this.registrada = true;
           else this.registrada = false;

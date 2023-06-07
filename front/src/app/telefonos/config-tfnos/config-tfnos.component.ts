@@ -24,7 +24,7 @@ export class ConfigTfnosComponent implements OnInit {
   acciones = ['añadir', 'editar', 'eliminar'];
 
 
-  constructor(private TfnsService: TelefonosService, private fb: FormBuilder) {
+  constructor(private tfnosService: TelefonosService, private fb: FormBuilder) {
     this.modalForm = this.crearFormulario();
   }
 
@@ -35,7 +35,7 @@ export class ConfigTfnosComponent implements OnInit {
 
 
   ngOnInit() {
-    this.TfnsService.getTelefonos().subscribe(resp => {
+    this.tfnosService.getTelefonos().subscribe(resp => {
       if (resp.success) this.tfnosData = resp.data;
     });
   }
@@ -53,7 +53,7 @@ export class ConfigTfnosComponent implements OnInit {
     }
 
     if (this.modalForm.valid) {
-      this.TfnsService.insertOrUpdateTfno(this.modalForm.value)
+      this.tfnosService.insertOrUpdateTfno(this.modalForm.value)
         .subscribe(resp => {
 
           if (resp.success) {
@@ -85,7 +85,7 @@ export class ConfigTfnosComponent implements OnInit {
     const tfno = this.tfnosData[index];
 
     if (tfno) {
-      this.TfnsService.deleteTfno(tfno.id)
+      this.tfnosService.deleteTfno(tfno.id)
         .subscribe(resp => {
 
           if (resp.success) {

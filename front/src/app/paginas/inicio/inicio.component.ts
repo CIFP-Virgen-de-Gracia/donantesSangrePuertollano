@@ -14,21 +14,21 @@ export class InicioComponent {
   hMostrar: HorarioMostrar[] = [];
   citaPedida: number = -1;
 
-  constructor(private SharedService: SharedService) { }
+  constructor(private sharedService: SharedService) { }
 
   //Alicia
   ngOnInit() {
-    this.SharedService.citaPedida.subscribe(resp => {
+    this.sharedService.citaPedida.subscribe(resp => {
       this.citaPedida = resp;
     });
 
 
-    this.SharedService.getHorarios().subscribe(resp => {
+    this.sharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.horarios = resp.data;
     });
 
 
-    this.SharedService.getDirecciones().subscribe(resp => {
+    this.sharedService.getDirecciones().subscribe(resp => {
       if (resp.success) this.direcciones = resp.data;
     });
   }

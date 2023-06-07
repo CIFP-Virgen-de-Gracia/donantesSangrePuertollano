@@ -12,11 +12,11 @@ export class FooterTfnosComponent  implements OnInit {
   telefonos: Telefono[] = [];
 
 
-  constructor(private TfnsService: TelefonosService) {}
+  constructor(private tfnosService: TelefonosService) {}
 
 
   ngOnInit() {
-    this.TfnsService.getTelefonos().subscribe(resp => {
+    this.tfnosService.getTelefonos().subscribe(resp => {
       if (resp.success) this.telefonos = resp.data;
     });
   }
