@@ -11,10 +11,13 @@ const colocarFecha = (fecha) => {
 const colocarHora = (hora) => {
     return hora.slice(0, 5);
 }
-//Isabel
-const comprobarHoraFecha = (fecha,fechaDb) => {
-  return fechaDb.getTime() === fecha.getTime();
-}
+
+
+// //Isabel
+// const comprobarHoraFecha = (fecha,fechaDb) => {
+//   return fechaDb.getTime() === fecha.getTime();
+// }
+
 
 const horaEsMayor = (hora, ahora) => { // copara horas con el siguiente formato HH:mm
     let esMayor = false;
@@ -38,6 +41,7 @@ const fechaEsMayor = (fecha, ahora) => {
     if (fechaCompleta.isAfter(moment(ahora))) {
         esMayor = true;
     }
+
     
     return esMayor; 
 }
@@ -70,5 +74,5 @@ module.exports = {
     colocarHora,
     horaEsMayor,
     horaValida,
-    comprobarHoraFecha
+    // comprobarHoraFecha
 }

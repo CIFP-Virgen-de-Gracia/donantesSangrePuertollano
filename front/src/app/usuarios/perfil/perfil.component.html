@@ -99,10 +99,12 @@
                     </div>
                 </div>
 
+                <div class="d-flex justify-content-end">
                     <button type="submit" class="btn-primario"
                         [disabled]="infoForm.invalid || (!this.dniModificado && !this.nombreModificado)">
                         Guardar
                     </button>
+                </div>
               </form>
               <form [formGroup]="passwdForm" (ngSubmit)="cambiarPasswd()" class="mt-5" #cForm="ngForm">
                 
@@ -154,9 +156,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primario width"
-                    [disabled]="this.passwdForm.invalid">
-                    Cambiar contraseña
-                </button>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn-primario width"
+                        [disabled]="this.passwdForm.invalid">
+                        Cambiar contraseña
+                    </button>
+                </div>
               </form>
         </div>

@@ -30,8 +30,8 @@ export class MainConfigComponent {
       icono: "fa-circle-question"
     },
     {
-      nombre: "citas"
-
+      nombre: "citas",
+      icono: "fa-calendar"
     }
   ];
 

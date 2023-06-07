@@ -3,19 +3,22 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
-import { Dia, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
+import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora } from '../interfaces/config.interface';
 import { Time } from '@angular/common';
 import * as interfaces from '../../citas/interfaces/citas.interface';
 import { tap, zip } from 'rxjs';
 import { CitasService } from '../../citas/services/citas.service';
+import { NgbTimepickerConfig, NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
 
 @Component({
-  selector: 'app-citas-config',
-  templateUrl: './citas-config.component.html',
-  styleUrls: ['./citas-config.component.scss']
+  selector: 'app-horarios-config',
+  templateUrl: './horarios-config.component.html',
+  styleUrls: ['./horarios-config.component.scss'],
+  animations: [entradaSalidaVentana]
 })
-export class CitasConfigComponent {
+export class HorariosConfigComponent {
   // Alicia
   citasForm!: FormGroup;
   horariosData: Horario[] = [];
@@ -27,6 +30,7 @@ export class CitasConfigComponent {
   tBorrar: number[] = [];
   dSemana = [{ nombre: "Lunes", letra: "L" }, { nombre: "Martes", letra: "M" }, { nombre: "Miércoles", letra: "X" },
   { nombre: "Jueves", letra: "J" }, { nombre: "Viernes", letra: "V" }, { nombre: "Sábado", letra: "S" }];
+  codAccion: number = -1;
 
   //Mario
   divCount = 0;
@@ -88,6 +92,8 @@ export class CitasConfigComponent {
       this.cargarDia(this.diaSeleccionado);
 
       this.citasService.getCitasALaVez().subscribe(resp => {
+        console.log('asdf');
+        console.log(resp)
         if (resp.success) {
           this.numCitasALaVez = resp.num.toString();
         }
@@ -228,7 +234,7 @@ export class CitasConfigComponent {
       const tlfns = { guardar: datos.telefonos, borrar: this.tBorrar };
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
-      this.ConfigService.updateContacto(datos.direcciones, horarios)
+      this.ConfigService.updateContacto(datos.direcciones, tlfns, horarios)
         .subscribe({
           next: (resp) => {
 
@@ -319,7 +325,10 @@ export class CitasConfigComponent {
           this.horariosDias = horariosResp.data;
         }
         else {
-          // TODO cartelito de fallo
+
+          this.codAccion = 1;
+          this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+          this.setTimer(4000);
         }
 
       }));
@@ -335,7 +344,10 @@ export class CitasConfigComponent {
       }
       else {
 
-        // TODO cartelito de fallo
+        this.codAccion = 1;
+        this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+        this.setTimer(4000);
+
       }
     });
     this.horasMostrar.splice(index, 1);
@@ -369,7 +381,9 @@ export class CitasConfigComponent {
       }
       else {
 
-        //TODO cartelito de fallo
+        this.codAccion = 1;
+        this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+        this.setTimer(4000);
       }
     });
   }
@@ -415,12 +429,21 @@ export class CitasConfigComponent {
       console.log(resp);
       if (resp.success) {
 
-        //TODO cartelito bien
+        this.codAccion = 0;
+        this.mensaje = "Cita actualizada con éxito";
+        this.setTimer(4000);
       }
       else {
 
-        //TODO cartelito mal
+        this.codAccion = 1;
+        this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+        this.setTimer(4000);
       }
     });
+  }
+
+  setTimer(tiempo: number) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.codAccion = -1, tiempo);
   }
 }
