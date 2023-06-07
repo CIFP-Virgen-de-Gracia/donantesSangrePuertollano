@@ -1,5 +1,5 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
-import { ResponseComentario, Mensaje, ResponseListaConectados } from '../interfaces/paginas.interface';
+import { Injectable, EventEmitter, Output, Input } from '@angular/core';
+import { ResponseComentario, Mensaje, ResponseListaConectados, ResponseMensajes, MsgResponseBorrado } from '../interfaces/paginas.interface';
 import { Socket } from 'ngx-socket-io';
 import { ChatService } from './chat.service';
 import { environment } from 'src/environment/environment';
@@ -12,23 +12,22 @@ export class WebSocketService extends Socket {
   @Output() outEven: EventEmitter<any> = new EventEmitter();
   @Output() usuariosConectados: EventEmitter<string[]> = new EventEmitter();
   @Output() conectarChat: EventEmitter<string[]> = new EventEmitter();
+  @Output() borrarTodo: EventEmitter<any> = new EventEmitter();
 
   constructor(private ChatService: ChatService) {
-    let datos: any = "";
-    if (localStorage.getItem('user') != null) {
-      datos = JSON.parse(localStorage.getItem('user') || "");
-    }
+
     super({
       url: environment.socketUrl,
       options: {
         query: {
-          payload: datos.nombre
+          payload:localStorage.getItem('user')
         }
       }
 
     });
     this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res));
     this.ioSocket.on('usuario-conectado', (usuarios: string[]) => this.usuariosConectados.emit(usuarios));
+    this.ioSocket.on('borrarTodo', (res: any) => this.borrarTodo.emit(res));
   }
 
   emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
@@ -76,8 +75,17 @@ export class WebSocketService extends Socket {
       }
     });
   }
+  emitEventBorrarTodo = (payload = {}): Promise<MsgResponseBorrado> => {
+    return new Promise((resolve, reject) => {
+      this.ioSocket.emit('borrarTodo', payload, (respuesta: ResponseMensajes) => {
+        resolve(respuesta);
+      });
+    });
+  }
 
-  emitEventConectarChat = (payload: string) => {
+
+  emitEventConectarChat = (payload = {}) => {
+    console.log(payload);
     this.ioSocket.emit('conectar-chat', { payload }, (respuesta: string[]) => {
       this.ChatService.setListaConectados(respuesta);
     });

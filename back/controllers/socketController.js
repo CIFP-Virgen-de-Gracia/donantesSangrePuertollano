@@ -12,13 +12,14 @@ const salaChat = "Chat"
 
 
 const conectarChat = (socket, data, callback) => {
-  let { payload } = socket.handshake.query;
 
-  if (payload != 'undefined' && payload != "") {
+  const user = JSON.parse(socket.handshake.query.payload);
+ 
+  if (user != 'null' && user != "") {
 
-    if (!connectedUsers.includes(payload)) {
+    if (!connectedUsers.includes(user.nombre)) {
       socket.join(salaChat);
-      connectedUsers.push(payload);
+      connectedUsers.push(user.nombre);
     }
 
     callback(connectedUsers);
@@ -28,9 +29,10 @@ const conectarChat = (socket, data, callback) => {
 
 
 const desconectado = (socket) => {
-  const { payload } = socket.handshake.query;
+  
+  const user = JSON.parse(socket.handshake.query.payload);
 
-  const index = connectedUsers.indexOf(payload);
+  const index = connectedUsers.indexOf(user.nombre);
 
   if (index !== -1) {
     connectedUsers.splice(index, 1);
@@ -71,7 +73,8 @@ const enviarMensaje = (socket, data, callback) => {
       socket.to(salaChat).emit('enviar-mensaje', respuesta.data);
 
     }).catch((error) => {
-      console.error('Error al agregar el mensaje:', error);
+      console.log(error);
+      callback({ sucess: false, msg: 'No se ha podido añadir' });
     });
 
   } else {
@@ -110,6 +113,57 @@ const socketController = (socket) => {
     callback({ success: true, data: connectedUsers });
     socket.to(salaChat).emit("usuario-conectado", connectedUsers);
   });
+  socket.on('borrarTodo', async (data, callback) => {
+    const user = JSON.parse(socket.handshake.query.payload);
+
+    if (validarToken(user.token) != -1 && await validarRol(user)) {
+
+      queriesChat.borrarTodo().then((respuesta) => {
+        callback(respuesta);
+        socket.to(salaChat).emit('borrarTodo', respuesta.data);
+      }).catch((error) => {
+        console.log(error);
+        callback({ sucess: false, msg: 'No se han podido eliminar' });
+      });
+
+    } else callback({ sucess: false, msg: 'No autorizado' });
+  });
+  socket.on('borrarMensaje', async (datos, callback) => {
+    const user = JSON.parse(socket.handshake.query.payload);
+
+    if (validarToken(user.token) != -1 && await validarRol(user)) {
+
+      const resp = await queriesChat.borrarMensaje();
+      callback(resp);
+
+      socket.broadcast.emit('borrarTodo', resp);
+
+    } else callback({ sucess: false, msg: 'No autorizado' });
+  });
+  socket.on('desbloquear', async (datos, callback) => {
+    const user = JSON.parse(socket.handshake.query.payload);
+
+    if (validarToken(user.token) != -1 && await validarRol(user)) {
+
+      const resp = await queriesChat.actulizarEstadoUsuario(datos, 0);
+      callback(resp);
+
+      socket.broadcast.emit('desbloquear', resp);
+
+    } else callback({ sucess: false, msg: 'No autorizado' });
+  });
+  socket.on('bloquear', async (datos, callback) => {
+    const user = JSON.parse(socket.handshake.query.payload);
+
+    if (validarToken(user.token) != -1 && await validarRol(user)) {
+
+      const resp = await queriesChat.actulizarEstadoUsuario(datos, 1);
+      callback(resp);
+
+      socket.broadcast.emit('bloquear', resp);
+
+    } else callback({ sucess: false, msg: 'No autorizado' });
+  });
 
   socket.on('insertar-donacion', async (datos, callback) => {
     const user = JSON.parse(socket.handshake.query.payload);
@@ -120,7 +174,7 @@ const socketController = (socket) => {
       callback(resp);
 
       socket.broadcast.emit('insertar-donacion', resp);
-  
+
     } else callback({ sucess: false, msg: 'No autorizado' });
   });
 
@@ -139,7 +193,7 @@ const socketController = (socket) => {
 };
 
 
-const validarRol = async(user) => {
+const validarRol = async (user) => {
   const userRoles = await queriesUsers.getUserRoles(user.id);
   const roles = getArrayRoles(userRoles);
   const abilities = await queriesUsers.getAbilities(roles);

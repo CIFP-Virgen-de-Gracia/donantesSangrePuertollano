@@ -13,6 +13,11 @@ import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemoriasComponent } from './memorias/memorias.component';
+import { ModerarUsersComponent } from './auxiliarChat/moderar-users/moderar-users.component';
+import { DeleteMensajesComponent } from './auxiliarChat/delete-mensajes/delete-mensajes.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FiltroUserComponent } from './auxiliarChat/filtro-user/filtro-user.component';
+import { SearchPipe } from './pipes/search.pipe';
 
 @NgModule({
   declarations: [
@@ -25,13 +30,18 @@ import { MemoriasComponent } from './memorias/memorias.component';
     TerminosUsoComponent,
     PoliticasCookiesComponent,
     ChatComponent,
-    MemoriasComponent
+    MemoriasComponent,
+    ModerarUsersComponent,
+    DeleteMensajesComponent,
+    FiltroUserComponent,
+    SearchPipe
   ],
   imports: [
     CommonModule,
     SharedModule,
     FormsModule,
     PaginasRoutingModule,
+    NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
   ],

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from '../services/web-socket.service';
 import { ChatService } from '../services/chat.service';
 import { Mensaje } from '../interfaces/paginas.interface';
@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
   estaRegistrado: boolean;
   chatForm: FormGroup = new FormGroup({
     comentario: new FormControl('', [Validators.required]),
@@ -31,6 +31,10 @@ export class ChatComponent {
     socketService.usuariosConectados.subscribe(res => {
       this.ChatService.setListaConectados(res);
     });
+    socketService.borrarTodo.subscribe(res => {
+      console.log("hola");
+      this.ChatService.borrarTodo();
+    });
     this.socketService.emitEventLista('lista');
     this.estaRegistrado = false;
     this.aviso = 0;
@@ -41,7 +45,6 @@ export class ChatComponent {
 
     if (user != null) {
       this.socketService.emitEventConectarChat(JSON.parse(user).nombre);
-
       this.ChatService.getListadoMensajes().subscribe((res) => { });
       this.estaRegistrado = true;
     }

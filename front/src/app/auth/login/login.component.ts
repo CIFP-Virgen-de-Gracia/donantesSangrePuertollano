@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit{
         this._ngZone.run(() => {
           this.erroneo = false;
           this.SharedService.comprobarPermisos.next(!this.erroneo);
-          let datos = JSON.parse(localStorage.getItem('user') || "");
+          let datos = JSON.parse(localStorage.getItem('user')||"");
           this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);
           this.router.navigate(['']);
         })
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit{
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.erroneo = false;
         this.SharedService.comprobarPermisos.next(!this.erroneo);
-        let datos = JSON.parse(localStorage.getItem('user') || "");
+        let datos = JSON.parse(localStorage.getItem('user')||"");
         this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);
         this.router.navigate(['']);
       }

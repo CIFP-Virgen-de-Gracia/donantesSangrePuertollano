@@ -3,6 +3,11 @@ export interface ResponseAudio {
   data: Cancion[],
   msg: string,
 }
+export interface ResponseModerarUser {
+  success: boolean,
+  data: String[],
+  msg: string,
+}
 
 export interface Cancion {
   id: string,
@@ -32,6 +37,16 @@ export interface ResponseMensaje {
 export interface ResponseComentario {
   success: boolean,
   data: Mensaje,
+  msg: string,
+}
+export interface MsgResponseBorrado{
+  success: boolean,
+  data: Mensaje[] ,
+  msg: string,
+}
+export interface ResponseMensajes {
+  success: boolean,
+  data: Mensaje[],
   msg: string,
 }
 export interface Mensaje {

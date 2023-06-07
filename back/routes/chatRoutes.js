@@ -6,5 +6,6 @@ const vJwt = require('../middlewares/validarJwt');
 
 //Todo Isa
 router.get('/listado',controlador.Listado);
-router.delete('/borrar', controlador.borrarMensajes);//Borra todo queda echo por si al final lo añado
+router.get('/listadobloqueados',controlador.ListadoBloqueados);
+router.get('/listadodesbloqueados',controlador.ListadoDesbloqueados);
 module.exports = router;

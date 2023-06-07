@@ -1,0 +1,92 @@
+<div class="modal" id="desbloquearUsuario" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bordeColor">
+        <h5 class="modal-title modalTitulo">Desbloquear Usuarios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás buscando algún usuario o usuario? Escribe su nombre:</p>
+        <app-filtro-user (search)="Search($event)"></app-filtro-user>
+        <table class="table table-hover overflow-auto table-bordered p-4 text-center">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre Usuario</th>
+              <th scope="col">Marcar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let desbloqueado of Desbloqueados| search:valorFiltro | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
+              <tr scope="row">
+                <th class="align-middle">
+                  {{i}}
+                </th>
+                <td class="align-middle">
+                  {{desbloqueado}}
+                </td>
+                <td class="align-middle">
+                  <input type="checkbox" class="custom-control-input checkbox-inline ms-auto">
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"
+          class="text-center">
+        </pagination-controls>
+        <div class="modal-footer bordeArriba">
+          <button type="button" class="btn btn-terciario me-4" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-terciario">Desbloquear Seleccionados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="bloquearUsuario" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bordeColor">
+        <h5 class="modal-title modalTitulo">Bloquear Usuarios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás buscando algún usuario o usuario? Escribe su nombre:</p>
+        <app-filtro-user (search)="Search($event)"></app-filtro-user>
+        <table class="table table-hover overflow-auto table-bordered p-4 text-center">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre Usuario</th>
+              <th scope="col">Marcar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let bloqueado of Bloqueados| search:valorFiltro | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
+              <tr scope="row">
+                <th class="align-middle">
+                  {{i}}
+                </th>
+                <td class="align-middle">
+                  {{bloqueado}}
+                </td>
+                <td class="align-middle">
+                  <input type="checkbox" class="custom-control-input checkbox-inline ms-auto">
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"
+          class="text-center">
+        </pagination-controls>
+
+        <div class="modal-footer bordeArriba">
+          <button type="button" class="btn btn-terciario me-4" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-terciario">Bloquear Seleccionados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
