@@ -62,6 +62,7 @@ export interface InsertUpdateMemResponse {
 
 export interface GetMemResponse {
   success: boolean,
+  msg: string,
   data: Memoria[]
 }
 

@@ -26,7 +26,7 @@ export class PaginaHermandadComponent implements OnInit {
     this.HermandadService.getHistoria()
       .subscribe(resp => {
         if (resp.success) {
-          this.historia = resp.historia;
+          this.historia = resp.data;
         }
       });
   }

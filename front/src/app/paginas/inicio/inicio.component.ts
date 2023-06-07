@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Direccion, Horario, HorarioMostrar, Telefono } from 'src/app/config/interfaces/config.interface';
+import { Direccion, Horario, HorarioMostrar } from 'src/app/config/interfaces/config.interface';
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -9,7 +9,6 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 })
 export class InicioComponent {
 
-  telefonos: Telefono[] = [];
   direcciones: Direccion[] = [];
   horarios: Horario[] = [];
   hMostrar: HorarioMostrar[] = [];
@@ -19,7 +18,6 @@ export class InicioComponent {
 
   //Alicia
   ngOnInit() {
-
     this.SharedService.citaPedida.subscribe(resp => {
       this.citaPedida = resp;
     });
@@ -27,11 +25,6 @@ export class InicioComponent {
 
     this.SharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.horarios = resp.data;
-    });
-
-
-    this.SharedService.getTelefonos().subscribe(resp => {
-      if (resp.success) this.telefonos = resp.data;
     });
 
 

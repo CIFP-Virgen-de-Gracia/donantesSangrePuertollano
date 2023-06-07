@@ -14,7 +14,7 @@ export class MainConfigComponent {
       icono: "fa-hand-holding-droplet"
     },
     {
-      nombre : "contacto",
+      nombre : "teléfonos",
       icono: "fa-phone"
     },
     {
@@ -24,21 +24,30 @@ export class MainConfigComponent {
     {
       nombre : "test-apto",
       icono: "fa-vial"
-    },{
+    },
+    {
       nombre : "faq",
       icono: "fa-circle-question"
     },
     {
       nombre: "citas"
-      
+
     }
   ];
 
-  public elementoActivo = this.elementos.map(e => e.nombre).indexOf(this.router.url.split('/').pop()!);
+
+  public elementoActivo = this.elementos.map(e => this.getNombreSinTildes(e.nombre)).indexOf(this.router.url.split('/').pop()!);
+
 
   constructor(private router: Router){ }
 
+
   getNombre(nombre: string) {
-    return nombre.replace('-', ' ');
+    return nombre.normalize("NFD").replace(/\u002D/g, ' ');
+  }
+
+
+  getNombreSinTildes(nombre: string) {
+    return nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 }

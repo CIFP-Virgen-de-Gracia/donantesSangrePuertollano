@@ -17,14 +17,15 @@ const getHistoria = async (req, res = response) => {
 
             const resp = {
                 success: true,
-                historia: historia.dataValues
+                msg: 'Registros encontrado',
+                data: historia.dataValues
             };
 
             res.status(200).json(resp);
 
         }).catch(err => {
 
-            const resp = { success: false };
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -49,10 +50,7 @@ const getHorarios = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -65,6 +63,7 @@ const getTelefonos = (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registros encontrados',
                 data: telefonos
             }
 
@@ -72,10 +71,7 @@ const getTelefonos = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false,  msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -95,10 +91,7 @@ const getDirecciones = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false,  msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -111,6 +104,7 @@ const getCargosJunta = (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registos encontrados',
                 data: listadoCargos
             }
 
@@ -118,10 +112,7 @@ const getCargosJunta = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = {  success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -133,7 +124,8 @@ const getIntegrantesCargo = (req, res = response) => {
         .then(listadoJunta => {
 
             const resp = {
-                success: true,
+                success: true, 
+                msg: 'Registos encontrados',
                 data: listadoJunta
             }
 
@@ -141,10 +133,7 @@ const getIntegrantesCargo = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -170,6 +159,7 @@ const getMemorias = (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registros encontrados',
                 data: memorias
             }
 
@@ -235,7 +225,32 @@ const updateHistoria = async (req, res = response) => {
     } catch (err) {
         res.status(200).json(resp);
     }
- }
+}
+
+
+const insertOrUpdateTfno = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+    let tfno;
+
+    try {
+
+        if (req.body.id == null) tfno = await queriesContenidos.insertTfno(req.body);
+        else tfno = await queriesContenidos.updateTfno(req.body);
+       
+        if (tfno) {
+            resp = {
+                success: true,
+                msg: 'Teléfono actualizado con éxito',
+                data: tfno
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
 
 
 const insertOrUpdateIntegranteJunta = async (req, res = response) => { 
@@ -244,14 +259,14 @@ const insertOrUpdateIntegranteJunta = async (req, res = response) => {
 
     try {
 
-        if (req.body.id == -1 ) intJunta = await queriesContenidos.insertIntegranteJunta(req.body);
+        if (req.body.id == -1) intJunta = await queriesContenidos.insertIntegranteJunta(req.body);
         else intJunta = await queriesContenidos.updateIntegranteJunta(req.body);
        
         if (intJunta) {
             resp = {
                 success: true,
                 msg: 'Integrante actualizado con éxito',
-                intJunta: intJunta
+                data: intJunta
             }
         }
 
@@ -387,6 +402,29 @@ const deleteMemoria = async (req, res = response) => {
 }
 
 
+const deleteTfno = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' }
+
+    try {
+
+        const tfno = await queriesContenidos.deleteTfno(req.params.id);
+
+        if (tfno == 1) {
+            resp = {
+                success: true,
+                msg: 'Teléfono eliminado con éxito',
+                data: req.params.id
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
+
 const deleteIntegranteJunta = async (req, res = response) => {
     let resp = { success: false, msg: 'Se ha producido un error' }
 
@@ -398,7 +436,7 @@ const deleteIntegranteJunta = async (req, res = response) => {
             resp = {
                 success: true,
                 msg: 'Integrante eliminado con éxito',
-                idInt: req.params.id
+                data: req.params.id
             }
         }
 
@@ -422,9 +460,11 @@ module.exports = {
     descargarDocumento,
     getMemorias,
     updateHistoria,
+    insertOrUpdateTfno,
     insertOrUpdateIntegranteJunta,
     updateContacto,
     insertOrUpdateMemoria,
     deleteMemoria,
+    deleteTfno,
     deleteIntegranteJunta
 }

@@ -38,7 +38,7 @@
           (click)="limpiarIntegrante()"></button>
       </div>
 
-      <form (ngSubmit)="editarForm.form.valid && insertOrUpdateIntegranteJunta(editarForm)" novalidate #editarForm="ngForm">
+      <form (ngSubmit)="modalForm.form.valid && insertOrUpdateIntegranteJunta(modalForm)" novalidate #modalForm="ngForm">
         <div class="modal-body">
           <div class="mb-4">
             <label for="cargos">Cargo</label><br>
@@ -49,7 +49,7 @@
               <option value="{{ cargo.nombre }}" *ngFor="let cargo of cargos">{{ cargo.nombre }}</option>
             </select>
 
-            <p class="mensaje-error" *ngIf="editarForm.submitted && cargo?.errors?.['required']">
+            <p class="mensaje-error" *ngIf="modalForm.submitted && cargo?.errors?.['required']">
               El cargo es obligatorio.
             </p>
           </div>
@@ -60,7 +60,7 @@
             <input type="text" name="nombre" id="nombre" class="nombre form-control" required
               [(ngModel)]="infoInt.nombre" #nombre="ngModel" placeholder="Introduce el nombre."/>
 
-            <p class="mensaje-error" *ngIf="editarForm.submitted && nombre?.errors?.['required']">
+            <p class="mensaje-error" *ngIf="modalForm.submitted && nombre?.errors?.['required']">
               El nombre es obligatorio.
             </p>
           </div>

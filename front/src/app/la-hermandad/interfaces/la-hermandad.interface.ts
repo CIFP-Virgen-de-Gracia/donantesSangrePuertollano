@@ -1,19 +1,13 @@
-export interface HistoriaUpdateResponse { //Alicia
-  success: boolean,
-  msg: string,
-  historia: Historia
-}
-
 export interface IntUpdateInsertResponse { //Alicia
   success: boolean,
   msg: string,
-  intJunta?: Integrante
+  data: Integrante
 }
 
 export interface IntDeleteResponse { //Alicia
   success: boolean,
   msg: string,
-  idInt?: number
+  data: number
 }
 
 export interface Integrante { //Alicia
@@ -21,6 +15,12 @@ export interface Integrante { //Alicia
   nombre: string,
   cargo: string,
   idCargo: number
+}
+
+export interface IntsJuntaResponse {
+  success: boolean,
+  msg: string,
+  data: Integrante[]
 }
 
 export interface CargoResponse { //Alicia
@@ -33,9 +33,10 @@ export interface Cargo { //Alicia
   nombre: string
 }
 
-export interface HistoriaGetResponse { //Alicia
+export interface HistoriaResponse { //Alicia
   success: boolean,
-  historia: Historia,
+  msg: string,
+  data: Historia
 }
 
 export interface Historia { //Alicia

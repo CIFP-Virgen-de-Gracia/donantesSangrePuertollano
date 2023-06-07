@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CargoResponse, Historia, HistoriaGetResponse, HistoriaUpdateResponse, IntDeleteResponse, Integrante, IntUpdateInsertResponse } from '../interfaces/la-hermandad.interface';
+import { CargoResponse, Historia, HistoriaResponse, IntDeleteResponse, Integrante, IntsJuntaResponse, IntUpdateInsertResponse } from '../interfaces/la-hermandad.interface';
 
 
 
@@ -18,23 +18,23 @@ export class LaHermandadService {
   constructor(private http: HttpClient) { }
 
 
-  getHistoria(): Observable<HistoriaGetResponse> {
-    return this.http.get<HistoriaGetResponse>(`${this.baseUrl}/getHistoria`);
+  getHistoria(): Observable<HistoriaResponse> {
+    return this.http.get<HistoriaResponse>(`${this.baseUrl}/getHistoria`);
   }
 
 
-  updateHistoria(historia: Historia): Observable<HistoriaUpdateResponse> {
+  updateHistoria(historia: Historia): Observable<HistoriaResponse> {
     const header = { headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.put<HistoriaUpdateResponse>(`${this.baseUrl}/updateHistoria`, historia, header);
+    return this.http.put<HistoriaResponse>(`${this.baseUrl}/updateHistoria`, historia, header);
   }
 
 
-  getIntegrantesCargo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`);
+  getIntegrantesCargo(): Observable<IntsJuntaResponse> {
+    return this.http.get<IntsJuntaResponse>(`${this.baseUrl}/getIntegrantesCargo`);
   }
 
 

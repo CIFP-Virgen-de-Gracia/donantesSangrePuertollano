@@ -14,7 +14,7 @@
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
-<main class="text-center">
+<main class="text-center home">
   <div class="container">
     <div class="row lh-lg f-contraste">
       <div class="horario col-12 col-sm-6">
@@ -24,24 +24,7 @@
         <p>de 9:15 a 13:30</p>
       </div>
 
-      <div class="cita col-12 col-sm-6 mt-5 mt-sm-0">
-        <i class="fa-solid fa-calendar-day"></i>
-
-        <h1 class="titulo subrayado">Cita previa</h1>
-
-        <p>Pide cita llamando a uno de nuestros teléfonos</p>
-
-        <div class="telefonos text-center">
-          <div class="telefono d-flex justify-content-center align-items-center"
-            *ngFor="let t of telefonos">
-
-            <i class="fa-solid fa-phone me-2 fs-6"></i>
-
-            <p class="fw-bold">{{ t.numero }}<span *ngIf="t.extension"> ext. {{ t.extension }}</span></p>
-          </div>
-
-        </div>
-      </div>
+      <app-inicio-tfns class="col-12 col-sm-6 mt-5 mt-sm-0"></app-inicio-tfns>
     </div>
   </div>
 

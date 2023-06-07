@@ -77,11 +77,6 @@ export class GraficosComponent implements OnInit {
   }
 
 
- /*  get donacionesSangre() {
-    return this.donacionesMostrar.filter(d => d.donacion == 'sangre');
-  }
- */
-
   ngOnInit() {
     // Altas
     this.StatsService.getAltas().subscribe(resp => {

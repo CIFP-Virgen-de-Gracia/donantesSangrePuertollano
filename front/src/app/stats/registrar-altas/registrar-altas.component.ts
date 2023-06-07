@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Component } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { StatsService } from '../services/stats.service';
-import { AuthService } from '../../auth/services/auth.service';
 import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({

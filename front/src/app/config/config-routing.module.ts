@@ -7,6 +7,7 @@ import { TestConfigComponent } from './test-config/test-config.component';
 import { FaqsConfigComponent } from './faqs-config/faqs-config.component';
 import { CitasConfigComponent } from './citas-config/citas-config.component';
 import { ConfigMainComponent } from '../la-hermandad/config-main/config-main.component';
+import { ConfigTfnosComponent } from '../telefonos/config-tfnos/config-tfnos.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
     component: MainConfigComponent,
     children: [
       { path: 'hermandad', component: ConfigMainComponent },
-      { path: 'contacto', component: ContactoConfigComponent },
+      { path: 'telefonos', component: ConfigTfnosComponent },
       { path: 'citas', component: CitasConfigComponent},
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},

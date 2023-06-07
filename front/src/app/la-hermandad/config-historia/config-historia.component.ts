@@ -35,7 +35,7 @@ export class ConfigHistoriaComponent { //Alicia
   ngOnInit() {
     this.HermandadService.getHistoria()
       .subscribe(resp => {
-        if (resp.success) this.historia = resp.historia;
+        if (resp.success) this.historia = resp.data;
       });
   }
 
@@ -44,8 +44,8 @@ export class ConfigHistoriaComponent { //Alicia
     this.HermandadService.updateHistoria(this.historia)
       .subscribe(resp => {
 
-        if (resp.success && resp.historia) {
-          this.historia = resp.historia;
+        if (resp.success) {
+          this.historia = resp.data;
           this.mensaje.emit({ exito: true, msg: 'Éxito al actualizar la historia'});
 
         } else this.mensaje.emit({ exito: false, msg: 'Error al actualizar la historia'});

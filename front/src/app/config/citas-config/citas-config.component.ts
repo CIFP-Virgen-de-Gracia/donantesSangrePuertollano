@@ -3,12 +3,11 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
-import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora } from '../interfaces/config.interface';
+import { Dia, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
 import { Time } from '@angular/common';
 import * as interfaces from '../../citas/interfaces/citas.interface';
 import { tap, zip } from 'rxjs';
 import { CitasService } from '../../citas/services/citas.service';
-import { NgbTimepickerConfig, NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -43,7 +42,7 @@ export class CitasConfigComponent {
 
   diaSeleccionado = 'l';
   // selectedButton: string = 'lunes'
-  
+
   currentHour = new Date();
   time = { hour: this.currentHour.getHours(), minute: this.currentHour.getMinutes() };
 
@@ -77,13 +76,13 @@ export class CitasConfigComponent {
   ngOnInit() {
     // Alicia
     this.crearFormulario();
-  
+
     this.SharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.getHorarios(resp.data);
     });
 
 
-    
+
     // Mario
     this.traerHoras().subscribe(() => {
       this.cargarDia(this.diaSeleccionado);
@@ -229,7 +228,7 @@ export class CitasConfigComponent {
       const tlfns = { guardar: datos.telefonos, borrar: this.tBorrar };
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
-      this.ConfigService.updateContacto(datos.direcciones, tlfns, horarios)
+      this.ConfigService.updateContacto(datos.direcciones, horarios)
         .subscribe({
           next: (resp) => {
 
@@ -349,7 +348,7 @@ export class CitasConfigComponent {
     // const cTime = formatedTime.hour + ':' + formatedTime.minute + ':00';
     const horaAnadir = formatedTime.hour + ':' + formatedTime.minute;
     // let anadir = true;
-    
+
     // this.horasMostrar.map(hora => {if (hora == horaAnadir) {anadir = false; return;}});
 
     this.citasService.insertHoraCita(this.diaSeleccionado, horaAnadir + ':00').subscribe(resp => {
@@ -359,17 +358,17 @@ export class CitasConfigComponent {
         // this.horas.sort((a, b) => {
         //   const time1 = new Date("1970-01-01T" + a + ":00Z");
         //   const time2 = new Date("1970-01-01T" + b + ":00Z");
-    
+
         //   return time1.getTime() - time2.getTime();
         // });
-        
+
         this.traerHoras().subscribe(() => {
 
           this.cargarDia(this.diaSeleccionado);
         });
       }
       else {
-  
+
         //TODO cartelito de fallo
       }
     });

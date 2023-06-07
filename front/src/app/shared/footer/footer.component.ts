@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Direccion, Horario, Telefono } from 'src/app/config/interfaces/config.interface';
-import { SharedService } from 'src/app/shared/services/shared.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-footer',

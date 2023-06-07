@@ -13,6 +13,7 @@ import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemoriasComponent } from './memorias/memorias.component';
+import { TelefonosModule } from '../telefonos/telefonos.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MemoriasComponent } from './memorias/memorias.component';
     PaginasRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    TelefonosModule
   ],
   exports: [
     MainPageComponent

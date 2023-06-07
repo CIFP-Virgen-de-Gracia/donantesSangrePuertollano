@@ -25,7 +25,7 @@ export class MemoriasComponent implements OnInit {
   codDescarga: number = -1;
   imgNoValida = 'null';
   accion: string = '';
-  acciones = ['añadir', 'editar', 'borrar'];
+  acciones = ['añadir', 'editar', 'eliminar'];
   infoMemoria!: MemoriaAddUpdate;
   memorias: Memoria[] = [];
 

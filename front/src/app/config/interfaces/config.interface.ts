@@ -5,7 +5,6 @@ export interface updateResponse { //Alicia
   msg: string;
   data: {
     "dirs": Direccion[],
-    "tlfns": Telefono[],
     "horarios": Horario[]
   }
 }
@@ -28,11 +27,6 @@ export interface HorarioGuardar { //Alicia
   guardar: Horario[]
 }
 
-export interface TelefonoGuardar { //Alicia
-  borrar: number[],
-  guardar: Telefono[]
-}
-
 export interface Dia { //Alicia
   id: number;
   nombre: string;
@@ -43,12 +37,6 @@ export interface Dia { //Alicia
 export interface Hora { //Alicia
   entrada: Time;
   salida: Time;
-}
-
-export interface Telefono { //Alicia
-  id: number;
-  numero: string;
-  extension: number;
 }
 
 export interface Direccion { //Alicia

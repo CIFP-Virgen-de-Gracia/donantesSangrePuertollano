@@ -39,16 +39,47 @@ router.get('/users/getinfouser/:id', auth.getInfoUser);
 
 // Contenido routes
 // Todo Alicia
+// Historia
 router.get('/getHistoria', contenido.getHistoria);
+router.put('/updateHistoria', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHistoria);
+
+// Junta
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
-router.get('/getHorarios', contenido.getHorarios);
+router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertOrUpdateIntegranteJunta);
+router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
+
+
+//Teléfonos
 router.get('/getTelefonos', contenido.getTelefonos);
-router.get('/getDirecciones', contenido.getDirecciones);
+router.put('/insertOrUpdateTfno', [ 
+    vJwt.validarJwt,
+    midsUser.midAdmin,
+    check('telefonos.guardar.*.numero', 'Número de teléfono no válido')
+        .not().isEmpty()
+        .matches(/^(\(?(\+34|0034|34)\)?[ -]+)?([0-9][ -]*){9}/),
+    check('telefonos.guardar.*.extension', 'Extensión no válida').matches(/^[0-9]*$/),
+    midsValidar.validarCampos,
+], contenido.insertOrUpdateTfno)
+router.delete('/deleteTfno/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteTfno);
+
+
+//Memorias
 router.get('/getMemorias', contenido.getMemorias);
 router.get('/upload/img/:nombre', contenido.getImagen);
 router.get('/upload/doc/:nombre', contenido.getDocumento);
 router.get('/download/:nombre', contenido.descargarDocumento);
+router.put('/insertOrUpdateMemoria', [ 
+    vJwt.validarJwt, 
+    midsUser.midAdmin, 
+    check('anio', 'El año es obligatorio').not().isEmpty(),
+    midsValidar.validarCampos 
+], contenido.insertOrUpdateMemoria);
+router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
+
+
+router.get('/getHorarios', contenido.getHorarios);
+router.get('/getDirecciones', contenido.getDirecciones);
 router.put('/updateContacto', [ 
     vJwt.validarJwt, 
     midsUser.midAdmin,
@@ -62,16 +93,6 @@ router.put('/updateContacto', [
     check('direcciones.*.cp', 'Código postal no válido').matches(/^[0-9]{5}$/),
     midsValidar.validarCampos,
 ], contenido.updateContacto);
-router.put('/insertOrUpdateMemoria', [ 
-    vJwt.validarJwt, 
-    midsUser.midAdmin, 
-    check('anio', 'El año es obligatorio').not().isEmpty(),
-    midsValidar.validarCampos 
-], contenido.insertOrUpdateMemoria);
-router.put('/updateHistoria', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.updateHistoria);
-router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertOrUpdateIntegranteJunta);
-router.delete('/deleteMemoria/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteMemoria);
-router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
 
 // citas routes
 router.get('/citas/gethorasdisponibles/:fecha', [vJwt.validarJwt, midsUser.midUser],citas.getHorasDisponibles);

@@ -38,12 +38,12 @@ export interface AltaResponse {
 export interface MsgResponseDonacion {
   success: boolean;
   msg: string;
-  data?: Donacion;
+  data: Donacion;
 }
 
 
 export interface MsgResponseAlta {
   success: boolean;
   msg: string;
-  data?: Alta[];
+  data: Alta[];
 }

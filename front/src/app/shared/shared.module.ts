@@ -9,6 +9,7 @@ import { NewsletterVentanaComponent } from './newsletter/newsletter-ventana/news
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ModalPedirCitaComponent } from './modal-pedir-cita/modal-pedir-cita.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TelefonosModule } from '../telefonos/telefonos.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     ReactiveFormsModule,
     AngularEditorModule,
-    NgbModule
+    NgbModule,
+    TelefonosModule
   ],
   entryComponents: [
     ModalPedirCitaComponent

@@ -98,15 +98,15 @@ insertHorario = async (horario) => {
 }
 
 
-insertTelefono = async (tlfn) => {
+insertTfno = async (datos) => {
   try {
 
-    const resp = await models.Telefono.create({
-      numero: tlfn.numero,
-      extension: tlfn.extension
+    const tfno = await models.Telefono.create({
+      numero: datos.numero,
+      extension: datos.extension
     });
 
-    return resp;
+    return tfno;
 
   } catch (err) {
     throw err;
@@ -205,16 +205,19 @@ updateDireccion = async (direccion) => {
 }
 
 
-updateTelefono = async (telefono) => {
+updateTfno = async (datos) => {
   try {
 
-    const tlfn = await models.Telefono.findByPk(telefono.id);
-    const resp = await tlfn.update({
-      numero: telefono.numero,
-      extension: telefono.extension
-    });
+    const tfno = await models.Telefono.findByPk(datos.id);
 
-    return resp;
+    if (tfno) {
+      
+      return await tfno.update({
+        numero: datos.numero,
+        extension: datos.extension
+      });
+
+    } else return null;
 
   } catch (err) {
     throw err;
@@ -271,26 +274,7 @@ insertOrUpdateMemoria = async (memoria) => {
 deleteHorario = async (id) => {
   try {
 
-    const resp = await models.Horario.destroy({
-      where: { id: id }
-    });
-
-    return resp;
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
-deleteTelefono = async (id) => {
-  try {
-
-    const resp = await models.Telefono.destroy({
-      where: { id: id }
-    });
-
-    return resp;
+    return await models.Horario.destroy({ where: { id: id } });
 
   } catch (err) {
     throw err;
@@ -300,11 +284,7 @@ deleteTelefono = async (id) => {
 
 deleteMemoria = async (id) => {
   try {
-    const resp = await models.Memoria.destroy({
-      where: { id: id }
-    });
-
-    return resp;
+    return await models.Memoria.destroy({ where: { id: id } });
 
   } catch (err) {
     throw err;
@@ -315,10 +295,21 @@ deleteMemoria = async (id) => {
 deleteImgMemoria = async (id) => {
   try {
 
-    const mem = await models.Memoria.findByPk(id)
+    const mem = await models.Memoria.findByPk(id);
     const resp = await mem.update({ imagen: null });
 
     return resp;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+deleteTfno = async (id) => {
+  try {
+
+    return await models.Telefono.destroy({ where: { id: id } });
 
   } catch (err) {
     throw err;
@@ -358,17 +349,17 @@ module.exports = {
   getMemoria,
   getMemorias,
   insertHorario,
-  insertTelefono,
+  insertTfno,
   insertIntegranteJunta,
   updateHistoria,
   updateIntegranteJunta,
   updateDireccion,
-  updateTelefono,
+  updateTfno,
   updateHorario,
   insertOrUpdateMemoria,
   deleteHorario,
-  deleteTelefono,
   deleteMemoria,
   deleteImgMemoria,
+  deleteTfno,
   deleteIntegranteJunta
 };

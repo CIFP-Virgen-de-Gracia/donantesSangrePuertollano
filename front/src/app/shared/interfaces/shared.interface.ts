@@ -1,4 +1,4 @@
-import { Direccion, Horario, Telefono } from "src/app/config/interfaces/config.interface";
+import { Direccion, Horario } from "src/app/config/interfaces/config.interface";
 
 export interface Email { //Alicia
   email: string;
@@ -7,11 +7,6 @@ export interface Email { //Alicia
 export interface HorarioResponse { //Alicia
   success: boolean;
   data: Horario[];
-}
-
-export interface TelefonoResponse { //Alicia
-  success: boolean;
-  data: Telefono[];
 }
 
 export interface DireccionResponse { //Alicia

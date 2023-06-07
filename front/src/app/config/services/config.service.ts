@@ -2,7 +2,7 @@ import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
-import { Direccion, HorarioGuardar, Telefono, TelefonoGuardar } from '../interfaces/config.interface';
+import { Direccion, HorarioGuardar } from '../interfaces/config.interface';
 import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
@@ -28,7 +28,7 @@ export class ConfigService {
 
 
   //Alicia
-  updateContacto(dirs: Direccion[], tlfns: TelefonoGuardar, horarios: HorarioGuardar): Observable<updateResponse> {
+  updateContacto(dirs: Direccion[], horarios: HorarioGuardar): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -40,7 +40,6 @@ export class ConfigService {
       `${this.configUrl}/updateContacto`,
       {
         direcciones: dirs,
-        telefonos: tlfns,
         horarios: horarios
       },
       header

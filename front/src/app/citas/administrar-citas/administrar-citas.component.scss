@@ -12,32 +12,6 @@ div.alert {
     }
 }
 
-.mensaje {
-    position: fixed;
-    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
-    border-radius: 2px;
-    z-index: 80;
-    background-color: var(--bs-white);
-    padding: 1rem;
-    bottom: 20px;
-    right: 2%;
-    width: 96%;
-
-    @media (min-width: 576px) {
-        right: 15px;
-        width: 60%;
-        padding: 1rem 2rem;
-    }
-
-    @media (min-width: 992px) {
-        width: 35%;
-    }
-
-    @media (min-width: 1400px) {
-        width: 25%;
-    }
-}
-
 div.container-fluid {
     background-color: var(--color-contraste);
     min-height: 80vh;
@@ -46,7 +20,7 @@ div.container-fluid {
         box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
         // width: 40vw;
 
-        
+
         div.card-header {
             background-color: var(--color-primario);
             font-family: var(--tipo-titulos);
@@ -65,27 +39,27 @@ div.container-fluid {
                 .tarjetaNoHay {
                     height: 5rem;
                 }
-    
+
                 .tarjeta {
                     // height: 7rem;
                     border-radius: 2px;
                     background-color: var(--color-contraste);
                     // box-shadow: 2px 2px 2px 2px #888888;
-    
+
                     .info {
                         // max-width: 40rem !important;
                         // max-height: 3rem;
 
-                        
+
                         span.nombre {
                             font-size: 21px;
                         }
-    
+
                         span.dia, span.hora {
                             font-size: 17px;
                         }
-        
-        
+
+
                         span.donacion {
                             background-color: var(--color-secundario);
                             color: var(--bs-white);
@@ -94,7 +68,7 @@ div.container-fluid {
                             border-radius: 2px 2px 2px 2px;
                         }
                     }
-    
+
                     span.derechaTextoGrande {
                         display: block;
                         // width: 6rem;
@@ -109,7 +83,7 @@ div.container-fluid {
                         span.derechaTextoGrande {
                             display: none;
                         }
-    
+
                         span.derechaTextoPequeno {
                             display: block;
                             width: 3rem;
@@ -118,10 +92,10 @@ div.container-fluid {
 
                         button.btn-primario {
                             width: 5.6rem;
-                            
+
                         }
                     }
-    
+
                     span.derechaBoton {
                         height: 100%;
                         width: 6rem;
@@ -131,5 +105,5 @@ div.container-fluid {
             }
         }
     }
-}    
+}
 

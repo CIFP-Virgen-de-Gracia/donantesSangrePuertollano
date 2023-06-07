@@ -57,9 +57,9 @@ export class ConfigJuntaComponent {
     this.HermandadService.insertOrUpdateIntegranteJunta(this.infoInt)
       .subscribe(resp => {
 
-        if (resp.success && resp.intJunta) {
+        if (resp.success) {
 
-          this.infoInt = resp.intJunta;
+          this.infoInt = resp.data;
           const indexInt = this.junta.findIndex(i => i.id == this.infoInt.id);
 
           if (indexInt == -1) this.junta.push(this.infoInt);
@@ -76,16 +76,20 @@ export class ConfigJuntaComponent {
 
 
   deleteIntegrante(index: number) {
-    this.HermandadService.deleteIntegranteJunta(this.junta[index].id)
+    const int = this.junta[index];
+
+    if (int) {
+      this.HermandadService.deleteIntegranteJunta(int.id)
       .subscribe(resp => {
 
         if (resp.success) {
-          this.junta.splice(this.junta.findIndex(i => i.id == resp.idInt), 1);
+          this.junta.splice(this.junta.findIndex(i => i.id == resp.data), 1);
           this.mensaje.emit({ exito: true, msg: 'Éxito al eliminar el integrante'});
 
         } else this.mensaje.emit({ exito: false, msg: 'Error al eliminar el integrante'});
 
       });
+    }
   }
 
 

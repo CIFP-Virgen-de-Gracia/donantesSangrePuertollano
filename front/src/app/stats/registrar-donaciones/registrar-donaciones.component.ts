@@ -1,7 +1,6 @@
 import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { StatsService } from '../services/stats.service';
 import { WebsocketService } from 'src/app/stats/services/websocket.service';
 
 @Component({
@@ -25,7 +24,7 @@ export class RegistrarDonacionesComponent {
   errorFecha?: boolean;
 
 
-  constructor(private StatsService: StatsService, private SocketService: WebsocketService) {
+  constructor(private SocketService: WebsocketService) {
     this.tipoDonacion = this.tiposDonacion[0];
     this.gSanguineo = this.grpsSanguineos[0];
     this.genero = this.generos[0];

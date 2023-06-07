@@ -19,11 +19,6 @@ export class PaginasService {
   }
 
 
-  getIntegrantesCargo(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getIntegrantesCargo`);
-  }
-
-
   getMemorias(): Observable<GetMemResponse> {
     return this.http.get<GetMemResponse>(`${this.baseUrl}/getMemorias`);
   }
