@@ -21,7 +21,7 @@
 
       <div class="row gx-0">
         <div class="col-12 col-sm-9">
-          <div class="row gx-0">
+          <div class="row gx-0 calle">
             <div class="nombre col-12 col-lg-4 f-rojo">Calle</div>
             <input type="text" class="valor align-middle col-12 col-lg-8" readonly [(ngModel)]="dir.calle"/>
           </div>
@@ -42,7 +42,7 @@
 
       <div class="row gx-0">
         <div class="col-12 col-sm-9">
-          <div class="row gx-0">
+          <div class="row gx-0 provincia">
             <div class="nombre col-12 col-lg-4 f-rojo">Provincia</div>
             <input type="text" class="valor align-middle col-12 col-lg-8" readonly [(ngModel)]="dir.provincia"/>
           </div>
@@ -115,7 +115,7 @@
                 formControlName="calle" placeholder="Introduce la calle."/>
 
               <div>
-                <p *ngIf="formCtrls['calle']?.errors?.['required'] || formCtrls['calle']?.errors?.['vacio']
+                <p *ngIf="(formCtrls['calle']?.errors?.['required'] || formCtrls['calle']?.errors?.['vacio'])
                   && formCtrls['calle']?.touched" class="mensaje-error">
                   La calle es obligatoria.
                 </p>
@@ -147,7 +147,7 @@
               formControlName="ciudad" placeholder="Introduce la ciudad." />
 
             <div>
-              <p *ngIf="formCtrls['ciudad']?.errors?.['required'] || formCtrls['ciudad']?.errors?.['vacio']
+              <p *ngIf="(formCtrls['ciudad']?.errors?.['required'] || formCtrls['ciudad']?.errors?.['vacio'])
                 && formCtrls['calle']?.touched" class="mensaje-error">
                 La ciudad es obligatoria.
               </p>

@@ -34,4 +34,11 @@
   }
 }
 
+@media (max-width: 576px) {
+  .direccion .calle, .direccion .provincia {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--color-primario);
+  }
+}
+
 
