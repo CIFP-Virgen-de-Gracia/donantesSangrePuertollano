@@ -13,19 +13,26 @@ module.exports = {
         type: Sequelize.STRING
       },
       calle: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       numero: {
-        type: Sequelize.STRING(3)
+        type: Sequelize.TINYINT(3)
       },
       ciudad: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       provincia: {
+        allowNull: false,
         type: Sequelize.STRING
       },
+      urlMapa: {
+        type: Sequelize.TEXT
+      },
       cp: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.SMALLINT(5)
       },
       createdAt: {
         allowNull: false,

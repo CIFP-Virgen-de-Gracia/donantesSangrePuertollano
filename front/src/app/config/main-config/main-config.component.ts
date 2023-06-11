@@ -18,7 +18,7 @@ export class MainConfigComponent {
       icono: "fa-phone"
     },
     {
-      nombre: "direcciones",
+      nombre: "dirección",
       icono: "fa-location-dot"
     },
     {

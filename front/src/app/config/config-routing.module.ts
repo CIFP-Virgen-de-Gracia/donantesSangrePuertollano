@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
       { path: 'hermandad', component: ConfigMainComponent },
       { path: 'telefonos', component: ConfigTfnosComponent },
-      { path: 'direcciones', component: ConfigDireccionesComponent },
+      { path: 'direccion', component: ConfigDireccionesComponent },
       { path: 'citas', component: HorariosConfigComponent},
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},

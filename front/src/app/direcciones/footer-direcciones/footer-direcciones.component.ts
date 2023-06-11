@@ -15,6 +15,11 @@ export class FooterDireccionesComponent implements OnInit {
   constructor(private DirsService: DireccionesService) {}
 
 
+  get dirPrincipal() {
+    return this.dirsData[0];
+  }
+
+
   ngOnInit() {
     this.DirsService.getDirecciones().subscribe(resp => {
       if (resp.success) this.dirsData = resp.data;

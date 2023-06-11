@@ -7,7 +7,7 @@ import { DireccionesService } from '../services/direcciones.service';
   templateUrl: './inicio-direcciones.component.html',
   styleUrls: ['./inicio-direcciones.component.scss']
 })
-export class InicioDireccionesComponent implements OnInit{
+export class InicioDireccionesComponent implements OnInit {
 
   dirsData: Direccion[] = [];
 

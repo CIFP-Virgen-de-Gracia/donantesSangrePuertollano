@@ -67,20 +67,6 @@ getCargoIntegrantes = async () => {
 }
 
 
-getMemoria = async (id) => {
-  const memoria = await models.Memoria.findByPk(id);
-
-  return memoria;
-}
-
-
-getMemorias = async () => {
-  const memorias = await models.Memoria.findAll({ order: [['anio', 'ASC']] });
-
-  return memorias;
-}
-
-
 insertHorario = async (horario) => {
   try {
 
@@ -101,12 +87,29 @@ insertHorario = async (horario) => {
 insertTfno = async (datos) => {
   try {
 
-    const tfno = await models.Telefono.create({
+    return await models.Telefono.create({
       numero: datos.numero,
       extension: datos.extension
     });
 
-    return tfno;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
+insertDir = async (datos) => {
+  try {
+
+    return await models.Direccion.create({
+      lugar: datos.lugar,
+      calle: datos.calle,
+      numero: datos.numero,
+      ciudad: datos.ciudad,
+      provincia: datos.provincia,
+      urlMapa: datos.urlMapa,
+      cp: datos.cp,
+    });
 
   } catch (err) {
     throw err;
@@ -184,20 +187,24 @@ updateIntegranteJunta = async (datos) => {
 }
 
 
-updateDireccion = async (direccion) => {
+updateDir = async (datos) => {
   try {
 
-    const dir = await models.Direccion.findByPk(direccion.id);
-    const resp = await dir.update({
-      lugar: direccion.lugar,
-      calle: direccion.calle,
-      numero: direccion.numero,
-      provincia: direccion.provincia,
-      ciudad: direccion.ciudad,
-      cp: direccion.cp
-    });
+    const dir = await models.Direccion.findByPk(datos.id);
+    
+    if (dir) {
 
-    return resp;
+      return await dir.update({
+        lugar: datos.lugar,
+        calle: datos.calle,
+        numero: datos.numero,
+        provincia: datos.provincia,
+        ciudad: datos.ciudad,
+        urlMapa: datos.urlMapa,
+        cp: datos.cp
+      });
+
+    } else return null;
 
   } catch (err) {
     throw err;
@@ -242,63 +249,10 @@ updateHorario = async (horario) => {
 }
 
 
-insertOrUpdateMemoria = async (memoria) => {
-  try {
-
-    const [mem, creada] = await models.Memoria.findOrCreate({
-      where: { id: memoria.id },
-      defaults: {
-        id: null,
-        anio: memoria.anio,
-        imagen: memoria.imagen,
-        documento: memoria.documento
-      }
-    });
-
-    const resp = creada
-      ? mem
-      : await mem.update({
-        anio: memoria.anio,
-        imagen: memoria.imagen ? memoria.imagen : null,
-        documento: memoria.documento ? memoria.documento : null,
-      });
-
-    return resp;
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
 deleteHorario = async (id) => {
   try {
 
     return await models.Horario.destroy({ where: { id: id } });
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
-deleteMemoria = async (id) => {
-  try {
-    return await models.Memoria.destroy({ where: { id: id } });
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-
-deleteImgMemoria = async (id) => {
-  try {
-
-    const mem = await models.Memoria.findByPk(id);
-    const resp = await mem.update({ imagen: null });
-
-    return resp;
 
   } catch (err) {
     throw err;
@@ -346,20 +300,16 @@ module.exports = {
   getDirecciones,
   getCargosJunta,
   getCargoIntegrantes,
-  getMemoria,
-  getMemorias,
   insertHorario,
   insertTfno,
+  insertDir,
   insertIntegranteJunta,
   updateHistoria,
   updateIntegranteJunta,
-  updateDireccion,
   updateTfno,
+  updateDir,
   updateHorario,
-  insertOrUpdateMemoria,
   deleteHorario,
-  deleteMemoria,
-  deleteImgMemoria,
   deleteTfno,
   deleteIntegranteJunta
 };

@@ -25,7 +25,7 @@
       </div>
 
       <div class="iconos col-12 col-md-1 d-flex justify-content-end align-items-center">
-        <i class="fa-solid fa-pen me-2 me-lg-3" data-bs-toggle="modal" data-bs-target="#insertOrUpdateTfn"
+        <i class="fa-solid fa-pen me-2" data-bs-toggle="modal" data-bs-target="#insertOrUpdateTfn"
          (click)="setInfoTfn(i); accion=acciones[1]; limpiarMensaje()"></i>
 
         <i class="fa-solid fa-trash me-2" (click)="deleteTfno(i); accion=acciones[2]; limpiarMensaje()"></i>
@@ -37,7 +37,7 @@
 
   <button type="button" class="btn-primario mt-2" data-bs-toggle="modal"
     data-bs-target="#insertOrUpdateTfn" (click)="accion=acciones[0]; limpiarMensaje()">
-    Añadir teléfono
+    <i class="fa-solid fa-plus me-2"></i>Añadir teléfono
   </button>
 </div>
 
@@ -64,7 +64,7 @@
               formControlName="numero" placeholder="Introduce el número de teléfono."/>
 
             <div>
-              <p *ngIf="formCtrls['numero']?.errors?.['required']"
+              <p *ngIf="formCtrls['numero']?.errors?.['required'] && formCtrls['numero']?.touched"
                 class="mensaje-error">
                 El número es obligatorio.
               </p>

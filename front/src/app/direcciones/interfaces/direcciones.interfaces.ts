@@ -1,7 +1,13 @@
-export interface DireccionResponse { //Alicia
+export interface DireccionesResponse { //Alicia
   success: boolean,
   msg: string,
   data: Direccion[],
+}
+
+export interface DireccionResponse { //Alicia
+  success: boolean,
+  msg: string,
+  data: Direccion,
 }
 
 export interface Direccion { //Alicia
@@ -11,5 +17,6 @@ export interface Direccion { //Alicia
   numero: string,
   ciudad: string,
   provincia: string,
+  urlMapa: string,
   cp: number,
 }

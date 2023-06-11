@@ -16,10 +16,11 @@ module.exports = (sequelize, DataTypes) => {
   Direccion.init({
     lugar: DataTypes.STRING,
     calle: DataTypes.STRING,
-    numero: DataTypes.STRING(3),
+    numero: DataTypes.TINYINT(3),
     ciudad: DataTypes.STRING,
     provincia: DataTypes.STRING,
-    cp: DataTypes.INTEGER
+    urlMapa: DataTypes.TEXT,
+    cp: DataTypes.SMALLINT(5)
   }, {
     sequelize,
     tableName: 'direcciones',

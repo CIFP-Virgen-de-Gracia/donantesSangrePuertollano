@@ -42,17 +42,13 @@ export class ConfigTfnosComponent implements OnInit {
 
 
   insertOrUpdateTfno() {
-    let extValue = this.modalForm.value.extension; // Al editar un teléfono, si borramos la extensión, envía una cadena vacía
-    if (extValue == '') extValue = null; //Lo pongo a null para evitar que envíe la cadena vacía.
-
-    const extControl = this.formCtrls['extension'];
-    if (extControl.errors && extControl.errors['required']) { //Aunque no tiene Validator.required,
-      extControl.clearValidators();                           //sigue saltando el error, así que le quito los Validators.
-      extControl.setValidators([Validators.pattern(/^[0-9]*$/)]);
-      extControl.updateValueAndValidity();
-    }
+    this.resetValidatorsExtension();
 
     if (this.modalForm.valid) {
+      // Al editar un teléfono, si borramos la extensión, envía una cadena vacía.
+      //Lo pongo a null para evitar que envíe la cadena vacía.
+      if (this.modalForm.value.extension == '') this.modalForm.value.extension = null;
+
       this.tfnosService.insertOrUpdateTfno(this.modalForm.value)
         .subscribe(resp => {
 
@@ -71,7 +67,8 @@ export class ConfigTfnosComponent implements OnInit {
       this.setTimer(4000);
       this.closeModal.nativeElement.click();
       this.limpiarFormulario();
-    }
+
+    } else this.modalForm.markAllAsTouched();
   }
 
 
@@ -110,6 +107,17 @@ export class ConfigTfnosComponent implements OnInit {
       ])],
       extension: [null, [Validators.pattern(/^[0-9]*$/)]]
     });
+  }
+
+
+  resetValidatorsExtension() {
+    const extControl = this.formCtrls['extension'];
+
+    if (extControl.errors && extControl.errors['required']) { //Aunque no tiene Validator.required,
+      extControl.clearValidators();                           //sigue saltando el error, así que le quito los Validators.
+      extControl.setValidators([Validators.pattern(/^[0-9]*$/)]);
+      extControl.updateValueAndValidity();
+    }
   }
 
 
