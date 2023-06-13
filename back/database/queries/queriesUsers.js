@@ -365,6 +365,164 @@ class QueriesUsers {
         this.sequelize.desconectar();
         return {resp: resp.dataValues, user: user.dataValues};
     }
+
+    //Alejandro
+    getCantidadNotificaciones = async(idUser) => {
+        let user = await models.User.findByPk(idUser);
+
+        return user.notificacion;
+    }
+
+    //Alejandro
+    getAdministradores = async() => {
+
+        this.sequelize.conectar();
+        let resultado = [];
+        try {
+            resultado = await models.User.findAll({
+                include: [
+                    {
+                        model: models.RolUser,
+                        attributes: ['idUser', 'idRol'],
+                        as: 'RolUser',
+                        where: { idRol: 1}
+                    }
+                ],
+                attributes: ['id', 'nombre']
+            });
+            this.sequelize.desconectar();
+        } catch(error) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        return resultado;
+        
+    }
+
+    //Alejandro
+    getEmailsAdministradores = async() => {
+
+        this.sequelize.conectar();
+        let resultado = [];
+        try {
+            resultado = await models.Email.findAll({
+                include: [
+                    {
+                        model: models.RolUser,
+                        attributes: ['idUser', 'idRol'],
+                        as: 'RolUser',
+                        where: { idRol: 1}
+                    }
+                ],
+                attributes: ['id', 'email']
+            });
+            this.sequelize.desconectar();
+        } catch(error) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        return resultado;
+        
+    }
+
+    getNotificacionUser = async(id) => {
+        this.sequelize.conectar();
+        let resultado = [];
+        try {
+            resultado = await models.User.findAll({
+                attributes: ['id', 'nombre','notificaciones'],
+                where:{id: id}
+            });
+            this.sequelize.desconectar();
+        } catch(error) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        return resultado;
+    }
+
+    //Alejandro
+    aumentarNotificacionAdministrador = async() => {
+        this.sequelize.conectar();
+        let resp = [];
+        try {
+            const administradores = await models.User.findAll({
+                include: [
+                    {
+                        model: models.RolUser,
+                        attributes: ['idUser', 'idRol'],
+                        as: 'RolUser',
+                        where: { idRol: 1}
+                    }
+                ],
+                attributes: ['id', 'nombre', 'notificacion']
+            });
+            administradores.forEach(administrador => {
+                let sum = administrador.notificacion + 1;
+                resp += administrador.update({notificacion: sum});
+            });
+            
+            this.sequelize.desconectar();
+        } catch(error) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        return resp;
+    }
+
+    //Alejandro
+    disminuirNotificacionAdministrador = async() => {
+        this.sequelize.conectar();
+        let resp = [];
+        try {
+            const administradores = await models.User.findAll({
+                include: [
+                    {
+                        model: models.RolUser,
+                        attributes: ['idUser', 'idRol'],
+                        as: 'RolUser',
+                        where: { idRol: 1}
+                    }
+                ],
+                attributes: ['id', 'nombre', 'notificacion']
+            });
+            administradores.forEach(administrador => {
+                let sum = administrador.notificacion - 1;
+                resp += administrador.update({notificacion: sum});
+            });
+            
+            this.sequelize.desconectar();
+        } catch(error) {
+            this.sequelize.desconectar();
+            throw error;
+        }
+        return resp;
+    }
+
+    //Alejandro
+    aumentarNotificacionUsuario = async(idUser) => {
+        this.sequelize.conectar();
+        let user = await models.User.findByPk(idUser);
+        let sum = user.notificacion + 1;
+        user.update({notificacion: sum});
+        this.sequelize.desconectar();
+        return user;
+    }
+
+    //Alejandro
+    disminuirNotificacionUsuario = async(idUser) => {
+        this.sequelize.conectar();
+        let user = await models.User.findByPk(idUser);
+        let sum = user.notificacion - 1;
+        if(sum < 0){
+            sum = 0;
+        }
+        user.update({notificacion: sum});
+        this.sequelize.desconectar();
+        return user;
+    }
+
+    
 }
 
 
@@ -379,7 +537,7 @@ class QueriesUsers {
         return await models.User.findByPk(id, {include: ['citasPasadas']});
     }
     
-
+    
 const queriesUsers = new QueriesUsers();
 
 module.exports = queriesUsers;
@@ -390,3 +548,26 @@ const a = {
 }
 
 // queriesUsers.getUserInfo(1).then(console.log);
+
+
+// return await models.Email.findAll(
+        //     {
+        //     include: [
+        //         {
+        //             model: models.User,
+        //             attributes: ['id'],
+        //             as: 'User',
+        //             include: [
+        //                 {
+        //                     model: models.RolUser,
+        //                     attributes: ['idRol'],
+        //                     as: 'Roluser'
+        //                 }
+        //             ]
+        //         }
+        //     ],
+        //     attributes: ['email', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'],
+        //         [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
+            
+        // }
+        // )

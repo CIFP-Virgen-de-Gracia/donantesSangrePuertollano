@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('galerias', {
+    await queryInterface.createTable('peticionesGaleria', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,27 +10,32 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nombre: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
       },
       descripcion: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.STRING
       },
       propietario: {
         type: Sequelize.INTEGER
       },
+      verificado: {
+        type: Sequelize.BOOLEAN
+      },
+      aceptado_rechazado: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('galerias');
+    await queryInterface.dropTable('peticionesGaleria');
   }
 };
