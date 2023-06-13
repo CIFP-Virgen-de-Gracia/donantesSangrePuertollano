@@ -11,10 +11,13 @@ const colocarFecha = (fecha) => {
 const colocarHora = (hora) => {
     return hora.slice(0, 5);
 }
-//Isabel
-const comprobarHoraFecha = (fecha,fechaDb) => {
-  return fechaDb.getTime() === fecha.getTime();
-}
+
+
+// //Isabel
+// const comprobarHoraFecha = (fecha,fechaDb) => {
+//   return fechaDb.getTime() === fecha.getTime();
+// }
+
 
 const horaEsMayor = (hora, ahora) => { // copara horas con el siguiente formato HH:mm
     let esMayor = false;
@@ -38,6 +41,7 @@ const fechaEsMayor = (fecha, ahora) => {
     if (fechaCompleta.isAfter(moment(ahora))) {
         esMayor = true;
     }
+
     
     return esMayor; 
 }
@@ -46,10 +50,14 @@ const fechaEsMayor = (fecha, ahora) => {
 const horaValida = async(fecha) => {
     const horasDisp = await queriesCitas.getHorarioCitas(moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD'));
 
+    
     const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss');
     
+    const codDia = ['l', 'm', 'x', 'j', 'v', 's'];
+    const diaSemana = new Date(fecha);
+    
     let valida = false;
-    horasDisp.forEach(horaDisp => {
+    horasDisp[codDia[diaSemana.getDay() - 1]].forEach(horaDisp => {
      
         if (horaDisp == hora) {
             valida = true;
@@ -66,5 +74,5 @@ module.exports = {
     colocarHora,
     horaEsMayor,
     horaValida,
-    comprobarHoraFecha
+    // comprobarHoraFecha
 }

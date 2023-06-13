@@ -2,13 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const { response, request } = require('express');
-const { subirArchivo, borrarArchivo } = require('../helpers/FileUpload');
 const queriesContenidos = require('../database/queries/queriesContenidos');
-const urlApiUpload = '/api/upload/';
-const urlUploadMemorias = '../uploads/memorias/';
-const carpetaMems = 'memorias';
-const carpetaImgs = 'imagenes';
-const carpetaDocs = 'documentos';
+
 
 //Todo Alicia
 const getHistoria = async (req, res = response) => {
@@ -17,17 +12,15 @@ const getHistoria = async (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registros encontrado',
                 data: historia.dataValues
-            }
+            };
 
             res.status(200).json(resp);
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -52,10 +45,7 @@ const getHorarios = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -68,6 +58,7 @@ const getTelefonos = (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registros encontrados',
                 data: telefonos
             }
 
@@ -75,10 +66,7 @@ const getTelefonos = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false,  msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -98,13 +86,15 @@ const getDirecciones = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false,  msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
+}
+
+
+const getImgTutorial = async (req, res = response) => {
+    return res.sendFile(path.join(__dirname, '../uploads/tutorialGoogleMaps/', req.params.img));
 }
 
 
@@ -114,6 +104,7 @@ const getCargosJunta = (req, res = response) => {
 
             const resp = {
                 success: true,
+                msg: 'Registos encontrados',
                 data: listadoCargos
             }
 
@@ -121,10 +112,7 @@ const getCargosJunta = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = {  success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
@@ -136,7 +124,8 @@ const getIntegrantesCargo = (req, res = response) => {
         .then(listadoJunta => {
 
             const resp = {
-                success: true,
+                success: true, 
+                msg: 'Registos encontrados',
                 data: listadoJunta
             }
 
@@ -144,112 +133,113 @@ const getIntegrantesCargo = (req, res = response) => {
 
         }).catch(err => {
 
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
+            const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
         });
 }
 
 
-const getMemorias = (req, res = response) => {
-    queriesContenidos.getMemorias()
-        .then(memorias => {
-            
-            memorias.forEach(m => {
-                const nombreImg = m.imagen
-                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaImgs, m.imagen)) 
-                        ? m.imagen 
-                        : null;
+const updateHistoria = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' };
 
-                m.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${nombreImg}`; 
-                m.documento = m.documento
-                    && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaDocs, m.documento)) 
-                        ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${m.documento}` 
-                        : null;
-            });
-
-            const resp = {
-                success: true,
-                data: memorias
-            }
-
-            res.status(200).json(resp);
-
-        }).catch(err => {
-            
-            const resp = {
-                success: false,
-                msg: 'No hay registros',
-            }
-
-            res.status(200).json(resp);
-        });
-}
-
-
-const getImagen = async (req, res = response) => {
-    const pathImagen = path.join(__dirname, urlUploadMemorias, carpetaImgs, req.params.nombre);
-
-    return fs.existsSync(pathImagen) 
-        ? res.sendFile(pathImagen) 
-        : res.sendFile(path.join(__dirname, urlUploadMemorias, `${carpetaImgs}/default.png`))
-}
-
-
-const getDocumento = async (req, res = response) => {
-    const pathDoc = path.join(__dirname, urlUploadMemorias, carpetaDocs, req.params.nombre);
-
-    return fs.existsSync(pathDoc) 
-        ? res.sendFile(pathDoc) 
-        : res.sendFile(path.join(__dirname, urlUploadMemorias, `${carpetaImgs}/default.png`))
-}
-
-
-const descargarDocumento = async (req, res = response) => {
-    const pathName = path.join(__dirname, urlUploadMemorias, carpetaDocs, req.params.nombre);
-
-    if (!fs.existsSync(pathName)) 
-        return res.status(404).json({ msg: 'No existe el archivo' });
-    
-    return res.download(pathName);
-}
-
-
-const updateHermandad = async (req, res = response) => {
-    
     try {
-        const historia = await queriesContenidos.updateHistoria(req.body.historia);
-        const nombres = await Promise.all(req.body.junta.map(queriesContenidos.updateNombreIntegranteJunta));
 
-        //TODO: Preguntar a Inma si esto es correcto
-        for await (const integrante of req.body.junta) {
-            await queriesContenidos.updateCargoIntegranteJunta(integrante);
+        const historia = await queriesContenidos.updateHistoria(req.body);
+       
+        if (historia) {
+            resp = {
+                success: true,
+                msg: 'Historia actualizada con éxito',
+                historia: historia
+            }
         }
 
-        const resp = {
-            success: true,
-            msg: 'Se han guardado los cambios',
-        }
-
-        res.status(201).json(resp);
+        res.status(200).json(resp);
 
     } catch (err) {
-        
-        const resp = {
-            success: false,
-            msg: 'Se ha producido un error',
+        res.status(200).json(resp);
+    }
+}
+
+
+const insertOrUpdateTfno = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+    let tfno;
+
+    try {
+
+        if (req.body.id == null) tfno = await queriesContenidos.insertTfno(req.body);
+        else tfno = await queriesContenidos.updateTfno(req.body);
+       
+        if (tfno) {
+            resp = {
+                success: true,
+                msg: 'Teléfono actualizado con éxito',
+                data: tfno
+            }
         }
 
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
+
+const insertOrUpdateDir = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+    let dir;
+  
+    try {
+
+        if (req.body.id == null) dir = await queriesContenidos.insertDir(req.body);
+        else dir = await queriesContenidos.updateDir(req.body);
+       
+        if (dir) {
+            resp = {
+                success: true,
+                msg: 'Dirección actualizada con éxito',
+                data: dir
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
+
+const insertOrUpdateIntegranteJunta = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+    let intJunta;
+
+    try {
+
+        if (req.body.id == -1) intJunta = await queriesContenidos.insertIntegranteJunta(req.body);
+        else intJunta = await queriesContenidos.updateIntegranteJunta(req.body);
+       
+        if (intJunta) {
+            resp = {
+                success: true,
+                msg: 'Integrante actualizado con éxito',
+                data: intJunta
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
         res.status(200).json(resp);
     }
 }
 
 
 const updateContacto = async (req, res = response) => {
-    
+
     try {
         await Promise.all([
             req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
@@ -261,7 +251,7 @@ const updateContacto = async (req, res = response) => {
             Promise.all(req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t))),
             Promise.all(req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)))
         ]);
-       
+
         const resp = {
             success: true,
             msg: 'Se han guardado los cambios',
@@ -275,7 +265,7 @@ const updateContacto = async (req, res = response) => {
         res.status(201).json(resp);
 
     } catch (err) {
-        
+
         const resp = {
             success: false,
             msg: 'Se ha producido un error',
@@ -286,91 +276,51 @@ const updateContacto = async (req, res = response) => {
 }
 
 
-const addOrUpdateMemoria = async(req, res = response) => {
-    const extImgs = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'svg', 'webp'];
-    const extDocs = ['pdf', 'odt', 'doc', 'docx'];
-    
-    try {
-        const memoria = { id: req.body.id, anio: req.body.anio };
 
-        if (req.body.imgBorrar) borrarArchivo(`${carpetaMems}/${carpetaImgs}`, req.body.imgBorrar);
-        if (req.body.docBorrar) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, req.body.docBorrar);
+const deleteTfno = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' }
 
-        if (req.files) {  
-            if (req.files.imagen) memoria.imagen = await comprobarArchivo(req.files.imagen, extImgs, `${carpetaMems}/${carpetaImgs}`);
-            if (req.files.documento) memoria.documento = await comprobarArchivo(req.files.documento, extDocs, `${carpetaMems}/${carpetaDocs}`);
-        }
-       
-        const memResp = await queriesContenidos.addOrUpdateMemoria(memoria);
-
-        const nombreImg = memResp.imagen
-            && fs.existsSync(path.join(__dirname, urlUploadMemorias, carpetaImgs, memResp.imagen)) 
-                ? memResp.imagen 
-                : null;
-
-        memResp.imagen = process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}img/${nombreImg}`;
-        memResp.documento = memResp.documento
-            ? process.env.URL_PETICION + process.env.PORT + `${urlApiUpload}doc/${memResp.documento}`
-            : null; 
-
-        const resp = {
-            success: true,
-            msg: 'Memoria guardada con éxito',
-            data: memResp
-        }
-    
-        res.status(200).json(resp);
-
-    } catch (err) { 
-        
-        const resp = {
-            success: false,
-            msg: 'Error al guardar la memoria',
-        }
-
-        res.status(200).json(resp);
-    }
-}
-
-
-const comprobarArchivo = async(archivo, extensiones, carpeta) => {
-    return (archivo.size != 0)
-        ? await subirArchivo(archivo, extensiones, carpeta)
-        : archivo.name;
-}
-
-
-const deleteMemoria = async(req, res = response) => {
     try {
 
-        const mem = await queriesContenidos.getMemoria(req.params.id);
-        let resp = await queriesContenidos.deleteMemoria(req.params.id);
+        const tfno = await queriesContenidos.deleteTfno(req.params.id);
 
-        if (resp == 0) throw error;
-        else { 
-            if (mem.imagen) borrarArchivo(`${carpetaMems}/${carpetaImgs}`, mem.imagen);
-            if (mem.documento) borrarArchivo(`${carpetaMems}/${carpetaDocs}`, mem.documento);
-
+        if (tfno == 1) {
             resp = {
                 success: true,
-                msg: 'Memoria eliminada con éxito',
+                msg: 'Teléfono eliminado con éxito',
                 data: req.params.id
             }
-
-            res.status(200).json(resp);
         }
 
-    } catch(err) {
+        res.status(200).json(resp);
 
-        const resp = {
-            success: false,
-            msg: 'Error al eliminar la memoria',
-        }
-
+    } catch (err) {
         res.status(200).json(resp);
     }
 }
 
+
+const deleteIntegranteJunta = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' }
+
+    try {
+
+        const integrante = await queriesContenidos.deleteIntegranteJunta(req.params.id);
+        
+        if (integrante == 1) {
+            resp = {
+                success: true,
+                msg: 'Integrante eliminado con éxito',
+                data: req.params.id
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
 
 
 module.exports = {
@@ -380,12 +330,11 @@ module.exports = {
     getDirecciones,
     getCargosJunta,
     getIntegrantesCargo,
-    getImagen,
-    getDocumento,
-    descargarDocumento,
-    getMemorias,
-    updateHermandad,
+    updateHistoria,
+    insertOrUpdateTfno,
+    insertOrUpdateDir,
+    insertOrUpdateIntegranteJunta,
     updateContacto,
-    addOrUpdateMemoria,
-    deleteMemoria
+    deleteTfno,
+    deleteIntegranteJunta,getImgTutorial
 }

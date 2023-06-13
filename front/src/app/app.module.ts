@@ -1,7 +1,7 @@
 
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +22,8 @@ import { PaginasDonacionModule } from './paginas-donacion/paginas-donacion.modul
 import { GaleriaComponent } from './galeria/galeria.component';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { LaHermandadModule } from './la-hermandad/la-hermandad.module';
 import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 registerLocaleData(localeEs);
 
@@ -34,7 +36,8 @@ registerLocaleData(localeEs);
         NotificacionesComponent
     ],
     providers: [
-        { provide: LOCALE_ID, useValue: 'es-es' }
+        { provide: LOCALE_ID, useValue: 'es-es' },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     ],
     bootstrap: [AppComponent],
     imports: [
@@ -44,7 +47,7 @@ registerLocaleData(localeEs);
         PaginasModule,
         SharedModule,
         GestionContenidoModule,
-        NoticiasRoutingModule, 
+        NoticiasRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
         AuthModule,
@@ -53,7 +56,8 @@ registerLocaleData(localeEs);
         NgxPaginationModule,
         PaginasDonacionModule,
         GaleriaModule,
-        ConfigRoutingModule
+        ConfigRoutingModule,
+        LaHermandadModule
     ]
 })
 export class AppModule {}

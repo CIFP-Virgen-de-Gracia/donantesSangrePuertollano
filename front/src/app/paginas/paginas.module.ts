@@ -4,7 +4,7 @@ import { PaginasRoutingModule } from './paginas-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { InicioComponent } from './inicio/inicio.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
+import { PaginaHermandadComponent } from '../la-hermandad/pagina-hermandad/pagina-hermandad.component';
 import { HimnoComponent } from './himno/himno.component';
 import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-frecuentes.component';
 import { AvisoLegalComponent } from './aviso-legal/aviso-legal.component';
@@ -13,12 +13,14 @@ import { PoliticasCookiesComponent } from './politicas-cookies/politicas-cookies
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MemoriasComponent } from './memorias/memorias.component';
+import { TelefonosModule } from '../telefonos/telefonos.module';
+import { DireccionesModule } from '../direcciones/direcciones.module';
 
 @NgModule({
   declarations: [
     InicioComponent,
     MainPageComponent,
-    LaHermandadComponent,
+    PaginaHermandadComponent,
     HimnoComponent,
     PreguntasFrecuentesComponent,
     AvisoLegalComponent,
@@ -34,6 +36,8 @@ import { MemoriasComponent } from './memorias/memorias.component';
     PaginasRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    TelefonosModule,
+    DireccionesModule
   ],
   exports: [
     MainPageComponent

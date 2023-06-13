@@ -2,11 +2,11 @@ import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
-import { Integrante } from 'src/app/shared/interfaces/shared.interface';
-import { cargoResponse, Direccion, HorarioGuardar, Telefono, TelefonoGuardar } from '../interfaces/config.interface';
+import { HorarioGuardar } from '../interfaces/config.interface';
 import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
+import { Direccion } from 'src/app/direcciones/interfaces/direcciones.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -26,20 +26,10 @@ export class ConfigService {
     this.aux=0
   }
 
-  //Alicia
-  updateHermandad(historia: String, junta: Integrante[]): Observable<updateResponse> {
-    const header = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'x-token': JSON.parse(localStorage.getItem('user')!).token
-      })
-    };
 
-    return this.http.put<updateResponse>(`${this.configUrl}/updateHermandad`, { historia: historia, junta: junta }, header);
-  }
 
   //Alicia
-  updateContacto(dirs: Direccion[], tlfns: TelefonoGuardar, horarios: HorarioGuardar): Observable<updateResponse> {
+  updateContacto(dirs: Direccion[], horarios: HorarioGuardar): Observable<updateResponse> {
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -51,16 +41,10 @@ export class ConfigService {
       `${this.configUrl}/updateContacto`,
       {
         direcciones: dirs,
-        telefonos: tlfns,
         horarios: horarios
       },
       header
     );
-  }
-
-  //Alicia
-  getCargosJunta(): Observable<cargoResponse> {
-    return this.http.get<cargoResponse>(`${this.configUrl}/getCargosJunta`);
   }
 
 

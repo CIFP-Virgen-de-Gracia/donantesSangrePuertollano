@@ -82,6 +82,10 @@ const routes: Routes = [
     loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule),
   },
   {
+    path: 'usuarios',
+    loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./paginas/paginas.module').then( m => m.PaginasModule )
   }

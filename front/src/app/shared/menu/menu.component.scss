@@ -1,3 +1,30 @@
+div.sesion-caducada {
+  position: fixed;
+  border-radius: 2px 2px 2px 2px;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  z-index: 150;
+
+  div.modal-sesion-caducada {
+    height: 15rem;
+    width: 25rem;
+    padding: 2rem;
+    opacity: 1;
+    background-color: var(--bs-white);
+
+    .botones {
+      .max {
+        max-width: 9rem;
+      }
+    }
+  }
+}
+
+
 header {
   .banner {
     height: fit-content;
@@ -6,6 +33,7 @@ header {
     position: relative;
     top:0;
   }
+
 
 
   nav {
@@ -46,11 +74,35 @@ header {
         color: var(--bs-white);
         padding: 0;
 
-        &.dropdown-toggle::after {
-          border-width: 0.4em 0.4em 0 0.4em;
-          vertical-align: .1rem;
+        .enlace-grande {
+          
+          display: block;
+        }
+  
+        .enlace-pequeno {
+
+          display: none;
+        }
+  
+        @media (max-width: 1325px) {
+          
+          .enlace-grande {
+
+            display: none;
+          }
+  
+          .enlace-pequeno {
+  
+            display: block;
+          }
         }
       }
+
+      .dropdown-toggle::after {
+        border-width: 0.4em 0.4em 0 0.4em;
+        vertical-align: .1rem;
+      }
+
     }
 
     .dropdown-menu {
@@ -106,6 +158,16 @@ header {
               &::before {
                 transform: scaleY(1);
               }
+            }
+
+            &.enlace-grande {
+
+              display: block;
+            }
+
+            &.enlace-pequeno {
+
+              display: none;
             }
           }
         }

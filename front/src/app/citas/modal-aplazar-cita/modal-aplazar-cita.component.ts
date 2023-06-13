@@ -26,6 +26,7 @@ export class ModalAplazarCitaComponent {
   horasDisponibles: string[] = [];
   noHayHoras: boolean = false;
   sinSeleccionar = true;
+  codAccion = -1;
 
   
   aplazarCitaForm: FormGroup = new FormGroup({hora: new FormControl('', [Validators.required])});
@@ -56,6 +57,7 @@ export class ModalAplazarCitaComponent {
     this.modalService.open(this.content, { centered: true });
   }
 
+
   open(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', backdrop: 'static', keyboard: false }).result.then(
       (result) => {
@@ -81,7 +83,7 @@ export class ModalAplazarCitaComponent {
   setDia(event: NgbDateStruct) {
     this.fecha = event;
     this.transFecha(this.fecha);
-    this.traerHorario();
+    this.traerHorario(); 
     this.sinSeleccionar = false;
   }
 
@@ -94,8 +96,25 @@ export class ModalAplazarCitaComponent {
 
     this.citasService.aplazarCita(this.citaId, fechaAntigua, fechaCita).subscribe(resp => {
       if (resp.success) {
+
+        setTimeout(() => {
+          this.citasService.codAccion.next(0);
+        }, 1500);
+        this.modalService.dismissAll();
+      }
+      else {
+
+        setTimeout(() => {
+          this.citasService.codAccion.next(1);
+        }, 1500);
         this.modalService.dismissAll();
       }
     });
+  }
+
+
+  cancelar() {
+
+    this.modalService.dismissAll();
   }
 }

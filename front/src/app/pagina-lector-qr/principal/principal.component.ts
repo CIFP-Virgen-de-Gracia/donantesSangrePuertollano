@@ -52,7 +52,7 @@ export class PrincipalComponent implements OnInit {
                   }
                 });
               } else {
-                this.citaService.confirmarAsistencia(this.idCita, 1).subscribe((resp) => {
+                this.citaService.confirmarHaDonado(this.idCita, 1).subscribe((resp) => {
                   if (resp.success) {
                     this.aviso = 1;
                   } else {

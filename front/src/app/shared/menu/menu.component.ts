@@ -22,15 +22,18 @@ export class MenuComponent implements OnInit {
   puedeModificar: boolean = false;
   estaRegistrado: boolean = false;
   puedePedirCita: boolean = true;
+  intervalId: any;
+
+  tokenExpirado = false;
 
 
   constructor(
-    private AuthService: AuthService,
-    private SharedService: SharedService,
+    private authService: AuthService,
+    private sharedService: SharedService,
     private router: Router,
     private modal: NgbModal,
     private citasService: CitasService,
-    private WebSocketService: WebSocketService
+    private webSocketService: WebSocketService
   ) { }
 
 
@@ -43,11 +46,19 @@ export class MenuComponent implements OnInit {
       this.comprobarPuedeModificar();
     }
 
-    this.SharedService.comprobarPermisos.subscribe(registrado => {
+    this.sharedService.comprobarPermisos.subscribe(registrado => {
       this.estaRegistrado = registrado;
 
       this.comprobarPuedeModificar();
     })
+
+    // Mario
+    this.intervalId = setInterval(() => {
+      this.authService.tokenExpirado.subscribe((expirado) => {
+        this.tokenExpirado = expirado;
+        console.log(this.tokenExpirado);
+      });
+    }, 350);
   }
 
 
@@ -73,7 +84,7 @@ export class MenuComponent implements OnInit {
 
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {
-      this.AuthService.puedeModificar().subscribe(resp => {
+      this.authService.puedeModificar().subscribe(resp => {
         this.puedeModificar = (resp) ? true : false;
       });
     }
@@ -106,11 +117,23 @@ export class MenuComponent implements OnInit {
 
   cerrarSesion() {
     let datos = JSON.parse(localStorage.getItem('user') || "");
-    this.WebSocketService.emitEventDesconectar('logout',datos.nombre);
+    this.webSocketService.emitEventDesconectar('logout',datos.nombre);
     localStorage.removeItem('user');
     this.estaRegistrado = false;
     this.puedeModificar = false;
+    this.tokenExpirado = false;
     this.router.navigate(['']);
+  }
+
+  irLogin() {
+    let datos = JSON.parse(localStorage.getItem('user') || "");
+    this.webSocketService.emitEventDesconectar('logout',datos.nombre);
+    localStorage.removeItem('user');
+    this.estaRegistrado = false;
+    this.puedeModificar = false;
+    this.tokenExpirado = false;
+    this.router.navigate(['auth/login']);
+    
   }
 
 

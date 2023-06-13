@@ -1,5 +1,19 @@
+<div *ngIf="this.tokenExpirado" class="sesion-caducada container-fluid">
+    <div class="modal-sesion-caducada">
+      <h3 class="titulo">Sesión caducada</h3>
+  
+      <p>Debes volver a iniciar sesión.</p>
+  
+      <div class="botones d-flex justify-content-end p-2 pt-3 pt-sm-5 flex-column flex-sm-row align-items-end">
+        <button class="btn-primario max mb-2" (click)="irLogin()">Iniciar sesión</button>
+        <button class="btn-secundario ms-2 max mb-2" (click)="cerrarSesion()">Cancelar</button>
+      </div>
+    </div>
+</div>
+
 <header>
   <img #banner class="banner" src="../../../assets/imagenes/banner.png" (load)="posicionarMenu()">
+
 
   <nav [class.fijo]="fijo" class="navbar navbar-expand-xl">
 
@@ -44,8 +58,15 @@
           <a class="nav-link enlace" href="#">Galería</a>
         </li> -->
 
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!puedeModificar">
           <a class="nav-link enlace" (click)="ensenarModal()">Pedir cita</a>
+        </li>
+
+        <li class="nav-item" *ngIf="puedeModificar">
+          <a class="nav-link enlace enlace-grande" href="./citas/admincitas">
+            <span class="enlace-grande">Administrar citas</span>
+            <span class="enlace-pequeno">Admin. citas</span>
+          </a>
         </li>
 
         <!-- <li class="nav-item">
@@ -53,11 +74,17 @@
         </li> -->
 
         <li class="nav-item" *ngIf="puedeModificar">
-          <a class="nav-link enlace" href="./configuracion/hermandad">Modificar contenidos</a>
+          <a class="nav-link enlace" href="./configuracion/hermandad">
+            <span class="enlace-grande">Modificar contenidos</span>
+            <span class="enlace-pequeno">Mod. contenidos</span>
+          </a>
         </li>
 
         <li class="nav-item" *ngIf="puedeModificar">
-          <a class="nav-link enlace" href="./stats/registrar-datos">Registrar datos</a>
+          <a class="nav-link enlace" href="./stats/registrar-datos">
+            <span class="enlace-grande">Registrar datos</span>
+            <span class="enlace-pequeno">Reg. datos</span>
+          </a>
         </li>
 
         <li class="nav-item" *ngIf="!estaRegistrado">
@@ -74,6 +101,7 @@
         data-bs-toggle="dropdown" data-bs-target="dropdown-user"></i>
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
+        <li><a class="dropdown-item enlace" href="../../usuarios/perfil">Perfil</a></li>
         <li><a class="dropdown-item enlace" href="../../citas/mostrarcitas">Mis citas</a></li>
         <li><a class="dropdown-item enlace" href="./notificacion">Notificaciones</a></li>
         <li><a class="dropdown-item enlace" (click)="cerrarSesion()">Cerrar sesión</a></li>

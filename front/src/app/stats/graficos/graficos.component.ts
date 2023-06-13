@@ -43,16 +43,16 @@ export class GraficosComponent implements OnInit {
   anioActivoGrpSang: number = 0;
 
 
-  constructor(private StatsService: StatsService, private SocketService: WebsocketService) {
+  constructor(private statsService: StatsService, private socketService: WebsocketService) {
     Chart.register(...registerables);
 
-    SocketService.insertarDonacion.subscribe(resp => {
+    socketService.insertarDonacion.subscribe(resp => {
       const donacion = this.crearDonacionMostrar(resp.data);
       this.donacionesMostrar.push(donacion);
       this.actualizarDonaciones(donacion);
     })
 
-    SocketService.insertarAltas.subscribe(resp => {
+    socketService.insertarAltas.subscribe(resp => {
       const altas: Alta[] = resp.data;
       const altasMostrar: AltaMostrar[] = [];
 
@@ -77,14 +77,9 @@ export class GraficosComponent implements OnInit {
   }
 
 
- /*  get donacionesSangre() {
-    return this.donacionesMostrar.filter(d => d.donacion == 'sangre');
-  }
- */
-
   ngOnInit() {
     // Altas
-    this.StatsService.getAltas().subscribe(resp => {
+    this.statsService.getAltas().subscribe(resp => {
       if (resp.success) {
 
         this.altasResp = resp.data;
@@ -101,7 +96,7 @@ export class GraficosComponent implements OnInit {
     });
 
     // Donaciones
-    this.StatsService.getDonaciones().subscribe(resp => {
+    this.statsService.getDonaciones().subscribe(resp => {
       if (resp.success) {
 
         this.donacionesResp = resp.data;

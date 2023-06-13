@@ -7,7 +7,6 @@ input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
 }
 
 .horarios,
-.telefonos,
 .direcciones {
 
   i {
@@ -22,20 +21,17 @@ input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
     margin-top: 2.5rem;
   }
 
-  .horario,
-  .telefono {
+  .horario {
     &:not(:first-of-type) {
       margin-top: 3.5rem;
     }
   }
 
-  select,
-  .telefono input {
+  select {
     width: 100%;
   }
 }
 
-.telefonos,
 .direcciones {
   margin-top: 4rem;
 }
@@ -80,13 +76,6 @@ input.ng-invalid.ng-touched, .ng-submitted input.ng-invalid {
   }
 }
 
-.telefonos .telefono {
-  border-bottom: 2px solid var(--color-primario);
-
-  input {
-    font-size: unset;
-  }
-}
 
 .direcciones .direccion {
   display: grid;

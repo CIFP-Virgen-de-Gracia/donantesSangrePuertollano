@@ -32,8 +32,12 @@ export class MostrarCitasComponent {
 
     zip([this.citasService.fetchCitaPendienteUser(id), this.citasService.fetchCitasPasadasUser(id)])
       .subscribe(([citasPendientesResp, citasPasadasResp]) => {
+        console.log(citasPendientesResp);
+        console.log(citasPasadasResp);
 
         if (citasPendientesResp.success && citasPasadasResp.success) {
+
+          console.log(this.citasPendientes);
 
           this.colocarCitas(citasPendientesResp.citas, this.citasPendientes);
           this.colocarCitas(citasPasadasResp.citas, this.citasPasadas);

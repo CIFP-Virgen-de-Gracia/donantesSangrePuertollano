@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as interfaces from '../interfaces/auth.interface';
-import { map, Observable, of, tap } from 'rxjs';
+import { map, Observable, of, Subject, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
@@ -11,7 +11,13 @@ export class AuthService {
 
   private authUrl: string = `${environment.baseUrl}/api`; // cambiar en el server // hacer archivo env
   private _auth: interfaces.Auth | undefined;
-  constructor(private httpUsers: HttpClient) { }
+
+  tokenExpirado: Subject<boolean>;
+
+  constructor(private httpUsers: HttpClient) {
+
+    this.tokenExpirado = new Subject<boolean>(); 
+  }
 
 
   login(user: interfaces.UserLogin) {
@@ -23,20 +29,40 @@ export class AuthService {
 
   registro(user: interfaces.UserRegsitro) {
 
-    return this.httpUsers.post<interfaces.registroResponse>(this.authUrl + '/register', user);
+    return this.httpUsers.post<interfaces.RegistroResponse>(this.authUrl + '/register', user);
   }
 
 
   solicitarRecPasswd(email: string) {
 
-    return this.httpUsers.post<interfaces.solicitarRecPasswdResponse>(this.authUrl
+    return this.httpUsers.post<interfaces.SolicitarRecPasswdResponse>(this.authUrl
       + '/solicitarrecpasswd', { email: email });
   }
 
 
   recuperarPasswd(id: string, cod: string) {
-    return this.httpUsers.post<interfaces.recPasswdResponse>(this.authUrl
+
+    return this.httpUsers.post<interfaces.RecPasswdResponse>(this.authUrl
       + '/recuperarpasswd/' + id, { cod: cod });
+  }
+
+
+  cambiarPasswd(passwd: string, passwdNueva: string) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    const passwds = {
+      id: JSON.parse(localStorage.getItem('user')!).id,
+      passwd: passwd,
+      passwdNueva: passwdNueva
+    };
+
+    return this.httpUsers.put<interfaces.RecPasswdResponse>(this.authUrl
+      + '/cambiarpasswd', passwds, header);
   }
 
 
