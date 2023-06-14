@@ -103,9 +103,13 @@ export class ConfigTfnosComponent implements OnInit {
       id: [null],
       numero: ['', Validators.compose([
         Validators.required,
+        Validators.maxLength(20),
         Validators.pattern(/^(\(?(\+34|0034|34)\)?[ -]+)?([0-9][ -]*){9}/)
       ])],
-      extension: [null, [Validators.pattern(/^[0-9]*$/)]]
+      extension: [null, Validators.compose([
+        Validators.maxLength(11),
+        Validators.pattern(/^[0-9]*$/)
+      ])]
     });
   }
 
