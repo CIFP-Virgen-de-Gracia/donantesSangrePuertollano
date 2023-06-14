@@ -33,7 +33,8 @@ class QueriesChat {
                     }
                     */
                     data = {
-                        "id": m.dataValues.id,
+                        "idMensaje": m.dataValues.id,
+                        "idUser": m.dataValues.idUser,
                         "nombre": m.dataValues.nombreUser,
                         "mensaje": m.dataValues.mensaje,
                         "fecha": fecha,
@@ -64,6 +65,7 @@ class QueriesChat {
             let fecha = new Date(mensaje.dataValues.createdAt).toLocaleDateString();
 
             data = {
+                "idMensaje": mensaje.dataValues.id,
                 "idUser": datos.id,
                 "nombre": datos.nombreUser,
                 "mensaje": datos.mensaje,
@@ -100,7 +102,7 @@ class QueriesChat {
             throw err;
         }
         this.sequelize.desconectar();
-        respuesta={
+        respuesta = {
             success: true,
             data: [],
             msg: 'Todos los mensajes eliminados'
@@ -110,28 +112,69 @@ class QueriesChat {
     /*Corregir metodo añadiendo una respuesta*/
     borrarMensaje = async (id) => {
         this.sequelize.conectar();
-        let mensaje = await models.Chat.findByPk(id);
-        if (!mensaje) {
-            this.sequelize.desconectar();
-            throw error;
-        }
-
-        await mensaje.destroy();
-        this.sequelize.desconectar();
-        return mensaje;
-    }
-    /*Corregir metodo añadiendo una respuesta*/
-    actulizarEstadoUsuario = async (nombres, condicion) => {
-        let resp = true;
+        let todos = "";
+        let respuesta = "";
+        let c = [];
         try {
-            this.sequelize.conectar();
-            for (let index = 0; index < nombres.length; index++) {
-                usuario = await models.User.findAll({ where: { nombre: nombres[index] } });
-                usuario.update({ bloqueado: condicion });
-                usuario.save()
+            let mensaje = await models.Chat.findByPk(id);
+            if (!mensaje) {
+                this.sequelize.desconectar();
+                throw error;
+            }
+            await mensaje.destroy();
+            todos = await models.Chat.findAll();
+            if (todos != null) {
+                let data = "";
+                todos.forEach(m => {
+                    let fecha = "";
+                    let hora = "";
+                    hora = moment(m.dataValues.createdAt, 'HH:mm').format('HH:mm');
+                    fecha = new Date(m.dataValues.createdAt).toLocaleDateString();
+                    data = {
+                        "idMensaje": m.dataValues.id,
+                        "idUser": m.dataValues.idUser,
+                        "nombre": m.dataValues.nombreUser,
+                        "mensaje": m.dataValues.mensaje,
+                        "fecha": fecha,
+                        "hora": hora
+                    }
+                    c.push(data);
+                });
             }
             this.sequelize.desconectar();
-            console.log(resp);
+        } catch (err) {
+            this.sequelize.desconectar();
+            throw err;
+        }
+        respuesta = {
+            success: true,
+            data: c,
+            msg: 'Se ha eliminado el mensaje'
+        }
+
+        return respuesta;
+    }
+
+    actulizarEstadoUsuario = async (ids, condicion) => {
+        let resp = true;
+        let usuario = "";
+        let u = [];
+        try {
+            this.sequelize.conectar();
+            for (let index = 0; index < ids.length; index++) {
+                usuario = await models.User.findByPk(ids[index]);
+                usuario.update({ bloqueado: condicion });
+                usuario.save();
+                u.push(ids[index]);
+            }
+            this.sequelize.desconectar();
+
+            resp = {
+                success: true,
+                data: u,
+                msg: 'Se han actualizado los estados'
+            }
+
         } catch (err) {
             resp = false;
             this.sequelize.desconectar();
@@ -146,7 +189,7 @@ class QueriesChat {
         try {
             this.sequelize.conectar();
             bloqueados = await models.User.findAll({
-                attributes: ['nombre'],
+                attributes: ['id','nombre'],
                 where: {
                     bloqueado: 1
                 },
@@ -155,7 +198,7 @@ class QueriesChat {
             });
             if (bloqueados != null) {
                 bloqueados.forEach(u => {
-                    users.push(u.dataValues.nombre);
+                    users.push({id:u.dataValues.id, nombre:u.dataValues.nombre});
                 });
             }
             this.sequelize.desconectar();
@@ -171,16 +214,16 @@ class QueriesChat {
         try {
             this.sequelize.conectar();
             desbloqueados = await models.User.findAll({
-                attributes: ['nombre'],
+                attributes: ['id','nombre'],
                 where: {
                     bloqueado: 0
                 },
-                order: [['nombre', 'ASC']]
+                order: [['nombre', 'ASC']],
 
             });
             if (desbloqueados != null) {
                 desbloqueados.forEach(u => {
-                    users.push(u.dataValues.nombre);
+                    users.push({id:u.dataValues.id, nombre:u.dataValues.nombre});
                 });
             }
             this.sequelize.desconectar();
@@ -190,7 +233,21 @@ class QueriesChat {
         }
         return users;
     }
+    ComprobarEstado = async (id) => {
+        let usuario = "";
+        try {
+            this.sequelize.conectar();
+            usuario = await models.User.findByPk(id,{attributes:["bloqueado"]});
+            this.sequelize.desconectar();
+        } catch (err) {
+            this.sequelize.desconectar();
+            throw err;
+        }
+      
+        return usuario;
+    }
 }
+
 
 
 const queriesChat = new QueriesChat();

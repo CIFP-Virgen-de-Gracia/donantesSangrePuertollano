@@ -105,8 +105,8 @@ export class MenuComponent implements OnInit {
   // }
 
   cerrarSesion() {
-    let datos = JSON.parse(localStorage.getItem('user') || "");
-    this.WebSocketService.emitEventDesconectar('logout', datos.nombre);
+    this.WebSocketService.setQueryPayload(localStorage.getItem('user'));
+    this.WebSocketService.emitEventDesconectar('logout');
     localStorage.removeItem('user');
     this.estaRegistrado = false;
     this.puedeModificar = false;

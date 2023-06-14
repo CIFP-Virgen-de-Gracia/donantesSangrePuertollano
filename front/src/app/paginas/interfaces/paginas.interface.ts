@@ -5,8 +5,12 @@ export interface ResponseAudio {
 }
 export interface ResponseModerarUser {
   success: boolean,
-  data: String[],
+  data: ModerarUser[] ,
   msg: string,
+}
+export interface ModerarUser {
+  id:string,
+  nombre:string
 }
 
 export interface Cancion {
@@ -28,11 +32,6 @@ export interface Faq {
   pregunta: string,
   respuesta: string,
 }
-export interface ResponseMensaje {
-  success: boolean,
-  data: Mensaje[],
-  msg: string,
-}
 
 export interface ResponseComentario {
   success: boolean,
@@ -44,12 +43,18 @@ export interface MsgResponseBorrado{
   data: Mensaje[] ,
   msg: string,
 }
+export interface MsgResponseUser{
+  success: boolean,
+  data: ModerarUser[] ,
+  msg: string,
+}
 export interface ResponseMensajes {
   success: boolean,
   data: Mensaje[],
   msg: string,
 }
 export interface Mensaje {
+  idMensaje: string,
   idUser: string,
   nombre: string,
   mensaje: string
@@ -95,3 +100,13 @@ export interface MemoriaAddUpdate {
   imgBorrar?: string,
   docBorrar?: string
 }
+export interface Check{
+  id:String,
+  marcado:boolean,
+}
+export interface ResponseEstado{
+  success: boolean,
+  msg: string,
+  data: boolean
+}
+

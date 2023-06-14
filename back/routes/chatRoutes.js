@@ -5,7 +5,8 @@ const mid = require("../middlewares/userMiddlewares");
 const vJwt = require('../middlewares/validarJwt');
 
 //Todo Isa
-router.get('/listado',controlador.Listado);
-router.get('/listadobloqueados',controlador.ListadoBloqueados);
-router.get('/listadodesbloqueados',controlador.ListadoDesbloqueados);
+router.get('/listado',[vJwt.validarJwt],controlador.Listado);//mensajes
+router.get('/listadobloqueados',[vJwt.validarJwt, mid.midAdmin],controlador.ListadoBloqueados);
+router.get('/listadodesbloqueados',[vJwt.validarJwt, mid.midAdmin],controlador.ListadoDesbloqueados);
+router.post('/comprobarestado',[vJwt.validarJwt],controlador.ComprobarEstado);
 module.exports = router;

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit{
     private authHttsService: AuthService,
     private SharedService: SharedService,
     private router: Router,
-    private WebSocketService:WebSocketService,
+   // private WebSocketService:WebSocketService,
     private _ngZone: NgZone,
     private service: AuthService,
     private fb: FormBuilder
@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit{
         this._ngZone.run(() => {
           this.erroneo = false;
           this.SharedService.comprobarPermisos.next(!this.erroneo);
-          let datos = JSON.parse(localStorage.getItem('user')||"");
-          this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);
+         /* let datos = JSON.parse(localStorage.getItem('user')||"");
+          this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);*/
           this.router.navigate(['']);
         })
       },
@@ -86,8 +86,9 @@ export class LoginComponent implements OnInit{
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.erroneo = false;
         this.SharedService.comprobarPermisos.next(!this.erroneo);
-        let datos = JSON.parse(localStorage.getItem('user')||"");
-        this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);
+       /* let datos = JSON.parse(localStorage.getItem('user')||"");
+        this.WebSocketService.setQueryPayload(datos);
+        this.WebSocketService.emitEventInicioSesion('iniciarSesion',datos.nombre);*/
         this.router.navigate(['']);
       }
       else this.erroneo = true;

@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     passwd: DataTypes.STRING,
     codRecPasswd: DataTypes.STRING,
     dni: DataTypes.STRING,
-    nDonante: DataTypes.INTEGER
+    nDonante: DataTypes.INTEGER,
+    bloqueado:DataTypes.TINYINT
   }, {
     sequelize,
     tableName: 'users',

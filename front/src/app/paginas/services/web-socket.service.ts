@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Output, Input } from '@angular/core';
-import { ResponseComentario, Mensaje, ResponseListaConectados, ResponseMensajes, MsgResponseBorrado } from '../interfaces/paginas.interface';
+import { ResponseComentario, Mensaje, ResponseListaConectados, ResponseMensajes, ResponseModerarUser, MsgResponseBorrado,MsgResponseUser } from '../interfaces/paginas.interface';
 import { Socket } from 'ngx-socket-io';
 import { ChatService } from './chat.service';
 import { environment } from 'src/environment/environment';
@@ -13,6 +13,9 @@ export class WebSocketService extends Socket {
   @Output() usuariosConectados: EventEmitter<string[]> = new EventEmitter();
   @Output() conectarChat: EventEmitter<string[]> = new EventEmitter();
   @Output() borrarTodo: EventEmitter<any> = new EventEmitter();
+  @Output() borrarMensaje: EventEmitter<any> = new EventEmitter();
+  @Output() desbloqueo: EventEmitter<any> = new EventEmitter();
+  @Output() bloqueo: EventEmitter<any> = new EventEmitter();
 
   constructor(private ChatService: ChatService) {
 
@@ -20,7 +23,7 @@ export class WebSocketService extends Socket {
       url: environment.socketUrl,
       options: {
         query: {
-          payload:localStorage.getItem('user')
+          payload:localStorage.getItem('user'),
         }
       }
 
@@ -28,6 +31,19 @@ export class WebSocketService extends Socket {
     this.ioSocket.on('enviar-mensaje', (res: any) => this.outEven.emit(res));
     this.ioSocket.on('usuario-conectado', (usuarios: string[]) => this.usuariosConectados.emit(usuarios));
     this.ioSocket.on('borrarTodo', (res: any) => this.borrarTodo.emit(res));
+    this.ioSocket.on('borrarMensaje', (res: any) => this.borrarMensaje.emit(res));
+    this.ioSocket.on('bloquear', (res: any) => this.bloqueo.emit(res));
+    this.ioSocket.on('desbloquear', (res: any) => this.desbloqueo.emit(res));
+  }
+  setQueryPayload(payload: any): void {
+    if (this.ioSocket) {
+      this.ioSocket.io.opts.query = {
+        payload
+      };
+      // Desconecta y vuelve a conectar con el nuevo valor de query
+      this.ioSocket.disconnect();
+      this.ioSocket.connect();
+    }
   }
 
   emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
@@ -56,6 +72,7 @@ export class WebSocketService extends Socket {
     }, (respuesta: ResponseComentario) => {
       if (respuesta.success) {
         let m: Mensaje = {
+          "idMensaje":respuesta.data.idMensaje,
           "nombre": respuesta.data.nombre,
           "mensaje": respuesta.data.mensaje,
           "idUser": respuesta.data.idUser,
@@ -82,10 +99,29 @@ export class WebSocketService extends Socket {
       });
     });
   }
-
+  emitEventBorrarMensaje = (payload = {}): Promise<MsgResponseBorrado> => {
+    return new Promise((resolve, reject) => {
+      this.ioSocket.emit('borrarMensaje', payload, (respuesta: ResponseMensajes) => {
+        resolve(respuesta);
+      });
+    });
+  }
+  emitEventBloquear = (payload = {}): Promise<MsgResponseUser> => {
+    return new Promise((resolve, reject) => {
+      this.ioSocket.emit('bloquear', payload, (respuesta:ResponseModerarUser ) => {
+        resolve(respuesta);
+      });
+    });
+  }
+  emitEventDesbloquear = (payload = {}): Promise<MsgResponseUser> => {
+    return new Promise((resolve, reject) => {
+      this.ioSocket.emit('desbloquear', payload, (respuesta: ResponseModerarUser) => {
+        resolve(respuesta);
+      });
+    });
+  }
 
   emitEventConectarChat = (payload = {}) => {
-    console.log(payload);
     this.ioSocket.emit('conectar-chat', { payload }, (respuesta: string[]) => {
       this.ChatService.setListaConectados(respuesta);
     });
