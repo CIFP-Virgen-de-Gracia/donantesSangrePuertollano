@@ -3,6 +3,7 @@ const conexion = require('../Conexion');
 const moment = require('moment');
 const {Op, DATE, Sequelize} = require('sequelize');
 const models = require('../../models/index.js');
+// const metodosFecha = require('../../helpers/fechas');
 
 // todo Mario
 
@@ -227,7 +228,9 @@ const getCitasPasadas = async() => {
 
 // TODO: hacer middleware comproando que la cita sea del usuario que la cancela
 const cancelarCita = async(idCita) => {
-    let cita = await models.Cita.findByPk(idCita);
+    let cita = await models.Cita.findByPk(idCita, {
+        include: ['user']
+    });
 
     cita.update({cancelada: true});
 
@@ -301,35 +304,6 @@ const getHorarioDia = async(codDia) => {
     return resp;
 }
 
-const getUltimaCita = async(id) => {
-    let data="";
-    let hora="";
-    try {
-        let cita = await models.Cita.findByPk(id, {include: ['user']});
-        let fechaDb = new Date(cita.dataValues.fecha);
-        fechaDb.setHours(fechaDb.getHours() + 2);
-        let f=cita.dataValues.fecha;
-        if (!fechaDb.getTime() === f.getTime()) {
-            hora = moment(cita.dataValues.fecha, 'HH:mm').subtract(2, 'hour').format('HH:mm');
-        } else {
-            hora = moment(cita.dataValues.fecha, 'HH:mm').format('HH:mm');
-        }
-        
-        let fecha = moment(cita.dataValues.fecha, 'YYYY-MM-DD').format('DD-MM-YYYY');
-        
-        data = {
-            "nombre":cita['user'].dataValues.nombre,
-            "donacion":cita.dataValues.donacion,
-            "fecha":fecha,
-            "hora": hora,
-            "cancelada":cita.dataValues.cancelada
-        }
-    } catch (err) {
-        throw err;
-    }
-
-    return data;
-}
 
 
 const getHorarios = async() => {
@@ -369,5 +343,5 @@ module.exports = {
     getHorarioDia,
     getHorarios,
     getNumPersCita,
-    getUltimaCita
+    // getUltimaCita
 };

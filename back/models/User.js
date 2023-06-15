@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.RolUser, {as: 'RolUser', foreignKey: 'idUser'});
       User.hasMany(models.Chat, {as: 'Chat', foreignKey: 'idUser', targetKey: 'id'});
       User.hasMany(models.Cita, {as: 'citas', foreignKey: 'userId'});
+      User.hasMany(models.Email, {as: 'Email', foreignKey: 'id', targetKey: 'id'});
     }
   }
   User.init({
@@ -22,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     codRecPasswd: DataTypes.STRING,
     dni: DataTypes.STRING,
     nDonante: DataTypes.INTEGER,
-    bloqueado:DataTypes.TINYINT
+    bloqueado:DataTypes.TINYINT,
+    notificacion: DataTypes.INTEGER
   }, {
     sequelize,
     tableName: 'users',

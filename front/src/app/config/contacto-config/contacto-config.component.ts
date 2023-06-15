@@ -4,7 +4,8 @@ import { ConfigService } from '../services/config.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { diaSeleccionado, mismaHora } from '../validators/valores-horas.validator';
-import { Dia, Direccion, Horario, HorarioMostrar, Telefono, Hora } from '../interfaces/config.interface';
+import { Dia, Horario, HorarioMostrar, Hora } from '../interfaces/config.interface';
+import { Direccion } from 'src/app/direcciones/interfaces/direcciones.interfaces';
 
 @Component({
   selector: 'app-contacto-config',
@@ -17,8 +18,6 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   contactoForm!: FormGroup;
   mensaje: String = '';
   actualizado!: boolean;
-  telefonosData: Telefono[] = [];
-  tBorrar: number[] = [];
   direccionesData: Direccion[] = [];
   horariosData: Horario[] = [];
   hMostrar!: HorarioMostrar[];
@@ -44,11 +43,6 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
   }
 
 
-  get telefonos() {
-    return this.contactoForm.controls["telefonos"] as FormArray;
-  }
-
-
   get direcciones() {
     return this.contactoForm.controls["direcciones"] as FormArray;
   }
@@ -60,21 +54,12 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
     this.SharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.getHorarios(resp.data);
     });
-
-    this.SharedService.getTelefonos().subscribe(resp => {
-      if (resp.success) this.getTlfns(resp.data);
-    });
-
-    this.SharedService.getDirecciones().subscribe(resp => {
-      if (resp.success) this.getDirs(resp.data);
-    });
   }
 
 
   crearFormulario() {
     this.contactoForm = this.fb.group({
       horarios: this.fb.array([], mismaHora()),
-      telefonos: this.fb.array([]),
       direcciones: this.fb.array([])
     });
   }
@@ -84,10 +69,9 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
     if (this.contactoForm.valid) {
 
       const datos = this.contactoForm.value;
-      const tlfns = { guardar: datos.telefonos, borrar: this.tBorrar };
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
-      this.ConfigService.updateContacto(datos.direcciones, tlfns, horarios)
+      this.ConfigService.updateContacto(datos.direcciones, horarios)
         .subscribe({
           next: (resp) => {
 
@@ -97,7 +81,6 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
             if (resp.success) {
               this.crearFormulario();
               this.getHorarios(resp.data.horarios);
-              this.getTlfns(resp.data.tlfns);
               this.getDirs(resp.data.dirs);
             }
           },
@@ -246,43 +229,6 @@ export class ContactoConfigComponent { //Todo hecho por Alicia
     }
 
     this.horarios.patchValue(this.hMostrar);
-  }
-
-
-  //TELÉFONOS
-  addTelefono() {
-    this.telefonos.push(this.crearTlfn());
-  }
-
-
-  deleteTelefono(index: number) {
-    const id = this.telefonos.value[index].id;
-
-    this.telefonos.removeAt(index);
-    this.tBorrar.push(id);
-  }
-
-
-  crearTlfn() {
-    return this.fb.group({
-      id: [-1, Validators.required],
-      numero: ['', Validators.compose([
-        Validators.required,
-        Validators.pattern("(\\(?(\\+34|0034|34)\\)?[ -]+)?([0-9][ -]*){9}")
-      ])],
-      extension: ['', Validators.pattern("[0-9]*")],
-    })
-  }
-
-
-  getTlfns(datos: Telefono[]) {
-    this.telefonosData = datos;
-
-    for (let i = 0; i < this.telefonosData.length; i++) {
-      this.addTelefono();
-    }
-
-    this.telefonos.patchValue(this.telefonosData);
   }
 
 

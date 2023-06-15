@@ -1,23 +1,13 @@
 import { Time } from "@angular/common";
+import { Direccion } from "src/app/direcciones/interfaces/direcciones.interfaces";
 
 export interface updateResponse { //Alicia
   success: boolean;
   msg: string;
   data: {
     "dirs": Direccion[],
-    "tlfns": Telefono[],
     "horarios": Horario[]
   }
-}
-
-export interface cargoResponse { //Alicia
-  success: boolean;
-  data: Cargo[];
-}
-
-export interface Cargo { //Alicia
-  id: number;
-  nombre: string;
 }
 
 export interface Horario { //Alicia
@@ -38,11 +28,6 @@ export interface HorarioGuardar { //Alicia
   guardar: Horario[]
 }
 
-export interface TelefonoGuardar { //Alicia
-  borrar: number[],
-  guardar: Telefono[]
-}
-
 export interface Dia { //Alicia
   id: number;
   nombre: string;
@@ -53,22 +38,6 @@ export interface Dia { //Alicia
 export interface Hora { //Alicia
   entrada: Time;
   salida: Time;
-}
-
-export interface Telefono { //Alicia
-  id: number;
-  numero: string;
-  extension: number;
-}
-
-export interface Direccion { //Alicia
-  id: number;
-  lugar: string;
-  calle: string;
-  numero: string;
-  ciudad: string;
-  provincia: string;
-  cp: number;
 }
 
 export interface ResponseAudio { //Isa

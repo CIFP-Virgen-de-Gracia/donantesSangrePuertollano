@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Email.belongsTo(models.User, {
+        foreignKey: 'id',
+        targetKey: 'id'
+      });
+      Email.belongsTo(models.RolUser, {
+        foreignKey: 'id',
+        targetKey: 'idUser'
+      })
     }
   }
   Email.init({

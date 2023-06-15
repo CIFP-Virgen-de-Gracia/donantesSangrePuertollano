@@ -26,18 +26,19 @@ const conectarChat = (socket, data, callback) => {
 
     if (data["payload"] == '1') {
       listaBloqueados.push({ id: socket.id, idUser: user.id, nombre: user.nombre });
-      const index = connectedUsers.findIndex(n => n == user.nombre);
+      /*Se hace esto porque el cliente cuando carga por primera tiene el payload a null por lo que para poder usarlo 
+      en el cliente se realiza un set y para que el socket coja el cambio se realiza un disconnet y un connet, haciendo que coja al 
+      usuario bloqueado y lo añada a la lista cuando realmente no esta por eso se realiza este borrado en el array */
+      const index = connectedUsers.findIndex(n => n == user.nombre); 
       if (index != -1) {
         connectedUsers.splice(index, 1);
       }
     }
-    console.log(connectedUsers)
     callback(connectedUsers);
     socket.to(salaChat).emit("usuario-conectado", connectedUsers);
   }
 
 };
-
 
 const desconectado = (socket) => {
 
@@ -111,7 +112,6 @@ const enviarMensaje = (socket, data, callback) => {
       socket.to(salaChat).emit('enviar-mensaje', respuesta.data);
 
     }).catch((error) => {
-      console.log(error);
       callback({ sucess: false, msg: 'No se ha podido añadir' });
     });
 
@@ -161,7 +161,6 @@ const socketController = (socket) => {
         callback(respuesta);
         socket.to(salaChat).emit('borrarTodo', respuesta.data);
       }).catch((error) => {
-        console.log(error);
         callback({ sucess: false, msg: 'No se han podido eliminar' });
       });
 
@@ -192,7 +191,6 @@ const socketController = (socket) => {
         callback(respuesta);
         for (let i = 0; i < listaBloqueados.length; i++) {
           if (datos.includes(listaBloqueados[i].idUser.toString())) {
-            console.log(listaBloqueados);
             listUserWithId.push({ id: listaBloqueados[i].id, idUser: listaBloqueados[i].idUser, nombre: listaBloqueados[i].nombre });
             if (!connectedUsers.includes(listaBloqueados[i].nombre)) {
               socket.join(salaChat);
@@ -200,13 +198,7 @@ const socketController = (socket) => {
             }
             socket.to(salaChat).emit("usuario-conectado", connectedUsers);
             socket.to(salaChat).to(listaBloqueados[i].id).emit('desbloquear', respuesta);
-            for (let z = 0; z < listaBloqueados.length; z++) {
-              if (datos.includes(listaBloqueados[z].id.toString())) {
-                listaBloqueados.splice(z, 1);
-              }
-            }
-
-
+            listaBloqueados.splice(z, 1);
           }
         };
 
@@ -218,26 +210,20 @@ const socketController = (socket) => {
   });
   socket.on('bloquear', async (datos, callback) => {
     const user = JSON.parse(socket.handshake.query.payload);
-    console.log(datos);
     if (validarToken(user.token) != -1 && await validarRol(user)) {
-
       queriesChat.actulizarEstadoUsuario(datos, 1).then((respuesta) => {
-        console.log(respuesta);
         callback(respuesta);
         for (let i = 0; i < listUserWithId.length; i++) {
-          console.log(listUserWithId);
           if (datos.includes(listUserWithId[i].idUser.toString())) {
             listaBloqueados.push({ id: listUserWithId[i].id, idUser: listUserWithId[i].idUser, nombre: listUserWithId[i].nombre });
-            console.log(listUserWithId[i].nombre);
             let index = connectedUsers.indexOf(listUserWithId[i].nombre);
-            if(index!=-1){
+            if (index != -1) {
               connectedUsers.splice(index, 1);
             }
             socket.to(salaChat).emit("usuario-conectado", connectedUsers);
             socket.to(salaChat).to(listUserWithId[i].id).emit('bloquear', respuesta.data);
             socket.to(listUserWithId[i].id).leave(salaChat);
             listUserWithId.splice(i, 1);
-            console.log(listaBloqueados);
           }
 
         }

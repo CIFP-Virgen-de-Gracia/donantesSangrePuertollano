@@ -25,13 +25,13 @@ export class MemoriasComponent implements OnInit {
   codDescarga: number = -1;
   imgNoValida = 'null';
   accion: string = '';
-  acciones = ['añadir', 'editar', 'borrar'];
+  acciones = ['añadir', 'editar', 'eliminar'];
   infoMemoria!: MemoriaAddUpdate;
   memorias: Memoria[] = [];
 
   constructor(
-    private PaginasService: PaginasService,
-    private AuthService: AuthService
+    private paginasService: PaginasService,
+    private authService: AuthService
   ) {
     this.limpiarMemoria();
   }
@@ -45,7 +45,7 @@ export class MemoriasComponent implements OnInit {
       this.comprobarPuedeModificar();
     }
 
-    this.PaginasService.getMemorias()
+    this.paginasService.getMemorias()
       .subscribe(resp => {
 
         if (resp.success) {
@@ -142,8 +142,8 @@ export class MemoriasComponent implements OnInit {
   }
 
 
-  addOrUpdateMemoria() {
-    this.PaginasService.addOrUpdateMemoria(this.infoMemoria)
+  insertOrUpdateMemoria() {
+    this.paginasService.insertOrUpdateMemoria(this.infoMemoria)
       .subscribe( resp => {
 
         if (resp.success) {
@@ -163,7 +163,7 @@ export class MemoriasComponent implements OnInit {
 
 
   borrarMemoria(index: number) {
-    this.PaginasService.borrarMemoria(this.memorias[index].id)
+    this.paginasService.borrarMemoria(this.memorias[index].id)
       .subscribe(resp => {
 
         if (resp.success) {
@@ -182,7 +182,7 @@ export class MemoriasComponent implements OnInit {
   descargarArchivo(archivo: string) {
     const nombre = archivo.substring(archivo.lastIndexOf("/") + 1);
 
-    this.PaginasService.descargarArchivo(nombre)
+    this.paginasService.descargarArchivo(nombre)
       .subscribe({
         next: resp => {
           saveAs(resp, nombre);
@@ -218,7 +218,7 @@ export class MemoriasComponent implements OnInit {
 
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {
-      this.AuthService.puedeModificar().subscribe(resp => {
+      this.authService.puedeModificar().subscribe(resp => {
         this.puedeModificar = (resp) ? true : false;
       });
     }

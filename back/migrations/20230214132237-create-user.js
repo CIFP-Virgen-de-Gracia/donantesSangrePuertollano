@@ -37,6 +37,10 @@ module.exports = {
         type: Sequelize.TINYINT,
         allowNull: false
       },
+      notificacion: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

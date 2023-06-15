@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-
 
 @Component({
   selector: 'app-registrar-datos-main',
@@ -21,16 +18,6 @@ export class RegistrarDatosComponent {
     }
   ];
   elementoActivo = 0;
-
-
-  constructor(
-    private router: Router,
-    private calendar: NgbCalendar
-  ) {}
-
-
-  ngOnInit() {
-  }
 
 
   getNombre(nombre: string) {

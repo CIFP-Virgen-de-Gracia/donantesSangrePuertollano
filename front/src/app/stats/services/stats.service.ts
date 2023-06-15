@@ -10,12 +10,9 @@ import { DonacionResponse, AltaResponse } from '../interfaces/stats.interface';
 export class StatsService {
 
   private url = `${environment.baseUrl}/api/stats`;
-  header;
 
-  constructor(private http: HttpClient) {
-    const user = localStorage.getItem('user');
-    if (user) this.header = { headers: new HttpHeaders({ 'x-token': JSON.parse(user).token }) };
-  }
+
+  constructor(private http: HttpClient) {}
 
 
   getDonaciones(): Observable<DonacionResponse> {

@@ -7,7 +7,7 @@
     <div class="col-2 col-md-3 menu-vertical g-0">
       <ul class="">
         <li *ngFor="let e of elementos; let i = index"
-          routerLink="./{{ e.nombre }}"
+          routerLink="./{{ getNombreSinTildes(e.nombre) }}"
           [class.activo]="i == elementoActivo"
           (click) = "elementoActivo = i">
           <i class="fa-solid {{ e.icono }}"></i>

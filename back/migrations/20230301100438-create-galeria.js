@@ -12,6 +12,21 @@ module.exports = {
       nombre: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      descripcion: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      propietario: {
+        type: Sequelize.INTEGER
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
       }
     });
   },

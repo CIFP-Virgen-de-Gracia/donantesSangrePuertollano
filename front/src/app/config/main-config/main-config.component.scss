@@ -20,6 +20,7 @@ main {
         padding: 1rem .7rem;
         width: 100%;
         border-left: 10px solid var(--bs-white);
+        cursor: pointer;
 
         span.oculto {
           display: none;
@@ -60,7 +61,7 @@ main {
     }
 
     .config {
-      padding: 1rem 3rem;
+      padding: 2rem 3rem;
     }
   }
 }

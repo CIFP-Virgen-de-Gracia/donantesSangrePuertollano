@@ -10,8 +10,6 @@ const { QueryInterface } = require('sequelize');
 const qr = require('../helpers/qr-code');
 const fs = require('fs');
 
-//TODO: hacer una tabla de parametrización en db en principio para el n de pacientes que pueden atender en una misma hora
-
 // todo Mario
 const pedirCita = async(req, res = response) => {
     try {
@@ -55,6 +53,8 @@ const cancelarCita = async(req, res = response) => {
     try {
         const resp = await queriesCitas.cancelarCita(req.body.id);
 
+        mandarCorreoCancelarCita(resp.user.id, resp.fecha);
+
         res.status(200).json({success: true, msg: 'cita cancelada con éxito'});
     }
     catch (err) {
@@ -62,6 +62,24 @@ const cancelarCita = async(req, res = response) => {
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
+
+
+const mandarCorreoCancelarCita = async(id, fecha) => {
+    const dia = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY');
+    const hora = moment(fecha, 'YYYY-MM-DD HH:mm:ss').format('HH:mm');
+    let contenido = {};
+
+    contenido.asunto = 'Cita cancelada.';
+
+    contenido.cuerpoHtml = `
+        Tu cita del día <strong>${(metodosFecha.colocarFecha(dia))}</strong> a las 
+        <strong>${(metodosFecha.colocarHora(hora))}</strong> ha sido cancelada.
+    `;
+
+    const correo = await queriesUsers.getEmailById(id);
+    const resp = email.mandarCorreo(correo.email, contenido);
+}
+
 
 const getCitaPendienteUser = async(req, res = response) => {
     try {
@@ -274,12 +292,12 @@ const mandarCorreoFechaCita = async(id, fecha, donacion, idCita) => {
 }
 
 
-const confirmarHaDonado = async(req, res = response) => { // NOTE cambiar asistida en front!!!!!!!!
+const confirmarHaDonado = async(req, res = response) => {
 
     try {
         
         const resp = queriesCitas.updateCitaPasadaHaDonado(req.body.id, req.body.haDonado);
-        res.status(200).json({success:true, msg: 'ha donado acutalizado con éxito'});
+        res.status(201).json({success:true, msg: 'ha donado acutalizado con éxito'});
     }
     catch (err) {
 
@@ -289,14 +307,13 @@ const confirmarHaDonado = async(req, res = response) => { // NOTE cambiar asisti
 }
 
 
-// TODO cambiar códigos (200 -> 201)
 const modNumPersonaCita = async(req, res = response) => {
 
     try {
 
         const resp = await queriesCitas.updateNumPersonasCita(req.body.nPersonas);
 
-        res.status(200).json({success: true, msg: 'parámetro actualizado con éxito'});
+        res.status(201).json({success: true, msg: 'parámetro actualizado con éxito'});
     }
     catch (err) {
 
@@ -368,14 +385,11 @@ const deleteHoraCita = async(req, res = response) => {
 
 const mandarCorreoModFechaCita = async(id, fechaAnterior, fechaActual, donacion) => {
 
-    console.log('fechaAnterior =>' + fechaAnterior);
-    console.log('fechaActual => ' + fechaActual);
-
     const fechas = {
         diaAnterior: moment(fechaAnterior, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY'),
         diaActual: moment(fechaActual, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY'),
         horaAnterior: moment(fechaAnterior, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
-        diaActual: moment(fechaActual, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
+        horaActual: moment(fechaActual, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
     }
     let contenido = {};
 
@@ -385,7 +399,7 @@ const mandarCorreoModFechaCita = async(id, fechaAnterior, fechaActual, donacion)
         Hola. Tu cita del día <strong>${(metodosFecha.colocarFecha(fechas.diaAnterior))}</strong> a las 
         <strong>${(metodosFecha.colocarHora(fechas.horaAnterior))}</strong> para donar <strong>${(donacion)}</strong>
         ha sido modificada al día <strong>${(metodosFecha.colocarFecha(fechas.diaActual))}</strong> a las 
-        <strong>${(metodosFecha.colocarHora(fechas.horaAnterior))}</strong>.
+        <strong>${(metodosFecha.colocarHora(fechas.horaActual))}</strong>.
     `;
 
     const correo = await queriesUsers.getEmailById(id);
@@ -425,11 +439,13 @@ const getNumPersonasCita = async(req, res = response) => {
 
     try {
 
-        const resp = await queriesCitas.getNumPersCita();
+        const valor = await queriesCitas.getNumPersCita();
 
-        res.status(200).json({success: true, num: resp.dataValues.valor, msg: 'devuelto con éxito'});
+        res.status(200).json({success: true, num: valor, msg: 'devuelto con éxito'});
     }
     catch (err) {
+
+        console.log(err);
 
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
@@ -449,23 +465,7 @@ const updateNumPersonascita = async(req, res = response) => {
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
-//Isa
-const getUltimaCita = async(req, res = response) => {
-    queriesCitas.getUltimaCita(req.params.id).then((respuesta) => {
-        res.status(200).json({
-            success: true,
-            data: respuesta,
-            msg: 'Obtenida'
-        });
-    }).catch((err) => {
-       console.log(err);
-        res.status(203).json({
-            success: false,
-            data: null,
-            msg: 'No se ha podido obtener'
-        });
-    });
-}
+
 
 
 module.exports = {
@@ -489,7 +489,6 @@ module.exports = {
     modNumPersonaCita,
     insertHoraCita,
     deleteHoraCita,
-    getUltimaCita,
     updateNumPersonascita,
     getNumPersonasCita
 }

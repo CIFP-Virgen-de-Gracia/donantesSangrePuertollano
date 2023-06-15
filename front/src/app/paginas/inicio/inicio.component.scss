@@ -7,19 +7,6 @@
   }
 }
 
-p {
-  font-size: var(--letra-media);
-}
-
-i {
-  color: var(--color-primario);
-  font-size: var(--letra-grande);
-
-  &:hover {
-    color: var(--color-primario);
-  }
-}
-
 input {
   background-color: var(--color-primario);
   color: var(--bs-white);
@@ -29,14 +16,6 @@ input {
     background-color: var(--color-secundario);
   }
 }
-
-.mapa {
-  width: 100%;
-  height: 500px;
-  padding: 0;
-  margin: 0;
-}
-
 
 div.alert {
   z-index: 9000;

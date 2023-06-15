@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Galeria } from '../interface/galeria';
 import { Observable, Subject } from 'rxjs';
+import { PeticionGaleria } from '../interface/peticion-galeria';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,8 +19,20 @@ export class GaleriaService {
     return this.http.get<Galeria[]>(`${this.baseURL}/mostrarGaleria_Imagenes`);
   }
 
+  getPeticionGaleria_Imagen(peticionImagenID:any): Observable<PeticionGaleria> {
+    return this.http.get<PeticionGaleria>(`${this.baseURL}/mostrarPeticionGaleria/${peticionImagenID}`);
+  }
+
   subirFoto(archivo:FormData): Observable<FormData> {
     return this.http.post<any>(`${this.baseURL}/insertarGaleria_imagen`, archivo);
+  }
+
+  subirPeticionFoto(archivo:FormData): Observable<any> {
+    return this.http.post<any>(`${this.baseURL}/peticion_subidaFoto`, archivo);
+  }
+
+  mandarCorreoAdministradoresPeticion(peticionImagenID:any): Observable<any> {
+    return this.http.get<any>(`${this.baseURL}/mandarCorreo_fotoPeticion/${peticionImagenID}`);
   }
 
   borrarImagenes(id:any): Observable<any>{

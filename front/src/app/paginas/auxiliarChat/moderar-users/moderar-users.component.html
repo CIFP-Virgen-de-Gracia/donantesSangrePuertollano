@@ -32,7 +32,7 @@
               *ngFor="let bloqueado of Bloqueados |search:valorFiltro | paginate: { itemsPerPage: 5, currentPage: a }; let i=index">
               <tr scope="row">
                 <th class="align-middle">
-                  {{i}}
+                  {{i+1}}
                 </th>
                 <td class="align-middle">
                   {{bloqueado.nombre}}
@@ -99,7 +99,7 @@
               *ngFor="let desbloqueado of Desbloqueados |search:valorFiltro | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
               <tr scope="row">
                 <th class="align-middle">
-                  {{i}}
+                  {{i+1}}
                 </th>
                 <td class="align-middle">
                   {{desbloqueado.nombre}}

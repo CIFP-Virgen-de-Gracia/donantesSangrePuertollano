@@ -45,7 +45,7 @@ export class WebSocketService extends Socket {
       this.ioSocket.connect();
     }
   }
-
+/*
   emitEventInicioSesion = (event = 'iniciarSesion', payload = {}) => {
     this.ioSocket.emit('iniciarSesion', {
       payload
@@ -55,7 +55,7 @@ export class WebSocketService extends Socket {
         this.ChatService.setListaConectados(respuesta.data);
       }
     });
-  }
+  }*/
   emitEventLista = (event = 'lista', payload = {}) => {
     this.ioSocket.emit('lista', {
       payload

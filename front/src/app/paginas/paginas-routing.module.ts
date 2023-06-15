@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InicioComponent } from './inicio/inicio.component';
-import { LaHermandadComponent } from './la-hermandad/la-hermandad.component';
+import { PaginaHermandadComponent } from '../la-hermandad/pagina-hermandad/pagina-hermandad.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { HimnoComponent } from './himno/himno.component';
 import { PreguntasFrecuentesComponent } from './preguntas-frecuentes/preguntas-frecuentes.component';
@@ -14,7 +14,7 @@ const routes: Routes = [
     component: MainPageComponent,
     children: [
       { path: '', component: InicioComponent },
-      { path: 'hermandad', component: LaHermandadComponent },
+      { path: 'hermandad', component: PaginaHermandadComponent },
       { path: 'himnos', component: HimnoComponent },
       { path: 'preguntas-frecuentes', component: PreguntasFrecuentesComponent },
       { path: 'chat-dudas', component: ChatComponent },
