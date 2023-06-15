@@ -23,7 +23,19 @@ export interface IntsJuntaResponse {
   data: Integrante[]
 }
 
-export interface CargoResponse { //Alicia
+export interface CargoDeleteResponse {
+  success: boolean,
+  msg: string,
+  data: number
+}
+
+export interface CargoInsertResponse {
+  success: boolean,
+  msg: string,
+  data: Cargo,
+}
+
+export interface CargosResponse { //Alicia
   success: boolean,
   data: Cargo[],
 }

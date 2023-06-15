@@ -1,5 +1,9 @@
 .modal {
   --bs-modal-width: 700px;
+
+  .max-chars {
+    font-size: var(--letra-pequena);
+  }
 }
 
 .historia {

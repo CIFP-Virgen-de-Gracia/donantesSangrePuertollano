@@ -1,4 +1,4 @@
-.junta {
+.cargos {
   .titulo {
     margin-top: 4rem;
   }
@@ -7,20 +7,15 @@
     font-size: var(--letra-pequena);
   }
 
-  .contenedor-integrantes {
-    .integrante {
+  .contenedor-cargos {
+    .cargo {
       border-bottom: 2px solid var(--color-primario);
       margin-bottom: 3rem;
 
-      .nombre,
-      .cargo {
+      .nombre {
         border: none;
         outline: none;
         padding: .5rem;
-      }
-
-      .cargos option {
-        font-family: arial !important;
       }
 
       i {
@@ -34,18 +29,14 @@
   }
 }
 
-.modal .cargos {
-  max-height: 400px;
-  overflow-y: scroll;
-}
 
 @media (min-width: 768px) {
-  .junta .contenedor-integrantes .integrante {
+  .cargos .contenedor-cargos .cargo {
     margin-bottom: 2rem;
 
-    .nombre,
-    .cargos {
+    .nombre {
       padding: .5rem 1rem;
     }
   }
 }
+

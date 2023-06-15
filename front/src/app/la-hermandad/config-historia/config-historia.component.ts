@@ -14,6 +14,9 @@ export class ConfigHistoriaComponent { //Alicia
   @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
   timer: NodeJS.Timeout | undefined;
+  errorMaxLength: boolean = false;
+  maxLengthHistoria: number = 5000;
+  lengthActual: number = 0;
   historia: Historia = { id: -1, nombre: 'historia', valor: '' };
   editorTextoConfig: AngularEditorConfig = {
     editable: true,
@@ -41,7 +44,8 @@ export class ConfigHistoriaComponent { //Alicia
 
 
   updateHistoria() {
-    this.hermandadService.updateHistoria(this.historia)
+    if (this.historia.valor.length <= this.maxLengthHistoria) {
+      this.hermandadService.updateHistoria(this.historia)
       .subscribe(resp => {
 
         if (resp.success) {
@@ -50,7 +54,10 @@ export class ConfigHistoriaComponent { //Alicia
 
         } else this.mensaje.emit({ exito: false, msg: 'Error al actualizar la historia'});
 
+        this.errorMaxLength = false;
         this.closeModal.nativeElement.click();
-      })
+      });
+
+    } else this.errorMaxLength = true;
   }
 }

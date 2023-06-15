@@ -10,14 +10,15 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular
 })
 export class ConfigJuntaComponent {
 
-  @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('closeModalInt') closeModalInt!: ElementRef;
+  @ViewChild('closeModalCargo') closeModalCargo!: ElementRef;
   @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
   cargos: Cargo[] = [];
   infoInt!: Integrante;
   junta: Integrante[] = [];
   accion: string = '';
-  acciones = ['añadir', 'editar'];
+  acciones = ['añadir', 'editar', 'eliminar'];
 
 
   constructor(private hermandadService: LaHermandadService) {
@@ -51,6 +52,7 @@ export class ConfigJuntaComponent {
 
 
   insertOrUpdateIntegranteJunta(form: NgForm) {
+    console.log(this.infoInt)
     const idCargo = this.cargos.find(c => c.nombre == this.infoInt.cargo);
     if (idCargo) this.infoInt.idCargo = idCargo.id;
 
@@ -69,7 +71,7 @@ export class ConfigJuntaComponent {
 
         } else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el integrante`});
 
-        this.closeModal.nativeElement.click();
+        this.closeModalInt.nativeElement.click();
         form.resetForm();
       })
   }
@@ -84,9 +86,9 @@ export class ConfigJuntaComponent {
 
         if (resp.success) {
           this.junta.splice(this.junta.findIndex(i => i.id == resp.data), 1);
-          this.mensaje.emit({ exito: true, msg: 'Éxito al eliminar el integrante'});
+          this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el integrante`});
 
-        } else this.mensaje.emit({ exito: false, msg: 'Error al eliminar el integrante'});
+        } else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el integrante`});
 
       });
     }

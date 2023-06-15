@@ -46,9 +46,10 @@ router.put('/updateHistoria', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.
 // Junta
 router.get('/getCargosJunta', contenido.getCargosJunta);
 router.get('/getIntegrantesCargo', contenido.getIntegrantesCargo);
+router.post('/insertCargo', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertCargo);
 router.put('/insertOrUpdateIntegranteJunta', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.insertOrUpdateIntegranteJunta);
 router.delete('/deleteIntegranteJunta/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteIntegranteJunta);
-
+router.delete('/deleteCargo/:id', [ vJwt.validarJwt, midsUser.midAdmin ], contenido.deleteCargo);
 
 // Teléfonos
 router.get('/getTelefonos', contenido.getTelefonos);
