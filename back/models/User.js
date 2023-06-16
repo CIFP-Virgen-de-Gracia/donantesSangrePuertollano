@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     codRecPasswd: DataTypes.STRING,
     dni: DataTypes.STRING,
     nDonante: DataTypes.INTEGER,
+    bloqueado:DataTypes.TINYINT,
     notificacion: DataTypes.INTEGER
   }, {
     sequelize,

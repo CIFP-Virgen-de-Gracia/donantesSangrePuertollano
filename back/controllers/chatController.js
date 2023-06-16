@@ -19,8 +19,60 @@ const Listado = async (req, res = response) => {
         });
     });
 }
+const ListadoBloqueados = async (req, res = response) => {
+    queriesChat.getListaBloqueados().then((bloqueados) => {
+        res.status(200).json({
+            success: true,
+            data: bloqueados,
+            msg: 'Usuarios obtenidos'
+        });
+    }).catch((err) => {
 
-/*Se deja creado por si mas adelante se decide implementarlo*/
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se han podido obtener'
+        });
+    });
+}
+const ComprobarEstado = async (req, res = response) => {
+    queriesChat.ComprobarEstado(req.body.id).then((user) => {
+        let bloqueado = false;
+        if (user.dataValues.bloqueado == 1) {
+            bloqueado = true;
+        }
+        res.status(200).json({
+            success: true,
+            data: bloqueado,
+            msg: 'Estado comprobado'
+        });
+    }).catch((err) => {
+
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se pudo comprobar estado'
+        });
+    });
+}
+const ListadoDesbloqueados = async (req, res = response) => {
+    queriesChat.getListaDesbloqueados().then((desbloqueados) => {
+        res.status(200).json({
+            success: true,
+            data: desbloqueados,
+            msg: 'Usuarios obtenidos'
+        });
+    }).catch((err) => {
+
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se han podido obtener'
+        });
+    });
+}
+
+
 const borrarMensajes = async (req, res = response) => {
     queriesChat.borrarTodo().then((mensaje) => {
         res.status(200).json({
@@ -29,7 +81,7 @@ const borrarMensajes = async (req, res = response) => {
             msg: 'Mensaje borrados'
         });
     }).catch((err) => {
-       
+
         res.status(203).json({
             success: false,
             data: null,
@@ -42,4 +94,7 @@ const borrarMensajes = async (req, res = response) => {
 module.exports = {
     Listado,
     borrarMensajes,
+    ListadoDesbloqueados,
+    ListadoBloqueados,
+    ComprobarEstado
 }

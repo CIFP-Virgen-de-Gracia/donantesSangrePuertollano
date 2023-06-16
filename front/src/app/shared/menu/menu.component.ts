@@ -76,10 +76,10 @@ export class MenuComponent implements OnInit {
   }
 
 
- /*  @HostListener("window:resize", ['$event'])
-  handleResize($event: Event) {
+  /*  @HostListener("window:resize", ['$event'])
+   handleResize($event: Event) {
 
-  } */
+   } */
 
 
   comprobarPuedeModificar() {
@@ -116,8 +116,8 @@ export class MenuComponent implements OnInit {
   // }
 
   cerrarSesion() {
-    let datos = JSON.parse(localStorage.getItem('user') || "");
-    this.webSocketService.emitEventDesconectar('logout',datos.nombre);
+    this.webSocketService.setQueryPayload(localStorage.getItem('user'));
+    this.webSocketService.emitEventDesconectar('logout');
     localStorage.removeItem('user');
     this.estaRegistrado = false;
     this.puedeModificar = false;
@@ -133,7 +133,7 @@ export class MenuComponent implements OnInit {
     this.puedeModificar = false;
     this.tokenExpirado = false;
     this.router.navigate(['auth/login']);
-    
+
   }
 
 
