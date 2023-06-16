@@ -1,14 +1,19 @@
-import { Time } from "@angular/common";
-import { PeticionGaleria } from '../../galeria/interface/peticion-galeria';
+
 
 export interface Notificaciones {
+  id: number,
   titulo: string;
   mensaje: string;
   galeriaPeticionID: number;
   idUsuarioRegistrado: number;
   idUsuarioAdministrador: number;
-  leido: number;
-  createdAt: Time;
-  PeticionesGalerium: PeticionGaleria[];
+  leido: boolean;
+  createdAt: string;
+  propietario: number;
+  nombreImagen:string;
+  descripcionImagen:string;
+  verificadoImagen:boolean;
+  aceptado_rechazadoImagen:string;
+  nombrePropietarioUser:string;
 
 }

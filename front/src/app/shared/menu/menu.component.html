@@ -1,9 +1,9 @@
 <div *ngIf="this.tokenExpirado" class="sesion-caducada container-fluid">
     <div class="modal-sesion-caducada">
       <h3 class="titulo">Sesión caducada</h3>
-  
+
       <p>Debes volver a iniciar sesión.</p>
-  
+
       <div class="botones d-flex justify-content-end p-2 pt-3 pt-sm-5 flex-column flex-sm-row align-items-end">
         <button class="btn-primario max mb-2" (click)="irLogin()">Iniciar sesión</button>
         <button class="btn-secundario ms-2 max mb-2" (click)="cerrarSesion()">Cancelar</button>

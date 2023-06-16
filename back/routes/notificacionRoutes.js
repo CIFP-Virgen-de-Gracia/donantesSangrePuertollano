@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/mostrarNotificaciones', controlador.getNotificaciones);
 router.get('/mostrarNotificacionUsuario/:idUser', controlador.getNotificacionUser);
-router.get('/getNotificacionCantidad', controlador.getCantidadNotificaciones);
+router.get('/getNotificacionCantidad/:idUser', controlador.getCantidadNotificaciones);
 
 
 //Este procedimiento viene del fichero "galeriaRoutes.js"

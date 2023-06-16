@@ -22,6 +22,9 @@ main {
         border-left: 10px solid var(--bs-white);
         cursor: pointer;
 
+        &:hover > i{
+          animation: jumping 0.5s;
+        }
         span.oculto {
           display: none;
         }
@@ -73,3 +76,29 @@ main {
   }
 }
 
+@keyframes jumping {
+  0% {
+    transform: translateY(0px);
+    transform: scaleX(1.25);
+  }
+
+  25% {
+    transform: translateY(-5px);
+  }
+
+  50% {
+      transform: translateY(-10px);
+      transform: scaleY(1.5);
+  }
+
+  75% {
+      transform: translateY(-5px);
+      transform: scaleX(1.25);
+
+  }
+
+  100% {
+      transform: translateY(0px);
+      transform: scaleY(1);
+  }
+}

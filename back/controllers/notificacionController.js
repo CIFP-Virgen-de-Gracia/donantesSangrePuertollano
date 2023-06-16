@@ -17,13 +17,16 @@ const getNotificaciones = (req = request, res = response) => {
 
 const getNotificacionUser = (req = request, res = response) => {
     queries_Notificacion.getNotificacionUser(req.params.idUser)
-    .then( msg => {
-        res.status(200).json(msg);
+    .then( notificaciones => {
+        notificaciones.forEach( notificacion => {
+            notificacion.createdAt = new Date(notificacion.createdAt).toLocaleString();
+        })
+        res.status(200).json(notificaciones);
     });
 }
 
 const getCantidadNotificaciones = (req = request, res = response) => {
-    queriesUsers.getCantidadNotificaciones(req.body.id)
+    queriesUsers.getCantidadNotificaciones(req.params.idUser)
     .then( msg => {
         res.status(200).json(msg);
     });
@@ -70,7 +73,8 @@ const postCrearNotificacionRechazarUsuario = (req = request, res = response) => 
 
 const putNotificacionLeida = (req = request, res = response) => {
     const idNotificacion = req.params.idNotificacion;
-    queries_Notificacion.putNotificacionLeida(idNotificacion)
+    let verdadero = req.body.boleano;
+    queries_Notificacion.putNotificacionLeida(idNotificacion, verdadero)
     .then( msg => {
         res.status(202).json(msg);
     });

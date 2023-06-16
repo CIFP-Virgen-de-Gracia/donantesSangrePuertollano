@@ -35,10 +35,25 @@ export class GaleriaService {
     return this.http.get<any>(`${this.baseURL}/mandarCorreo_fotoPeticion/${peticionImagenID}`);
   }
 
+  mandarCorreoAceptacion(peticionImagenID:any): Observable<any> {
+    return this.http.get<any>(`${this.baseURL}/mandarCorreo_aceptacionPeticion/${peticionImagenID}`);
+  }
+
+  mandarCorreoRechazo(peticionImagenID:any): Observable<any> {
+    return this.http.get<any>(`${this.baseURL}/mandarCorreo_rechazoPeticion/${peticionImagenID}`);
+  }
+
   borrarImagenes(id:any): Observable<any>{
     return this.http.delete<any>(`${this.baseURL}/borrarGaleria_Imagen/${id}`);
   }
 
+  aceptarPeticionFoto(id:any): Observable<any>{
+    return this.http.put<any>(`${this.baseURL}/aceptarPeticionFoto/${id}`, null);
+  }
+
+  rechazarPeticionFoto(id:any): Observable<any>{
+    return this.http.put<any>(`${this.baseURL}/rechazarPeticionFoto/${id}`, null);
+  }
 
 
 }
