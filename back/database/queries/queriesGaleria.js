@@ -4,7 +4,7 @@ const path = require('path');
 const fileUpload = require('express-fileupload');
 const File = require('../../helpers/fileUpload');
 const models = require('../../models/index.js');
-const assets = require('../../helpers/irAssets');
+const assets=require('../../helpers/irAssets');
 
 //Todo Alejandro
 class Queries_Galeria {
@@ -42,7 +42,6 @@ class Queries_Galeria {
             galeria.descripcion = descripcion;
             galeria.propietario = propietario;
             const resp = await galeria.save();
-
             data = {
                 "id": resp.id,
                 "nombre": galeria.nombre,

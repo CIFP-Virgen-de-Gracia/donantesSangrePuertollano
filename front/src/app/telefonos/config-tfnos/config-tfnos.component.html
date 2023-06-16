@@ -69,9 +69,12 @@
                 El número es obligatorio.
               </p>
 
-              <p *ngIf="formCtrls['numero']?.errors?.['pattern'] && formCtrls['numero']?.touched"
-                class="mensaje-error">
+              <p *ngIf="formCtrls['numero']?.errors?.['pattern']" class="mensaje-error">
                 Formato no válido.
+              </p>
+
+              <p *ngIf="formCtrls['numero']?.errors?.['maxlength']" class="mensaje-error">
+                Número máximo de caracteres excedido.
               </p>
             </div>
           </div>
@@ -83,9 +86,12 @@
               formControlName="extension" placeholder="Introduce la extensión."/>
 
             <div>
-              <p *ngIf="formCtrls['extension']?.errors?.['pattern'] && formCtrls['extension']?.touched"
-                class="mensaje-error">
+              <p *ngIf="formCtrls['extension']?.errors?.['pattern']" class="mensaje-error">
                 La extensión debe ser un número.
+              </p>
+
+              <p *ngIf="formCtrls['extension']?.errors?.['maxlength']" class="mensaje-error">
+                Número máximo de caracteres excedido.
               </p>
             </div>
           </div>

@@ -84,14 +84,13 @@ export class GraficosComponent implements OnInit {
 
         this.altasResp = resp.data;
         this.altasResp.forEach(alta => this.altasMostrar.push(this.crearAltaMostrar(alta)));
-
         this.aniosAltas = this.getAnios(this.altasMostrar);
 
         const anio = this.aniosAltas[0];
 
         const datasetAltas = this.crearDatasetMensNumAltas(anio);
         this.datasetMensNumAltas.push(datasetAltas);
-        this.crearGrafNumAltas(this.meses, datasetAltas.datos);
+        if (!this.grafNumAltas) this.crearGrafNumAltas(this.meses, datasetAltas.datos);
       }
     });
 
@@ -115,17 +114,17 @@ export class GraficosComponent implements OnInit {
         if (anioDonaciones) {
           const datasetDonTipos = this.crearDatasetMensDonTipos(anioDonaciones);
           this.datasetMensDonTipos.push(datasetDonTipos);
-          this.crearGrafDonTipos(this.meses, datasetDonTipos.datos);
+          if (!this.grafDonTipos) this.crearGrafDonTipos(this.meses, datasetDonTipos.datos);
         }
 
         if (anioGenerosGrpSang) {
           const datasetGrpSang = this.crearDatasetAnualGrpSang(anioGenerosGrpSang);
           this.datasetAnualGrpSang.push(datasetGrpSang);
-          this.crearGrafDonGrpSang(datasetGrpSang.datos);
+          if (!this.grafDonGrpSang) this.crearGrafDonGrpSang(datasetGrpSang.datos);
 
           const datasetGeneros = this.crearDatasetAnualGenero(anioGenerosGrpSang);
           this.datasetAnualGenero.push(datasetGeneros);
-          this.crearGrafDonGenero(datasetGeneros.datos);
+          if (!this.grafDonGenero) this.crearGrafDonGenero(datasetGeneros.datos);
         }
       }
     });
