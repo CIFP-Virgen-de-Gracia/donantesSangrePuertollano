@@ -15,7 +15,7 @@
 </div>
 <app-add-contenido *ngIf="estaRegistrado && puedeModificar"></app-add-contenido>
 
-<div class="container pb-3 pt-3">
+<div *ngIf="resultado.length>0" class="container pb-3 pt-3">
   <h4 class="titulo mb-3">¿Quieres buscar alguna noticia? Escribe el titulo y encuéntrala</h4>
   <div class="row">
     <form class="col-8" [formGroup]="filtroForm" (ngSubmit)="generarFiltro()">

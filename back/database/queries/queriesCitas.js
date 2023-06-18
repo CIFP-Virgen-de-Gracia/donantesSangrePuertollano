@@ -343,5 +343,4 @@ module.exports = {
     getHorarioDia,
     getHorarios,
     getNumPersCita,
-    // getUltimaCita
 };
