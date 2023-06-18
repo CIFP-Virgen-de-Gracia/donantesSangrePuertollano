@@ -44,7 +44,6 @@ const getHorarios = (req, res = response) => {
             res.status(200).json(resp);
 
         }).catch(err => {
-
             const resp = { success: false, msg: 'No hay registros' };
 
             res.status(200).json(resp);
@@ -188,6 +187,64 @@ const insertOrUpdateTfno = async (req, res = response) => {
 }
 
 
+const insertHorarios = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+
+    try {
+
+        let promesas = [];
+        for (let i = 0; i < req.body.length; i++) { 
+            promesas.push(() => queriesContenidos.insertHorario(req.body[i]));
+        }
+
+        let horarios = await Promise.all(promesas.map(p => p()));
+       
+        if (horarios) {
+            resp = {
+                success: true,
+                msg: 'Horarios añadidos con éxito',
+                data: horarios
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        console.log(err)
+        res.status(200).json(resp);
+    }
+}
+
+
+const updateHorarios = async (req, res = response) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+
+    try {
+
+        let promesas = [];
+        for (let i = 0; i < req.body.length; i++) { 
+            promesas.push(() => queriesContenidos.updateHorario(req.body[i]));
+        }
+
+        let horarios = await Promise.all(promesas.map(p => p()));
+       
+        if (horarios) {
+            resp = {
+                success: true,
+                msg: 'Horarios actualizados con éxito',
+                data: horarios
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        console.log(err)
+        res.status(200).json(resp);
+    }
+}
+
+
 const insertOrUpdateDir = async (req, res = response) => { 
     let resp = { success: false, msg: 'Se ha producido un error' };
     let dir;
@@ -253,44 +310,6 @@ const insertOrUpdateIntegranteJunta = async (req, res = response) => {
         res.status(200).json(resp);
 
     } catch (err) {
-        res.status(200).json(resp);
-    }
-}
-
-
-const updateContacto = async (req, res = response) => {
-
-    try {
-        await Promise.all([
-            req.body.telefonos.borrar.map(queriesContenidos.deleteTelefono),
-            req.body.horarios.borrar.map(queriesContenidos.deleteHorario)
-        ]);
-
-        const [dirs, tlfns, horarios] = await Promise.all([
-            Promise.all(req.body.direcciones.map(queriesContenidos.updateDireccion)),
-            Promise.all(req.body.telefonos.guardar.map(t => t.id != -1 ? queriesContenidos.updateTelefono(t) : queriesContenidos.insertTelefono(t))),
-            Promise.all(req.body.horarios.guardar.map(h => h.id != -1 ? queriesContenidos.updateHorario(h) : queriesContenidos.insertHorario(h)))
-        ]);
-
-        const resp = {
-            success: true,
-            msg: 'Se han guardado los cambios',
-            data: {
-                "dirs": dirs,
-                "tlfns": tlfns,
-                "horarios": horarios
-            }
-        }
-
-        res.status(201).json(resp);
-
-    } catch (err) {
-
-        const resp = {
-            success: false,
-            msg: 'Se ha producido un error',
-        }
-
         res.status(200).json(resp);
     }
 }
@@ -365,20 +384,58 @@ const deleteIntegranteJunta = async (req, res = response) => {
 }
 
 
+const deleteHorarios = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' }
+
+    try {
+        
+        let promesas = [];
+        for (let i = 0; i < req.body.length; i++) {
+            promesas.push(() => queriesContenidos.deleteHorario(req.body[i].id));
+        }
+        let horarios = await Promise.all(promesas.map(p => p()));
+
+        if (horarios.includes(0)) { //Si alguno falla, vuelvo a insertar los que se han borrado.
+            promesas = [];
+            for (let i = 0; i < horarios.length; i++) {
+                if (horarios[i] == 1) promesas.push(() => queriesContenidos.insertHorario(req.body[i]));
+            }
+            horarios = await Promise.all(promesas.map(p => p()));
+
+        } else {
+            resp = {
+                success: true,
+                msg: 'Horario eliminado con éxito',
+                data: horarios
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
+
+
 module.exports = {
     getHistoria,
     getHorarios,
     getTelefonos,
     getDirecciones,
+    getImgTutorial,
     getCargosJunta,
     getIntegrantesCargo,
     updateHistoria,
     insertOrUpdateTfno,
+    insertHorarios,
+    updateHorarios,
     insertOrUpdateDir,
     insertCargo,
     insertOrUpdateIntegranteJunta,
-    updateContacto,
     deleteTfno,
     deleteCargo,
-    deleteIntegranteJunta,getImgTutorial
+    deleteIntegranteJunta,
+    deleteHorarios
 }

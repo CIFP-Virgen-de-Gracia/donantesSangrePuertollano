@@ -8,7 +8,7 @@ import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
   styleUrls: ['./config-main.component.scss'],
   animations: [ entradaSalidaVentana ]
 })
-export class ConfigMainComponent { //Alicia
+export class HermandadMainConfigComponent { //Alicia
 
   mensaje: string = '';
   exito: boolean = false;

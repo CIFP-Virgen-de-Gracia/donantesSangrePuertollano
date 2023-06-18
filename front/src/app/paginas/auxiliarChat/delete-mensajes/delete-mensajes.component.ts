@@ -26,7 +26,7 @@ export class DeleteMensajesComponent {
     });
   }
   borrarMensaje() {
-    console.log(this.idMensaje);
+
     this.socketService.emitEventBorrarMensaje(this.idMensaje).then(resp => {
       if (resp.success){
         this.ChatService.ActualizarListaMensajes(resp.data);

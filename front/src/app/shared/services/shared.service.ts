@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { Email, HorarioResponse } from '../interfaces/shared.interface';
+import { Email } from '../interfaces/shared.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +24,5 @@ export class SharedService {
   //Alicia
   suscripcionNewsletter(email: Email): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/suscripcionNewsletter`, email);
-  }
-
-
-  //Alicia
-  getHorarios(): Observable<HorarioResponse> {
-    return this.http.get<HorarioResponse>(`${this.baseUrl}/getHorarios`);
   }
 }

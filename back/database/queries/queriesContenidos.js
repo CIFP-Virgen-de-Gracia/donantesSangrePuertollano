@@ -15,30 +15,22 @@ getHistoria = async () => {
 
 
 getHorarios = async () => {
-  const horarios = await models.Horario.findAll();
-
-  return horarios;
+  return await models.Horario.findAll();
 }
 
 
 getTelefonos = async () => {
-  const telefonos = await models.Telefono.findAll();
-
-  return telefonos;
+  return await models.Telefono.findAll();
 }
 
 
 getDirecciones = async () => {
-  const direcciones = await models.Direccion.findAll();
-
-  return direcciones;
+  return await models.Direccion.findAll();
 }
 
 
 getCargosJunta = async () => {
-  const cargos = await models.CargoJunta.findAll();
-
-  return cargos;
+  return await models.CargoJunta.findAll();
 }
 
 
@@ -72,6 +64,7 @@ insertHorario = async (horario) => {
 
     const resp = await models.Horario.create({
       dia: horario.dia,
+      codDia: horario.codDia,
       hEntrada: horario.hEntrada,
       hSalida: horario.hSalida
     });
@@ -243,16 +236,21 @@ updateTfno = async (datos) => {
 }
 
 
-updateHorario = async (horario) => {
+updateHorario = async (datos) => {
   try {
 
-    const h = await models.Horario.findByPk(horario.id);
-    const resp = await h.update({
-      hEntrada: horario.hEntrada,
-      hSalida: horario.hSalida
-    });
+    const horario = await models.Horario.findByPk(datos.id);
 
-    return resp;
+    if (horario) {
+      
+      return await horario.update({
+        nombre: datos.nombre,
+        codDia: datos.codDia,
+        hEntrada: datos.hEntrada,
+        hSalida: datos.hSalida
+      });
+
+    } else return null;
 
   } catch (err) {
     throw err;
@@ -262,7 +260,7 @@ updateHorario = async (horario) => {
 
 deleteHorario = async (id) => {
   try {
-
+    
     return await models.Horario.destroy({ where: { id: id } });
 
   } catch (err) {

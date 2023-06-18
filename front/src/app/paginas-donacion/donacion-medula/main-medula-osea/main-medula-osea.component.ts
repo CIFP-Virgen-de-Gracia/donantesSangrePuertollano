@@ -9,12 +9,12 @@ import { Router } from '@angular/router';
 export class MainMedulaOseaComponent {
   public elementos = [
     {
-      nombre : "La medula Osea",
+      nombre : "La médula ósea",
       icono: "fa-solid fa-bone",
       enlace: "donaMedulaOsea"
     },
     {
-      nombre : "¿Donde donar?",
+      nombre : "¿Dónde donar?",
       icono: "fa-solid fa-map-location-dot",
       enlace: "mapaOsea"
     }

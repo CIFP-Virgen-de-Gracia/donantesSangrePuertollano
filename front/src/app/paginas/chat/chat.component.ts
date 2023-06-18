@@ -111,7 +111,6 @@ export class ChatComponent implements OnInit {
 
   cambioIdMensaje(event: any): void {
     this.idMensaje = event.target.id;
-    console.log(this.idMensaje);
   }
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {
@@ -155,11 +154,9 @@ export class ChatComponent implements OnInit {
   }
   cambiarIdDesb(event: any) {
     this.listaDes.push(event.target.id);
-    console.log(this.listaDes);
   }
   cambiarIdBloq(event: any) {
     this.listaBloq.push(event.target.id);
-    console.log(this.listaBloq);
   }
   DesbloquearUsuario(): void {
 

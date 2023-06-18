@@ -1,6 +1,6 @@
 import { Telefono } from '../interfaces/telefonos.interfaces';
 import { TelefonosService } from '../services/telefonos.service';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 
@@ -10,7 +10,7 @@ import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
   styleUrls: ['./config-tfnos.component.scss'],
   animations: [entradaSalidaVentana]
 })
-export class ConfigTfnosComponent implements OnInit {
+export class TfnosConfigComponent implements OnInit {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
 
@@ -62,11 +62,11 @@ export class ConfigTfnosComponent implements OnInit {
             this.setMensajeExito();
 
           } else this.setMensajeError();
-        });
 
-      this.setTimer(4000);
-      this.closeModal.nativeElement.click();
-      this.limpiarFormulario();
+          this.setTimer(4000);
+          this.closeModal.nativeElement.click();
+          this.limpiarFormulario();
+        });
 
     } else this.modalForm.markAllAsTouched();
   }

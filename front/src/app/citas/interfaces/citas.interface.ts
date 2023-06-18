@@ -1,5 +1,3 @@
-import { Hora } from "src/app/config/interfaces/config.interface";
-
 export interface CitasReservadasHorasResponse {
     sucess: boolean;
     fecha: string;
@@ -60,7 +58,7 @@ export interface CitaMostrar {
     hora: string;
     donacion: string;
     cancelada: boolean;
-} 
+}
 
 
 export interface CitaAdminMostrar {

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Horario, HorarioMostrar } from 'src/app/config/interfaces/config.interface';
+import { Horario } from 'src/app/citas/interfaces/citas.interface';
+import { HorarioMostrar } from 'src/app/horarios/interfaces/horario.interfaces';
+
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -22,8 +24,8 @@ export class InicioComponent {
     });
 
 
-    this.sharedService.getHorarios().subscribe(resp => {
+    /* this.sharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.horarios = resp.data;
-    });
+    }); */
   }
 }

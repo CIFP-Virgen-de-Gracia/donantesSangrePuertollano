@@ -1,4 +1,5 @@
 import { Time } from "@angular/common";
+import { Horario } from "src/app/citas/interfaces/citas.interface";
 import { Direccion } from "src/app/direcciones/interfaces/direcciones.interfaces";
 
 export interface updateResponse { //Alicia
@@ -10,35 +11,6 @@ export interface updateResponse { //Alicia
   }
 }
 
-export interface Horario { //Alicia
-  id: number;
-  dia: string;
-  hEntrada: Time;
-  hSalida: Time;
-}
-
-export interface HorarioMostrar { //Alicia
-  dias: Dia[];
-  hEntrada: Time;
-  hSalida: Time;
-}
-
-export interface HorarioGuardar { //Alicia
-  borrar: number[],
-  guardar: Horario[]
-}
-
-export interface Dia { //Alicia
-  id: number;
-  nombre: string;
-  letra: string;
-  seleccionado: boolean;
-}
-
-export interface Hora { //Alicia
-  entrada: Time;
-  salida: Time;
-}
 
 export interface ResponseAudio { //Isa
   success: boolean,

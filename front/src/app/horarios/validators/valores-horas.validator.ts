@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Dia, Horario } from '../interfaces/config.interface';
+import { Dia, Horario } from '../interfaces/horario.interfaces';
 
 const diaSeleccionado = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {

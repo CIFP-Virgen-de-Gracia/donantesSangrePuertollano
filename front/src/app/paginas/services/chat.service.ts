@@ -84,29 +84,25 @@ export class ChatService {
   cambiarUsersBloqueados(users: String[]) {
     let listaUser=this.desbloqueados.filter((d) => users.toString().includes(d.id));
     let lista = this.desbloqueados.filter((d) => !users.toString().includes(d.id));
-    console.log(lista)
+
     this.desbloqueados = lista;
     listaUser.forEach(u => {
       this.bloqueados.push(u),
         this.borrarCheckDesbloqueados(u.id),
         this.addCheckBloqueados(u.id)
     });
-    console.log(this.bloqueados)
   }
 
   cambiarUsersDesbloqueados(users: String[]) {
     let listaUser=this.bloqueados.filter((d) => users.toString().includes(d.id));
-    console.log(listaUser)
     let lista = this.bloqueados.filter((d) => !users.toString().includes(d.id));
-    console.log(lista)
+
     this.bloqueados = lista;
     listaUser.forEach(u => {
       this.desbloqueados.push(u),
         this.borrarCheckBloqueados(u.id),
         this.addCheckDesbloqueados(u.id)
     });
-    console.log(this.bloqueados);
-
   }
   borrarTodo() {
     this.mensajes = [];

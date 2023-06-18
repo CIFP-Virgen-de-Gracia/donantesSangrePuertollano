@@ -14,7 +14,7 @@ import { Component, ElementRef, SecurityContext, ViewChild } from '@angular/core
   styleUrls: ['./config-direcciones.component.scss'],
   animations: [entradaSalidaVentana]
 })
-export class ConfigDireccionesComponent {
+export class DireccionesConfigComponent {
 
   @ViewChild('closeModal') closeModal!: ElementRef;
 
@@ -73,11 +73,11 @@ export class ConfigDireccionesComponent {
             this.setMensajeExito();
 
           } else this.setMensajeError();
-        });
 
-      this.setTimer(4000);
-      this.closeModal.nativeElement.click();
-      this.limpiarFormulario();
+          this.setTimer(4000);
+          this.closeModal.nativeElement.click();
+          this.limpiarFormulario();
+        });
 
     } else this.modalForm.markAllAsTouched();
   }

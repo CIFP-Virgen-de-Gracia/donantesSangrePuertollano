@@ -47,7 +47,7 @@ export class PerfilComponent {
     dni: new FormControl(this.info.dni, Validators.pattern("^([0-9]{8})([A-Z])$")),
     gSanguineo: new FormControl(this.info.gSanguineo),
     nDonante: new FormControl(this.info.nDonante)
-    
+
   });
 
   gSanguineoInput: FormControl = new FormControl({ value: this.info.gSanguineo, disabled: true });
@@ -62,7 +62,7 @@ export class PerfilComponent {
 
     this.traerInfo();
   }
-  
+
 
   setTimer(tiempo: number) {
     clearTimeout(this.timer);
@@ -75,7 +75,7 @@ export class PerfilComponent {
     this.usuariosService.fetchInfoUser().subscribe(resp => {
       if (resp.success) {
 
-        
+
         this.infoForm.patchValue({
           nombre: resp.data.nombre,
           dni: resp.data.dni,
@@ -84,7 +84,7 @@ export class PerfilComponent {
         });
 
         this.info = resp.data;
-        
+
       }
       else {
 
@@ -107,7 +107,7 @@ export class PerfilComponent {
       const nuevaPasswdHash = Md5.hashStr(this.passwdForm.get('passwdNueva')?.value);
 
       this.authService.cambiarPasswd(passwdHash, nuevaPasswdHash).subscribe(resp => {
-        
+
         if (resp.success) {
 
           this.codAccion = 0;
@@ -115,7 +115,7 @@ export class PerfilComponent {
           this.setTimer(4000);
         }
         else {
-          
+
           this.codAccion = 1;
           this.mensaje = 'Error de autenticación.'
           this.setTimer(4000);
@@ -129,13 +129,13 @@ export class PerfilComponent {
   }
 
   updateUser() {
-    
+
     const valoresCambiados: UserInfo = this.infoForm.value;
 
     valoresCambiados.id = this.info.id;
 
     this.usuariosService.updateUser(valoresCambiados).subscribe(resp => {
-      console.log(resp);
+
       if (resp.success) {
 
         this.traerInfo();

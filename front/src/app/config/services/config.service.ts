@@ -2,7 +2,6 @@ import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
-import { HorarioGuardar } from '../interfaces/config.interface';
 import { updateResponse } from '../interfaces/config.interface';
 import { Cancion, ResponseAudio, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
@@ -24,27 +23,6 @@ export class ConfigService {
     this.faqs = [];
     this.checks = [];
     this.aux=0
-  }
-
-
-
-  //Alicia
-  updateContacto(dirs: Direccion[], horarios: HorarioGuardar): Observable<updateResponse> {
-    const header = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'x-token': JSON.parse(localStorage.getItem('user')!).token
-      })
-    };
-
-    return this.http.put<updateResponse>(
-      `${this.configUrl}/updateContacto`,
-      {
-        direcciones: dirs,
-        horarios: horarios
-      },
-      header
-    );
   }
 
 

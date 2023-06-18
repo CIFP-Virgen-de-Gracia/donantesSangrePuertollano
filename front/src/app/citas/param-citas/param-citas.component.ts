@@ -1,10 +1,8 @@
 import { Component, Renderer2, ElementRef } from '@angular/core';
-import { JsonPipe, NgIf } from '@angular/common';
 import { CitasService } from '../services/citas.service';
 import * as interfaces from '../interfaces/citas.interface';
-import { NgbTimepickerConfig, NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, ReactiveFormsModule, FormControlOptions, FormGroup, Validators } from '@angular/forms';
-import { Hora } from 'src/app/config/interfaces/config.interface';
+import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { tap, zip } from 'rxjs';
 // import { FormControl,  } from '@angular/forms';
 
@@ -26,7 +24,7 @@ export class ParamCitasComponent {
 
   diaSeleccionado = 'l';
   // selectedButton: string = 'lunes'
-  
+
   currentHour = new Date();
   time = { hour: this.currentHour.getHours(), minute: this.currentHour.getMinutes() };
 
@@ -49,7 +47,7 @@ export class ParamCitasComponent {
 
   constructor(
     private relojillo: NgbTimepickerConfig,
-    private renderer: Renderer2, 
+    private renderer: Renderer2,
     private el: ElementRef,
     private citasService: CitasService,
   ) {}
@@ -132,7 +130,7 @@ export class ParamCitasComponent {
     // const cTime = formatedTime.hour + ':' + formatedTime.minute + ':00';
     const horaAnadir = formatedTime.hour + ':' + formatedTime.minute;
     // let anadir = true;
-    
+
     // this.horasMostrar.map(hora => {if (hora == horaAnadir) {anadir = false; return;}});
 
     this.citasService.insertHoraCita(this.diaSeleccionado, horaAnadir + ':00').subscribe(resp => {
@@ -142,17 +140,17 @@ export class ParamCitasComponent {
         // this.horas.sort((a, b) => {
         //   const time1 = new Date("1970-01-01T" + a + ":00Z");
         //   const time2 = new Date("1970-01-01T" + b + ":00Z");
-    
+
         //   return time1.getTime() - time2.getTime();
         // });
-        
+
         this.traerHoras().subscribe(() => {
 
           this.cargarDia(this.diaSeleccionado);
         });
       }
       else {
-  
+
         //TODO cartelito de fallo
       }
     });
@@ -196,7 +194,7 @@ export class ParamCitasComponent {
 
   updateCitasALavez() {
     if (this.aLaVezForm.valid) {
-      return 
+      return
     }
   }
 }

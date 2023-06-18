@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Horario.init({
     dia: DataTypes.STRING,
+    codDia: DataTypes.CHAR,
     hEntrada: DataTypes.TIME,
     hSalida: DataTypes.TIME
   }, {

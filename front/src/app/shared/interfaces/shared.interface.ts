@@ -1,12 +1,7 @@
-import { Horario } from "src/app/config/interfaces/config.interface";
+import { Horario } from "src/app/citas/interfaces/citas.interface";
+
 
 export interface Email { //Alicia
   email: string;
 }
-
-export interface HorarioResponse { //Alicia
-  success: boolean;
-  data: Horario[];
-}
-
 
