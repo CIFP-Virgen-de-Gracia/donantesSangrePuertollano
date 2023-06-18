@@ -189,7 +189,7 @@ class QueriesChat {
         try {
             this.sequelize.conectar();
             bloqueados = await models.User.findAll({
-                attributes: ['id','nombre'],
+                attributes: ['id', 'nombre'],
                 where: {
                     bloqueado: 1
                 },
@@ -198,7 +198,7 @@ class QueriesChat {
             });
             if (bloqueados != null) {
                 bloqueados.forEach(u => {
-                    users.push({id:u.dataValues.id, nombre:u.dataValues.nombre});
+                    users.push({ id: u.dataValues.id, nombre: u.dataValues.nombre });
                 });
             }
             this.sequelize.desconectar();
@@ -214,7 +214,7 @@ class QueriesChat {
         try {
             this.sequelize.conectar();
             desbloqueados = await models.User.findAll({
-                attributes: ['id','nombre'],
+                attributes: ['id', 'nombre'],
                 where: {
                     bloqueado: 0
                 },
@@ -223,7 +223,7 @@ class QueriesChat {
             });
             if (desbloqueados != null) {
                 desbloqueados.forEach(u => {
-                    users.push({id:u.dataValues.id, nombre:u.dataValues.nombre});
+                    users.push({ id: u.dataValues.id, nombre: u.dataValues.nombre });
                 });
             }
             this.sequelize.desconectar();
@@ -237,14 +237,46 @@ class QueriesChat {
         let usuario = "";
         try {
             this.sequelize.conectar();
-            usuario = await models.User.findByPk(id,{attributes:["bloqueado"]});
+            usuario = await models.User.findByPk(id, { attributes: ["bloqueado"] });
             this.sequelize.desconectar();
         } catch (err) {
             this.sequelize.desconectar();
             throw err;
         }
-      
+
         return usuario;
+    }
+    actulizarEstadoChat = async (estado) => {
+        let resp = "";
+        let parametro = "";
+        try {
+            this.sequelize.conectar();
+            parametro = await models.ParametrosGenerales.findByPk(2);
+            parametro.update({ valor: estado });
+            parametro.save();
+            resp = { success: true, data: parametro.dataValues.valor, msg: "Se ha cambiado el estado del chat" }
+            this.sequelize.desconectar();
+        } catch (err) {
+            this.sequelize.desconectar();
+            throw err;
+        }
+
+        return resp
+    }
+    getEstadoChat = async () => {
+        let resp = "";
+        let parametro = "";
+        try {
+            this.sequelize.conectar();
+            parametro = await models.ParametrosGenerales.findByPk(2);
+            resp = { success: true, data: parametro.dataValues.valor, msg: "Se ha cambiado el estado del chat" }
+            this.sequelize.desconectar();
+        } catch (err) {
+            this.sequelize.desconectar();
+            throw err;
+        }
+
+        return resp
     }
 }
 

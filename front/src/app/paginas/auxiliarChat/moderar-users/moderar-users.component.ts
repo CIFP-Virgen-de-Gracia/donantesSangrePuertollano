@@ -50,7 +50,6 @@ export class ModerarUsersComponent implements OnInit {
     if (this.listaBloqueados.length > 0) {
       this.socketService.emitEventBloquear(this.listaBloqueados).then(resp => {
         if (resp.success) {
-          console.log("entro");
           this.ChatService.cambiarUsersBloqueados(this.listaBloqueados);
           this.socketService.emitEventLista('lista');
           this.aviso = 1;
@@ -99,7 +98,6 @@ export class ModerarUsersComponent implements OnInit {
       if (event.target.checked) {
         if (!this.listaDesbloqueados.includes(event.target.id)) {
           this.listaDesbloqueados.push(event.target.id);
-          console.log(this.listaDesbloqueados)
           this.ChatService.marcarCheck(event.target.id, 2);
         }
       }
@@ -107,7 +105,6 @@ export class ModerarUsersComponent implements OnInit {
         if (this.listaDesbloqueados.includes(event.target.id)) {
           let i = this.listaDesbloqueados.indexOf(event.target.id);
           this.listaDesbloqueados.splice(i, 1);
-          console.log(this.listaDesbloqueados)
           this.ChatService.desmarcarCheck(event.target.id, 2);
         }
       }
@@ -115,7 +112,6 @@ export class ModerarUsersComponent implements OnInit {
       if (event.target.checked) {
         if (!this.listaBloqueados.includes(event.target.id)) {
           this.listaBloqueados.push(event.target.id);
-          console.log(this.listaBloqueados)
           this.ChatService.marcarCheck(event.target.id, 1);
         }
       }
@@ -124,7 +120,6 @@ export class ModerarUsersComponent implements OnInit {
           let i = this.listaBloqueados.indexOf(event.target.id);
           this.listaBloqueados.splice(i, 1);
           this.ChatService.desmarcarCheck(event.target.id, 1);
-          console.log(this.listaBloqueados)
         }
       }
     }

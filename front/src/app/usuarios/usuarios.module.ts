@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { PerfilComponent } from './perfil/perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 
 @NgModule({
   declarations: [
-    PerfilComponent
+    PerfilComponent,
+    AdminUsersComponent
   ],
   imports: [
     CommonModule,

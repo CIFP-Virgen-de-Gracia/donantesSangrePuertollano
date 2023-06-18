@@ -11,12 +11,13 @@ import { tap } from 'rxjs';
 })
 export class UsuariosService {
 
-  private usuariosUrl = `${environment.baseUrl}/api/users`
+  private usuariosUrl = `${environment.baseUrl}/api/users`;
   private _infoUser = {};
 
   constructor(
     private httpUsuarios: HttpClient
   ) {}
+
 
   fetchInfoUser() {
     const header = {
@@ -32,7 +33,8 @@ export class UsuariosService {
       + '/getinfouser/' + id, header).pipe(tap(info => this._infoUser = info));
   }
 
-  updateUser(userInfo: interfaces.UserInfo) {
+
+  updateUserPerfil(userInfo: interfaces.UserInfo) {
     const header = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -40,7 +42,38 @@ export class UsuariosService {
       })
     };
 
+    userInfo.codSeguridad = JSON.parse(localStorage.getItem('user')!).codSeguridad;
+
     return this.httpUsuarios.put<interfaces.UpdateUserResponse>(this.usuariosUrl
-      + '/updateuser', userInfo, header);
+      + '/updateuserperfil', userInfo, header);
   }
+
+
+  updateUserAdmin(userInfo: {nDonante: string, gSanguineo: string, id?: string}) {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    userInfo.id = JSON.parse(localStorage.getItem('user')!).id
+    return this.httpUsuarios.put<interfaces.UpdateUserResponse>(this.usuariosUrl
+      + '/updateuseradmin', userInfo, header);
+  }
+
+
+  fetchUsers() {
+    const header = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+
+    return this.httpUsuarios.get<interfaces.fetchUsersResponse>(this.usuariosUrl
+      + '/getinfousers', header);
+  }
+
+
 }

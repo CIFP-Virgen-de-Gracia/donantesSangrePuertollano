@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environment/environment';
 import { updateResponse } from '../interfaces/config.interface';
-import { Cancion, ResponseAudio, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
+import { Cancion, ResponseAudio,ResponseChat, Himno, ResponseCancion, ResponseFaqs, Faq, ResponseFaq, Check } from '../interfaces/config.interface';
 import { Pregunta } from '../../apto-sangre/interface/pregunta';
 import { Direccion } from 'src/app/direcciones/interfaces/direcciones.interfaces';
 
@@ -243,6 +243,19 @@ export class ConfigService {
     let faq = this.faqs.filter((f) => f.id == id);
     let faqEditado=faq[0];
     return faqEditado;
+  }
+  //Para el Chat
+
+  obtenerEstadoChat():Observable<ResponseChat>{
+    return this.http.get<ResponseChat>(`${this.configUrl}/chat/estadochat`);
+  }
+  actualizarEstadoChat(estado:number):Observable<ResponseChat>{
+    const header = {
+      headers: new HttpHeaders({
+        'x-token': JSON.parse(localStorage.getItem('user')!).token
+      })
+    };
+    return this.http.post<ResponseChat>(`${this.configUrl}/chat/actualizarestadochat`,{estado:estado},header);
   }
 
 }

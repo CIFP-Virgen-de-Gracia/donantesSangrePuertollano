@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      codSeguridad: {
+        type: Sequelize.STRING,
+        allowNull: false
+      }, 
       dni: {
         type: Sequelize.STRING,
         allowNull: true

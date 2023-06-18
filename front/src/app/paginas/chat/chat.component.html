@@ -17,7 +17,7 @@
         <div class="col-lg-8">
           <div class="container gx-0">
             <div class="row gx-0">
-              <div class="col container chatContainer scroll mb-3 bg-white">
+              <div #contenedorChat class="col container chatContainer scroll mb-3 bg-white">
                 <div class="row pt-2">
                   <ul class="col cardChat mt-3 ps-3 list-group">
                     <li class="mb-3 mt-3 pe-1" *ngFor="let m of Mensajes">
@@ -25,12 +25,12 @@
                         <div class="card-header borderRojo">
                           <div *ngIf="puedeModificar" class="row d-flex justify-content-between mt-2 mb-3">
                             <div class="col-6">
-                              <i class="me-3 fa-solid fa-user-minus" id={{m.idUser}} (click)="cambiarIdBloq($event)"
+                              <i class="me-3 fa-solid fa-user-minus" id=A{{m.idUser}} (click)="cambiarIdBloq($event)"
                                 data-bs-toggle="modal" data-bs-target="#Bloqueo"></i>
-                              <i class="fa-solid fa-user-plus" id={{m.idUser}} (click)="cambiarIdDesb($event)"data-bs-toggle="modal"
+                              <i class="fa-solid fa-user-plus" id=B{{m.idUser}} (click)="cambiarIdDesb($event)"data-bs-toggle="modal"
                                 data-bs-target="#Desbloqueo"></i>
                             </div>
-                            <i id={{m.idMensaje}} class="col-6 text-end fa-solid fa-trash-can"
+                            <i id=C{{m.idMensaje}} class="col-6 text-end fa-solid fa-trash-can"
                               (click)="cambioIdMensaje($event)" data-bs-toggle="modal"
                               data-bs-target="#borrarMensaje"></i>
                           </div>
@@ -99,8 +99,10 @@
 
     </div>
     <div class="container" *ngSwitchCase="3">
-      <h4 class="titulo text-center pb-5">Tu sesión ha expirado, por favor cierra la sesión y vuelve a loguearte.
-      </h4>
+      <h4 class="titulo text-center pb-5">El chat ha sido deshabilitado por el moderador o moderadora.</h4>
+    </div>
+    <div class="container" *ngSwitchCase="4">
+      <h4 class="titulo text-center pb-5">Se ha producido un error, intentelo más tarde</h4>
     </div>
 
   </div>

@@ -33,7 +33,8 @@ export class PerfilComponent {
     nombre: '',
     dni: '',
     nDonante: 0,
-    gSanguineo: ''
+    gSanguineo: '',
+    codSeguridad: ''
   }
 
   passwdForm: FormGroup = new FormGroup({
@@ -70,11 +71,9 @@ export class PerfilComponent {
   }
 
 
-
   traerInfo() {
     this.usuariosService.fetchInfoUser().subscribe(resp => {
       if (resp.success) {
-
 
         this.infoForm.patchValue({
           nombre: resp.data.nombre,
@@ -134,8 +133,7 @@ export class PerfilComponent {
 
     valoresCambiados.id = this.info.id;
 
-    this.usuariosService.updateUser(valoresCambiados).subscribe(resp => {
-
+    this.usuariosService.updateUserPerfil(valoresCambiados).subscribe(resp => {
       if (resp.success) {
 
         this.traerInfo();

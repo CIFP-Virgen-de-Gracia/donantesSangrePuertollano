@@ -86,6 +86,7 @@ export interface CitaAdminPendienteMostrar {
 
 export interface CancelarCitaResponse {
     success: boolean;
+    cod?: number;
     msg: string;
 }
 

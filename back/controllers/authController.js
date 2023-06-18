@@ -23,6 +23,7 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
             data: {
                 id: user.id,
                 nombre: user.nombre,
+                codSeguridad: user.codSeguridad,
                 token: generarJWT(user.id),
             },
             msg: 'logeado con éxito'
@@ -94,7 +95,6 @@ const register = async (req, res = response) => { // poner código
     
         correo.mandarCorreoActivacion(vKey, resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
-    
     } 
     catch (err) {
 
@@ -214,7 +214,6 @@ const recuperarPasswd = async (req, res = response) => {
         const user = await queriesUsers.getUser(req.params.id);
 
         let resp = null;
-
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);
@@ -301,9 +300,7 @@ const puedeModificar = async (req, res = response) => {
 const modContrasena = async(req, res = response) => {
 
     try {
-
         const id = await queriesUsers.getUserCambiarPasswd(req.body.id, req.body.passwd);
-
         if (id != null) {
             const respUp = await queriesUsers.updateUserPasswd(req.body.id, req.body.passwdNueva);
     
@@ -369,5 +366,3 @@ module.exports = {
     modContrasena
 
 }
-
-queriesUsers.userExiste(1, 'Mario Lo Tschibukai').then(existe => {});

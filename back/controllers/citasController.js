@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const { Cita } = require('../models/Cita');
 const email = require('../helpers/mail');
 const queriesCitas = require('../database/queries/queriesCitas');
+const fechas = require('../helpers/fechas');
 const moment = require('moment');
 const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
@@ -331,10 +332,10 @@ const insertHoraCita = async(req, res = response) => {
 
         const horario = await queriesCitas.getHorarioDia(req.body.codDia);
         let valido = false;
-
+        const hNoRepetida = await fechas.horaCitaValida(req.body.hora, req.body.codDia);
+        
         horario.forEach(h => {
-
-            if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida) {
+            if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida && hNoRepetida) {
                 valido = true;
                 return; // es un bucle muy sencillo. Si la hora proporcionada está entre la
                         // hora de entrada y de salida ya se puede insertar y me salgo del bucle.
@@ -342,19 +343,19 @@ const insertHoraCita = async(req, res = response) => {
         });
 
         if (valido) {
+
             const resp = await queriesCitas.insertHoraCita(req.body.codDia, req.body.hora);
     
-
             res.status(200).json({success: true, msg: 'hora insertada con éxito'});
         }
         else {
 
-            res.status(200).json({success: false, msg: 'hora no válida'});
+            res.status(200).json({success: false, cod: 1, msg: 'hora no válida'});
         }
     }
     catch (err) {
 
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
+        res.status(200).json({success: false, cod: 2, msg: 'se ha producido un error'});
     }
 }
 

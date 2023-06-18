@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WebSocketService } from '../services/web-socket.service';
 import { ChatService } from '../services/chat.service';
 import { Mensaje } from '../interfaces/paginas.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ConfigService } from '../../config/services/config.service';
 
 @Component({
   selector: 'app-chat',
@@ -25,9 +26,10 @@ export class ChatComponent implements OnInit {
   men: number = 0;
   listaDes: String[] = [];
   listaBloq: String[] = [];
+  @ViewChild('contenedorChat', { static: false }) contenedorChat!: ElementRef;
 
   constructor(protected socketService: WebSocketService, private ChatService: ChatService,
-    private AuthService: AuthService) {
+    private AuthService: AuthService, private ConfigService: ConfigService) {
     socketService.outEven.subscribe(res => {
       let m: Mensaje = {
         "idMensaje": res.idMensaje,
@@ -38,6 +40,8 @@ export class ChatComponent implements OnInit {
         "hora": res.hora,
       }
       ChatService.agregarMensaje(m);
+      setTimeout(() => { this.contenedorChat.nativeElement.scrollTop = this.contenedorChat.nativeElement.scrollHeight; }, 50)
+
     });
     socketService.usuariosConectados.subscribe(res => {
       this.ChatService.setListaConectados(res);
@@ -49,12 +53,12 @@ export class ChatComponent implements OnInit {
       this.ChatService.ActualizarListaMensajes(res);
     });
     socketService.bloqueo.subscribe(res => {
-      let u =JSON.parse(localStorage.getItem('user')||"");
-      if(res.includes(u.id.toString()))this.inicio = 2;
+      let u = JSON.parse(localStorage.getItem('user') || "");
+      if (res.includes(u.id.toString())) this.inicio = 2;
     });
     socketService.desbloqueo.subscribe(res => {
-      let u =JSON.parse(localStorage.getItem('user')||"");
-      if(res.data.includes(u.id.toString())){
+      let u = JSON.parse(localStorage.getItem('user') || "");
+      if (res.data.includes(u.id.toString())) {
         this.inicio = 1;
         this.ChatService.getListadoMensajes().subscribe((res) => { });
       }
@@ -76,28 +80,34 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     const user = localStorage.getItem('user');
-
-    if (user != null) {
-      this.ChatService.comprobarEstado().subscribe(resp => {
-        if (resp.success) {
-          this.estaBloqueado = resp.data;
-          if (this.estaBloqueado) {
-            this.inicio = 2;
-            this.socketService.setQueryPayload(user);
-            this.socketService.emitEventConectarChat(1);
-          } else {
-            this.socketService.setQueryPayload(user);
-            this.socketService.emitEventConectarChat();
-            this.ChatService.getListadoMensajes().subscribe((res) => { });
-            this.inicio = 1;
-          }
+    this.ConfigService.obtenerEstadoChat().subscribe((res) => {
+      if (res.data == 1) {
+        if (user != null) {
+          this.ChatService.comprobarEstado().subscribe(resp => {
+            if (resp.success) {
+              this.estaBloqueado = resp.data;
+              if (this.estaBloqueado) {
+                this.inicio = 2;
+                this.socketService.setQueryPayload(user);
+                this.socketService.emitEventConectarChat(1);
+              } else {
+                this.socketService.setQueryPayload(user);
+                this.socketService.emitEventConectarChat();
+                this.ChatService.getListadoMensajes().subscribe((res) => { });
+                this.inicio = 1;
+              }
+            } else {
+              this.inicio = 4;
+            }
+          });
         } else {
-          this.inicio = 4;
+          this.inicio = 0;
         }
-      });
-    } else {
-      this.inicio = 0;
-    }
+      } else {
+        this.inicio = 3;
+      }
+    })
+
   }
 
   get Conectados() {
@@ -110,7 +120,7 @@ export class ChatComponent implements OnInit {
 
 
   cambioIdMensaje(event: any): void {
-    this.idMensaje = event.target.id;
+    this.idMensaje = event.target.id.slice(1);
   }
   comprobarPuedeModificar() {
     if (this.estaRegistrado) {
@@ -136,6 +146,7 @@ export class ChatComponent implements OnInit {
           mensaje: this.chatForm.get("comentario")?.value
         });
       this.chatForm.reset();
+      setTimeout(() => { this.contenedorChat.nativeElement.scrollTop = this.contenedorChat.nativeElement.scrollHeight; }, 50)
     }
   }
   BloquearUsuario(): void {
@@ -153,13 +164,12 @@ export class ChatComponent implements OnInit {
     });
   }
   cambiarIdDesb(event: any) {
-    this.listaDes.push(event.target.id);
+    this.listaDes.push(event.target.id.slice(1));
   }
   cambiarIdBloq(event: any) {
-    this.listaBloq.push(event.target.id);
+    this.listaBloq.push(event.target.id.slice(1));
   }
   DesbloquearUsuario(): void {
-
     this.socketService.emitEventDesbloquear(this.listaDes).then(resp => {
       if (resp.success) {
         this.ChatService.cambiarUsersDesbloqueados(this.listaDes);

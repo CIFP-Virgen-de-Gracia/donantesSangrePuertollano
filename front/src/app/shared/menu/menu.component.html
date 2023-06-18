@@ -37,7 +37,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item enlace" href="./donacion/sangre">Donación de sangre</a></li>
-            <!-- <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li> -->
+            <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li>
             <li><a class="dropdown-item enlace" href="./donacion/medula-osea/donaMedulaOsea">Donación de médula</a></li>
           </ul>
         </li>
@@ -94,7 +94,6 @@
 
     </div>
 
-
     <div class="usuario-contenedor" *ngIf="estaRegistrado">
 
       <i class="fa-solid fa-user-large usuario dropdown-toggle"
@@ -102,7 +101,7 @@
 
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
         <li><a class="dropdown-item enlace" href="../../usuarios/perfil">Perfil</a></li>
-        <li><a class="dropdown-item enlace" href="../../citas/mostrarcitas">Mis citas</a></li>
+        <li *ngIf="!puedeModificar"><a class="dropdown-item enlace" href="../../citas/mostrarcitas">Mis citas</a></li>
         <li><a class="dropdown-item enlace" href="./notificacion">Notificaciones</a></li>
         <li><a class="dropdown-item enlace" (click)="cerrarSesion()">Cerrar sesión</a></li>
       </ul>

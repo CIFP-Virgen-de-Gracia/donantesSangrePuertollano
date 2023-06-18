@@ -71,6 +71,29 @@ const ListadoDesbloqueados = async (req, res = response) => {
         });
     });
 }
+const obtenerEstadoChat = async (req, res = response) => {
+    queriesChat.getEstadoChat().then((respuesta) => {
+        res.status(200).json(respuesta);
+    }).catch((err) => {
+
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se han podido obtener'
+        });
+    });
+}
+const actulizarEstadoChat = async (req, res = response) => {
+    queriesChat.actulizarEstadoChat(req.body.estado).then((respuesta) => {
+        res.status(200).json(respuesta);
+    }).catch((err) => {
+        res.status(203).json({
+            success: false,
+            data: null,
+            msg: 'No se han podido actualizar'
+        });
+    });
+}
 
 
 const borrarMensajes = async (req, res = response) => {
@@ -96,5 +119,7 @@ module.exports = {
     borrarMensajes,
     ListadoDesbloqueados,
     ListadoBloqueados,
-    ComprobarEstado
+    ComprobarEstado,
+    obtenerEstadoChat,
+    actulizarEstadoChat
 }

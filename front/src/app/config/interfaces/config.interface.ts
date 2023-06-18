@@ -58,3 +58,9 @@ export interface Check{
   id:string,
   marcado:boolean,
 }
+
+export interface ResponseChat{
+  success: boolean,
+  data: number,
+  msg: string,
+}
