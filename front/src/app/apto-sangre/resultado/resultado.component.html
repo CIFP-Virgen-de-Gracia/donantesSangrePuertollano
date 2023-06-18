@@ -20,8 +20,8 @@
 
 <div class="row w-100" *ngIf="apto_servicio.preguntasEnviadas[0][apto_servicio.preguntasEnviadas[0].length - 1].respuesta == apto_servicio.preguntasEnviadas[1][apto_servicio.preguntasEnviadas[1].length - 1]
 ; else mensajeRecomendado">
-  <div class="col-12 text-center mb-2">
-        <a href="#"><button class="btn-secundario border-0 w-25 mb-2">Pedir Cita</button></a>
+  <div *ngIf="!puedeModificar" class="col-12 text-center mb-2">
+        <a href="./citas/pedircita"><button class="btn-secundario border-0 w-25 mb-2">Pedir Cita</button></a>
   </div>
 </div>
 <ng-template #mensajeRecomendado>

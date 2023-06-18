@@ -151,7 +151,7 @@ const updateHistoria = async (req, res = response) => {
             resp = {
                 success: true,
                 msg: 'Historia actualizada con éxito',
-                historia: historia
+                data: historia
             }
         }
 
@@ -210,6 +210,26 @@ const insertOrUpdateDir = async (req, res = response) => {
     } catch (err) {
         res.status(200).json(resp);
     }
+}
+
+
+const insertCargo = async (payload) => { 
+    let resp = { success: false, msg: 'Se ha producido un error' };
+
+    try {
+        const cargo = await queriesContenidos.insertCargo(payload);
+       
+        if (cargo) {
+            resp = {
+                success: true,
+                msg: 'Cargo actualizado con éxito',
+                data: cargo
+            }
+        }
+
+    } catch (err) {}
+
+    return resp;
 }
 
 
@@ -276,7 +296,6 @@ const updateContacto = async (req, res = response) => {
 }
 
 
-
 const deleteTfno = async (req, res = response) => {
     let resp = { success: false, msg: 'Se ha producido un error' }
 
@@ -288,6 +307,29 @@ const deleteTfno = async (req, res = response) => {
             resp = {
                 success: true,
                 msg: 'Teléfono eliminado con éxito',
+                data: req.params.id
+            }
+        }
+
+        res.status(200).json(resp);
+
+    } catch (err) {
+        res.status(200).json(resp);
+    }
+}
+
+
+const deleteCargo = async (req, res = response) => {
+    let resp = { success: false, msg: 'Se ha producido un error' }
+
+    try {
+
+        const cargo = await queriesContenidos.deleteCargo(req.params.id);
+
+        if (cargo == 1) {
+            resp = {
+                success: true,
+                msg: 'Cargo eliminado con éxito',
                 data: req.params.id
             }
         }
@@ -333,8 +375,10 @@ module.exports = {
     updateHistoria,
     insertOrUpdateTfno,
     insertOrUpdateDir,
+    insertCargo,
     insertOrUpdateIntegranteJunta,
     updateContacto,
     deleteTfno,
+    deleteCargo,
     deleteIntegranteJunta,getImgTutorial
 }

@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '
 import { DomSanitizer } from '@angular/platform-browser';
 import { GaleriaService } from '../service/galeria.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { NotificacionesService } from 'src/app/notificaciones/service/notificaciones.service.service';
+import { NotificacionesService } from 'src/app/notificaciones/service/notificaciones.service';
 @Component({
   selector: 'app-add-imagen',
   templateUrl: './add-imagen.component.html',

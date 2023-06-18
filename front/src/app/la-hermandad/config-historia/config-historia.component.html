@@ -24,6 +24,14 @@
         <div class="modal-body">
           <div class="mb-4">
             <angular-editor name="historia" [config]="editorTextoConfig" [(ngModel)]="historia.valor"></angular-editor>
+
+            <p class="max-chars mt-1" [class.mensaje-error]="historia.valor.length>maxLengthHistoria">
+              {{ historia.valor.length }}/{{ maxLengthHistoria }} caracteres.
+            </p>
+
+            <p *ngIf="errorMaxLength" class="mensaje-error">
+              Número máximo de caracteres excedido.
+            </p>
           </div>
         </div>
 

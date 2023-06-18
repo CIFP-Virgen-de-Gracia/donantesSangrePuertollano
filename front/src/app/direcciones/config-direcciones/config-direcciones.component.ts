@@ -1,11 +1,12 @@
-import { CustomValidators } from '../helpers/validators';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CustomValidators } from '../helpers/validators';
+import { environment } from 'src/environment/environment';
 import { Direccion } from '../interfaces/direcciones.interfaces';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DireccionesService } from '../services/direcciones.service';
 import { entradaSalidaVentana } from 'src/app/shared/animaciones/animaciones';
 import { Component, ElementRef, SecurityContext, ViewChild } from '@angular/core';
-import { environment } from 'src/environment/environment';
+
 
 @Component({
   selector: 'app-config-direcciones',

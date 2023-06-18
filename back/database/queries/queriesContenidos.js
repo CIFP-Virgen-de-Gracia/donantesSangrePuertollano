@@ -117,6 +117,17 @@ insertDir = async (datos) => {
 }
 
 
+insertCargo = async (datos) => {
+  try {
+
+    return await models.CargoJunta.create({ nombre: datos.nombre });
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 insertIntegranteJunta = async (datos) => {
   try {
 
@@ -271,6 +282,24 @@ deleteTfno = async (id) => {
 }
 
 
+deleteCargo = async (id) => {
+  try {
+
+    let resp = 0;
+    const cargosInts = await models.CargoIntegrante.findAll({ where: { idCargo: id } });
+
+    if (cargosInts.length <= 0) {
+      resp = await models.CargoJunta.destroy({ where: { id: id } });
+    }
+    
+    return resp;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 deleteIntegranteJunta = async (id) => {
   try {
 
@@ -284,7 +313,7 @@ deleteIntegranteJunta = async (id) => {
         return 0;
       }
     }
-
+    
     return integrante;
 
   } catch (err) {
@@ -303,6 +332,7 @@ module.exports = {
   insertHorario,
   insertTfno,
   insertDir,
+  insertCargo,
   insertIntegranteJunta,
   updateHistoria,
   updateIntegranteJunta,
@@ -311,5 +341,6 @@ module.exports = {
   updateHorario,
   deleteHorario,
   deleteTfno,
+  deleteCargo,
   deleteIntegranteJunta
 };

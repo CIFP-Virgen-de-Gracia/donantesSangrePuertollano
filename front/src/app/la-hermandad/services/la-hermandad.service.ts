@@ -1,10 +1,8 @@
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CargoResponse, Historia, HistoriaResponse, IntDeleteResponse, Integrante, IntsJuntaResponse, IntUpdateInsertResponse } from '../interfaces/la-hermandad.interface';
-
-
+import { Cargo, CargosResponse, Historia, HistoriaResponse, CargoInsertResponse, IntDeleteResponse, Integrante, IntsJuntaResponse, IntUpdateInsertResponse, CargoDeleteResponse } from '../interfaces/la-hermandad.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +11,15 @@ import { CargoResponse, Historia, HistoriaResponse, IntDeleteResponse, Integrant
 export class LaHermandadService {
 
   baseUrl = `${environment.baseUrl}/api`;
+  cargos: Cargo[] = [];
 
 
   constructor(private http: HttpClient) { }
+
+
+  addCargo(cargo: Cargo) {
+    this.cargos.push(cargo);
+  }
 
 
   getHistoria(): Observable<HistoriaResponse> {
@@ -38,8 +42,19 @@ export class LaHermandadService {
   }
 
 
-  getCargosJunta(): Observable<CargoResponse> {
-    return this.http.get<CargoResponse>(`${this.baseUrl}/getCargosJunta`);
+  getCargosJunta(): Observable<CargosResponse> {
+    return this.http.get<CargosResponse>(`${this.baseUrl}/getCargosJunta`)
+      .pipe(tap(resp => { if (resp.success) { this.cargos = resp.data } }));
+  }
+
+
+  insertCargo(cargo: Cargo): Observable<CargoInsertResponse> {
+    const header = { headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-token': JSON.parse(localStorage.getItem('user')!).token
+    })};
+
+    return this.http.post<CargoInsertResponse>(`${this.baseUrl}/insertCargo`, cargo, header);
   }
 
 
@@ -50,6 +65,17 @@ export class LaHermandadService {
     })};
 
     return this.http.put<IntUpdateInsertResponse>(`${this.baseUrl}/insertOrUpdateIntegranteJunta`, integrante, header);
+  }
+
+
+  deleteCargo(id: number): Observable<CargoDeleteResponse>{
+    const header = { headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-token': JSON.parse(localStorage.getItem('user')!).token
+    })};
+
+    return this.http.delete<CargoDeleteResponse>(`${this.baseUrl}/deleteCargo/${id}`, header)
+      .pipe(tap(resp => { if (resp.success) this.cargos.splice(this.cargos.findIndex(c => c.id == resp.data), 1) }));
   }
 
 

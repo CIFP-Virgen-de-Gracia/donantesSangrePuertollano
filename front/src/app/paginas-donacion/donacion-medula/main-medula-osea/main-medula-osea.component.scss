@@ -11,13 +11,14 @@ main{
 
 
 
-    .menu-horizontal {
+    .menu-vertical {
       border-right: 1.5px solid var(--color-contraste-oscuro);
 
       li {
         padding: 1rem .7rem;
         width: 100%;
         border-left: 10px solid var(--bs-white);
+        cursor: pointer;
         &:hover > i{
           animation: jumping 0.5s;
         }
@@ -44,7 +45,7 @@ main{
 @media (min-width: 768px) {
 main .contenedor {
 
-  .menu-horizontal{
+  .menu-vertical{
     display: block;
     li{
       padding: 1rem 1.5rem;

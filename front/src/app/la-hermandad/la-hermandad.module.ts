@@ -6,6 +6,7 @@ import { LaHermandadRoutingModule } from './la-hermandad-routing.module';
 import { ConfigMainComponent } from './config-main/config-main.component';
 import { ConfigJuntaComponent } from './config-junta/config-junta.component';
 import { ConfigHistoriaComponent } from './config-historia/config-historia.component';
+import { ConfigCargosComponent } from './config-cargos/config-cargos.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ConfigHistoriaComponent } from './config-historia/config-historia.compo
     ConfigMainComponent,
     ConfigJuntaComponent,
     ConfigHistoriaComponent,
+    ConfigCargosComponent,
   ],
   imports: [
     FormsModule,

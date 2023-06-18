@@ -14,15 +14,9 @@ const fs = require('fs');
 const pedirCita = async(req, res = response) => {
     try {
 
-        console.log('empieza');
-        console.log(req.body.fecha);
-        console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
-        console.log('acaba');
-
         if (metodosFecha.horaEsMayor(req.body.fecha, moment().format('YYYY-MM-DD HH:mm:ss')) 
                 && metodosFecha.horaValida(req.body.fecha)) {
-                    console.log('fechAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-                    console.log(req.body.fecha);
+
                     const cita = {
                         fecha: moment(req.body.fecha, 'YYYY-MM-DD HH:mm:ss').add(1, 'hour'),
                         userId: req.body.id,
@@ -43,7 +37,6 @@ const pedirCita = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error adsf'});
     }
 }
@@ -117,7 +110,6 @@ const getCitasPendientes = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -133,7 +125,6 @@ const getCitasPasadas = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -178,7 +169,6 @@ const getHorasDisponibles = async(req, res = response) => {
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
 
-            console.log(err);
             res.status(200).json({success: false, msg: 'se ha producido un error'});
         });
 }
@@ -343,7 +333,7 @@ const insertHoraCita = async(req, res = response) => {
         let valido = false;
 
         horario.forEach(h => {
-            console.log(h.hEntrada + ' => ' + h.hSalida);
+
             if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida) {
                 valido = true;
                 return; // es un bucle muy sencillo. Si la hora proporcionada está entre la
@@ -444,8 +434,6 @@ const getNumPersonasCita = async(req, res = response) => {
         res.status(200).json({success: true, num: valor, msg: 'devuelto con éxito'});
     }
     catch (err) {
-
-        console.log(err);
 
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
