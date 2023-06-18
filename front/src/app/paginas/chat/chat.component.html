@@ -5,24 +5,35 @@
     </div>
   </div>
 </div>
-<div>
 
-  <section class="fondoCard">
-    <ng-template #noRegistrado>
+<section class="fondoCard">
+  <div class="container" [ngSwitch]="inicio">
+    <div class="container" *ngSwitchCase="0">
       <h4 class="titulo text-center pb-5">Por favor, para acceder al chat debes estar registrado y tener iniciada la
         sesión</h4>
-    </ng-template>
-    <div class="container" *ngIf="estaRegistrado; else noRegistrado">
+    </div>
+    <div class="container" *ngSwitchCase="1">
       <div class="row">
         <div class="col-lg-8">
           <div class="container gx-0">
             <div class="row gx-0">
-              <div class="col container chatContainer scroll mb-3 bg-white">
+              <div #contenedorChat class="col container chatContainer scroll mb-3 bg-white">
                 <div class="row pt-2">
                   <ul class="col cardChat mt-3 ps-3 list-group">
                     <li class="mb-3 mt-3 pe-1" *ngFor="let m of Mensajes">
                       <div class="card">
                         <div class="card-header borderRojo">
+                          <div *ngIf="puedeModificar" class="row d-flex justify-content-between mt-2 mb-3">
+                            <div class="col-6">
+                              <i class="me-3 fa-solid fa-user-minus" id=A{{m.idUser}} (click)="cambiarIdBloq($event)"
+                                data-bs-toggle="modal" data-bs-target="#Bloqueo"></i>
+                              <i class="fa-solid fa-user-plus" id=B{{m.idUser}} (click)="cambiarIdDesb($event)"data-bs-toggle="modal"
+                                data-bs-target="#Desbloqueo"></i>
+                            </div>
+                            <i id=C{{m.idMensaje}} class="col-6 text-end fa-solid fa-trash-can"
+                              (click)="cambioIdMensaje($event)" data-bs-toggle="modal"
+                              data-bs-target="#borrarMensaje"></i>
+                          </div>
                           <div class="row">
                             <p class="col-6 text-start letraColor"><strong>{{m.nombre}}</strong></p>
                             <p class="col-6 text-end">{{m.fecha}}, {{m.hora}}</p>
@@ -66,7 +77,83 @@
         </div>
 
       </div>
+
+      <div *ngIf="puedeModificar" class="row d-flex justify-content-center align-items-center mt-4 pb-3">
+        <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
+          <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#bloquearUsuario">Bloquear
+            Usuarios</button>
+        </div>
+        <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
+          <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#desbloquearUsuario">Desbloquear
+            usuarios</button>
+        </div>
+        <div class="d-grid justify-content-center col-lg-4 col-md-6 col-12 mt-1 mb-1">
+          <button class="btn-secundario" data-bs-toggle="modal" data-bs-target="#borrarTodo">Borrar todo</button>
+        </div>
+      </div>
+    </div>
+    <div class="container" *ngSwitchCase="2">
+      <h4 class="titulo text-center pb-5">Has sido <u>bloqueado o bloqueada</u> por el moderador o moderadora del chat, para
+        poder volver a conectarte, habla con él o ella. En el siguiente correo <u>hdspdonantes@donantespllno.es</u>
+      </h4>
+
+    </div>
+    <div class="container" *ngSwitchCase="3">
+      <h4 class="titulo text-center pb-5">El chat ha sido deshabilitado por el moderador o moderadora.</h4>
+    </div>
+    <div class="container" *ngSwitchCase="4">
+      <h4 class="titulo text-center pb-5">Se ha producido un error, intentelo más tarde</h4>
     </div>
 
+  </div>
+</section>
 
-  </section>
+<app-moderar-users *ngIf="puedeModificar"></app-moderar-users>
+<app-delete-mensajes [idMensaje]="idMensaje" *ngIf="puedeModificar"></app-delete-mensajes>
+
+<!--   MODALES   -->
+
+<div class="modal" id="Desbloqueo" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bordeColor">
+        <h5 class="modal-title modalTitulo">Desbloquear Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Realmente quieres <strong>desbloquear</strong> a este usuario o usuaria?</p>
+      </div>
+      <div class="row"><span class=" col-12 form-text CorrectSpan ms-3 mb-3" *ngIf="men==1">Se ha desbloqueado al
+          usuario</span></div>
+      <div class="row"><span class=" col-12 form-text errorSpan ms-3 mb-3" *ngIf="men==2">No se ha podido
+          desbloquear</span></div>
+      <div class="modal-footer bordeArriba">
+        <button (click)="DesbloquearUsuario()" type="button" class="btn btn-terciario me-3">Si</button>
+        <button type="button" class="ms-2 me-2 btn btn-terciario" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="Bloqueo" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bordeColor">
+        <h5 class="modal-title modalTitulo">Bloquear Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Realmente quieres <strong>bloquear </strong>a este usuario o usuaria?</p>
+      </div>
+      <div class="row"><span class=" col-12 form-text CorrectSpan ms-3 mb-3" *ngIf="alert==1">Se ha bloqueado al
+          usuario</span></div>
+      <div class="row"><span class=" col-12 form-text errorSpan ms-3 mb-3" *ngIf="alert==2">No se ha podido
+          bloquear</span></div>
+      <div class="modal-footer bordeArriba">
+        <button (click)="BloquearUsuario()" type="button" class="btn btn-terciario me-3">Si</button>
+        <button type="button" class="ms-2 me-2 btn btn-terciario" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

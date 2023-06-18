@@ -75,6 +75,7 @@ const googleSignin = async (req, res = response) => {
         return res.status(200).json(resp);
     }
     catch (err) {
+
         const resp = {
             success: false,
             msg: 'error en el registro'

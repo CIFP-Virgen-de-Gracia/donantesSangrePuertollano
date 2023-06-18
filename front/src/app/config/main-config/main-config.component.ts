@@ -18,6 +18,10 @@ export class MainConfigComponent {
       icono: "fa-phone"
     },
     {
+      nombre: "dirección",
+      icono: "fa-location-dot"
+    },
+    {
       nombre : "himno",
       icono: "fa-headphones"
     },
@@ -32,6 +36,10 @@ export class MainConfigComponent {
     {
       nombre: "citas",
       icono: "fa-calendar"
+    },
+    {
+      nombre: "chat",
+      icono: "fa-comments"
     }
   ];
 

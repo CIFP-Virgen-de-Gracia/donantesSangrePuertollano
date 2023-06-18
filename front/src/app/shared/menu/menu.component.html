@@ -1,9 +1,9 @@
 <div *ngIf="this.tokenExpirado" class="sesion-caducada container-fluid">
     <div class="modal-sesion-caducada">
       <h3 class="titulo">Sesión caducada</h3>
-  
+
       <p>Debes volver a iniciar sesión.</p>
-  
+
       <div class="botones d-flex justify-content-end p-2 pt-3 pt-sm-5 flex-column flex-sm-row align-items-end">
         <button class="btn-primario max mb-2" (click)="irLogin()">Iniciar sesión</button>
         <button class="btn-secundario ms-2 max mb-2" (click)="cerrarSesion()">Cancelar</button>
@@ -37,7 +37,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item enlace" href="./donacion/sangre">Donación de sangre</a></li>
-            <!-- <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li> -->
+            <li><a class="dropdown-item enlace" href="./donacion/plasma">Donación de plasma</a></li>
             <li><a class="dropdown-item enlace" href="./donacion/medula-osea/donaMedulaOsea">Donación de médula</a></li>
           </ul>
         </li>
@@ -102,6 +102,7 @@
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuUser">
         <li><a class="dropdown-item enlace" href="../../usuarios/perfil">Perfil</a></li>
         <li *ngIf="!puedeModificar"><a class="dropdown-item enlace" href="../../citas/mostrarcitas">Mis citas</a></li>
+        <li><a class="dropdown-item enlace" href="./notificacion">Notificaciones</a></li>
         <li><a class="dropdown-item enlace" (click)="cerrarSesion()">Cerrar sesión</a></li>
       </ul>
     </div>

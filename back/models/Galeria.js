@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Galeria.init({
-    nombre: DataTypes.STRING
+    nombre: DataTypes.STRING,
+    descripcion: DataTypes.STRING(50),
+    propietario: DataTypes.INTEGER
   }, {
     sequelize,
     tableName: 'galerias',
     modelName: 'Galeria',
-    timestamps: false,
+    timestamps: true,
   });
   return Galeria;
 };

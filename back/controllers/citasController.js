@@ -332,7 +332,6 @@ const insertHoraCita = async(req, res = response) => {
 
         const horario = await queriesCitas.getHorarioDia(req.body.codDia);
         let valido = false;
-
         const hNoRepetida = await fechas.horaCitaValida(req.body.hora, req.body.codDia);
         
         horario.forEach(h => {
@@ -479,7 +478,6 @@ module.exports = {
     modNumPersonaCita,
     insertHoraCita,
     deleteHoraCita,
-    // getUltimaCita,
     updateNumPersonascita,
     getNumPersonasCita
 }

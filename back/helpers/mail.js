@@ -46,6 +46,26 @@ const mandarCorreo = (destinatario, contenido) => {
     });
 }
 
+const mandarCorreo_Foto = (destinatario, contenido, fotoPath) => {
+    const foto = fs.readFileSync(fotoPath)
+    mailOptions = {
+        from: process.env.EMAIL_ACCOUNT,
+        to: destinatario,
+        subject: contenido.asunto,
+        html: contenido.cuerpoHtml,
+        attachments: [
+            {   
+                filename: contenido.foto,
+                content: foto
+            }
+        ]
+    };
+
+    transporter.sendMail(mailOptions, (error) => {
+        if (error) throw error;
+    });
+}
+
 //Isa
 const mandarCorreoAttachment = (destinatario, contenido, qrPath) => {
     const qr = fs.readFileSync(qrPath);
@@ -69,6 +89,7 @@ const mandarCorreoAttachment = (destinatario, contenido, qrPath) => {
 module.exports = {
     mandarCorreoActivacion,
     mandarCorreo,
+    mandarCorreo_Foto,
     mandarCorreoAttachment
 }
 

@@ -1,4 +1,5 @@
 import { Time } from "@angular/common";
+import { Direccion } from "src/app/direcciones/interfaces/direcciones.interfaces";
 
 export interface updateResponse { //Alicia
   success: boolean;
@@ -37,16 +38,6 @@ export interface Dia { //Alicia
 export interface Hora { //Alicia
   entrada: Time;
   salida: Time;
-}
-
-export interface Direccion { //Alicia
-  id: number;
-  lugar: string;
-  calle: string;
-  numero: string;
-  ciudad: string;
-  provincia: string;
-  cp: number;
 }
 
 export interface ResponseAudio { //Isa
@@ -94,4 +85,10 @@ export interface Faq{
 export interface Check{
   id:string,
   marcado:boolean,
+}
+
+export interface ResponseChat{
+  success: boolean,
+  data: number,
+  msg: string,
 }

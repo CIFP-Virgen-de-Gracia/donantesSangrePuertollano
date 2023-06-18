@@ -4,7 +4,7 @@
   <div class="contenedor-historia" [innerHtml]="historia.valor"></div>
 
   <button class="mt-2 btn-primario" data-bs-toggle="modal" data-bs-target="#updateHistoria">
-    Editar historia
+    <i class="fa-solid fa-pen me-2"></i>Editar historia
   </button>
 </div>
 
@@ -24,6 +24,14 @@
         <div class="modal-body">
           <div class="mb-4">
             <angular-editor name="historia" [config]="editorTextoConfig" [(ngModel)]="historia.valor"></angular-editor>
+
+            <p class="max-chars mt-1" [class.mensaje-error]="historia.valor.length>maxLengthHistoria">
+              {{ historia.valor.length }}/{{ maxLengthHistoria }} caracteres.
+            </p>
+
+            <p *ngIf="errorMaxLength" class="mensaje-error">
+              Número máximo de caracteres excedido.
+            </p>
           </div>
         </div>
 

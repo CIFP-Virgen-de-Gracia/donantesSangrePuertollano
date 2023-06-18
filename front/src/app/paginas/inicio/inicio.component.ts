@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Direccion, Horario, HorarioMostrar } from 'src/app/config/interfaces/config.interface';
+import { Horario, HorarioMostrar } from 'src/app/config/interfaces/config.interface';
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -9,7 +9,6 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 })
 export class InicioComponent {
 
-  direcciones: Direccion[] = [];
   horarios: Horario[] = [];
   hMostrar: HorarioMostrar[] = [];
   citaPedida: number = -1;
@@ -25,11 +24,6 @@ export class InicioComponent {
 
     this.sharedService.getHorarios().subscribe(resp => {
       if (resp.success) this.horarios = resp.data;
-    });
-
-
-    this.sharedService.getDirecciones().subscribe(resp => {
-      if (resp.success) this.direcciones = resp.data;
     });
   }
 }

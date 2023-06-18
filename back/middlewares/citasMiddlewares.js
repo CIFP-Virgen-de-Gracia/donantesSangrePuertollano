@@ -4,8 +4,6 @@ const {response,request} = require('express');
 
 const hayCapacidad = async(req, res, next) => {
 
-    console.log('A VER');
-    console.log(req.body.fecha);
     const numCitas = await queriesCitas.getNumCitasHora(req.body.fecha);
     const numPersCita = await queriesCitas.getNumPersCita();
 

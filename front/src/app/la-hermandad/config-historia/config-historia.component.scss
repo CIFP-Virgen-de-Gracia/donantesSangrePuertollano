@@ -1,9 +1,13 @@
 .modal {
   --bs-modal-width: 700px;
+
+  .max-chars {
+    font-size: var(--letra-pequena);
+  }
 }
 
 .historia {
-  cursor: default;
+  cursor: context-menu;
 
   .contenedor-historia {
     margin-bottom: 2rem;

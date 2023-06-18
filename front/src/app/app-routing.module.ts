@@ -10,6 +10,7 @@ import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component
 import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
 import { PoliticasCookiesComponent } from './paginas/politicas-cookies/politicas-cookies.component';
 import { UsuariosGuard } from './usuarios/guards/usuarios.guard';
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,10 @@ const routes: Routes = [
   {
     path: 'politicas-cookies',
     component: PoliticasCookiesComponent
+  },
+  {
+    path: 'notificacion',
+    component: NotificacionesComponent
   },
   {
     path: 'stats',

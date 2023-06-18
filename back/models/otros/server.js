@@ -20,6 +20,7 @@ class Server {
         this.pathMusica = "/api/musica";
         this.pathFaq = "/api/faq";
         this.pathChat = "/api/chat";
+        this.pathNotificacion = "/api/notificacion";
 
         //Middlewares
         this.middlewares();
@@ -48,6 +49,7 @@ class Server {
         this.app.use(this.pathMusica, require('../../routes/cancionRoutes'));
         this.app.use(this.pathFaq, require('../../routes/faqRoutes'));
         this.app.use(this.pathChat, require('../../routes/chatRoutes'));
+        this.app.use(this.pathNotificacion, require('../../routes/notificacionRoutes'));
     }
 
     

@@ -231,10 +231,13 @@ export class HorariosConfigComponent {
     if (this.citasForm.valid) {
 
       const datos = this.citasForm.value;
-      const tlfns = { guardar: datos.telefonos, borrar: this.tBorrar };
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
+<<<<<<< HEAD
       this.ConfigService.updateContacto(datos.direcciones, tlfns)
+=======
+      this.ConfigService.updateContacto(datos.direcciones, horarios)
+>>>>>>> develop
         .subscribe({
           next: (resp) => {
 

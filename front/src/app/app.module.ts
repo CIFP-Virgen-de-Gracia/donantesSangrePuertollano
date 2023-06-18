@@ -24,6 +24,8 @@ import { GaleriaModule } from './galeria/galeria.module';
 import { ConfigRoutingModule } from './config/config-routing.module';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { LaHermandadModule } from './la-hermandad/la-hermandad.module';
+import { NotificacionesComponent } from './notificaciones/notificaciones.component';
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -31,7 +33,8 @@ registerLocaleData(localeEs);
         AppComponent,
         AptoSangreComponent,
         GaleriaComponent,
-        GaleriaComponent
+        GaleriaComponent,
+        NotificacionesComponent
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'es-es' },
@@ -55,7 +58,8 @@ registerLocaleData(localeEs);
         PaginasDonacionModule,
         GaleriaModule,
         ConfigRoutingModule,
-        LaHermandadModule
+        LaHermandadModule,
+        NotificacionesModule
     ]
 })
 export class AppModule {}
