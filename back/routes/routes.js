@@ -22,7 +22,6 @@ router.get('/activarCorreo/:id/:vKey', auth.activarCorreo); //Mario
 router.get('/puedeModificar/:id', [ vJwt.validarJwt ], auth.puedeModificar); //Alicia
 router.post('/solicitarrecpasswd', auth.mandarEmailRecuperarPasswd); //Mario
 router.post('/recuperarpasswd/:id', auth.recuperarPasswd); //Mario
-router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.midUser], auth.modContrasena);
 router.post('/suscripcionNewsletter', [
     check('email', 'Formato de correo no válido').isEmail(),
     midsValidar.validarCampos
@@ -33,9 +32,11 @@ router.get('/desactivarNewsletter/:id/:vKey', auth.desactivarNewsletter); //Alic
 
 // Usuarios routes
 // Mario
-// [vJwt.validarJwt, midsUser.midUser]
-router.put('/users/updateuser', users.updateUser);
-router.get('/users/getinfouser/:id', auth.getInfoUser);
+router.put('/cambiarpasswd', [vJwt.validarJwt, midsUser.mismoUser, midsUser.midUser], auth.modContrasena);
+router.put('/users/updateuserperfil', [vJwt.validarJwt, midsUser.mismoUser, midsUser.midUser], users.updateUserPerfil);
+router.get('/users/getinfouser/:id', [vJwt.validarJwt, midsUser.midUser], auth.getInfoUser);
+router.get('/users/getinfousers', [vJwt.validarJwt, midsUser.midAdmin], users.getUsers);
+router.put('/users/updateuseradmin', [vJwt.validarJwt, midsUser.midAdmin], users.updateUserAdmin);
 
 // Contenido routes
 // Todo Alicia

@@ -55,8 +55,10 @@ export class AuthService {
       })
     };
 
+    const user = JSON.parse(localStorage.getItem('user')!);
     const passwds = {
-      id: JSON.parse(localStorage.getItem('user')!).id,
+      id: user.id,
+      codSeguridad: user.codSeguridad,
       passwd: passwd,
       passwdNueva: passwdNueva
     };

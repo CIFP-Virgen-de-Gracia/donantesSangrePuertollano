@@ -53,12 +53,16 @@ export class MenuComponent implements OnInit {
     })
 
     // Mario
-    this.intervalId = setInterval(() => {
-      this.authService.tokenExpirado.subscribe((expirado) => {
-        this.tokenExpirado = expirado;
-        console.log(this.tokenExpirado);
-      });
+    setInterval(() => {
+      this.checkExpirado();
     }, 350);
+  }
+
+
+  checkExpirado() {
+    this.authService.tokenExpirado.subscribe((expirado) => {
+      this.tokenExpirado = expirado;
+    });
   }
 
 

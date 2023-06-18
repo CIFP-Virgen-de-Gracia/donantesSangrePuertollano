@@ -5,14 +5,14 @@
       <ng-container *ngIf="codAccion == 0">
         <div class="mensaje-ok d-flex align-items-center justify-content-center">
           <i class="fa-solid fa-circle-check me-3"></i>
-          <p *ngIf="codAccion == 0">{{ mensaje }}</p>
+          <p *ngIf="codAccion == 0">{{ this.mensaje }}</p>
         </div>
       </ng-container>
 
       <ng-container *ngIf="codAccion == 1">
         <div class="mensaje-error d-flex align-items-center justify-content-center">
           <i class="fa-solid fa-triangle-exclamation me-3"></i>
-          <p *ngIf="codAccion == 1">Error al {{ mensaje }} la cita</p>
+          <p *ngIf="codAccion == 1">{{ this.mensaje }}</p>
         </div>
       </ng-container>
     </div>

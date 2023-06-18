@@ -15,8 +15,18 @@ const midAdmin = async (req, res, next) => {
 
 const midUser = async (req, res, next) => {
     if (await userCan(req, ['leer'])) {
-        next();                                                      
+        next();                                           
     } else {
+        return res.status(403).json({ msg: 'No estás autorizado' });
+    }
+}
+
+
+const mismoUser = async(req, res, next) => {
+    if (await queriesUsers.getMismoUser(req.idToken, req.body.codSeguridad) != null) {
+        next();
+    }
+    else {
         return res.status(403).json({ msg: 'No estás autorizado' });
     }
 }
@@ -24,5 +34,6 @@ const midUser = async (req, res, next) => {
 
 module.exports = {
     midAdmin,
-    midUser
+    midUser,
+    mismoUser
 }

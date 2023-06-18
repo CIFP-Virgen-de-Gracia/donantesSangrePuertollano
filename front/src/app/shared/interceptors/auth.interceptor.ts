@@ -20,7 +20,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
           const ahora = new Date();
 
-          this.authService.tokenExpirado.next(fechaExpiracion < ahora);
+          setTimeout(() => {
+            this.authService.tokenExpirado.next(fechaExpiracion < ahora);
+          }, 350);
         }
 
         return throwError(requestError)  as Observable<HttpEvent<unknown>>;

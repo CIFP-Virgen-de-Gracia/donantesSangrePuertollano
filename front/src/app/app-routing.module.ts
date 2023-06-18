@@ -9,6 +9,7 @@ import { GaleriaComponent } from './galeria/galeria.component';
 import { AvisoLegalComponent } from './paginas/aviso-legal/aviso-legal.component';
 import { TerminosUsoComponent } from './paginas/terminos-uso/terminos-uso.component';
 import { PoliticasCookiesComponent } from './paginas/politicas-cookies/politicas-cookies.component';
+import { UsuariosGuard } from './usuarios/guards/usuarios.guard';
 
 
 const routes: Routes = [
@@ -78,7 +79,9 @@ const routes: Routes = [
   },
   {
     path: 'usuarios',
-    loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)
+    loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
+    canMatch: [UsuariosGuard],
+    canActivate: [UsuariosGuard]
   },
   {
     path: '**',

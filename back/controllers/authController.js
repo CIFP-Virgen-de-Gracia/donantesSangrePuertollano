@@ -23,6 +23,7 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
             data: {
                 id: user.id,
                 nombre: user.nombre,
+                codSeguridad: user.codSeguridad,
                 token: generarJWT(user.id),
             },
             msg: 'logeado con éxito'
@@ -31,7 +32,6 @@ const login = (req, res = response) => { // traer y comparar aquí o traer y vol
         res.status(200).json(resp);
     }).catch(err => {
 
-        console.log(err);
         const resp = {
             success: false,
             msg: 'fallo en la autenticación',
@@ -75,7 +75,6 @@ const googleSignin = async (req, res = response) => {
         return res.status(200).json(resp);
     }
     catch (err) {
-        console.log(err);
         const resp = {
             success: false,
             msg: 'error en el registro'
@@ -95,11 +94,9 @@ const register = async (req, res = response) => { // poner código
     
         correo.mandarCorreoActivacion(vKey, resp.id, req.body.email, 'activarCorreo');
         res.status(201).json({ success: true, msg: 'registrado con éxito' });
-    
     } 
     catch (err) {
 
-        console.log(err);
         const msg = (err.name == 'SequelizeUniqueConstraintError')
             ? 'usuario ya registrado'
             : 'se ha producido un error';
@@ -216,7 +213,6 @@ const recuperarPasswd = async (req, res = response) => {
         const user = await queriesUsers.getUser(req.params.id);
 
         let resp = null;
-        console.log(user.codRecPasswd);
         if (req.body.cod == user.codRecPasswd) {
             const nuevaPasswd = genPasswd.generate();
             const nuevaPasswdHash = md5(nuevaPasswd);
@@ -303,10 +299,7 @@ const puedeModificar = async (req, res = response) => {
 const modContrasena = async(req, res = response) => {
 
     try {
-        console.log('asdfasdf');
-
         const id = await queriesUsers.getUserCambiarPasswd(req.body.id, req.body.passwd);
-        console.log('id => ' + id);
         if (id != null) {
             const respUp = await queriesUsers.updateUserPasswd(req.body.id, req.body.passwdNueva);
     
@@ -372,8 +365,3 @@ module.exports = {
     modContrasena
 
 }
-
-queriesUsers.userExiste(1, 'Mario Lo Tschibukai').then(existe => {
-    if (existe) console.log('asdf');
-    else console.log('posno');
-});

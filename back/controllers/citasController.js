@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const { Cita } = require('../models/Cita');
 const email = require('../helpers/mail');
 const queriesCitas = require('../database/queries/queriesCitas');
+const fechas = require('../helpers/fechas');
 const moment = require('moment');
 const sequelize = require('../database/ConexionSequelize');
 const queriesUsers = require('../database/queries/queriesUsers');
@@ -14,15 +15,9 @@ const fs = require('fs');
 const pedirCita = async(req, res = response) => {
     try {
 
-        console.log('empieza');
-        console.log(req.body.fecha);
-        console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
-        console.log('acaba');
-
         if (metodosFecha.horaEsMayor(req.body.fecha, moment().format('YYYY-MM-DD HH:mm:ss')) 
                 && metodosFecha.horaValida(req.body.fecha)) {
-                    console.log('fechAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-                    console.log(req.body.fecha);
+
                     const cita = {
                         fecha: moment(req.body.fecha, 'YYYY-MM-DD HH:mm:ss').add(1, 'hour'),
                         userId: req.body.id,
@@ -43,7 +38,6 @@ const pedirCita = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error adsf'});
     }
 }
@@ -117,7 +111,6 @@ const getCitasPendientes = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -133,7 +126,6 @@ const getCitasPasadas = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -178,7 +170,6 @@ const getHorasDisponibles = async(req, res = response) => {
             res.status(200).json({success: true, horas: horasDisponibles});
         }).catch(err => {
 
-            console.log(err);
             res.status(200).json({success: false, msg: 'se ha producido un error'});
         });
 }
@@ -342,9 +333,10 @@ const insertHoraCita = async(req, res = response) => {
         const horario = await queriesCitas.getHorarioDia(req.body.codDia);
         let valido = false;
 
+        const hNoRepetida = await fechas.horaCitaValida(req.body.hora, req.body.codDia);
+        
         horario.forEach(h => {
-            console.log(h.hEntrada + ' => ' + h.hSalida);
-            if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida) {
+            if (req.body.hora > h.hEntrada && req.body.hora < h.hSalida && hNoRepetida) {
                 valido = true;
                 return; // es un bucle muy sencillo. Si la hora proporcionada está entre la
                         // hora de entrada y de salida ya se puede insertar y me salgo del bucle.
@@ -352,19 +344,19 @@ const insertHoraCita = async(req, res = response) => {
         });
 
         if (valido) {
+
             const resp = await queriesCitas.insertHoraCita(req.body.codDia, req.body.hora);
     
-
             res.status(200).json({success: true, msg: 'hora insertada con éxito'});
         }
         else {
 
-            res.status(200).json({success: false, msg: 'hora no válida'});
+            res.status(200).json({success: false, cod: 1, msg: 'hora no válida'});
         }
     }
     catch (err) {
 
-        res.status(200).json({success: false, msg: 'se ha producido un error'});
+        res.status(200).json({success: false, cod: 2, msg: 'se ha producido un error'});
     }
 }
 
@@ -445,8 +437,6 @@ const getNumPersonasCita = async(req, res = response) => {
     }
     catch (err) {
 
-        console.log(err);
-
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
@@ -465,23 +455,7 @@ const updateNumPersonascita = async(req, res = response) => {
         res.status(200).json({success: false, msg: 'se ha producido un error'});
     }
 }
-//Isa
-// const getUltimaCita = async(req, res = response) => {
-//     queriesCitas.getUltimaCita(req.params.id).then((respuesta) => {
-//         res.status(200).json({
-//             success: true,
-//             data: respuesta,
-//             msg: 'Obtenida'
-//         });
-//     }).catch((err) => {
-//        console.log(err);
-//         res.status(203).json({
-//             success: false,
-//             data: null,
-//             msg: 'No se ha podido obtener'
-//         });
-//     });
-// }
+
 
 
 module.exports = {
