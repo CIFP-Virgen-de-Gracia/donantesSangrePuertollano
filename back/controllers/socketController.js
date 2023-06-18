@@ -2,10 +2,10 @@
 const jwt = require('jsonwebtoken');
 const userCan = require('../helpers/rolesAbilities');
 const statsController = require('./statsController');
+const contenidoController = require('./contenidoController');
 const { getArrayRoles } = require('../helpers/getRelaciones');
 const queriesChat = require("../database/queries/queries-chat");
 const queriesUsers = require('../database/queries/queriesUsers');
-
 const listaBloqueados = []; //Se emplea para poder almacenar la sala de los bloqueados y su id.
 const listUserWithId = []; // La uso para poder almacenar la sala y el id de los usuarios.
 const connectedUsers = []; // Lista de usuarios conectados en ese momento al chat.
@@ -257,6 +257,19 @@ const socketController = (socket) => {
       callback(resp);
 
       socket.broadcast.emit('insertar-altas', resp);
+
+    } else callback({ sucess: false, msg: 'No autorizado' });
+  });
+
+  socket.on('insertar-cargo', async (payload, callback) => {
+    const user = JSON.parse(socket.handshake.query.payload);
+
+    if (validarToken(user.token) != -1 && await validarRol(user)) {
+      
+      const resp = await contenidoController.insertCargo(payload);
+      callback(resp);
+
+      socket.broadcast.emit('insertar-cargo', resp);
 
     } else callback({ sucess: false, msg: 'No autorizado' });
   });

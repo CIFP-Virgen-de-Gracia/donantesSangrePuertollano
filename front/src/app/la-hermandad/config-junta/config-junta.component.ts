@@ -1,4 +1,5 @@
 import { NgForm } from '@angular/forms';
+import { WebsocketService } from '../services/websocket.service';
 import { LaHermandadService } from '../services/la-hermandad.service';
 import { Cargo, Integrante, MensajeInf } from '../interfaces/la-hermandad.interface';
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
@@ -11,18 +12,21 @@ import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular
 export class ConfigJuntaComponent {
 
   @ViewChild('closeModalInt') closeModalInt!: ElementRef;
-  @ViewChild('closeModalCargo') closeModalCargo!: ElementRef;
   @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
-  cargos: Cargo[] = [];
   infoInt!: Integrante;
   junta: Integrante[] = [];
   accion: string = '';
   acciones = ['añadir', 'editar', 'eliminar'];
 
 
-  constructor(private hermandadService: LaHermandadService) {
+  constructor(private hermandadService: LaHermandadService, private socketService: WebsocketService) {
     this.limpiarIntegrante();
+  }
+
+
+  get cargosService() {
+    return this.hermandadService.cargos;
   }
 
 
@@ -30,11 +34,6 @@ export class ConfigJuntaComponent {
     this.hermandadService.getIntegrantesCargo()
       .subscribe(resp => {
         if (resp.success) this.junta = resp.data;
-      });
-
-    this.hermandadService.getCargosJunta()
-      .subscribe(resp => {
-        if (resp.success) this.cargos = resp.data;
       });
   }
 
@@ -53,7 +52,7 @@ export class ConfigJuntaComponent {
 
   insertOrUpdateIntegranteJunta(form: NgForm) {
     console.log(this.infoInt)
-    const idCargo = this.cargos.find(c => c.nombre == this.infoInt.cargo);
+    const idCargo = this.cargosService.find(c => c.nombre == this.infoInt.cargo);
     if (idCargo) this.infoInt.idCargo = idCargo.id;
 
     this.hermandadService.insertOrUpdateIntegranteJunta(this.infoInt)

@@ -213,12 +213,11 @@ const insertOrUpdateDir = async (req, res = response) => {
 }
 
 
-const insertCargo = async (req, res = response) => { 
+const insertCargo = async (payload) => { 
     let resp = { success: false, msg: 'Se ha producido un error' };
 
     try {
-
-        const cargo = await queriesContenidos.insertCargo(req.body);
+        const cargo = await queriesContenidos.insertCargo(payload);
        
         if (cargo) {
             resp = {
@@ -228,11 +227,9 @@ const insertCargo = async (req, res = response) => {
             }
         }
 
-        res.status(200).json(resp);
+    } catch (err) {}
 
-    } catch (err) {
-        res.status(200).json(resp);
-    }
+    return resp;
 }
 
 

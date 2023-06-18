@@ -3,7 +3,7 @@
   <h3 class="titulo">Cargos</h3>
 
   <div class="contenedor-cargos">
-    <div class="cargo row gx-0" *ngFor="let cargo of cargos; let i = index">
+    <div class="cargo row gx-0" *ngFor="let cargo of cargosService; let i = index">
 
       <input type="text" class="nombre col-12 col-md-5 f-rojo" value="Nombre" readonly="readonly">
 
@@ -40,10 +40,10 @@
       <form (ngSubmit)="formCargo.form.valid && insertCargo(formCargo)" novalidate #formCargo="ngForm">
         <div class="modal-body">
           <label for="cargo-nuevo">Nombre</label>
-          <input type="text" class="form-control" name="nombreCargo" [(ngModel)]="infoCargo.nombre"
-            #nombreCargo="ngModel" placeholder="Introduce el nombre del cargo nuevo" required/>
+          <input type="text" class="form-control" name="nombre" [(ngModel)]="infoCargo.nombre"
+            #nombre="ngModel" placeholder="Introduce el nombre del cargo nuevo" required/>
 
-          <p class="mensaje-error" *ngIf="formCargo.submitted && nombreCargo?.errors?.['required']">
+          <p class="mensaje-error" *ngIf="formCargo.submitted && nombre?.errors?.['required']">
             El nombre es obligatorio.
           </p>
         </div>

@@ -1,10 +1,8 @@
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Cargo, CargosResponse, Historia, HistoriaResponse, CargoInsertResponse, IntDeleteResponse, Integrante, IntsJuntaResponse, IntUpdateInsertResponse, CargoDeleteResponse } from '../interfaces/la-hermandad.interface';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +11,15 @@ import { Cargo, CargosResponse, Historia, HistoriaResponse, CargoInsertResponse,
 export class LaHermandadService {
 
   baseUrl = `${environment.baseUrl}/api`;
+  cargos: Cargo[] = [];
 
 
   constructor(private http: HttpClient) { }
+
+
+  addCargo(cargo: Cargo) {
+    this.cargos.push(cargo);
+  }
 
 
   getHistoria(): Observable<HistoriaResponse> {
@@ -39,7 +43,8 @@ export class LaHermandadService {
 
 
   getCargosJunta(): Observable<CargosResponse> {
-    return this.http.get<CargosResponse>(`${this.baseUrl}/getCargosJunta`);
+    return this.http.get<CargosResponse>(`${this.baseUrl}/getCargosJunta`)
+      .pipe(tap(resp => { if (resp.success) { this.cargos = resp.data } }));
   }
 
 
@@ -69,7 +74,8 @@ export class LaHermandadService {
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.delete<CargoDeleteResponse>(`${this.baseUrl}/deleteCargo/${id}`, header);
+    return this.http.delete<CargoDeleteResponse>(`${this.baseUrl}/deleteCargo/${id}`, header)
+      .pipe(tap(resp => { if (resp.success) this.cargos.splice(this.cargos.findIndex(c => c.id == resp.data), 1) }));
   }
 
 

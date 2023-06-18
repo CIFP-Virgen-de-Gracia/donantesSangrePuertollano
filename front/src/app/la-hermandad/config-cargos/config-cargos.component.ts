@@ -1,4 +1,5 @@
 import { NgForm } from '@angular/forms';
+import { WebsocketService } from '../services/websocket.service';
 import { LaHermandadService } from '../services/la-hermandad.service';
 import { Cargo, MensajeInf } from '../interfaces/la-hermandad.interface';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
@@ -13,54 +14,49 @@ export class ConfigCargosComponent implements OnInit {
   @ViewChild('closeModalCargo') closeModalCargo!: ElementRef;
   @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
-  cargos: Cargo[] = [];
+  //cargos: Cargo[] = [];
   infoCargo!: Cargo;
   accion: string = '';
   acciones = ['añadir', 'editar', 'eliminar'];
 
 
-  constructor(private hermandadService: LaHermandadService) {
+  constructor(private hermandadService: LaHermandadService,  private socketService: WebsocketService) {
     this.limpiarCargo();
   }
 
 
+  get cargosService() {
+    return this.hermandadService.cargos;
+  }
+
+
   ngOnInit() {
-    this.hermandadService.getCargosJunta()
-      .subscribe(resp => {
-        if (resp.success) this.cargos = resp.data;
-      });
+    this.hermandadService.getCargosJunta().subscribe();
   }
 
 
   insertCargo(form: NgForm) {
-    this.hermandadService.insertCargo(this.infoCargo)
-      .subscribe(resp => {
+    this.socketService.emitEventInsertarCargo(form.value)
+        .then(resp => {
 
-        if (resp.success) {
+          if (resp.success) this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
+          else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
 
-          this.cargos.push(resp.data);
-          this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
-
-        } else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
-
-        this.closeModalCargo.nativeElement.click();
-        form.resetForm();
-      })
+          this.closeModalCargo.nativeElement.click();
+          form.resetForm();
+        });
   }
 
 
   deleteCargo(index: number) {
-    const cargo = this.cargos[index];
+    const cargo = this.cargosService[index];
 
     if (cargo) {
       this.hermandadService.deleteCargo(cargo.id)
       .subscribe(resp => {
 
-        if (resp.success) {
-          this.cargos.splice(this.cargos.findIndex(c => c.id == resp.data), 1);
-          this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
-
-        } else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
+        if (resp.success) this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
+        else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
       });
     }
   }

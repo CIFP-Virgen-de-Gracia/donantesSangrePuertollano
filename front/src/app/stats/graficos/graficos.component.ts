@@ -46,13 +46,13 @@ export class GraficosComponent implements OnInit {
   constructor(private statsService: StatsService, private socketService: WebsocketService) {
     Chart.register(...registerables);
 
-    socketService.insertarDonacion.subscribe(resp => {
+    this.socketService.insertarDonacion.subscribe(resp => {
       const donacion = this.crearDonacionMostrar(resp.data);
       this.donacionesMostrar.push(donacion);
       this.actualizarDonaciones(donacion);
-    })
+    });
 
-    socketService.insertarAltas.subscribe(resp => {
+    this.socketService.insertarAltas.subscribe(resp => {
       const altas: Alta[] = resp.data;
       const altasMostrar: AltaMostrar[] = [];
 

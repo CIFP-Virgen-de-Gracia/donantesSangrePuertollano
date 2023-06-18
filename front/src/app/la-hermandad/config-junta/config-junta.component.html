@@ -49,7 +49,7 @@
             <select name="cargo" id="cargos" class="cargos form-select"
               [(ngModel)]="infoInt.cargo" #cargo="ngModel" required >
               <option disabled selected>Selecciona un cargo</option>
-              <option value="{{ cargo.nombre }}" *ngFor="let cargo of cargos">{{ cargo.nombre }}</option>
+              <option value="{{ cargo.nombre }}" *ngFor="let cargo of cargosService">{{ cargo.nombre }}</option>
             </select>
 
             <p class="mensaje-error" *ngIf="formIntegrante.submitted && cargo?.errors?.['required']">
