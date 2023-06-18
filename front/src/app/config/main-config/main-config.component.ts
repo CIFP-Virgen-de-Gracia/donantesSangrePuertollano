@@ -36,6 +36,10 @@ export class MainConfigComponent {
     {
       nombre: "citas",
       icono: "fa-calendar"
+    },
+    {
+      nombre: "chat",
+      icono: "fa-comments"
     }
   ];
 

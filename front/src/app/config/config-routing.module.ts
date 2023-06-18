@@ -8,6 +8,7 @@ import { HorariosConfigComponent } from './horarios-config/horarios-config.compo
 import { ConfigMainComponent } from '../la-hermandad/config-main/config-main.component';
 import { ConfigTfnosComponent } from '../telefonos/config-tfnos/config-tfnos.component';
 import { ConfigDireccionesComponent } from '../direcciones/config-direcciones/config-direcciones.component';
+import { ChatConfigComponent } from './chat-config/chat-config.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'himno', component: HimnoConfigComponent }, //Isa
       { path: 'test-apto', component: TestConfigComponent},
       { path: 'faq', component: FaqsConfigComponent },
+      { path: 'chat', component: ChatConfigComponent },
       { path: '**', redirectTo: 'hermandad' }
     ]
   }

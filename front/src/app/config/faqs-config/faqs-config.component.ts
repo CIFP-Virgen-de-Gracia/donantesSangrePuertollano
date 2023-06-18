@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { ConfigService } from '../services/config.service';
 import { Check, Faq } from '../interfaces/config.interface';
 
@@ -7,7 +7,7 @@ import { Check, Faq } from '../interfaces/config.interface';
   templateUrl: './faqs-config.component.html',
   styleUrls: ['./faqs-config.component.scss']
 })
-export class FaqsConfigComponent {
+export class FaqsConfigComponent implements OnInit {
   listaFaq: string[];
   idEditado: string;
   faqEditar:Faq;
