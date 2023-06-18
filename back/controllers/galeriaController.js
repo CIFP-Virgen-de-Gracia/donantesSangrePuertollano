@@ -67,11 +67,16 @@ const mandarCorreoAdministradores = (req = request, res = response) => {
             const pathImagen = path.join(__dirname, '../uploads', 'peticion_galeria', imagen.nombre);
             if (fs.existsSync(pathImagen)) {
                     queriesUsers.getUser(imagen.propietario).then(usuario => {
-                    
+                    let descripcion = `Su descripcion es: <strong>${(imagen.descripcion)}</strong>.`;
+                    if(imagen.descripcion == null){
+                        descripcion = "Usted no ha puesto ninguna descripcion.";
+                    }
                     const contenido = {
                         asunto: 'Peticion de subida de foto',
                         cuerpoHtml: `
-                            El usuario <strong>${(usuario.nombre)}</strong> ha pedido la subida de una foto.`,
+                            El usuario <strong>${(usuario.nombre)}</strong> ha pedido la subida de una foto.
+                            ${(descripcion)}.
+                            Para saber mas de ello visita a la pagina de donantes de sangre <a href="http://localhost:4200/notificacion">Pincha Aqui</a>`,
                         foto: imagen.nombre,
                         idFoto: imagen.id,
                         propietario: imagen.propietario
@@ -122,7 +127,7 @@ const mandarCorreoAceptacion = (req = request, res = response) => {
                 queriesUsers.getEmailById(imagen.propietario).then(correo_usuario => {
                     queriesUsers.getUser(imagen.propietario).then((usuario) => {
                         let descripcion = `Su descripcion es: <strong>${(imagen.descripcion)}</strong>.`;
-                        if(descripcion == null){
+                        if(imagen.descripcion == null){
                             descripcion = "Usted no ha puesto ninguna descripcion.";
                         }
                         const contenido = {
@@ -161,7 +166,7 @@ const mandarCorreoRechazo = (req = request, res = response) => {
                 queriesUsers.getEmailById(imagen.propietario).then(correo_usuario => {
                     queriesUsers.getUser(imagen.propietario).then((usuario) => {
                         let descripcion = `Su descripcion es: <strong>${(imagen.descripcion)}</strong>.`;
-                        if(descripcion == null){
+                        if(imagen.descripcion == null){
                             descripcion = "Usted no ha puesto ninguna descripcion.";
                         }
                         const contenido = {

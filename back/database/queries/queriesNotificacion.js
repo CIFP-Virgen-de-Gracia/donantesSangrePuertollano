@@ -6,6 +6,7 @@ const models = require('../../models/index.js');
 const assets = require('../../helpers/irAssets');
 const queriesUsers = require('./queriesUsers');
 const queries_Galeria = require('./queriesGaleria');
+const Sequelize = require('sequelize');
 //Todo Alejandro
 class Queries_Notificacion {
 
@@ -15,7 +16,6 @@ class Queries_Notificacion {
     getNotificaciones = async() => {
         this.sequelize.conectar();
         let resultado = [];
-
         try {
             resultado = await models.Notificacion.findAll();
             this.sequelize.desconectar();
@@ -38,9 +38,25 @@ class Queries_Notificacion {
                 include: [
                     {
                         model: models.PeticionesGaleria,
-                        attributes: ['nombre', 'propietario']
+                        attributes: [],
+                        include: [
+                            {
+                                model: models.User,
+                                attributes: []
+                            }
+                        ]
                     }
-                ]
+                ],
+                order: [['createdAt', 'DESC']],
+
+                attributes: ["id", "titulo", "mensaje", "galeriaPeticionID", "idUsuarioRegistrado", 
+                "idUsuarioAdministrador","leido", "createdAt", 
+                [Sequelize.col('PeticionesGalerium.propietario'), 'propietario'],
+                [Sequelize.col('PeticionesGalerium.nombre'), 'nombreImagen'],
+                [Sequelize.col('PeticionesGalerium.descripcion'), 'descripcionImagen'],
+                [Sequelize.col('PeticionesGalerium.verificado'), 'verificadoImagen'],
+                [Sequelize.col('PeticionesGalerium.aceptado_rechazado'), 'aceptado_rechazadoImagen'],
+                [Sequelize.col('PeticionesGalerium.User.nombre'), 'nombrePropietarioUser']]
                 
             });
             console.log(notificacionesAdministrador.length);
@@ -51,9 +67,24 @@ class Queries_Notificacion {
                 include: [
                     {
                         model: models.PeticionesGaleria,
-                        attributes: ['nombre', 'propietario']
+                        attributes: [],
+                        include: [
+                            {
+                                model: models.User,
+                                attributes: []
+                            }
+                        ]
                     }
-                ]
+                ],
+                order: [['createdAt', 'DESC']],
+                attributes: ["id", "titulo", "mensaje", "galeriaPeticionID", "idUsuarioRegistrado", 
+                "idUsuarioAdministrador","leido", "createdAt", 
+                [Sequelize.col('PeticionesGalerium.propietario'), 'propietario'],
+                [Sequelize.col('PeticionesGalerium.nombre'), 'nombreImagen'],
+                [Sequelize.col('PeticionesGalerium.descripcion'), 'descripcionImagen'],
+                [Sequelize.col('PeticionesGalerium.verificado'), 'verificadoImagen'],
+                [Sequelize.col('PeticionesGalerium.aceptado_rechazado'), 'aceptado_rechazadoImagen'],
+                [Sequelize.col('PeticionesGalerium.User.nombre'), 'nombrePropietarioUser']]
             })
             console.log(notificacionesRegistrado.length);
             if(notificacionesAdministrador.length == 0){
@@ -178,7 +209,7 @@ class Queries_Notificacion {
         return data;
     }
 
-    putNotificacionLeida = async(idNotificacion) => {
+    putNotificacionLeida = async(idNotificacion, verdadero) => {
         this.sequelize.conectar();
         try{
             const notificacion = await models.Notificacion.findByPk(idNotificacion);
@@ -193,7 +224,7 @@ class Queries_Notificacion {
                 
             }
             if(notificacion.leido == false){
-                notificacion.leido = true;
+                notificacion.leido = verdadero;
                 await notificacion.save();
                 usuario.notificacion = usuario.notificacion - 1;
                 await usuario.save();
@@ -210,28 +241,10 @@ class Queries_Notificacion {
     borrarNotificacion = async(idNotificacion) => {
         this.sequelize.conectar();
         
-        // if (!notificacion) {
-        //     this.sequelize.desconectar();
-        //     throw error;
-        // }
-        // const respNotificacion = await notificacion.destroy();
-        // this.sequelize.desconectar();
-        // return respNotificacion;
         try{
             const notificacion = await models.Notificacion.findByPk(idNotificacion);
-            if(notificacion.leido == false){
-                let usuario = null;
-                if(notificacion.idUsuarioRegistrado == null){
-                    usuario = await models.User.findByPk(notificacion.idUsuarioAdministrador);
-                    
-                }
-                else{
-                    usuario = await models.User.findByPk(notificacion.idUsuarioRegistrado);
-                    
-                }
-                usuario.notificacion = usuario.notificacion - 1;
-                await usuario.save();
-            }
+            
+            
             await notificacion.destroy();
             this.sequelize.desconectar();
             return notificacion;

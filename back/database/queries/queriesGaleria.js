@@ -158,8 +158,6 @@ class Queries_Galeria {
             // if(fs.existsSync(pathImagenFront)) {
             //     fs.unlinkSync(pathImagenFront);
             // }
-            console.log(path_old_Imagen);
-            console.log(path_new_Imagen);
             if (fs.existsSync(path_old_Imagen)) {
                 fs.copyFileSync(path_old_Imagen, path_new_Imagen);
                 
@@ -201,8 +199,10 @@ class Queries_Galeria {
 
                 const path_old_Imagen = path.join(__dirname, '../../uploads', "peticion_galeria", peticion_galeria["nombre"]);
                 const path_new_Imagen = path.join(__dirname, '../../uploads/peticion_galeria', "rechazadas", peticion_galeria["nombre"])
-                fs.renameSync(path_old_Imagen, path_new_Imagen);
-                assets.copiarAssests('peticion_galeria/rechazadas', 'peticion_galeria/rechazadas', peticion_galeria["nombre"]);
+                if (fs.existsSync(path_old_Imagen)) {
+                    fs.copyFileSync(path_old_Imagen, path_new_Imagen);
+                    assets.copiarAssests('peticion_galeria/rechazadas', 'peticion_galeria/rechazadas', peticion_galeria["nombre"]);
+                }
             }catch(err){
                 throw err;
             }
