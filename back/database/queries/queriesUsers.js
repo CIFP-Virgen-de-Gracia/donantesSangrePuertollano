@@ -5,6 +5,8 @@ const { Op, where } = require('sequelize');
 const { getArrayCitas } = require('../../helpers/getRelaciones');
 // const { use } = require('../../routes/routes');
 const models = require('../../models/index.js');
+const crypto = require('crypto');
+const { UserRefreshClient } = require('google-auth-library');
 
 class QueriesUsers {
     
@@ -55,12 +57,30 @@ class QueriesUsers {
 
     //Mario
     getUser = async(id) => {
-        this.sequelize.conectar();
-
         const user = await models.User.findByPk(id);
 
-        this.sequelize.desconectar();
         return user.dataValues;
+    }
+
+
+    //Mario
+    getUsers = async() => {
+        const users = await models.User.findAll();
+
+        return users;
+    }
+
+
+    //Mario
+    getMismoUser = async(id, codSeguridad) => {
+        const user = await models.User.findOne({
+            where: {
+                id: id,
+                codSeguridad: codSeguridad
+            }
+        });
+
+        return user;
     }
 
 
@@ -73,6 +93,8 @@ class QueriesUsers {
         this.sequelize.desconectar();
         return user;
     }
+
+
     //Mario
     userExiste = async(id) => {
 
@@ -98,7 +120,7 @@ class QueriesUsers {
         const id = await this.getIdEmail(email);
 
         const user = await models.User.findOne({
-            attributes: ['id', 'nombre'],
+            attributes: ['id', 'nombre', 'codSeguridad'],
             where : {
                 id: id.id,
                 passwd: passwd
@@ -185,7 +207,8 @@ class QueriesUsers {
             const resp = await models.User.create({
                 id: id,
                 nombre: nombre,
-                passwd: passwd
+                passwd: passwd,
+                codSeguridad: crypto.randomUUID()
             });
 
             const resp1 = await models.RolUser.create({
@@ -348,23 +371,28 @@ class QueriesUsers {
 
 
     //Mario
-    updateUser = async(id, datosUser) => {
+    updateUserAdmin = async(id, datosUser) => {
         let user = await models.User.findByPk(id);
         let updateUser = {};
 
-        for (const [key, value] of Object.entries(datosUser)) {
-            console.log(key + ' => ' + value);
-            if (value != null) updateUser[key] = value;
-        }
+        user.gSanguineo = datosUser.gSanguineo;
+        user.nDonante = datosUser.nDonante;
 
-        console.log('asdfasdfasdfasdfasdfasdf');
-        console.log(updateUser);
-        const resp = await user.update(updateUser);
+        const resp = await user.save();
 
         return resp;
     }
 
+    updateUserPerfil = async(id, datosUser) => {
+        let user = await models.User.findByPk(id);
 
+        user.dni = datosUser.dni;
+        user.nombre = datosUser.nombre;
+
+        const resp = await user.save();
+
+        return resp;
+    }
 
     //Mario
     updateCodRecPasswd = async(id, cod) => {
@@ -552,33 +580,3 @@ class QueriesUsers {
 const queriesUsers = new QueriesUsers();
 
 module.exports = queriesUsers;
-
-const a = {
-    gSanguineo: 'A+',
-    dni: '05937787S'
-}
-
-// queriesUsers.getUserInfo(1).then(console.log);
-
-
-// return await models.Email.findAll(
-        //     {
-        //     include: [
-        //         {
-        //             model: models.User,
-        //             attributes: ['id'],
-        //             as: 'User',
-        //             include: [
-        //                 {
-        //                     model: models.RolUser,
-        //                     attributes: ['idRol'],
-        //                     as: 'Roluser'
-        //                 }
-        //             ]
-        //         }
-        //     ],
-        //     attributes: ['email', 'nombre', [Sequelize.col('CargoIntegrante.CargoJunta.nombre'), 'cargo'],
-        //         [Sequelize.col('CargoIntegrante.CargoJunta.id'), 'idCargo']]
-            
-        // }
-        // )

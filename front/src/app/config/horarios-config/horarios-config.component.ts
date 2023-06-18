@@ -233,7 +233,11 @@ export class HorariosConfigComponent {
       const datos = this.citasForm.value;
       const horarios = this.crearHorarioGuardar(datos.horarios);
 
+<<<<<<< HEAD
+      this.ConfigService.updateContacto(datos.direcciones, tlfns)
+=======
       this.ConfigService.updateContacto(datos.direcciones, horarios)
+>>>>>>> develop
         .subscribe({
           next: (resp) => {
 
@@ -364,14 +368,9 @@ export class HorariosConfigComponent {
 
     this.citasService.insertHoraCita(this.diaSeleccionado, horaAnadir + ':00').subscribe(resp => {
 
-      if (resp.success) {
-        // this.horas.push(this.time.hour + ':' + this.time.minute);
-        // this.horas.sort((a, b) => {
-        //   const time1 = new Date("1970-01-01T" + a + ":00Z");
-        //   const time2 = new Date("1970-01-01T" + b + ":00Z");
+      console.log(resp);
 
-        //   return time1.getTime() - time2.getTime();
-        // });
+      if (resp.success) {
 
         this.traerHoras().subscribe(() => {
 
@@ -381,7 +380,8 @@ export class HorariosConfigComponent {
       else {
 
         this.codAccion = 1;
-        this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+        if (resp.cod == 2) this.mensaje = "Se ha producido un error. Inténtalo más tarde.";
+        if (resp.cod == 1) this.mensaje = 'Esta hora ya está insertada'
         this.setTimer(4000);
       }
     });

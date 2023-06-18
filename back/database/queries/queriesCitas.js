@@ -33,7 +33,6 @@ const getNumCitasHora = async(fecha) => {
         where: {fecha: fecha}
     });
 
-    console.log(n);
     return n;
 }
 
@@ -88,6 +87,20 @@ const getHorarioCitas = async() => {
     
     return diasHoras;
 }
+
+
+const getHoraCitaDia = async(codDia) => {
+
+    const horas = await models.DiaHora.findAll({
+        attributes: ['hora'],
+        where: {
+            codDia: codDia
+        }
+    });
+
+    return horas;
+}
+
 
 // const getHorarioCitas = async(dia) => {
 
@@ -276,7 +289,6 @@ const updateNumPersonasCita = async(nPersonas) => {
 
 
 const insertHoraCita = async(codDia, hora) => {
-    console.log(codDia, hora);
     const resp = models.DiaHora.create({
         codDia: codDia,
         hora: hora
@@ -326,6 +338,7 @@ const getNumPersCita = async() => {
 module.exports = {
     getCitasFechaHora,
     getHorarioCitas,
+    getHoraCitaDia,
     getNumCitasHora,
     getNumCitasPendientesUser,
     getCitaPendienteUser,

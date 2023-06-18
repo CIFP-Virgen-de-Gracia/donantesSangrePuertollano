@@ -69,10 +69,27 @@ const horaValida = async(fecha) => {
 }
 
 
+const horaCitaValida = async(hora, codDia) => {
+
+    const horas = await queriesCitas.getHoraCitaDia(codDia);
+    let valida = true;
+
+    horas.forEach(h => {
+        if (h.hora == hora) {
+            valida = false;
+            return
+        }
+    });
+
+    return valida;
+}
+
+
 module.exports = {
     colocarFecha,
     colocarHora,
     horaEsMayor,
     horaValida,
+    horaCitaValida
     // comprobarHoraFecha
 }
