@@ -14,7 +14,6 @@ export class ConfigCargosComponent implements OnInit {
   @ViewChild('closeModalCargo') closeModalCargo!: ElementRef;
   @Output() mensaje: EventEmitter<MensajeInf> = new EventEmitter<MensajeInf>();
 
-  //cargos: Cargo[] = [];
   infoCargo!: Cargo;
   accion: string = '';
   acciones = ['añadir', 'editar', 'eliminar'];
@@ -37,14 +36,14 @@ export class ConfigCargosComponent implements OnInit {
 
   insertCargo(form: NgForm) {
     this.socketService.emitEventInsertarCargo(form.value)
-        .then(resp => {
+      .then(resp => {
 
-          if (resp.success) this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
-          else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
+        if (resp.success) this.mensaje.emit({ exito: true, msg: `Éxito al ${this.accion} el cargo`});
+        else this.mensaje.emit({ exito: false, msg: `Error al ${this.accion} el cargo`});
 
-          this.closeModalCargo.nativeElement.click();
-          form.resetForm();
-        });
+        this.closeModalCargo.nativeElement.click();
+        form.resetForm();
+      });
   }
 
 

@@ -304,7 +304,7 @@ deleteIntegranteJunta = async (id) => {
   try {
 
     const integrante = await models.IntegranteJunta.destroy({ where: { id: id } });
-    console.log(integrante)
+
     if (integrante == 1) {
       const cargoInt = await models.CargoIntegrante.destroy({ where: { idIntegrante: id } });
 

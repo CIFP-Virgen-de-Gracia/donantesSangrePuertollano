@@ -11,8 +11,6 @@ const updateUser = (req, res = response) => {
 
         if (userHelper.dniValido(infoUser.dni) && userHelper.gSanguineoValido(infoUser.gSanguineo)) {
 
-            console.log(req.body.id + ' => id');
-            console.log(infoUser);
             const resp = queriesUsers.updateUser(req.body.id, infoUser);
     
             res.status(201).json({success: true, msg: 'actualizado con éxito'});

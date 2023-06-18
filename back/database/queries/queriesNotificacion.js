@@ -15,7 +15,7 @@ class Queries_Notificacion {
     getNotificaciones = async() => {
         this.sequelize.conectar();
         let resultado = [];
-        console.log("HOLAAA");
+
         try {
             resultado = await models.Notificacion.findAll();
             this.sequelize.desconectar();

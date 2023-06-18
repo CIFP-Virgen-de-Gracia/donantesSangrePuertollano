@@ -11,7 +11,7 @@ const queriesQr = require("../database/queries/queries-qr");
            msg: 'Obtenida'
         });
     }).catch((err) => {
-       console.log(err);
+
         res.status(203).json({
            success: false,
            data: null,

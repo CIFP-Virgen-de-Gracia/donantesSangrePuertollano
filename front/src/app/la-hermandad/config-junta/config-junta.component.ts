@@ -51,7 +51,7 @@ export class ConfigJuntaComponent {
 
 
   insertOrUpdateIntegranteJunta(form: NgForm) {
-    console.log(this.infoInt)
+
     const idCargo = this.cargosService.find(c => c.nombre == this.infoInt.cargo);
     if (idCargo) this.infoInt.idCargo = idCargo.id;
 

@@ -17,7 +17,7 @@ const conectarChat = (socket, data, callback) => {
 
     if (Object.keys(data["payload"]).length === 0) {
       if (!connectedUsers.includes(user.nombre)) {
-        console.log(1);
+
         socket.join(salaChat);
         listUserWithId.push({ id: socket.id, idUser: user.id, nombre: user.nombre });
         connectedUsers.push(user.nombre);
@@ -169,7 +169,7 @@ const socketController = (socket) => {
 
   socket.on('borrarMensaje', async (datos, callback) => {
     const user = JSON.parse(socket.handshake.query.payload);
-    console.log(datos);
+
     if (validarToken(user.token) != -1 && await validarRol(user)) {
 
       queriesChat.borrarMensaje(datos).then((respuesta) => {
@@ -187,7 +187,7 @@ const socketController = (socket) => {
     if (validarToken(user.token) != -1 && await validarRol(user)) {
 
       queriesChat.actulizarEstadoUsuario(datos, 0).then((respuesta) => {
-        console.log(respuesta);
+
         callback(respuesta);
         for (let i = 0; i < listaBloqueados.length; i++) {
           if (datos.includes(listaBloqueados[i].idUser.toString())) {

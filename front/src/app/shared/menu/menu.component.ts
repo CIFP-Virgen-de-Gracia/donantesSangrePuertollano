@@ -56,7 +56,6 @@ export class MenuComponent implements OnInit {
     this.intervalId = setInterval(() => {
       this.authService.tokenExpirado.subscribe((expirado) => {
         this.tokenExpirado = expirado;
-        console.log(this.tokenExpirado);
       });
     }, 350);
   }
