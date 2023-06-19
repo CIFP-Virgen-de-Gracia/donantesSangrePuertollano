@@ -210,7 +210,7 @@ const insertHorarios = async (req, res = response) => {
         res.status(200).json(resp);
 
     } catch (err) {
-        console.log(err)
+        
         res.status(200).json(resp);
     }
 }
@@ -218,16 +218,24 @@ const insertHorarios = async (req, res = response) => {
 
 const updateHorarios = async (req, res = response) => { 
     let resp = { success: false, msg: 'Se ha producido un error' };
-
+    let promesas = [];
+    const hGuardar = req.body.hGuardar;
+    const hBorrar = req.body.hBorrar;
+    
     try {
 
-        let promesas = [];
-        for (let i = 0; i < req.body.length; i++) { 
-            promesas.push(() => queriesContenidos.updateHorario(req.body[i]));
+        for (let i = 0; i < hGuardar.length; i++) { 
+            promesas.push(() => (hGuardar[i].id == -1)
+                ? queriesContenidos.insertHorario(hGuardar[i])
+                : queriesContenidos.updateHorario(hGuardar[i]));
+        }
+
+        for (let i = 0; i < hBorrar.length; i++) { 
+            promesas.push(() => (queriesContenidos.deleteHorario(hBorrar[i])));
         }
 
         let horarios = await Promise.all(promesas.map(p => p()));
-       
+
         if (horarios) {
             resp = {
                 success: true,
@@ -239,7 +247,7 @@ const updateHorarios = async (req, res = response) => {
         res.status(200).json(resp);
 
     } catch (err) {
-        console.log(err)
+        
         res.status(200).json(resp);
     }
 }

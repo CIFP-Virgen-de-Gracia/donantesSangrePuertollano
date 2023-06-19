@@ -30,13 +30,15 @@ export class HorariosService {
   }
 
 
-  updateHorarios(horarios: Horario[]): Observable<HorarioResponse> {
+  updateHorarios(hGuardar: Horario[], hBorrar: number[]): Observable<HorarioResponse> {
     const header = { headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'x-token': JSON.parse(localStorage.getItem('user')!).token
     })};
 
-    return this.http.put<HorarioResponse>(`${this.baseUrl}/updateHorarios`, horarios, header);
+    return this.http.put<HorarioResponse>(`${this.baseUrl}/updateHorarios`,
+      { hGuardar: hGuardar, hBorrar: hBorrar }, header
+    );
   }
 
 

@@ -21,7 +21,7 @@ export class HorariosConfigComponent {
 
   // Alicia
   horarioForm: FormGroup;
-  infoHorario!: Horario;
+  infoHorario!: HorarioMostrar;
   horariosData: Horario[] = [];
   horariosMostrar!: HorarioMostrar[];
   exito: boolean = false;
@@ -31,6 +31,7 @@ export class HorariosConfigComponent {
   accion: string = '';
   acciones = ['añadir', 'editar', 'eliminar'];
   mensaje: string = '';
+  indexHorario: number = -1;
 
   //Mario
   divCount = 0;
@@ -69,6 +70,11 @@ export class HorariosConfigComponent {
   ) {
     this.limpiarHorario();
     this.horarioForm = this.crearFormularioHorario();
+  }
+
+
+  set index(index: number) {
+    this.indexHorario = index;
   }
 
 
@@ -126,14 +132,15 @@ export class HorariosConfigComponent {
         horas.push({ "entrada": horario.hEntrada, "salida": horario.hSalida });
     });
 
-    horas.forEach(hora => { // Recojo los días que tienen ese grupo de horas
-      diasHora = datos.filter(h => h.hEntrada == hora.entrada && h.hSalida == hora.salida);
-      this.horariosMostrar.push(this.crearHorarioMostrar(diasHora, hora));
-    });
+    for (let i = 0; i < horas.length; i++) {// Recojo los días que tienen ese grupo de horas
+      diasHora = datos.filter(h => h.hEntrada == horas[i].entrada && h.hSalida == horas[i].salida);
+      const hMostrar: HorarioMostrar = this.crearHorarioMostrar(diasHora, horas[i].entrada, horas[i].salida);
+      this.horariosMostrar.push(hMostrar);
+    }
   }
 
 
-  crearHorarioMostrar(diasHora: Horario[], hora: Hora) {
+  crearHorarioMostrar(diasHora: Horario[], hEntrada: Time, hSalida: Time) {
     let listaDias: Dia[] = []; //Días de un horario concreto.
     let idDia: number | undefined;
     let selecc: boolean;
@@ -146,8 +153,8 @@ export class HorariosConfigComponent {
 
     return {
       dias: listaDias,
-      hEntrada: hora.entrada,
-      hSalida: hora.salida
+      hEntrada: hEntrada,
+      hSalida: hSalida
     };
   }
 
@@ -223,7 +230,9 @@ export class HorariosConfigComponent {
       if (resp.success) {
 
         const datos: Horario[] = resp.data;
-        this.horariosMostrar.push(this.crearHorarioMostrar(datos, { entrada: datos[0].hEntrada, salida: datos[0].hSalida }));
+        const hMostrar = this.crearHorarioMostrar(datos, datos[0].hEntrada, datos[0].hSalida);
+        this.horariosMostrar.push(hMostrar);
+
         this.setMensajeExito(`Exito al ${this.accion} el horario`);
 
       } else this.setMensajeError(`Error al ${this.accion} el horario`);
@@ -234,43 +243,41 @@ export class HorariosConfigComponent {
     });
   }
 
-  updateHorarios(horarios: Horario[]) {
-    this.horariosService.updateHorarios(horarios)
-    .subscribe(resp => {
 
-      if (resp.success) {
+  updateHorarios(hGuardar: Horario[], hBorrar: number[]) {
+    this.horariosService.updateHorarios(hGuardar, hBorrar)
+      .subscribe(resp => {
 
-        const datos: Horario[] = resp.data;
-        console.log(datos)
-        console.log(this.horariosMostrar)
-        /* datos.forEach(horario => {
-          const indexHorario = this.horariosMostrar.findIndex(h => h.id == horario.id);
-          this.horariosMostrar.push(this.crearHorarioMostrar(datos, { entrada: datos[0].hEntrada, salida: datos[0].hSalida }));
+        if (resp.success) {
 
-        }); */
+          const datos: Horario[] = resp.data;
+          const horariosNuevos = this.crearHorarioMostrar(datos, datos[0].hEntrada, datos[0].hSalida);
+          this.horariosMostrar[this.indexHorario] = horariosNuevos;
 
-        this.setMensajeExito(`Exito al ${this.accion} el horario`);
+          this.setMensajeExito(`Exito al ${this.accion} el horario`);
 
-      } else this.setMensajeError(`Error al ${this.accion} el horario`);
+        } else this.setMensajeError(`Error al ${this.accion} el horario`);
 
-      this.setTimer(4000);
-      this.closeModalHorario.nativeElement.click();
-      this.limpiarFormulario();
-    });
+        this.setTimer(4000);
+        this.closeModalHorario.nativeElement.click();
+        this.limpiarFormulario();
+      });
   }
 
 
   insertOrUpdateHorario() {
     if (this.horarioForm.valid) {
       const horariosGuardar: Horario[] = [];
+      const horariosBorrar: number[] = [];
       const datos = this.horarioForm.value;
 
       this.horarioForm.value.dias.forEach((dia: Dia) => {
         if (dia.seleccionado) horariosGuardar.push(this.crearHorario(dia, datos.hEntrada, datos.hSalida));
+        else horariosBorrar.push(dia.id);
       });
 
       if (this.accion == this.acciones[0]) this.insertHorarios(horariosGuardar);
-      else if (this.accion == this.acciones[1]) this.updateHorarios(horariosGuardar);
+      else if (this.accion == this.acciones[1]) this.updateHorarios(horariosGuardar, horariosBorrar);
 
     } else this.horarioForm.markAllAsTouched();
   }
@@ -283,12 +290,19 @@ export class HorariosConfigComponent {
 
 
   setInfoHorario(index: number) {
+    this.infoHorario = this.horariosMostrar[index];
 
+    this.horarioForm.patchValue({
+      index: index,
+      dias: this.infoHorario.dias,
+      hEntrada: this.infoHorario.hEntrada,
+      hSalida: this.infoHorario.hSalida
+    });
   }
 
 
   limpiarHorario() {
-    this.infoHorario = { id: -1, codDia:"", dia: "", hEntrada: { hours: 0, minutes: 0 }, hSalida: { hours: 0, minutes: 0 } };
+    this.infoHorario = { dias: [], hEntrada: { hours: 0, minutes: 0 }, hSalida: { hours: 0, minutes: 0 } };
   }
 
 
@@ -452,7 +466,6 @@ export class HorariosConfigComponent {
 
   updateCitasALavez() {
     this.citasService.updateCitasALaVez(this.aLaVezForm.get('nALaVez')?.value).subscribe(resp => {
-      console.log(resp);
       if (resp.success) {
 
         this.setMensajeExito("Cita actualizada con éxito.");

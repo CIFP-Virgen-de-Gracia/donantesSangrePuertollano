@@ -41,9 +41,9 @@
     </div>
 
     <div class="col-1 d-flex justify-content-end align-items-center ms-auto iconos">
-      <!-- <i class="fa-solid fa-pen me-2" (click)="setInfoHorario(i)" data-bs-toggle="modal"
-        data-bs-target="#insertOrUpdateHorario" (click)="accion=acciones[1]"></i>
- -->
+      <i class="fa-solid fa-pen me-2" data-bs-toggle="modal" data-bs-target="#insertOrUpdateHorario"
+       (click)="accion=acciones[1]; setInfoHorario(i); this.index = i"></i>
+
       <i class="fa-solid fa-trash me-2" (click)="deleteHorarios(i); accion=acciones[2]"></i>
     </div>
   </div>

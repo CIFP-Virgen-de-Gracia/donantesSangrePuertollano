@@ -23,7 +23,7 @@ export class AdminUsersComponent {
 
 
   ngOnInit() {
-    
+
     this.traerUsuarios();
   }
 
@@ -34,11 +34,8 @@ export class AdminUsersComponent {
     this.usuariosService.fetchUsers().subscribe(resp => {
 
       if (resp.success) {
-        
+
         this.users = resp.data;
-
-        console.log(this.users);
-
         this.noHayUsuarios = (this.users.length == 0);
 
         if (!this.noHayUsuarios) {
