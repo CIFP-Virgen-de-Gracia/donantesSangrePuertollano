@@ -1,0 +1,21 @@
+<div class="pt-2 pb-2" *ngFor="let h of horariosMostrar">
+  <p>Días
+    <ng-container *ngFor="let d of h.dias; let first = first; let last = last; let i = index">
+
+      <ng-container *ngIf="last">
+        <span>y {{ d.nombre }}</span>
+      </ng-container>
+
+      <ng-container *ngIf="i == h.dias.length - 2">
+        <span>{{ d.nombre }} </span>
+      </ng-container>
+
+      <ng-container *ngIf ="(i != h.dias.length - 2) && !last">
+        <span>{{ d.nombre }}, </span>
+      </ng-container>
+
+    </ng-container>
+  </p>
+  <p>de <span class="fw-bold">{{ h.hEntrada }}</span> a <span class="fw-bold">{{ h.hSalida }}</span></p>
+</div>
+

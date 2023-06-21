@@ -225,22 +225,22 @@ export class HorariosConfigComponent {
 
   insertHorarios(horarios: Horario[]) {
     this.horariosService.insertHorarios(horarios)
-    .subscribe(resp => {
+      .subscribe(resp => {
 
-      if (resp.success) {
+        if (resp.success) {
 
-        const datos: Horario[] = resp.data;
-        const hMostrar = this.crearHorarioMostrar(datos, datos[0].hEntrada, datos[0].hSalida);
-        this.horariosMostrar.push(hMostrar);
+          const datos: Horario[] = resp.data;
+          const hMostrar = this.crearHorarioMostrar(datos, datos[0].hEntrada, datos[0].hSalida);
+          this.horariosMostrar.push(hMostrar);
 
-        this.setMensajeExito(`Exito al ${this.accion} el horario`);
+          this.setMensajeExito(`Exito al ${this.accion} el horario`);
 
-      } else this.setMensajeError(`Error al ${this.accion} el horario`);
+        } else this.setMensajeError(`Error al ${this.accion} el horario`);
 
-      this.setTimer(4000);
-      this.closeModalHorario.nativeElement.click();
-      this.limpiarFormulario();
-    });
+        this.setTimer(4000);
+        this.closeModalHorario.nativeElement.click();
+        this.limpiarFormulario();
+      });
   }
 
 

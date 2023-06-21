@@ -20,6 +20,7 @@ import { FiltroUserComponent } from './auxiliarChat/filtro-user/filtro-user.comp
 import { SearchPipe } from './pipes/search.pipe';
 import { TelefonosModule } from '../telefonos/telefonos.module';
 import { DireccionesModule } from '../direcciones/direcciones.module';
+import { HorariosModule } from '../horarios/horarios.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DireccionesModule } from '../direcciones/direcciones.module';
     FormsModule,
     ReactiveFormsModule,
     TelefonosModule,
-    DireccionesModule
+    DireccionesModule,
+    HorariosModule
   ],
   exports: [
     MainPageComponent

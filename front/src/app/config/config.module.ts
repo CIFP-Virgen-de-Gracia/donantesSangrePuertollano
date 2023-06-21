@@ -17,7 +17,6 @@ import { FaqsConfigComponent } from './faqs-config/faqs-config.component';
 import { FaqsAddComponent } from './faqs-config/faqs-add/faqs-add.component';
 import { FaqsEditComponent } from './faqs-config/faqs-edit/faqs-edit.component';
 import { FaqsDeleteComponent } from './faqs-config/faqs-delete/faqs-delete.component';
-import { HorariosConfigComponent } from '../horarios/horarios-config/horarios-config.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChatConfigComponent } from './chat-config/chat-config.component';
 
@@ -36,7 +35,6 @@ import { ChatConfigComponent } from './chat-config/chat-config.component';
     FaqsAddComponent,
     FaqsEditComponent,
     FaqsDeleteComponent,
-    HorariosConfigComponent,
     ChatConfigComponent
   ],
   imports: [
