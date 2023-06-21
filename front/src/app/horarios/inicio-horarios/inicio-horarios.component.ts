@@ -11,8 +11,6 @@ import { Dia, Hora, Horario, HorarioMostrar } from '../interfaces/horario.interf
 export class InicioHorariosComponent implements OnInit {
 
   horariosMostrar: HorarioMostrar[] = [];
-  semanaSinSabado = [{ nombre: "lunes", letra: "l" }, { nombre: "martes", letra: "m" }, { nombre: "miércoles", letra: "x" },
-  { nombre: "jueves", letra: "j" }, { nombre: "viernes", letra: "v" }];
 
 
   constructor(private horariosService: HorariosService) { }
@@ -41,17 +39,17 @@ export class InicioHorariosComponent implements OnInit {
       this.horariosMostrar.push(hMostrar);
     }
 
-    console.log(this.horariosMostrar)
+    this.ordenarDias();
   }
 
 
   crearHorarioMostrar(diasHora: Horario[], hEntrada: Time, hSalida: Time) {
     let listaDias: Dia[] = []; //Días de un horario concreto.
-    let idDia: number | undefined;
+    let idDia: number;
 
     diasHora.forEach(dia => {
       idDia = dia.id;
-      listaDias.push(this.crearDiaMostrar(dia.dia, dia.codDia, true, idDia));
+      listaDias.push({ id: idDia, nombre: dia.dia, letra: dia.codDia, seleccionado: true});
     });
 
     return {
@@ -62,12 +60,21 @@ export class InicioHorariosComponent implements OnInit {
   }
 
 
-  crearDiaMostrar(nombre: string, letra: string, selecc: boolean, id: number = -1) {
-    return {
-      id: id,
-      nombre: nombre,
-      letra: letra,
-      seleccionado: selecc
+  ordenarDias() {
+    const sorter: { [dia: string]: number } = {
+      "lunes": 1,
+      "martes": 2,
+      "miércoles": 3,
+      "jueves": 4,
+      "viernes": 5
     }
+
+    this.horariosMostrar.forEach(horario => {
+      horario.dias.sort(function sortByDay(a, b) {
+        let dia1 = a.nombre.toLowerCase();
+        let dia2 = b.nombre.toLowerCase();
+        return sorter[dia1] - sorter[dia2];
+      });
+    })
   }
 }
